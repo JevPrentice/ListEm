@@ -1,0 +1,173 @@
+unit uGetNextSequence;
+
+/* ************************************************* */
+/* ************************************************* */
+/* ************************************************* */
+/* ************************************************* */
+
+string fIsNextPatternIVR(Client c, Sequence s){
+    string r = "";
+    Pattern p = fGetNextPattern(c, s);
+    if(p!=null){
+        int channelID = ActivityController:getActivityChannelKeyID(p);
+        if(channelID == 3){
+            r = p.patternID;
+        }
+    }
+    return r;
+}
+
+/* ************************************************* */
+/* ************************************************* */
+
+Pattern fGetPreviousPattern (Client c, Sequence s){
+    PatternHistory[] phs = PatternHistory:and(relationshipIn(client_patternHistory, c),relationshipIn(sequence_patternHistory, s));
+    PatternHistory ph; Pattern p = null;
+
+    if (phs.length() == 0){
+        return null;
+    } else {
+        phs.sortDesc("startDate");
+        ph = phs.first();
+        p = ph.pattern_patternHistory;
+        return p;
+    }
+}
+
+/* ************************************************* */
+/* ************************************************* */
+
+Pattern fGetNextPattern(Client c, Sequence s){
+    
+    PatternOrder[] pos = PatternOrder:relationshipIn(sequence_patternOrder, s); PatternOrder po; pos.sortAsc("patternOrder");
+    
+    Pattern p; Pattern pp; int maxi = pos.length(); maxi = maxi - 1;
+    
+    if (pos.length() == 0){
+        return null;        
+
+    } else {
+        
+        pp = fGetPreviousPattern(c,s); 
+        
+        if (pp != null){
+        
+            for(int i = 0; i < maxi; i++){
+                po = pos.get(i); p = po.pattern_patternOrder;
+                if(p == pp){
+                        i = i + 1; po = pos.get(i); p = po.pattern_patternOrder;
+                        return p;
+                }
+            }
+            return null;
+        } else {
+            po = pos.first(); p = po.pattern_patternOrder;
+            return p;
+        }
+    }
+    
+}
+
+
+
+/* ************************************************* */
+/* ************************************************* */
+/* ************************************************* */
+/* ************************************************* */
+
+Sequence fGetPreviousSequence(Client c, Topic t){
+    
+    SequenceHistory[] shs = SequenceHistory:and(relationshipIn(client_sequenceHistory, c),relationshipIn(topic_sequenceHistory, t));
+    SequenceHistory sh; Sequence s = null;
+
+    if (shs.length() == 0){
+        return null;
+    } else {
+        shs.sortDesc("startDate");
+        sh = shs.first();
+        s = sh.sequence_sequenceHistory;
+        return s;
+    }
+    
+}
+
+/* ************************************************* */
+/* ************************************************* */
+
+
+Sequence fGetActiveOrPausedSequence (Client c, Topic t){
+
+    Sequence rS; string slog;
+
+        SequenceHistory[] sHs = SequenceHistory:and(relationshipIn(client_sequenceHistory, c), relationshipIn(topic_sequenceHistory, t), equals(statusID, 20));
+
+        if(sHs.length()>0){
+            SequenceHistory sH = sHs.first();
+            rS = sH.sequence_sequenceHistory;
+            slog = String:concat("fGetActiveOrPausedSequence 1 : SequenceHistory status = 20 : ", c.mobileNumber, " : ", rS.sequenceID);
+            return rS;
+        }
+
+        sHs = SequenceHistory:and(relationshipIn(client_sequenceHistory, c), relationshipIn(topic_sequenceHistory, t), equals(statusID, 1));
+
+        if(sHs.length()>0){
+            SequenceHistory sH = sHs.first();
+            rS = sH.sequence_sequenceHistory;
+            slog = String:concat("fGetActiveOrPausedSequence 2 : SequenceHistory 1 : ", c.mobileNumber, " : ", rS.sequenceID);
+            return rS;
+        }
+
+    return null;
+
+}
+
+/* ************************************************* */
+/* ************************************************* */
+
+Sequence fGetNextSequence(Client c, Topic t){
+
+    string slog = "";
+
+    slog = String:concat("fGetNextSequence : ", c.mobileNumber, " : ", t.topicID);
+        
+    Sequence rS; Sequence pS;
+
+    /***************************************** Added for Resume : JV : December 2014 *****************************************/
+
+    rS = fGetActiveOrPausedSequence(c, t);
+    if(rS!=null) { return rS; }
+
+    /* ************************************************************************************************************************ */
+
+    SequenceOrder[] sos = SequenceOrder:relationshipIn(topic_sequenceOrder, t); SequenceOrder so;
+
+    if (sos.length() == 0){
+        return null;        
+    } else {
+
+        pS = fGetPreviousSequence(c,t); if (pS!=null) { slog = pS.sequenceID; } else { slog = "pS==null"; }
+        slog = String:concat("fGetNextSequence : SequenceOrder 1 : fGetPreviousSequence", c.mobileNumber, " : p : ", slog);
+        
+        sos.sortAsc("sequenceOrder");
+
+        if (pS != null){
+        
+            for(int i = 0; i < (sos.length()-1); i++){
+                so = sos.get(i); rS = so.sequence_sequenceOrder;
+                if(rS == pS){
+
+                        i = i + 1; so = sos.get(i); rS = so.sequence_sequenceOrder;
+                        return rS;
+
+                }
+            }
+
+            return null;
+
+        } else {
+            so = sos.first(); rS = so.sequence_sequenceOrder;
+            return rS;
+        }
+    }
+    
+}

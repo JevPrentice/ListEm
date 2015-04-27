@@ -1,0 +1,13 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all()) /*NY: added 2014/08/11 */
+persistent object PatternOrder {
+	@RequiredAttribute("clientGroup.requirefield")
+	int patternOrder;
+	
+	@ManyToOne
+	Pattern pattern_patternOrder;
+	
+	@ManyToOne
+	Sequence sequence_patternOrder;
+	
+}

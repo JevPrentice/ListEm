@@ -1,0 +1,266 @@
+unit UmbrellaScheduling;
+
+/* *********************************************************************************************** */
+/* **************************** SCHEDULING LOOP PER GROUP **************************************** */
+/* *********************************************************************************************** */
+
+	void fSchedulegroupumbrella(ClientGroup g, Umbrella u, int code, datetime dStartTime, bool bIgnoreDefTime){
+		Client[] cs = fGetAllClientsFromGroup(g); Client c; int configs; int maxi = cs.length(); int removecode = 89;
+		if(bIgnoreDefTime==null){ bIgnoreDefTime = true; }
+
+		if(maxi>0){
+
+			// Perform the actual scheduling loop
+			for(int i=(maxi-1); i>=0; i--){
+				c = cs.get(i);
+				if (code==2){
+					TSPReminder:fManualTopicStart(c, 1);
+				} else {
+					UmbrellaScheduling:fScheduleclientumbrella(c, u, dStartTime, bIgnoreDefTime, code, 1, removecode);	
+				}
+			}	
+
+			// If code=1 (scheduling) or code=3 (reactivation) then also move out dates for GroupUmbrellaPPE
+			configs = BLUnits:fGetConfigSettingInt("RescheduleGroupEscalationsFromTopicScheduling");
+			if(code==1||code==3){
+				if( (code==1&&configs==1) || (code==3&&configs==3) || (configs==13) ){
+					uCalculatePPEGroupUmbrella:fCreateOrUpdateGroupUmbrellaPPE (c, u, Mez:now(), null, null, 1);
+				}
+			}
+
+		}
+
+		return;	
+	}
+
+	/* ************************************************************************************************ */
+
+	void fScheduleclientdefault(Client c){
+		bool bDefaultIgnoreDefTime = false; datetime dt = Mez:now();
+		Umbrella[] us = Umbrella:contains(umbrellaFlags, "default");
+		if(us.length()==0){us = Umbrella:all();}
+		if(us.length()>0){
+			Umbrella u = us.get(0);
+			UmbrellaScheduling:fScheduleclientumbrella(c,u,dt,bDefaultIgnoreDefTime,1,1,89);
+		}
+	}
+
+	/* ************************************************************************************************ */
+
+	Client[] fGetAllClientsFromGroup(ClientGroup cg){
+		return ClientGroupList:getAllClientsFromGroupIn(cg);
+	}
+
+/* ********************************************************************************************************* */
+/* ****************************** SCHEDULING EXECUTION PER CLIENT ****************************************** */
+/* ********************************************************************************************************* */
+
+	void fScheduleclientumbrella(Client c, Umbrella u, datetime dStartTime, bool bIgnoreDefTime, int code, int ordercode, int removecode){
+		UmbrellaTopicSetupTable[] uts = UmbrellaTopicSetupTable:relationshipIn(umbrella_UmbrellaUserSetup,u); UmbrellaTopicSetupTable ut; 
+
+		datetime msd = Mez:now(); if(dStartTime!=null){ msd = dStartTime; }
+		bool b; Topic t; int maxi = uts.length(); 
+		if(bIgnoreDefTime==null){ bIgnoreDefTime = true; }
+
+		/* ************************************************************************************************ */
+
+		int lrt = 1; int activecode = 2; int activecodecheck = 2;							// Defaults : runType, ActiveCode (new value), ActiveCheck (for duplication and rescheduling)
+
+		if(code==3){ 
+			activecodecheck = 3;															// Rescheduling
+		} else if(code>3){ 
+			lrt = code; 																	// Assigning specific runtype
+		}															
+
+		/* ************************************************************************************************ */
+
+		if(maxi>0){
+			uts.sortAsc("ordernum");
+			for(int i=0;i<maxi;i++){
+				ut = uts.get(i); t = ut.topic_UmbrellaUserSetup;
+
+				if(code >= 0){
+					b = fShouldSchedule(t, lrt);
+					if(b==true){
+						msd = fGetnextdatetime(msd, ut.fixeddate, ut.relativestartnum, ut.dowstartnum);
+						msd = fFixForHours(msd, c, ut.ordernum, ordercode, bIgnoreDefTime);
+						UmbrellaModelControllers:fSaveTopicUserSetupList(u, ut.ordernum, activecode, msd, c, t, lrt, ordercode, activecodecheck);
+					}
+				} else if (code < 0){
+					fRemoveTopicUserSetupList(c, u, ut.topic_UmbrellaUserSetup, removecode);
+					Mez:alert("umbrellaview.schedulecleared");
+				}
+			}
+		}
+		return;
+	}
+
+	/* ************************************************************************************************ */
+
+	bool fShouldSchedule(Topic t, int lrt){
+		bool r = true;
+
+		int tt = t.topicType;
+		//if( lrt==40 && tt>=5 && tt!=40 ){ r = false; }	// JV : OS indicated this is not necessary for now (2015/02/12)
+
+		return r; 
+	}
+
+/* ********************************************************************************************************* */
+/* ******************************** SCHEDULING REMOVAL PER CLIENT ****************************************** */
+/* ********************************************************************************************************* */
+
+	void fRemoveTopicUserSetupList (Client c, Umbrella u, Topic t, int removecode){
+		TopicUserSetup[] tus = TopicUserSetup:and(relationshipIn(umbrella_topicUserSetup, u), relationshipIn(client_topicUserSetup, c), relationshipIn(topic_topicUserSetup, t));
+		TopicUserSetup tu; int maxi = tus.length(); int ia; string slog;
+
+		if (maxi>0){
+
+		/* *************** */
+		//slog = String:concat("fRemoveTopicUserSetupList with client '", c.mobileNumber,"' and umbrella '", u.umbrellaID, "' and topic '", t.topicID,"' and removecode '", removecode, "'");
+		//Mez:log(slog);
+		/* *************** */
+
+			for(int i = (maxi-1); i>=0; i--){
+				tu = tus.get(i); ia = tu.active;
+				if(ia>0){
+					UmbrellaModelControllers:fDeleteTopicUserSetupExec(tu, removecode, "fRemoveTopicUserSetupList");
+				}			
+			}
+		}
+
+	}
+
+/* ************************************************************************************************************************* */
+/* ************************************** HOURS OF DAY AND DAY OF WEEK FUNCTIONS ******************************************* */
+/* ************************************************************************************************************************* */
+
+	datetime fFixForHours (datetime msd, Client c, int o, int ordercode, bool bIgnoreDefTime){
+
+		if(ordercode>=0&&bIgnoreDefTime==false){
+
+			string ta = "DefaultStartTime";
+			
+			msd = fFixFinalHours(msd,ta);
+
+			if(msd<Mez:now()){
+				msd = Date:addDays(msd,1);
+			}
+		}
+		
+		return msd;
+	}
+
+	/* **************************************************************** */
+
+	datetime fFixFinalHours(datetime msd, string ta){
+		//msd = Date:fromTimeString("2013-1-1 08:45:12 GMT");
+		string s0 = msd;
+		string s1 = String:substring(s0,0,10);
+		string s2 = BLUnits:fGetConfigSettingStr(ta);
+		string s3 = " GMT";
+
+		string s = String:concat(s1, "", s2, "", s3);
+		datetime dreturn = Date:fromTimeString(s);
+
+		if(dreturn == null) {
+			s = String:concat(s1, "07:00:00", s3);
+			dreturn = Date:fromTimeString(s);
+		}
+		
+		return dreturn;
+	}
+
+	/* **************************************************************** */
+
+	date fGetnextdayofweek(date startdate, int targetdow){
+		
+		int startdatedow = fGetdayofweek(startdate); int weeksadd = 0;
+		if(targetdow<=startdatedow){weeksadd = 7;}
+		startdate = Date:addDays(startdate,targetdow-startdatedow+weeksadd);
+		return startdate;
+	}
+
+	/* **************************************************************** */
+
+	// Base : Sunday = 0
+
+	int fGetdayofweek(date d2){
+		date d1 = Date:fromString("2014-01-04");
+		int days = 0; int dow = 8;
+		if(d2!=null){
+			days = (Date:daysBetween(d1, d2));
+			days = (fGetdayofweek2(days)-1);
+		} else {
+			Mez:alert("umbrellaview.datewarning");
+		}
+		return days;
+	}
+
+	/* **************************************************************** */
+
+	int fGetdayofweek2(int i){
+
+		int minweek = fGetminweek(i);
+		if(minweek == -1){
+			return 8;
+		} else
+		{
+			return (i - (minweek*7));
+		}
+	}
+
+	/* **************************************************************** */
+
+	int fGetminweek(int i){
+		for(int counter = 0; counter < 1000; counter++){
+			if((counter*7)>=i){ return (counter-1);}
+		}
+		return -1;
+	}
+
+	/*
+		date d = Date:fromString("2011-01-01"); datetime dt = Date:fromTimeString("2011-01-01 11:11:11 GMT");
+	*/
+
+/* **************************************************************************************************************************** */
+/* ************************************* GET NEXT SCHEDULE DATE TIME FUNCTION ************************************************* */
+/* **************************************************************************************************************************** */
+
+	datetime fGetnextdatetime (datetime pdin, datetime fdin, int rn, int dnin) {
+
+		// Establish a baseline by clearing up the previous date (which serves as minium viable date)
+		datetime pd = pdin; 										
+		if(pd == null) { pd = Mez:now(); }
+		if(pd < Mez:now()){ pd = Mez:now(); }
+
+		// Default = first date in, therefore will scehedule ASAP thereafter
+		datetime rd = pd;
+
+		// Evaluate the "fixed date"	
+		if(fdin != null){
+
+			// If the "fixed date" > "previous date" OR if the code = -1 (which forces a specific date start, eg for a New Year's wish)
+			if(fdin>pd||dnin==-1){
+				rd = fdin;
+
+				// Else... if the "previous date" > "fixed date" (which then prefers the "previous date")
+			} else if(pd>=fdin){
+				rd = pd;
+			}
+
+			// If the "relative number" is an option - then move the schedule out by that number
+		} else if (rn != null){
+			rd = Date:addDays(pd, rn);
+
+				// If the "day of the week" is an option, then move to the next day of the week
+			} else if (dnin != null){
+				rd = fGetnextdayofweek(pd, dnin);
+				}
+
+		// Return the date as selected by the above algorithm
+		return rd;
+	}
+
+/* ************************************************************************************************************************* */
+/* ************************************************************************************************************************* */

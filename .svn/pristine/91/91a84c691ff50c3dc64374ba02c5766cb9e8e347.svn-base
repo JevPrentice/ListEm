@@ -1,0 +1,5 @@
+unit Logger;
+
+void log(string logMessage) {
+	Mez:log(logMessage);
+}

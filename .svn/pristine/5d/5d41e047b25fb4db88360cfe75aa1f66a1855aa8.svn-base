@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="learningManager.topicList.title" unit="TopicList" init="init">
+    
+        <!--<menuitem label="learningManager.topicList.menu" icon="Users" order="5">
+            <userRole>LearningManager</userRole>
+        </menuitem>-->
+
+<!-- ******************************************************* -->
+        
+        <navigation outcome="back" target="SystemOverview" />
+        <action label="back" outcome="back"/>
+
+        <textfield label="sub_topic.subTopicType">
+            <binding variable="viewtopic">
+                <attribute name="topicType"/>
+            </binding>
+        </textfield>
+
+        <select label="sub_topic.subTopicLanguage">
+            <binding variable="languageKey"/>
+           <collectionSource function="LanguageKeyController:getAllLanguageKeys">
+                <displayAttribute name="languageID"/>
+                <displayAttribute name="language"/>
+            </collectionSource>
+        </select>
+
+         <textfield label="sub_topic.subTopicFlags">
+            <binding variable="viewtopic">
+                <attribute name="topicFlags"/>
+            </binding>
+        </textfield>
+
+<!-- ******************************************************* -->
+        
+         <textfield label="sub_topic.subTopicID">
+            <binding variable="viewtopic">
+                <attribute name="topicID"/>
+            </binding>
+        </textfield>
+        <textfield label="sub_topic.subTopicName">
+            <binding variable="viewtopic">
+                <attribute name="topicName"/>
+            </binding>
+        </textfield>
+
+        <textfield label="sub_topic.subTopicStartSMS">
+            <binding variable="viewtopic">
+                <attribute name="topicStartSMS"/>
+            </binding>
+        </textfield>
+        
+        <textfield label="sub_topic.subTopicReminderSMS">
+            <binding variable="viewtopic">
+                <attribute name="topicReminderSMS"/>
+            </binding>
+        </textfield>
+        <textfield label="sub_topic.subTopicEndSMS">
+            <binding variable="viewtopic">
+                <attribute name="topicEndSMS"/>
+            </binding>
+        </textfield>
+        <textfield label="sub_topic.subTopicReminderTime">
+            <binding variable="viewtopic">
+                <attribute name="topicReminderTime"/>
+            </binding>
+        </textfield>
+        <textfield label="sub_topic.subTopicEscalationTime">
+            <binding variable="viewtopic">
+                <attribute name="topicEscalationTime"/>
+            </binding>
+        </textfield>
+         <textfield label="sub_topic.subTopicMaxDuration">
+            <binding variable="viewtopic">
+                <attribute name="topicMaxDuration"/>
+            </binding>
+        </textfield>
+
+<!-- ******************************************************* -->
+        
+		<submit label="submit" action="saveTopic"/>
+
+        <table title="learningManager.topicList.title">
+            <collectionSource function="getAllTopics"/>
+
+            <column heading="sub_topic.subTopicType">
+                <attributeName>topicType</attributeName>
+            </column>
+            <column heading="sub_topic.subTopicLanguage">
+                <attributeName>topic_LanguageKey.languageID</attributeName>
+                <attributeName>topic_LanguageKey.language</attributeName>
+            </column>               
+
+            <column heading="sub_topic.subTopicFlags">
+                <attributeName>topicFlags</attributeName>
+            </column>
+
+            <column heading="sub_topic.subTopicID">
+                <attributeName>topicID</attributeName>
+            </column>
+         	<column heading="sub_topic.subTopicName">
+                <attributeName>topicName</attributeName>
+            </column>
+            
+            <column heading="sub_topic.subTopicStartSMS">
+                <attributeName>topicStartSMS</attributeName>
+            </column> 
+            
+			<column heading="sub_topic.subTopicReminderSMS">
+                <attributeName>topicReminderSMS</attributeName>
+            </column>
+            <column heading="sub_topic.subTopicEndSMS">
+                <attributeName>topicEndSMS</attributeName>
+            </column> 
+           
+             <column heading="sub_topic.subTopicReminderTime">
+                <attributeName>topicReminderTime</attributeName>
+            </column> 
+            
+            <column heading="sub_topic.subTopicEscalationTime">
+                <attributeName>topicEscalationTime</attributeName>
+            </column> 
+            
+            <column heading="sub_topic.subTopicMaxDuration">
+                <attributeName>topicMaxDuration</attributeName>
+            </column>
+
+<!-- ******************************************************* -->
+            
+            <rowAction label="learningManager.topicList.list.edit" action="editTopic">
+                <binding variable="viewtopic"/>
+            </rowAction>
+
+            <rowAction label="learningManager.topicList.list.remove" action="deleteTopic">
+                <binding variable="deleteTopic"/>
+                <confirm subject="sub_topic_management.subTopicDeleteWarningSubject" body="sub_topic_management.subTopicDeleteWarningBody"/>
+            </rowAction>
+        </table>
+    </view>
+</ui>

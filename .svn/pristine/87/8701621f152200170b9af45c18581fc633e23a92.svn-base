@@ -1,0 +1,56 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all()) /* NY: added 2014/08/11 */
+@Role("FieldWorker")
+persistent object Client {
+	
+	string client_id;	
+	@RequiredAttribute("client.requireName")
+	string firstName;
+	@RequiredAttribute("client.requireSurname")
+	string surname;
+    string nickname;
+	@InternationalNumber("client.requireInternationalNumber")
+	string mobileNumber;
+	datetime registered;
+	
+	LANGUAGE language;
+	GENDER gender;
+	
+	int roleID;
+	int clients_EscalationUser_id;
+    int chatcount;
+	
+    /* JP 2015-04-14 */
+    bool isActive;
+
+    /* JP 2015-04-14
+	 * Each group has many CHW's [Client with roleID=1] assigned 
+	 * Each Client can only be assigned to one group [regardless of roleID=1 or roleID=2]
+	*/
+    @ManyToOne
+    ClientGroup group via client_chws;
+
+	@ManyToOne
+	LanguageKeyObject client_LanguageKey;
+	
+	@ManyToOne
+	RoleKeyObject client_RoleKey;
+
+	//user_hierachy roles
+	@ManyToOne
+	LearningManager client_LearningManager;
+
+	/* JP 2014-12-19
+	 * These fields are not populated (They are actually in ClientList.mez)
+	 */
+	@ManyToOne
+	Chew client_Chew;
+	@ManyToOne
+	Chw client_Chw;
+	@ManyToOne
+	Cho client_Cho;
+	
+	/*@ManyToOne
+	ClientGroup users_in_group via client_chws;
+	*/
+}

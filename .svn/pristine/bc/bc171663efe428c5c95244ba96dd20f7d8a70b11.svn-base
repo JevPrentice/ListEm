@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="AssignSubCounties.title" unit="AssignSubCounties" init="init">
+        
+        <navigation outcome="navManageCounties" target="ManageCounties"/>
+        <!-- <navigation outcome="navCreateSubCounty" target="ManageCounties"/> -->
+
+        <action label="back" outcome="navManageCounties"/>
+
+        <info label="County.countyName">
+            <binding variable="county">
+                <attribute name="countyName"/>
+            </binding>
+        </info>
+
+    </view>
+</ui>

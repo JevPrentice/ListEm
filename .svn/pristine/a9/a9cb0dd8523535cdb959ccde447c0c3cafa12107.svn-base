@@ -1,0 +1,81 @@
+unit SequenceHistoryList;
+
+SequenceHistory sequenceHistory;
+
+void init() {
+    sequenceHistory = SequenceHistory:new();
+}
+
+string editSequenceHistory() {    
+	return null;
+}
+
+/* ********************************************* */
+/* ********************************************* */
+
+string saveSequenceHistory() {
+	sequenceHistory.save();
+	return null;
+}
+
+/* ********************************************* */
+/* ********************************************* */
+
+string deleteSequenceHistory() {
+	SequenceHistory:delete(sequenceHistory);
+	return null;
+}
+
+/* ********************************************* */
+/* ********************************************* */
+
+SequenceHistory[] fGetAllSequenceHistorys() {
+	return SequenceHistory:all();
+}
+
+/* ********************************************* */
+/* ********************************************* */
+
+void updateSequenceHistory(Client c, Sequence s, int i){
+ 
+    SequenceHistory sh;
+    SequenceHistory[] shs = SequenceHistory:intersect(relationshipIn(sequence_sequenceHistory, s), relationshipIn(client_sequenceHistory, c), equals(statusID, 1));
+    
+    if(shs.length() > 0) {
+		shs.sortAsc("startDate");
+        sh = shs.last();
+		sh.statusID = i;
+		sh.actualEndDate = Mez:now();
+		sh.save();
+	}
+}
+
+/* ********************************************* */
+/* ********************************************* */
+
+void fCreateSequenceHistory (Topic t, Client c, Sequence s){
+
+    SequenceHistory sh;
+    SequenceHistory[] shs = SequenceHistory:intersect(relationshipIn(sequence_sequenceHistory, s), relationshipIn(client_sequenceHistory, c), equals(statusID, 1));
+
+    if (shs.length()>0){
+        sh = shs.get(0);
+    } else {
+        sh = SequenceHistory:new();
+    }
+    
+        sh.statusID = 1;
+        sh.escalationID = 0;
+        sh.topic_sequenceHistory = t;
+    	sh.client_sequenceHistory = c;
+        sh.sequence_sequenceHistory = s;
+    
+        datetime startDate = Mez:now();
+        sh.startDate = startDate;
+        sh.reminderTime = Date:addDays(startDate, s.sequenceReminderTime);
+    	sh.save();
+
+}
+ 
+/* ********************************************* */
+/* ********************************************* */

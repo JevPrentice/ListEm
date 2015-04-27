@@ -1,0 +1,159 @@
+unit uCreateTestData;
+
+/* ********************************* */
+/* ********************************* */
+
+void fCreateTestClientExec(string sname, string snumber){
+
+    /* ************ */
+    Client[] check = Client:equals(mobileNumber, snumber); 
+    if(check.length()>0) { return null; }                                           // Prevents duplication
+    /* ************ */
+
+    Client client = Client:new();
+    client.client_id = sname;    
+    client.firstName = sname;
+    client.surname = sname;
+    client.nickname = sname;
+    client.mobileNumber = snumber;
+
+    LearningManager lManager = LearningManager:user();
+    client.client_LearningManager = lManager;  
+
+    client.roleID = 1;
+
+    client.client_RoleKey = RoleKeyController:getRoleKeyByID(1);
+    client.client_LanguageKey = LanguageKeyController:getLanguageKeyByID(1);
+    
+    client.isActive = true;
+    
+    client.registered = Mez:now();
+    client.save();
+}
+
+void fCreateTestClientsRSA(){
+
+        fCreateTestClientExec("JV",  "27835912369");
+        fCreateTestClientExec("CV", "27832291983");
+        // fCreateTestClientExec("JP", "27766432235");
+        fCreateTestClientExec("OS", "254706639214");
+
+        // for (int i = 0; i < 500; i++){
+        //     string name = String:concat("TestUser", i);
+        //     string mobile = String:concat("27", i);
+        //     fCreateTestClientExec(name, mobile);            
+        // }
+
+}
+
+/* ************************************************************************************************************ */
+/* ************************************************************************************************************ */
+
+int fGuessChannel(int si, int pi){
+    int ptid = 0; if( pi== 2 || pi == 3 || pi == 5 ) {ptid=3;} else {ptid=1;}
+    return ptid;
+}
+
+string fGuessPatternType(int pi, int ch){
+    string ptid = ""; 
+    if(ch==3){
+        ptid="IVR";
+    } else if(pi==2){
+        ptid = "10";
+    } else {
+        ptid = "5";
+    }
+    return ptid;
+}
+
+/* *************************** */
+/* *************************** */
+
+/* Automated Loop Data Sets */
+/* <submit label="fixMessage.CreateData" action="uCreateTestData:fCreateTestTopic"/> */
+
+void fCreateTestTopic(){
+
+    /* ********************************************************************* */
+    /* ********************************************************************* */
+         
+        fCreateTestClientsRSA();
+        uCreateTestDataExec:fCreateTopics();
+
+    /* ********************************************************************* */
+    /* ********************************************************************* */
+
+    Message[] mss = Message:all();
+    if(mss.length() == 0){
+         fCreateTestTopicLoopLanguages(1);
+         fCreateTestTopicLoopLanguages(2);
+         IVRMappingTable:buildIVRMappingTable();
+    }
+
+}
+
+void fCreateTestTopicLoopLanguages(int l){
+
+    string t; string s; string p; string m; string tn; string sn; string ptS; int ptI;
+    string remind; string start; string end; int maxi; int rpm; int mmc; int tt; int cg;
+        
+        for(int ti = 1 ; ti <= 3 ; ti++)
+        {   
+            
+        if(l==1){ t = String:concat("TESTE",ti); } else if(l==2){ t = String:concat("TESTSW",ti); }
+        tn = String:concat(t," Name"); Mez:log(t);
+    
+        if(ti==1){remind=null;}else{remind=String:concat("remind ",t);}
+        if(ti==1){start=null;}else{start=String:concat("start ",t);}
+        if(ti==1){end=null;}else{end=String:concat("end ",t);}
+
+        if(ti==1){ tt = 5; } else { tt = ti; }
+        
+        SubTopicController:createSubTopic(tt, l, "none", t, tn, start, end, remind, 4, 5, 6);
+    
+            for(int si = 1 ; si <= 2 ; si++)
+            {
+            s = String:concat(t,"S",si); sn = String:concat(s," Name"); Mez:log(s);
+    
+            if(si==2){remind=null;}else{remind=String:concat("remind ",s);}
+            if(si==2){start=null;}else{start=String:concat("start ",s);}
+            if(si==2){end=null;}else{end=String:concat("end ",s);}
+            
+            SequenceController:createSequence(s, sn, start, end, remind, 2);
+            
+            SequenceOrderController:createSequenceOrder(t, s, si);
+    
+                for(int pi = 1 ; pi<=6 ; pi++)
+                {
+
+                cg = fGuessChannel(si, pi);
+                ptS = fGuessPatternType(pi, cg);
+                
+                string str = "";
+                p = String:concat(s,"A",pi,str); Mez:log(p);
+    
+                remind=String:concat("remind ",p);
+                if(pi==1){start=null;}else{start=String:concat("start ",p);} 
+                if(pi==1){end=null;}else{end=String:concat("end ",p);}
+                
+                rpm = 0; if(ptS == "10"){rpm = 2;}
+                
+                ActivityController:createActivity(p, start, end, remind, 1, cg, p);
+
+                ActivityOrderController:createActivityOrder(s, p, pi, ptS, rpm);
+                    
+                    if (cg == 1){
+                        maxi = 2; mmc = 0; if(ptS == "5"){maxi = 5; mmc = 3;}
+                        for(int mi = 1 ; mi<=maxi ; mi++)
+                        {    
+                            m = String:concat(p,"M",mi); Mez:log(m);
+                            
+                            MessageController:createMessage(m, m, mmc, "1", "informcorrecttext");
+                            
+                            MessageOrderController:createMessageOrder(p, m, mi);
+                        }
+                    }
+                }
+            }
+        }
+}

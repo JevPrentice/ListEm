@@ -1,0 +1,12 @@
+@Restrict("SmartChew", all())
+persistent object TopicEscalator{
+	
+	datetime escalationTime;
+		
+	@ManyToOne
+	Client client_topicEscalator;
+	
+	@ManyToOne
+	Topic topic_topicEscalator;
+		
+}

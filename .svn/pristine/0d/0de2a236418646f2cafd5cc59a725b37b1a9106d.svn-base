@@ -1,0 +1,8 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all()) /*NY: added 2014/08/11 */
+persistent object ScheduleURL {
+    datetime dateTimeStampInserted;
+    string url;
+    datetime dateTimeStampUsed;
+    int status;
+}

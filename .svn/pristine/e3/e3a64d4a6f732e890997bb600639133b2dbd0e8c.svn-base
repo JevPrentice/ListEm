@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="learningManager.messageList.title" unit="MessageList" init="init">
+    
+        <!--<menuitem label="learningManager.messageList.menu" icon="Users" order="41">
+            <userRole>LearningManager</userRole>
+        </menuitem>-->
+ 
+        <navigation outcome="back" target="SystemOverview" />
+        <action label="back" outcome="back"/>
+        
+        <textfield label="message.messageID">
+            <binding variable="message">
+                <attribute name="_MTID"/>
+            </binding>
+        </textfield>
+
+        <textarea label="message.messageText">
+            <binding variable="message">
+                <attribute name="_MT_text"/>
+            </binding>
+        </textarea>
+        
+         <textfield label="message.maxMultipleChoice">
+            <binding variable="message">
+                <attribute name="maxMultipleChoice"/>
+            </binding>
+        </textfield>
+        <textfield label="message.correctAnswer">
+            <binding variable="message">
+                <attribute name="correctAnswer"/>
+            </binding>
+        </textfield>
+        <textfield label="message.informCorrectText">
+            <binding variable="message">
+                <attribute name="informCorrectText"/>
+            </binding>
+        </textfield>
+
+        <textarea label="message.addfromstring">
+            <binding variable="sAddFromString">
+            </binding>
+        </textarea>
+		
+		<submit label="submit" action="saveMessage"/>
+
+        <table title="learningManager.messageList.list.title">
+            <collectionSource function="getAllMessages"/>
+            <column heading="message.messageID">
+                <attributeName>_MTID</attributeName>
+            </column>
+
+            <column heading="message.messageText">
+                <attributeName>_MT_text</attributeName>
+            </column>
+
+            <column heading="message.maxMultipleChoice">
+                <attributeName>maxMultipleChoice</attributeName>
+            </column>
+              <column heading="message.correctAnswer">
+                <attributeName>correctAnswer</attributeName>
+            </column>
+            <column heading="message.informCorrectText">
+                <attributeName>informCorrectText</attributeName>
+            </column>
+            <rowAction label="edit" action="editMessage">
+                <binding variable="message"/>
+            </rowAction>
+
+            <rowAction label="delete" action="removeMessage">
+                <binding variable="deleteMessage"/>
+            </rowAction>
+        </table>
+    </view>
+</ui>

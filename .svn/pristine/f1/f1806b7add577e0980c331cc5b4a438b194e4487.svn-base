@@ -1,0 +1,3 @@
+begin;
+ALTER TABLE admin ADD COLUMN registered timestamp;
+begin;

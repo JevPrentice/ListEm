@@ -1,0 +1,34 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all()) /*NY: added 2014/08/11 */
+persistent object OutgoingSMSLog{
+	
+	string messageText;
+	string validFirstLetter;
+	int maxMultipleChoice;
+	string correctAnswer;
+	datetime dateTimeStamp;
+	string responseText;
+	string status;
+	int userScore;
+	string flags;
+	
+	@ManyToOne
+	Client client_outgoingSMSLog;
+	
+	@ManyToOne
+	Pattern pattern_outgoingSMSLog; 
+	
+	@ManyToOne
+	Message message_outgoingSMSLog;
+
+	@ManyToOne
+	IncomingSMS incomingsms_outgoingSMSLog;
+
+	@ManyToOne
+	Umbrella umbrella_outgoingSMSLog;
+
+	@ManyToOne
+	Topic topic_outgoingSMSLog;
+	
+}
+

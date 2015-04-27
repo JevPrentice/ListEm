@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="GroupPerformanceSummary.title" unit="GroupPerformanceSummary" init="init">
+    
+        <navigation outcome="nav_user_activty" target="UserActivity"/>
+        <navigation outcome="navPerformanceSummary" target="PerformanceSummary"/>
+
+        <action label="back" outcome="navPerformanceSummary"/>
+
+        <select label="client_group.info">
+            <binding variable="vClientGroup"/>
+            <collectionSource function="UserGroupController:getAllClientGroups">
+                <displayAttribute name="name"/>
+            </collectionSource>
+        </select>
+
+        <select label="topic.topicID">
+            <binding variable="vUmbrella"/>
+           <collectionSource function="TopicController:getAllTopicsNotMarkedNoReport">
+                <displayAttribute name="umbrellaID"/>
+            </collectionSource>
+        </select>
+
+        <submit label="ClientSummaryView.View" action="init"/>
+        <submit label="ClientSummaryView.RecreateSummaries" action="fRecreateSummaries"/>
+        <submit label="ClientSummaryView.SendSummaryReports" action="fSendSummaryReports"/>
+        <submit label="ClientSummaryView.SendOverallTopPerformers" action="fSendTopPerformersReports"/>
+        <submit label="ClientSummaryView.RunScheduledReports" action="fDoGroupTopicMessagingButton"/>
+
+        <table title="user_activity.umbrellaPPE.title">
+            <collectionSource variable="vFilterForUmbrella"/>
+            <column heading="user_activity.umbrellaPPE.umbrellaStartDateTime">
+                <attributeName>umbrellaStartDateTime</attributeName>
+            </column>
+            <column heading="user_activity.umbrellaPPE.umbrella_umbrellaPPE">
+                <attributeName>umbrella_umbrellaPPE.umbrellaID</attributeName>
+            </column>
+            <column heading="user_activity.umbrellaPPE.client_umbrellaPPE">
+                <attributeName>client_umbrellaPPE.mobileNumber</attributeName>
+                <attributeName>client_umbrellaPPE.firstName</attributeName>
+                <attributeName>client_umbrellaPPE.surname</attributeName>
+            </column>
+            <column heading="user_activity.umbrellaPPE.umbrellaEscalateDateTime">
+                <attributeName>umbrellaEscalateDateTime</attributeName>
+            </column>
+            <column heading="user_activity.umbrellaPPE.umbrellaEndDateTime">
+                <attributeName>umbrellaEndDateTime</attributeName>
+            </column>
+            <column heading="user_activity.umbrellaPPE.durationhours">
+                <attributeName>durationhours</attributeName>
+            </column>
+            <column heading="user_activity.umbrellaPPE.status">
+                <attributeName>status</attributeName>
+            </column>
+            <column heading="user_activity.umbrellaPPE.progress">
+                <attributeName>progress</attributeName>
+            </column>
+
+            <column heading="user_activity.umbrellaPPE.chatscore">
+                <attributeName>chatscore</attributeName>
+            </column>
+            <column heading="user_activity.umbrellaPPE.chatscoreadjusted">
+                <attributeName>chatscoreadjusted</attributeName>
+            </column>
+
+            <column heading="user_activity.umbrellaPPE.quizpercentage">
+                <attributeName>quizpercentage</attributeName>
+            </column>
+            <column heading="user_activity.umbrellaPPE.quizscore">
+                <attributeName>quizscore</attributeName>
+            </column>
+
+            <column heading="user_activity.umbrellaPPE.practicumtotalscoreachieved">
+                <attributeName>practicumtotalscoreachieved</attributeName>
+            </column>
+            <column heading="user_activity.umbrellaPPE.practicumpercentage">
+                <attributeName>practicumpercentage</attributeName>
+            </column>
+            <column heading="user_activity.umbrellaPPE.practicumscore">
+                <attributeName>practicumscore</attributeName>
+            </column>
+
+            <column heading="user_activity.umbrellaPPE.totalscore">
+                <attributeName>totalscore</attributeName>
+            </column>
+            <rowAction label="user_management.table.row.view_activity" action="view_activity">
+                <binding variable="vUmbrellaPPE"/>
+            </rowAction>            
+        </table>
+        
+    </view>
+</ui>

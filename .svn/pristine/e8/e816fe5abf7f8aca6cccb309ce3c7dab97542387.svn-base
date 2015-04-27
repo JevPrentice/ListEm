@@ -1,0 +1,12 @@
+unit TopicActivitySummary;
+
+TopicActivitySummaryTemp[] topicActivitySummaryArr;
+TopicActivitySummaryTemp[] topicActivitySummaryTotal;
+
+void init(){
+
+	topicActivitySummaryArr = TopicActivitySummaryTempController:getTopicActivitySummaryTemp();
+	topicActivitySummaryTotal = TopicActivitySummaryTempController:getTopicActivitySummaryGrandTotal(topicActivitySummaryArr);
+	
+}
+

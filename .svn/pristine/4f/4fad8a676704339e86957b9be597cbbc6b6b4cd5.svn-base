@@ -1,0 +1,8 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all()) /*NY: added 2014/08/11 */
+persistent object EscalationKeyObject {
+	
+	 int escalationID;
+	 string escalationDescription;
+	 	
+}

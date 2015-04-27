@@ -1,0 +1,27 @@
+unit ActivityTypeController;
+
+PatternType[] getAllActivityTypes(){
+    return PatternType:all();
+}
+
+PatternType getActivityTypeForActivity(Pattern p){
+    PatternTypeTable ptt = p.patternTypeTable_Pattern;
+
+    if (ptt == null){
+    	return null;
+    }
+
+    return ptt.patternTypeTable_PatternType;
+}
+
+string getActivityTypeID(Pattern p){
+
+    PatternType pt = getActivityTypeForActivity(p);
+
+    if (pt == null){
+    	return null;
+    }
+
+    return pt.patternTypeID;
+}
+

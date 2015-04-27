@@ -1,0 +1,55 @@
+# Generic
+save = Save
+back = Back
+edit = Edit
+remove = Remove
+pageMode = Page Mode
+next = Next
+
+alert.message = {messageText}
+alerts.common.generic={message}
+
+# Models
+person = Person
+firstNames = First Names
+surname = Surname
+mobileNumber = Mobile Number
+mobileNumber_r = Mobile Number *
+idNumber = ID Number
+dateRegistered = Date Registered
+gender = Gender
+
+doctor.doctorID = Doctor ID
+
+# Model Validators
+validatror.firstNames = Please enter a First Name
+validatror.surname = Please enter a Surname
+validatror.mobileNumber = Please enter a Mobile Number
+validatror.idNumber = Please enter a ID Number
+validatror.doctorID = Please enter a Doctor ID
+
+# Presenters
+
+admin.edit = Create or Edit an Admin
+
+admin.manage = Manage Admins
+admin.confirmRemove.subject = Please Confirm Removel
+admin.confirmRemove.body = Are you sure you want to remove this Admin?
+admin.inviteAdmin = Invite Admin
+
+people.edit = Create or Edit a Person
+
+people.manage = Manage People
+people.createPerson = Create Person
+people.confirmRemove.subject = Please Confirm Removel
+people.confirmRemove.body = Are you sure you want to remove this Person?
+
+doctor.manage = Manage Doctors
+doctor.inviteDoctor = Invite Doctor
+doctor.confirmRemove.subject = Please Confirm Removel
+doctor.confirmRemove.body = Are you sure you want to remove this Doctor?
+
+doctor.edit = Create or Edit a Doctor
+
+LinkOrCreatePerson.title = Link Or Create New Person
+LinkOrCreatePerson.newDoctor = Is this Doctor a new user in the system?

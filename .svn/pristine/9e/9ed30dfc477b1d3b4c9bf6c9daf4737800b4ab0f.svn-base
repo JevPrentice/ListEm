@@ -1,0 +1,52 @@
+unit ManagePharmacyUploads;
+
+Pharmacy uPharmacy;
+FileObject uFileObject;
+
+void init(){
+	uPharmacy = Pharmacy:new();
+	uFileObject = FileObject:new();
+}
+
+string loadPharmacy(){
+	
+	return "loaded";
+}
+
+string goToLoadPharmacies(){
+	return "UploadPharmacies";
+}
+
+string processCSV(){
+
+	Pharmacy[] csv;
+    csv = Pharmacy:fromCsv(uFileObject.signature);
+
+    for (int i = 0; i < csv.length(); i++){
+			
+    	Pharmacy pharmacyCSV = csv.get(i);
+    	
+    	Pharmacy p1 = Pharmacy:new();
+    	p1.name = pharmacyCSV.name;
+    	p1.gpslat = pharmacyCSV.gpslat;
+    	p1.gpslong = pharmacyCSV.gpslong;
+    	p1.registered = pharmacyCSV.registered;
+    	p1.stock_galvus = pharmacyCSV.stock_galvus;
+    	p1.product_count =pharmacyCSV.product_count;
+    	validatePharmacy(p1);
+    			
+		string message = pharmacyCSV.name;
+		
+	}
+
+	//Alerter:alert("CSV data Saved");
+	return "saved";
+}
+
+void validatePharmacy(Pharmacy p){
+	Pharmacy[] pmcs = Pharmacy:equals(name,p.name );
+	if(pmcs.length() < 1){
+		p.save();
+	}
+}
+

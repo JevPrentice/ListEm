@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../xsd/View.xsd">
+	<view label="content_catalogue.title" unit="ContentCatalogue" init="init">
+		
+        <navigation outcome="back" target="SystemReport" />
+
+        <action label="back" outcome="back"/>
+
+        <table title="content_catalogue.topicContentCataloguesEng">
+            <collectionSource variable="topicContentCataloguesEng"/>
+            <column heading="topic.topicID">
+                <attributeName>topic_id</attributeName>
+            </column>
+            <column heading="topic.topicName">
+                <attributeName>topic_name</attributeName>
+            </column>
+            <column heading="content_catalogue.language">
+                <attributeName>language</attributeName>
+            </column>
+            <column heading="content_catalogue.sms_mt">
+                <attributeName>sms_mt</attributeName>
+            </column>
+            <column heading="content_catalogue.sms_mo">
+                <attributeName>sms_mo</attributeName>
+            </column>
+            <column heading="content_catalogue.sms_total">
+                <attributeName>sms_total</attributeName>
+            </column>
+            <column heading="content_catalogue.ivr_length_min">
+                <attributeName>ivr_length</attributeName>
+            </column>
+            <column heading="content_catalogue.weight">
+                <attributeName>weight</attributeName>
+            </column>
+        </table>
+
+        <table title="content_catalogue.topicContentCataloguesSw">
+            <collectionSource variable="topicContentCataloguesSw"/>
+            <column heading="topic.topicID">
+                <attributeName>topic_id</attributeName>
+            </column>
+            <column heading="topic.topicName">
+                <attributeName>topic_name</attributeName>
+            </column>
+            <column heading="content_catalogue.language">
+                <attributeName>language</attributeName>
+            </column>
+            <column heading="content_catalogue.sms_mt">
+                <attributeName>sms_mt</attributeName>
+            </column>
+            <column heading="content_catalogue.sms_mo">
+                <attributeName>sms_mo</attributeName>
+            </column>
+            <column heading="content_catalogue.sms_total">
+                <attributeName>sms_total</attributeName>
+            </column>
+            <column heading="content_catalogue.weight">
+                <attributeName>weight</attributeName>
+            </column>
+        </table>
+
+        <table title="content_catalogue.allSubtopicContentCatalogues">
+            <collectionSource variable="allSubtopicContentCatalogues"/>
+            <column heading="topic.topicID">
+                <attributeName>topic_id</attributeName>
+            </column>
+            <column heading="topic.topicName">
+                <attributeName>topic_name</attributeName>
+            </column>
+            <column heading="content_catalogue.sub_topic_id">
+                <attributeName>sub_topic_id</attributeName>
+            </column>
+              <column heading="content_catalogue.sub_topic_description">
+                <attributeName>sub_topic_description</attributeName>
+            </column>
+            <column heading="content_catalogue.language">
+                <attributeName>language</attributeName>
+            </column>
+			<column heading="content_catalogue.sms_mt">
+                <attributeName>sms_mt</attributeName>
+            </column>
+            <column heading="content_catalogue.sms_mo">
+                <attributeName>sms_mo</attributeName>
+            </column>
+            <column heading="content_catalogue.sms_total">
+                <attributeName>sms_total</attributeName>
+            </column>
+			<column heading="content_catalogue.ivr_length_min">
+                <attributeName>ivr_length</attributeName>
+            </column>
+            <column heading="content_catalogue.weight">
+                <attributeName>weight</attributeName>
+            </column>
+        </table>
+
+        <submit label="refresh" action="init"/>
+        
+	</view>
+</ui>

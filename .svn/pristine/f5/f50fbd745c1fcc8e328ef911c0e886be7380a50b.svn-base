@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="group_filter_results.title" unit="GroupFilterResults" init="init">
+
+        <navigation outcome="back" target="GroupFilter" />
+        
+        <action label="back" action="back"/>
+
+        <info label="group_filter.userCount">
+            <binding variable="userCount" />
+        </info>
+
+        <table title="group_filter_results.table.users">
+            <collectionSource variable="users"/>
+            <column heading="client.firstName">
+                <attributeName>firstName</attributeName>
+            </column>
+            <column heading="client.surname">
+                <attributeName>surname</attributeName>
+            </column>
+            <column heading="client.nickname">
+                <attributeName>nickname</attributeName>
+            </column>
+            <column heading="client.language">
+                <attributeName>client_LanguageKey.language</attributeName>
+            </column>            
+            <column heading="client.mobileNumber">
+                <attributeName>mobileNumber</attributeName>
+            </column>
+            <column heading="group_edit.table.role_name">
+                <attributeName>client_RoleKey.roleName</attributeName>
+            </column>
+             <column heading="group_edit.table.reg_date">
+                <attributeName>registered</attributeName>
+            </column>
+            <rowAction label="group_filter_results.unselect" action="removeUser">
+                <binding variable="selectedUser"/>
+                <confirm subject="group_filter_results.unselect.subject" body="group_filter_results.unselect.body"/>
+            </rowAction>
+        </table>
+
+        <textarea label="group_filter_results.smsText">
+            <binding variable="messageText" />
+        </textarea>
+
+        <submit label="send_sms" action="sendCustomSms"/>
+        <submit label="group_filter_results.pauseSelection" action="pauseSelection"/>
+        <submit label="group_filter_results.resumeSelection" action="resumeSelection"/>
+        <submit label="group_filter_results.rewindSelection" action="rewindSelection"/>
+
+        <info label="group_filter.group_filter">
+            <binding variable="group" >
+                <attribute name="name"/>
+            </binding>
+        </info>
+
+        <info label="group_filter.topic_filter">
+            <binding variable="topic">
+                <attribute name="umbrellaID"/>
+            </binding>
+        </info>
+
+        <info label="group_filter.sub_topic_filter">
+            <binding variable="subTopic">
+                <attribute name="topicID"/>
+            </binding>
+        </info>
+
+        <info label="group_filter.activity_channel_filter">
+            <binding variable="cko">
+                <attribute name="patternChannelDescription"/>
+            </binding>
+        </info>
+
+    </view>
+</ui>

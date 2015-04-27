@@ -1,0 +1,31 @@
+unit ManagePeople;
+
+Person[] allPeople;
+Person selectedPerson;
+
+void init(){
+	allPeople = PersonController:getAllPeople();
+}
+
+string navigate(string location){
+	return location;
+}
+string back(){
+	return navigate("navManageAdmins");
+}
+
+string createPerson(){
+	EditPerson:person = null;
+	return navigate("navEditPerson");
+}
+
+string editPerson(){
+	EditPerson:person = selectedPerson;
+	return navigate("navEditPerson");
+}
+
+void removePerson(){
+
+	Person:delete(selectedPerson);
+	init();
+}

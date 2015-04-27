@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="broadcast_message.title" unit="BroadcastChvConfig" init="init">
+
+        <navigation outcome="navBroadcastMessage" target="BroadcastMessage" />
+
+        <action label="back" action="back"/>
+
+        <textarea label="broadcast_message.smsText">
+            <binding variable="smsText" />
+        </textarea>
+
+        <submit label="send_sms" action="send"/>
+    </view>
+</ui>

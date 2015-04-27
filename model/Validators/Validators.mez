@@ -1,0 +1,20 @@
+validator RequiredAttribute {
+	notnull();
+}
+
+validator InternationalNumber {
+	notnull();
+	regex("[1-9][0-9]{9,15}");
+}
+
+validator cellNumberValidator {
+	notnull(); minlen(10); maxlen(24); regex("[0-9]");
+}
+
+validator IDNumberValidator {
+	notnull(); minlen(13); maxlen(13); regex("[0-9]");
+}
+
+validator emailValidator {
+	notnull(); minlen(7); regex("\b[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]{2,4}\b"); 
+}

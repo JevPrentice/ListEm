@@ -1,0 +1,68 @@
+unit SubTopicManagement;
+
+Topic subTopic;
+string message;
+string nav_return;
+
+void init() {
+	message = "";
+
+	if (nav_return == null || nav_return == ""){
+		nav_return = "nav_topic_link_subtopic_management";
+	}
+}
+
+string navCreateSubTopic(){
+	return "nav_create_sub_topic";
+}
+
+string editSubTopic(){
+	SubTopicEdit:subTopic = subTopic;
+	return "nav_create_sub_topic"; 
+}
+
+void deleteSubTopic(){
+
+	if (subTopic == null){
+		message = "Sub-Topic could not be found";
+   		Alerter:alert(message);
+		return null;
+	}
+
+	UmbrellaTopicSetupTable[] subTopicOrders = SubTopicOrderController:getSubTopicOrdersForSubTopic(subTopic);
+
+	if (subTopicOrders != null){
+		if (subTopicOrders.length() > 0){
+			UmbrellaTopicSetupTable subTopicOrder = subTopicOrders.get(0);
+			if (subTopicOrder != null){
+				Umbrella topic = subTopicOrder.umbrella_UmbrellaUserSetup;
+				if (topic != null){
+					message = String:concat("Sub-Topic cannot be removed because it is associated to the topic: ", topic.umbrellaID, " through SubTopicOrder: ", subTopicOrder.ordernum);
+					Alerter:alert(message);
+					return null;
+				}
+			}
+		}
+	}
+
+	SequenceOrder[] sequenceOrders = SequenceOrderController:getSequenceOrdersForSubTopic(subTopic);
+
+	if (sequenceOrders != null){
+		if (sequenceOrders.length() > 0){
+			SequenceOrder sequenceOrder = sequenceOrders.get(0);
+			Sequence sequence = sequenceOrder.sequence_sequenceOrder;
+			message = String:concat("Sub-Topic cannot be removed because it is associated to the Sequence: ", sequence.sequenceID, " through SequenceOrder: ", sequenceOrder.sequenceOrder);
+			Alerter:alert(message);
+			return null;
+		}
+	}
+
+	Topic:delete(subTopic);
+	message = "Sub-Topic Deleted";
+	Alerter:alert(message);
+	return null;
+}
+
+string back(){
+	return nav_return;
+}

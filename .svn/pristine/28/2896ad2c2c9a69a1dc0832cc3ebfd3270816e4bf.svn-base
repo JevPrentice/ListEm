@@ -1,0 +1,18 @@
+unit LearningManagerManagement;
+
+LearningManager learningManager;
+
+string message;
+
+void init() {
+    message = "";	
+}
+
+LearningManager[] getAllLearningManagers() {
+	return LearningManager:all();
+}
+
+string editLearningManager(){
+    LearningManagerEdit:learningManager = learningManager;
+    return "nav_edit_learning_manager";
+}

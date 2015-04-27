@@ -1,0 +1,21 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all())
+persistent object TopicHistoryLog{
+	
+	datetime dateTimeStamp;
+	int statusID;
+	int runType;
+	int topicAttempt;
+	int userScore;
+	
+	@ManyToOne
+	Client client_topicHistoryLog;
+	
+	@ManyToOne
+	Topic topic_topicHistoryLog;
+
+	/* JV 2015-04-10 */
+	@ManyToOne
+	Umbrella umbrella_topicHistoryLog;
+	
+}

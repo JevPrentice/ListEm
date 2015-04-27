@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="learningManager.incomingSMSList.title" unit="IncomingSMSList" init="init">
+    
+        <navigation outcome="back" target="SystemOverview" />
+        <action label="back" outcome="back"/>
+    
+        <menuitem label="learningManager.incomingSMSList.menu" icon="Message" order="4">
+            <userRole>LearningManager</userRole>
+        </menuitem>
+
+        <submit label="refresh" action="init"/>
+
+    	<select label="AllSMSLog.mobileNumber">
+            <binding variable="vclient"/>
+			<collectionSource function="ClientList:getClients">
+                <displayAttribute name="firstName"/>
+                <displayAttribute name="surname"/>
+                <displayAttribute name="mobileNumber"/>
+			</collectionSource>
+		</select>
+        
+        <textfield label="AllSMSLog.messageText">
+            <binding variable="vAdHocSMS">
+                <attribute name="messageText"/>
+            </binding>
+        </textfield>
+        <submit label="user_profile.send_custom_sms_in" action="sendAdHocSMSIN"/>
+        <submit label="user_profile.send_custom_sms_out" action="sendAdHocSMSOUT"/>
+        <submit label="AllSMSLog.ForceQueue" action="BLUnits:sentClientSMSQueue"/>
+
+        <table title="AllSMSLog.title" defaultSortColumn="0" defaultSortDirection="descending">
+            <collectionSource function="BLUnits:getAllSMSLogs"/>
+            <column heading="AllSMSLog.dateTimeStamp">
+                <attributeName>dateTimeStamp</attributeName>
+            </column>
+            <column heading="AllSMSLog.mobileNumber">
+                <attributeName>allSMSLog_client.firstName</attributeName>
+                <attributeName>allSMSLog_client.mobileNumber</attributeName>
+            </column>
+            <column heading="AllSMSLog.direction">
+                <attributeName>direction</attributeName>
+            </column>            
+              <column heading="AllSMSLog.messageText">
+                <attributeName>messageText</attributeName>
+            </column>
+        </table>  
+    
+        <table title="AllSMSLog.SMSqueue">
+            <collectionSource function="BLUnits:fGetAllSMSQueue"/>
+            <column heading="AllSMSLog.dateTimeStamp">
+                <attributeName>smsDateTime</attributeName>
+            </column>
+            <column heading="AllSMSLog.mobileNumber">
+                <attributeName>c_clientsmsqueue.firstName</attributeName>
+            <attributeName>c_clientsmsqueue.mobileNumber</attributeName>
+            </column>
+              <column heading="AllSMSLog.messageText">
+                <attributeName>smsText</attributeName>
+            </column>
+        </table>  
+
+        <table title="learningManager.currentSMSPatternList.list.title">
+            <collectionSource function="CurrentSMSPatternController:getAllcurrentSMSPatterns"/>
+            <column heading="client.mobileNumber">
+                <attributeName>currentSMSPattern_clientID.firstName</attributeName>                
+                <attributeName>currentSMSPattern_clientID.mobileNumber</attributeName>
+            </column>
+             <column heading="activity.activityID">
+                <attributeName>currentSMSPattern_PatternID.patternID</attributeName>
+            </column>
+            <column heading="message.messageID">
+                <attributeName>currentSMSPattern_MessageSetup._MTID</attributeName>
+            </column>
+
+            <column heading="outgoingSMS.messageText">
+                <attributeName>messageText</attributeName>
+            </column>
+
+            <column heading="outgoingSMS.validFirstLetter">
+                <attributeName>validFirstLetter</attributeName>
+            </column>
+            <column heading="outgoingSMS.maxMultipleChoice">
+                <attributeName>maxMultipleChoice</attributeName>
+            </column>
+            <column heading="outgoingSMS.correctAnswer">
+                <attributeName>correctAnswer</attributeName>
+            </column>
+            <column heading="currentSMS.active">
+                <attributeName>active</attributeName>
+            </column>
+            <column heading="currentSMSPattern.informCorrectText">
+                <attributeName>informCorrectText</attributeName>
+            </column>           
+        </table> 
+        
+        <table title="learningManager.outgoingSMSList.list.title">
+            <collectionSource function="OutgoingSMSList:getAllOutgoingSMSs"/>
+            <column heading="outgoingSMS.dateTimeStamp">
+                <attributeName>dateTimeStamp</attributeName>
+            </column>
+            <column heading="client.mobileNumber">
+                <attributeName>outgoingSMS_client.firstName</attributeName>                
+                <attributeName>outgoingSMS_client.mobileNumber</attributeName>
+            </column>
+             <column heading="activity.activityID">
+                <attributeName>outgoingSMS_pattern.patternID</attributeName>
+            </column>
+            <column heading="message.messageID">
+                <attributeName>outgoingSMS_Message._MTID</attributeName>
+            </column>
+            <column heading="outgoingSMS.messageText">
+                <attributeName>messageText</attributeName>
+            </column>
+            <column heading="outgoingSMS.validFirstLetter">
+                <attributeName>validFirstLetter</attributeName>
+            </column>
+            <column heading="outgoingSMS.correctAnswer">
+                <attributeName>correctAnswer</attributeName>
+            </column>
+            <column heading="outgoingSMS.responseText">
+                <attributeName>responseText</attributeName>
+            </column>
+            <column heading="outgoingSMS.status">
+                <attributeName>status</attributeName>
+            </column>
+            <column heading="outgoingSMS.userScore">
+                <attributeName>userScore</attributeName>
+            </column>            
+        </table>
+        
+        <table title="learningManager.incomingSMSList.list.title">
+            <collectionSource function="getAllIncomingSMS"/>
+            <column heading="incomingSMS.dateTimeStamp">
+                <attributeName>dateTimeStamp</attributeName>
+            </column>
+             <column heading="incomingSMS.clientNumber">
+                <attributeName>incomingSMS_clientNumber.firstName</attributeName>               
+
+                <attributeName>incomingSMS_clientNumber.mobileNumber</attributeName>
+            </column>               <column heading="incomingSMS.smsText">
+                <attributeName>smsText</attributeName>
+            </column>
+            <column heading="incomingSMS.smsTextClean">
+                <attributeName>smsTextClean</attributeName>
+            </column>
+              <column heading="incomingSMS.status">
+                <attributeName>status</attributeName>
+            </column>
+
+        </table>
+    
+        <datefield label="incomingSMS.ResendDate">
+            <binding variable="vAdHocSMS">
+                <attribute name="dateTimeStamp"/>
+            </binding>
+        </datefield>
+        <submit label="incomingSMS.ResendDateButton" action="fResendFromDate"/>
+
+    </view>
+</ui>

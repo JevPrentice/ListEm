@@ -1,0 +1,61 @@
+unit NpmInviteUserMenu;
+
+MenuItem [] uMenuItems;
+MenuItem uMenuItem;
+
+void init(){
+	
+	uMenuItems.clear();
+	
+	string [] descriptions;
+	int [] counts;
+		
+	descriptions.append("Pharmacies");
+	counts.append(countPharmacies());
+		
+	descriptions.append("Pharmacists");
+	counts.append(countPharmacists());
+	
+	descriptions.append("National Program Manager");
+	counts.append(countNPM());
+		
+	/*descriptions.append("Command Centre Operator");
+	counts.append(countCcos());*/
+			
+	for(int i = 0; i < descriptions.length(); i++){
+		MenuItem curItem = MenuItem:new();
+		curItem.description = descriptions.get(i);
+		curItem.val = counts.get(i);
+		uMenuItems.append(curItem);
+	}
+}
+
+
+string viewItems(){
+	
+	if(uMenuItem.description == "Pharmacies"){
+		return "Pharmacies";
+	}
+	else if(uMenuItem.description == "Pharmacists"){
+		return "Pharmacists";
+	}else if(uMenuItem.description == "National Program Manager"){
+		return "npm";
+	}
+}
+
+
+int countPharmacies(){
+	Pharmacy [] pharmcs = Globals:getAllPharmacies();
+	return pharmcs.length();
+}
+
+
+int countPharmacists(){
+	Pharmacist [] phrmsts = Globals:getPharmacists();
+	return phrmsts.length();
+}
+
+int countNPM(){
+	Npm [] npms = Globals:getAllNpms();
+	return npms.length();
+}

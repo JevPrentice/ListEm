@@ -1,0 +1,450 @@
+unit TopicUserSetupController;
+
+// TopicUserSetup[] getTopicUserSetupsForTopic(Umbrella t){
+// 	return TopicUserSetup:relationshipIn(umbrella_topicUserSetup, t);
+// }
+
+string msg;
+
+TopicUserSetup[] getAllTus(){
+	return TopicUserSetup:all();
+}
+
+TopicUserSetup[] getActiveAndScheduledTusForUser(Client u){
+	return TopicUserSetup:union(
+			and(relationshipIn(client_topicUserSetup, u) , equals(active, 1)),
+			and(relationshipIn(client_topicUserSetup, u) , equals(active, 2))
+		);
+}
+
+TopicUserSetup[] getAllTusForUser(Client u){
+	return TopicUserSetup:relationshipIn(client_topicUserSetup, u);
+}
+
+TopicUserSetup[] getAllTusForUserSubTopic(Client u, Topic subTopic){
+	return TopicUserSetup:and(
+            relationshipIn(client_topicUserSetup, u),
+            relationshipIn(topic_topicUserSetup, subTopic),
+            notEquals(active, 0)
+        );
+}
+
+TopicUserSetup[] getAllAvailableTusForUser(Client u){
+	return TopicUserSetup:and(
+		relationshipIn(client_topicUserSetup, u),
+		equals(active, 2)
+	);
+}
+
+TopicUserSetup[] getAllPaused_scheduledButNotStarted_TusForUser(Client u){
+	return TopicUserSetup:and(
+		relationshipIn(client_topicUserSetup, u),
+		equals(active, 21)
+	);
+}
+
+TopicUserSetup[] getAllTusForGroup(ClientGroup group){
+	TopicUserSetup[] tusArr;
+
+	Client[] groupUsers = UserController:getAssociatedClientsForGroup(group);
+
+	for (int i = 0; i < groupUsers.length(); i++){
+		Client u = groupUsers.get(i);
+
+		TopicUserSetup[] userTusArr = getAllTusForUser(u);
+
+		for (int j = 0; j < userTusArr.length(); j++){
+			TopicUserSetup userTus = userTusArr.get(j);
+
+			if (isTusInTusCollection(userTus, tusArr) == false){
+				tusArr.append(userTus);
+			}
+		}
+	}
+
+	return tusArr;
+}
+
+TopicUserSetup[] getActiveAndScheduledTusForGroup(ClientGroup group){
+	TopicUserSetup[] tusArr;
+
+	Client[] groupUsers = UserController:getAssociatedClientsForGroup(group);
+
+	for (int i = 0; i < groupUsers.length(); i++){
+		Client u = groupUsers.get(i);
+
+		TopicUserSetup[] userTusArr = getActiveAndScheduledTusForUser(u);
+
+		for (int j = 0; j < userTusArr.length(); j++){
+			TopicUserSetup userTus = userTusArr.get(j);
+
+			if (isTusInTusCollection(userTus, tusArr) == false){
+				tusArr.append(userTus);
+			}
+		}
+	}
+
+	return tusArr;
+}
+
+TopicUserSetup[] getActiveTus(){
+	return TopicUserSetup:equals(active, 1);
+}
+
+TopicUserSetup[] getScheduledTus(){
+	return TopicUserSetup:equals(active, 2);
+}
+
+TopicUserSetup[] getActiveAndScheduled(){
+	return TopicUserSetup:union(
+		equals(active, 1),
+		equals(active, 2)
+	);
+}
+
+TopicUserSetup[] getActiveScheduledAndSearchingTus(){
+	return TopicUserSetup:union(
+			and (equals(active, 1),
+				equals(runType, 40)
+				),
+			and (equals(active, 2),
+				equals(runType, 40)
+				)
+			);
+}
+
+TopicUserSetup[] getActiveAndScheduledInProgressTus(){
+	return TopicUserSetup:union(
+			and (equals(active, 1),
+				notEquals(runType, 40)
+				),
+			and (equals(active, 2),
+				notEquals(runType, 40)
+				)
+			);
+}
+
+
+TopicUserSetup[] getPausedButNotSearching(){
+	return TopicUserSetup:and(
+		equals(active, 20),
+		notEquals(runType, 40)
+	);
+}
+
+// TopicUserSetup[] getPausedAndSearching(){
+// 	return TopicUserSetup:and(
+// 	notEquals(runType, 40),
+// 	equals(active, 20)
+// 	);
+// }
+
+TopicUserSetup[] getPaused(){
+	return TopicUserSetup:equals(active, 20);
+}
+
+// TopicUserSetup[] getNotScheduledAndSearchingTus(){
+// 	return TopicUserSetup:and(
+// 		equals(active, 20),
+// 		notEquals(runType, 40)
+// 	);
+// }
+
+TopicUserSetup[] getActiveTopicUserSetupsForTopic(Umbrella t){
+	return TopicUserSetup:and(
+		equals(active, 1), 
+		equals(runType, 1),
+		relationshipIn(umbrella_topicUserSetup, t)
+	);
+}
+
+TopicUserSetup[] getTopicUserSetupsForSubTopic(Topic st){
+	return TopicUserSetup:relationshipIn(topic_topicUserSetup, st);
+}
+
+TopicUserSetup[] getActiveTopicUserSetupsForSubTopic(Topic st){
+	return TopicUserSetup:and(
+		equals(active, 1), 
+		equals(runType, 1),
+		relationshipIn(topic_topicUserSetup, st)
+	);
+}
+
+TopicUserSetup[] getAllActiveTopicUserSetups(){
+	return TopicUserSetup:and(
+		equals(active, 1), 
+		equals(runType, 1)
+	);
+}
+
+TopicUserSetup[] getActiveTopicUserSetupsForUser(Client u){
+	return TopicUserSetup:and(
+		equals(active, 1), 
+		equals(runType, 1),
+		relationshipIn(client_topicUserSetup, u)
+	);
+}
+
+TopicUserSetup[] getPausedTopicUserSetupsForUser(Client u){
+	return TopicUserSetup:and(
+		equals(active, 20),
+		relationshipIn(client_topicUserSetup, u)
+	);
+}
+
+string fActionTopicUser(int i, TopicUserSetup tus){
+    Topic t = tus.topic_topicUserSetup;
+    Client c = tus.client_topicUserSetup;
+    return NewFlowControllers:fPauseTopic(c, t, i);
+}
+
+bool isTusInTusCollection(TopicUserSetup needle, TopicUserSetup[] haystack){
+
+	TopicUserSetup tus;
+    for (int i = 0; i < haystack.length(); i++){
+        tus = haystack.get(i);
+        if (needle == tus){
+            return true;
+        }
+    }
+    return false;
+}
+
+
+void setAllTusActive2AsActive21ForUser(Client u){
+
+	TopicUserSetup[] tusArr = getAllAvailableTusForUser(u); TopicUserSetup tus; Topic t;
+
+	string slog = String:concat("setAllTusActive2AsActive21ForUser : ", u.mobileNumber, " | ") ;
+	slog = String:concat(slog, "length : ", tusArr.length(), " | ");
+
+	for (int i = 0; i < tusArr.length(); i++){
+		tus = tusArr.get(i);
+		t = tus.topic_topicUserSetup;
+		tus.active = 21;
+
+		slog = String:concat(slog, "i : ", i, " | "); 
+		slog = String:concat(slog, "ID : ", t.topicID, " | ");
+	}
+
+	Mez:log(slog);
+}
+
+void setAllTusActive21AsActive2ForUser(Client u){
+
+	TopicUserSetup[] tusArr = getAllPaused_scheduledButNotStarted_TusForUser(u); TopicUserSetup tus; Topic t;
+
+	string slog = String:concat("setAllTusActive21AsActive2ForUser : ", u.mobileNumber, " | ") ;
+	slog = String:concat(slog, "length : ", tusArr.length(), " | ");
+
+	for (int i = 0; i < tusArr.length(); i++){
+		tus = tusArr.get(i);
+		t = tus.topic_topicUserSetup;
+		tus.active = 2;
+
+		slog = String:concat(slog, "i : ", i, " | "); 
+		slog = String:concat(slog, "ID : ", t.topicID, " | ");
+	}
+
+	Mez:log(slog);
+
+}
+
+bool deleteTopicUserSetup(TopicUserSetup tus) {
+    
+	if (tus == null){
+		msg = "No SubTopic-User Schedule found.";
+   		Alerter:alertError(msg);
+		return false;
+	}
+
+    Client u = tus.client_topicUserSetup;
+    Topic st = tus.topic_topicUserSetup;
+    
+    if(tus.active == 1){
+        TopicList:fForceEndTopic(tus, 89);
+
+        if (st != null){
+        	msg = String:concat("SubTopic:", st.topicID, " has been forced to end");
+       		Alerter:alert(msg);
+        }
+    }
+
+    TopicUserSetup:delete(tus);
+	tus = null;
+
+    if (st != null && u != null){
+    	string msg = String:concat("The scheduled SubTopic:", st.topicID, " for user ", u.firstName, " ", u.surname, " has been removed");
+   		Alerter:alert(msg);
+    }
+
+    return true;
+    
+}
+
+bool startTopicUserSetup(TopicUserSetup tus){
+
+	if (tus == null){
+		msg = "No SubTopic-User Schedule found.";
+   		Alerter:alertError(msg);
+		return false;
+	}
+
+    Client u = tus.client_topicUserSetup;
+    Topic startedTopic = tus.topic_topicUserSetup;
+
+    Topic currentSubTopic = uGetCurrentSchedule:fGetCurrentTopic(u);
+    
+    if(currentSubTopic == null){
+        TopicList:startTopic(tus, 1);
+
+        msg = String:concat("The SubTopic:", startedTopic.topicID, "has been started for the User ", u.firstName, " ", u.surname);
+   		Alerter:alert(msg);
+
+    } else {
+
+    	msg = String:concat("The Sub-Topic:", startedTopic.topicID, " was not started. The  user ", u.firstName, " ", u.surname, " is currently already currently scheduled for SubTopic:", currentSubTopic.topicID );
+   		Alerter:alertError(msg);
+
+    }
+
+    return true;
+
+}
+
+bool pauseTopicUserSetup(TopicUserSetup tus){
+
+	if (tus == null){
+		msg = "No SubTopic-User Schedule found.";
+   		Alerter:alertError(msg);
+		return false;
+	}
+
+	Topic st = tus.topic_topicUserSetup;
+    Client u = tus.client_topicUserSetup;
+
+    string pauseResult = NewFlowControllers:fPauseTopic(u, st, 1); // Note fPauseTopic is used to pause (1) and resume (2)
+
+    if(pauseResult != "paused"){
+        msg = String:concat("The SubTopic:", st.topicID, " has NOT been paused for the User ", u.firstName, " ", u.surname);
+   		Alerter:alertError(msg);
+   		return false;
+    }
+
+	/* setAllTusActive2AsActive21ForUser(u); // JV : Moved to fPauseTopic to ensure consistency */
+
+    msg = String:concat("The SubTopic:", st.topicID, " has been paused for the User ", u.firstName, " ", u.surname);
+	Alerter:alert(msg);
+
+    return true;
+}
+
+bool resumeTopicUserSetup(TopicUserSetup tus){
+
+	if (tus == null){
+		msg = "No SubTopic-User Schedule found.";
+   		Alerter:alertError(msg);
+		return false;
+	}
+
+	Topic st = tus.topic_topicUserSetup;
+    Client u = tus.client_topicUserSetup;
+
+	string resumeResult = NewFlowControllers:fPauseTopic(u, st, 2); // Note fPauseTopic is used to pause (1) and resume (2)
+	
+    if (resumeResult != "resumed") {
+    	msg = String:concat("The SubTopic:", st.topicID, " has been NOT been resumed for the User ", u.firstName, " ", u.surname);
+   		Alerter:alert(msg);
+   		return;
+    }
+
+    msg = String:concat("The SubTopic:", st.topicID, " has been resumed for the User ", u.firstName, " ", u.surname);
+   	Alerter:alert(msg);
+
+    setAllTusActive21AsActive2ForUser(u);
+
+    return true;
+}
+
+bool endTopicUserSetup(TopicUserSetup tus){
+
+	if (tus == null){
+		msg = "No SubTopic-User Schedule found.";
+   		Alerter:alertError(msg);
+		return false;
+	}
+
+	Topic st = tus.topic_topicUserSetup;
+    Client u = tus.client_topicUserSetup;
+
+	if(tus.active == 1 || tus.active == 20){
+		TopicList:fForceEndTopic(tus, 89);
+	} else {
+    	msg = String:concat("The SubTopic:", st.topicID, " has been NOT been ended for the User ", u.firstName, " ", u.surname, " because it is NOT currently Active or Paused");
+   		Alerter:alert(msg);
+   		return false;
+    }
+
+	return true;
+
+}
+
+TopicUserSetup[] getClientTopicUserSetupForSave(Client c, Topic t) {
+    TopicUserSetup[] tss = TopicUserSetup:and(relationshipIn(client_topicUserSetup, c), relationshipIn(topic_topicUserSetup, t)); 
+    if (tss.length() == 0){
+        return null;
+    } else {
+        return tss;
+    }
+}
+
+/*
+ * edit (code = 1), new (code = 0)
+ */
+string saveTopicUserSetupExec(int code, Client c, Topic t, TopicUserSetup tuin, Umbrella u){
+    
+    TopicUserSetup[]  tUS = getClientTopicUserSetupForSave(c, t); TopicUserSetup tU = null; string result;
+
+    if(tUS.length()>0 && code == 0){
+        result = "DUPL";
+    } else if (tUS.length()>0){
+        tU = tUS.get(0);
+        if( (code==1) || (code==2 && tuin.active==2 && tU.active==2) ){
+            result = "EDIT";
+        } else {
+            tU = null;
+            result = "EXISTING";
+        }
+    } else {
+        result = "NEW";
+        tU = TopicUserSetup:new();
+    }
+    
+    if(tU != null && c != null){
+        tU.topic_topicUserSetup = t;
+        tU.client_topicUserSetup = c;
+        tU.topicOrder = tuin.topicOrder;
+        tU.active = tuin.active;
+        tU.runType = tuin.runType;
+        tU.topicMinStartDate = tuin.topicMinStartDate;
+        tU.umbrella_topicUserSetup = u;
+        tU.save();    
+    }
+    
+    return result;
+       
+}
+
+// string fActionTopicUser(int i, TopicUserSetup tus){
+//     Topic t = pauseTopicUserSetup.topic_topicUserSetup;
+//     Client c = pauseTopicUserSetup.client_topicUserSetup;
+//     string s = NewFlowControllers:fPauseTopic(c, t, i);
+//     return s;
+// }
+
+
+
+
+
+
+

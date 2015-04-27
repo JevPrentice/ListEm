@@ -1,0 +1,16 @@
+@Restrict("SmartChew", all())
+persistent object SequencePPE{
+
+    int progress;
+	int performance;
+	int effort;
+    int score;
+	
+	@ManyToOne
+	Client client_sequencePPE;
+    
+	@ManyToOne
+	Sequence sequence_sequencePPE;
+	
+	
+}

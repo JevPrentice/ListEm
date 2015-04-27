@@ -1,0 +1,239 @@
+unit JumpToLogic;
+
+Umbrella fGetJumpToUmbrella(JumpTo jT){ 
+		return jT.umbrella_JumpTo; 
+	}
+
+Topic fGetJumpToTopic(JumpTo jT){ 
+	return jT.topic_JumpTo; 
+}
+
+Message fGetJumpToMessage(JumpTo jT){ 
+	return jT.messageTo_JumpTo; 
+}
+
+string fGetJumpToMessageString(JumpTo jT){ 
+	Message m = jT.messageTo_JumpTo;
+	return m._MTID; 
+}
+
+/* ****************************************************************************************************************** */
+/* ****************************************************************************************************************** */
+
+/* CORRECT Status Adjustment */
+string fGetJumpToStatusStringScoreCorrect(string s, Message min, Client c, int tt, string def){
+
+	string ss = def;
+
+	if(tt==6){
+
+		ss = "92";
+		JumpTo jT = fGetJumpToObjectOptions(s, min, c, 1);
+		if(jT!=null){ if(jT.scoreAdjustment!=null){ ss = def; } }
+	
+	}
+
+	return ss;
+
+}
+
+/* ************************************** */
+
+/* CORRECT Score */
+int fGetJumpToMessageStringScoreCorrect(string s, Message min, Client c, int tt){
+
+	int ds = BLUnits:fGetConfigSettingInt("DefaultScore");
+
+	if(tt==6){ ds = 0; }
+
+	JumpTo jT = fGetJumpToObjectOptions(s, min, c, 1); 
+
+	if(jT!=null){ if(jT.scoreAdjustment!=null){ ds = jT.scoreAdjustment; } }
+	
+	return ds;
+
+}
+
+/* ************************************** */
+
+/* INCORRECT Score */
+int fGetJumpToMessageStringScoreInCorrect(string s, Message min, Client c){
+
+	int ds = 0;
+
+	JumpTo jT = fGetJumpToObjectOptions(s, min, c, -1); 
+
+	if(jT!=null){ if(jT.scoreAdjustment!=null){ ds = jT.scoreAdjustment; } }
+	
+	return ds;
+
+}
+
+/* ****************************************************************************************************************** */
+/* ****************************************************************************************************************** */
+
+string fGetJumpToMessageStringFromSource(string s, Message min, Client c){ 
+
+	JumpTo jT = fGetJumpToObjectOptions(s, min, c, 0); Message mout;
+
+	if(jT!=null){
+		mout = jT.messageTo_JumpTo;
+		if(mout!=null){
+			return mout._MTID;
+		}
+	}
+	
+	return ""; 
+
+}
+
+/* ****************************************************************************************************************** */
+/* ****************************************************************************************************************** */
+
+string fGetExactMatchTypeForLog(JumpTo jT){
+
+	string s=""; Umbrella u; Topic t; Message m;
+
+	if(jT.umbrella_JumpTo!=null){ u = jT.umbrella_JumpTo; s = String:concat(s,"U:'", u.umbrellaID,"'"); }
+	if(jT.topic_JumpTo!=null){ t = jT.topic_JumpTo; s = String:concat(s,"T:'", t.topicID,"'"); }
+	if(jT.messageTo_JumpTo!=null){ m = jT.messageTo_JumpTo; s = String:concat(s,"M:'", m._MTID,"'"); }
+
+	return s;
+
+}
+
+string fGetExactMatchTypeInOrderOfPriority(JumpTo jT){
+
+	if(jT!=null){
+		if(jT.umbrella_JumpTo!=null){ return "U"; }
+		if(jT.topic_JumpTo!=null){ return "T"; }
+		if(jT.messageTo_JumpTo!=null){ return "M"; }
+	}
+
+	return "";
+
+}
+
+
+/* ****************************************************************************************************************** */
+/* ****************************************************************************************************************** */
+
+string fGetJumpToMatchType(string s, Message m, Client c, int correctCode){
+
+	if(s==null){ s = ""; } else { s = String:lower(s); }
+
+	JumpTo jT = fGetJumpToObjectOptions(s, m, c, correctCode);
+
+	string mT = fGetExactMatchTypeInOrderOfPriority(jT);
+
+	return mT;
+
+}
+
+/* ****************************************************************************************************************** */
+/* ****************************************************************************************************************** */
+/* ****************************************************************************************************************** */
+
+/* ****************************************************************************************************************** */
+/* ***** Get single object from 5 different possible matches: 
+			(a) On user response and Message ID in combination (Message ID required)
+			(b) On user response only (Messsage ID required)
+			(c) On *any* user response (Message ID required)
+			(d) On *correct* user response (Message ID required)
+			(e) On *incorrect* user response (Message ID required)		***** */
+/* ***** Searches through fGetJumpToMatchObject function results 	***** */
+/* ****************************************************************************************************************** */
+
+JumpTo fGetJumpToObjectOptions(string s, Message m, Client c, int correctCode){
+
+	JumpTo jT = null;
+
+	jT = fGetJumpToMatchObject(s, m, c);								// First try to get an exact match on Message and User Response (Message required)
+
+	if(jT==null&&m!=null){ 
+		jT = fGetJumpToMatchObject("*any*", m, c); 						// Then try to see if *any* user response should be considered (Message required)		
+
+		if(jT==null){ 
+			if(correctCode==1){
+				jT = fGetJumpToMatchObject("*correct*", m, c); 			// Then try to see if there is a math for any *correct* response
+			} else if(correctCode==-1) {
+				jT = fGetJumpToMatchObject("*incorrect*", m, c); 		// Then try to see if there is a match for any *incorrect* response
+			}
+		}
+	}
+
+	return jT;
+
+}
+
+/* ****************************************************************************************************************** */
+/* ***** Get single object from collection of objects... and creates detailed logs ***** */
+/* ***** Searches through fGetJumpToObjectCollections function results ***** */
+/* ****************************************************************************************************************** */
+
+JumpTo fGetJumpToMatchObject(string s, Message m, Client c){
+
+	JumpTo[] jTs = fGetJumpToObjectCollections(s, m); JumpTo jT = null; string slog = ""; string s0 = "";
+
+	if(jTs != null){
+		if(jTs.length()>0){
+			jT = jTs.get(0);
+			s0=fGetExactMatchTypeForLog(jT);
+		}
+	}
+
+	/* Advanced logging for jump to */
+
+	string s1=""; string s2=""; string s3="";
+	if(s!=null){ s1 = s;}
+	if(m!=null){ s2 = m._MTID; }
+	if(c!=null){ s3 = c.mobileNumber; }
+	slog = String:concat("fGetJumpToMatch : messagetext='", s1, "' | messageid='", s2, "' | client='", s3, "' | jump to='",s0,"'."); 
+	if(String:startsWith(s1,"*")==false&&s0!=""){ Mez:log(slog); }
+	
+	/* Advanced logging for jump to */
+
+	return jT;
+
+}
+
+/* ****************************************************************************************************************** */
+/* ***** Get collection of JumpTo based on incoming user response and message ID ***** */
+/* ***** Searches through JumpTo tables ***** */
+/* ****************************************************************************************************************** */
+
+
+JumpTo[] fGetJumpToObjectCollections(string s, Message m){
+
+	JumpTo[] jTsr; JumpTo[] jTsr_FirstRun; JumpTo jT;
+	s = String:lower(s);
+
+	if(m==null){
+		jTsr_FirstRun = JumpTo:equals(userResponse,s);
+		for(int i=0; i<jTsr_FirstRun.length(); i++){
+			jT = jTsr_FirstRun.get(i);
+			if(jT.messageIn_JumpTo==null){
+				jTsr.append(jT);
+			}
+		}
+	} else {
+		jTsr = JumpTo:and(equals(userResponse,s),relationshipIn(messageIn_JumpTo,m));
+	}
+	return jTsr;
+}
+
+/* ****************************************************************************************************************** */
+/* ****************************************************************************************************************** */
+/* ****************************************************************************************************************** */
+
+/*
+	IN:
+	Message messageIn_JumpTo;
+	
+	OUT:
+	Umbrella umbrella_JumpTo;
+	Topic topic_JumpTo;
+	Pattern pattern_JumpTo;
+	Sequence sequence_JumpTo;
+	Message messageTo_JumpTo;
+*/

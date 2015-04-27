@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="subtopic_order_management.title" unit="SubTopicOrderManagement" init="init">
+
+        <navigation outcome="nav_sub_topic_order_edit" target="SubTopicOrderEdit" />
+        <navigation outcome="nav_sub_topic_edit" target="SubTopicEdit" />
+        <navigation outcome="nav_manage_topics" target="TopicManagement" />
+        <navigation outcome="nav_manage_subtopics" target="SubTopicManagement" />
+        <navigation outcome="nav_sequence_orders" target="SequenceOrderManagement" />
+        <navigation outcome="create_associated_sequence" target="SequenceEdit" />
+        <navigation outcome="nav_sub_topic_order_management" target="SubTopicOrderManagement" />
+
+        <menuitem label="subtopic_order_management.title" icon="SubTopicOrder" order="11">
+            <userRole>ProgramManager</userRole>
+        </menuitem>
+        
+        <action label="subtopic_order_management.nav_manage_topics" action="nav_manage_topics"/>
+        <action label="subtopic_order_management.nav_manage_subtopics" action="nav_manage_subtopics"/>
+        <action label="subtopic_order_management.create_link" action="createSubTopicOrder"/>
+
+        <info label="subtopic_order_management.topic_filter">
+            <binding variable="topicFilter">
+                <attribute name="umbrellaID"/>
+            </binding>
+        </info>
+
+        <info label="subtopic_order_management.sub_topic_filter">
+            <binding variable="subTopicFilter">
+                <attribute name="topicID"/>
+            </binding>
+        </info>
+
+        <table title="subtopic_order_management.table.title">
+            <collectionSource variable="subTopicOrders"/>
+            <column heading="sub_topic.subTopicID">
+                <attributeName>topic_UmbrellaUserSetup.topicID</attributeName>
+            </column>
+            <column heading="topic.topicID">
+                <attributeName>umbrella_UmbrellaUserSetup.umbrellaID</attributeName>
+            </column>      
+            <column heading="sub_topic_order.subTopicOrderNum">
+                <attributeName>ordernum</attributeName>
+            </column>
+            <column heading="sub_topic.subTopicType">
+                <attributeName>topic_UmbrellaUserSetup.topicType</attributeName>
+            </column>
+            <column heading="sub_topic_order.fixeddate">
+                <attributeName>fixeddate</attributeName>
+            </column>
+            <column heading="sub_topic_order.relativestartnum">
+                <attributeName>relativestartnum</attributeName>
+            </column>
+            <column heading="sub_topic_order.dowstartnum">
+                <attributeName>dowstartnum</attributeName>
+            </column>
+            <rowAction label="subtopic_order_management.view_topics" action="viewTopics">
+                <binding variable="subTopicOrder"/>
+            </rowAction>
+            <rowAction label="subtopic_order_management.edit_sub_topic" action="editSubTopic">
+                <binding variable="subTopicOrder"/>
+            </rowAction>
+            <rowAction label="subtopic_order_management.edit_sub_topic_order" action="editSubTopicOrder">
+                <binding variable="subTopicOrder"/>
+            </rowAction>
+            <rowAction label="subtopic_order_management.delete_order" action="deleteSubTopicOrder">
+                <binding variable="subTopicOrder"/>
+                <confirm subject="subtopic_order_management.delete.subject" body="subtopic_order_management.delete.body"/>
+            </rowAction>
+            <rowAction label="subtopic_order_management.create_associated_sequence" action="createAssociatedSequence">
+                <binding variable="subTopicOrder"/>
+            </rowAction>
+            <rowAction label="subtopic_order_management.view_sequence_orders" action="viewSequenceOrders">
+                <binding variable="subTopicOrder"/>
+            </rowAction>
+        </table>
+
+        <submit label="remove_filter" action="removeFiltersButton"/>
+
+    </view>
+</ui>

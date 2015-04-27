@@ -1,0 +1,414 @@
+unit SequenceList;
+
+/* ************************************************* */
+/* Initial Setup and Functions used by Views         */
+/* ************************************************* */
+
+Sequence sequence;
+
+void init() {
+    sequence = Sequence:new();
+}
+
+string editSequence() {
+    return null;
+}
+
+string saveSequence() {
+    sequence.save();
+    init();
+	return null;
+}
+
+string deleteSequence() {
+	Sequence:delete(sequence);
+	init();
+	return null;
+}
+
+Sequence[] getAllSequences() {
+	return Sequence:all();
+}
+
+/* ************************************************* */
+/* Function to reset a paused Sequence               */
+/* ************************************************* */
+ 
+void fResetPausedSequence (Client c, Topic t){
+
+    /* Added for Resume : JV : December 2014 */
+
+    SequenceHistory[] sHs = SequenceHistory:and(relationshipIn(client_sequenceHistory, c), relationshipIn(topic_sequenceHistory, t), equals(statusID, 20));
+    if(sHs.length()>0){
+        SequenceHistory sH = sHs.first();
+        SequenceHistory:delete(sH);
+    }
+    return null;
+
+    /* **************************************** */
+}
+
+/* ************************************************* */
+/* Function to start the next Sequence               */
+/* ************************************************* */
+
+void fStartNextSequence (Client c){
+    
+    Topic t; Sequence s; Pattern p; string str;
+
+    //Get Next Sequence from within SequenceList:fStartNextSequence
+    t = uGetCurrentSchedule:fGetCurrentTopic(c);
+    
+    if (t !=null ){
+        s = uGetNextSequence:fGetNextSequence(c, t);
+
+        if (s != null){
+        //Set Up Sequence from within SequenceList:fStartNextSequence
+        fSetUpSequence(t, s, c);
+
+            //Get Next Pattern from within SequenceList:fStartNextSequence
+            p = uGetNextSequence:fGetNextPattern(c, s);
+
+    
+            if (p != null){
+                //Start Pattern from within SequenceList:fStartNextSequence
+                fStartNextPattern(s, p, c, 99);
+                return null;
+
+            } else {
+                //End Sequence from within SequenceList:fStartNextSequence"
+                fEndSequence(c, s, 99);
+                return null;
+                
+            }
+       } else {
+            TopicList:endTopic(c, t, 99);
+            return null;
+            }
+    }
+}
+
+/* ************************************************* */
+/* Setup Functions for starting a Sequence           */
+/* ************************************************* */
+
+// Clear current sequence table
+void fClearCurrentSequenceTable(Client c){
+
+    CurrentSequence cs = c.client_currentSequence;
+    if(cs !=null ) {
+		CurrentSequence:delete(cs);
+	}
+}
+
+/* ************************************************* */
+
+// Create current sequence table
+void fCreateCurrentSequenceTable(Client c, Sequence s){
+    CurrentSequence cs = CurrentSequence:new();
+    cs.client_currentSequence = c;
+    cs.sequence_currentSequence = s;
+	cs.save();
+}
+
+/* ************************************************* */
+
+//Set Up the next Sequence for running it
+void fSetUpSequence (Topic t, Sequence s, Client c){
+    uResetUsers:fReactivateClientSpecificSequence (c, s);
+    fClearCurrentSequenceTable(c);
+    fCreateCurrentSequenceTable(c, s);
+    SequenceHistoryList:fCreateSequenceHistory(t, c, s);
+    TSPReminder:fCreateSequenceReminder(c, s);
+    BLUnits:SendSMSToClient(c, s.sequenceStartSMS); 
+}
+
+/* ************************************************* */
+
+// End the Sequence
+void fEndSequence (Client c, Sequence s, int i){
+    if(s != null){
+    	TSPReminder:fClearSequenceReminder(c, s);
+        BLUnits:SendSMSToClient(c, s.sequenceEndSMS);
+        SequenceHistoryList:updateSequenceHistory (c,s,i);
+        fStartNextSequence(c);
+    }
+}
+
+// Force End the Sequence
+void fForceEndSequence (Client c, int i){
+    CurrentSequence cs = c.client_currentSequence;
+    if(cs == null) {
+        return null;
+    }
+    Sequence s = cs.sequence_currentSequence;
+    if(s == null) {
+        return null;
+    }
+    TSPReminder:fClearSequenceReminder(c, s);
+    SequenceHistoryList:updateSequenceHistory (c,s,i);
+    fClearCurrentSequenceTable(c);
+    fForceEndPattern(c,i);
+}
+/* ************************************************* */
+/* Setup Functions for starting a Pattern            */
+/* ************************************************* */
+
+// Clear Current Pattern Table
+void fClearCurrentPatternTable(Client c){
+
+    CurrentPattern cp = c.client_currentPattern;
+    if(cp !=null ) {
+    	CurrentPattern:delete(cp);
+	}
+    
+}
+
+/* ************************************************* */
+
+// Create Current Pattern Table
+void fCreateCurrentPatternTable(Client c, Pattern p){
+
+    uResetUsers:fClearClientOutgoingSMSHistory (c, p);
+
+    CurrentPattern cp = CurrentPattern:new();
+    cp.client_currentPattern = c;
+    cp.pattern_currentPattern = p;
+	cp.save();
+
+}
+
+/* ************************************************* */
+
+// Set up the Pattern initially when first run
+void fSetUpPattern (Sequence s, Pattern p, Client c, int i){
+    
+    uResetUsers:fReactivateClientSpecificPattern (c, p);    //Clears everything for user and pattern
+    
+    fClearCurrentPatternTable(c);
+    fCreateCurrentPatternTable(c, p);
+    PatternHistoryList:fCreatePatternHistory(s, p, c);
+    TSPReminder:fCreatePatternReminder(c, p);
+    uCalculatePPESub:fCalculatePatternPPE(c, p, "", 0);
+    
+    // Send start pattern SMS only if not two sequential IVR patterns
+    if(p.patternStartSMS!=null){
+        int channelID = ActivityController:getActivityChannelKeyID(p);
+        if ((i == 98) && (channelID == 3)){
+            BLUnits:saveAllSMSLogs (c, String:concat(p.patternStartSMS," [NotSent:IVRPatternStartSMS]"), "MT");
+        } else {
+            BLUnits:SendSMSToClient(c, p.patternStartSMS);
+        }
+    }
+}
+
+/* ************************************************* */
+/* ************************************************* */
+
+// Run the next Pattern if it is of channelid = 1 (ie an SMS pattern)
+void fRunPattern (Sequence s, Pattern p, Client c){
+    string aID="";
+    int channelID = ActivityController:getActivityChannelKeyID(p);
+    if (channelID == 1){
+        PatternList:initSMSPattern (c, p);
+    } else {
+        aID = uGetNextSequence:fIsNextPatternIVR(c, s);
+        uIVRIntegration:fScheduleIVR (p, c, 10, aID);
+    }
+}
+
+/* ************************************************* */
+/* ************************************************* */
+
+// Start the next Pattern : Including Set Up and Run
+void fStartNextPattern(Sequence s, Pattern p, Client c, int i){
+
+    fSetUpPattern (s, p, c, i);
+
+    fRunPattern (s, p, c);
+
+}
+
+/* ************************************************* */
+/* ************************************************* */
+
+void fStartNextPatternIncoming(Client c, Pattern p){
+    return null;
+
+    /*  NOT IN USE : JV : 9 JAN 2015
+        Pattern pcur = uGetCurrentSchedule:fGetCurrentPattern(c);
+        if(pcur!=null){ fForceEndPattern (c, 87); }
+        
+        Sequence s = uGetCurrentSchedule:fGetCurrentSequence(c);
+        if(s == null){
+            Sequence[] ss = Sequence:equals(sequenceID, "ADHOC"); 
+            if(ss.length()>0){
+                s = ss.get(0); 
+                fStartNextPattern(s, p, c, 87);
+            } else { return null; }
+        } else {
+            fStartNextPattern(s, p, c, 87);
+        }
+    */
+
+}
+
+/* ************************************************* */
+/* ************************************************* */
+
+// After End Pattern, Evaluate the Next Pattern to see whether to run or to end the Sequence
+void fEvaluateNextPattern(Client c, int i){
+    Topic t; Sequence s; t = uGetCurrentSchedule:fGetCurrentTopic(c); s = uGetCurrentSchedule:fGetCurrentSequence(c);
+    Pattern np =  uGetNextSequence:fGetNextPattern(c, s);
+    
+    if (np != null){
+        fStartNextPattern(s, np, c, i);
+    } else {
+        fEndSequence (c, s, i);  
+    }
+}
+
+/* ************************************************* */
+
+// End Pattern call when made from sources where current pattern IS known
+void fEndPattern (Pattern p, Client c, int i){
+    BLUnits:SendSMSToClient(c, p.patternEndSMS);
+    uCalculatePPESub:fCalculatePatternPPE(c, p, "", 1);
+    PatternHistoryList:fUpdatePatternHistory (p, c, i);
+    TSPReminder:fClearPatternReminder(c, p);
+    fEvaluateNextPattern(c, i);
+}
+
+/* ************************************************* */
+
+void fForceEndPattern (Client c, int i){
+    CurrentPattern cp = c.client_currentPattern; if(cp == null) { return null; }
+    Pattern p = cp.pattern_currentPattern; if(p == null) { return null; }
+    
+    PatternHistoryList:fUpdatePatternHistory (p, c, i);
+    TSPReminder:fClearPatternReminder(c, p);
+    
+    int channelID = ActivityController:getActivityChannelKeyID(p);
+    if (channelID == 1){ PatternList:resetSMSPattern(c); }
+    
+    fClearCurrentPatternTable(c);
+    
+}
+
+/* ************************************************* */
+/* ************************************************* */
+
+/* JV : Dec 2014 : Language selection correction in Phase 2 */
+
+string fGetTranslatedAcvtivity(Client c, string ca, string uppP){
+    
+    string newca = uIVRIntegration:fTranslateActivityID(ca, c, "in"); 
+    if(newca!=null){newca = String:upper(newca);}
+
+    /*  
+        The hack below should be superceded by the "fTranslateActivityID" function IF all activities are properly loaded...
+        However I leave it in tact to try to catch situations in existing topics from Phase 1 that were NOT properly loaded. 
+        START
+    */
+    if( (newca!=uppP) && (String:length(newca)>=2) ){
+        int maxl = (String:length(newca)-1);
+        string us = String:substring(newca,1,maxl); 
+        us = String:concat("T10",us);
+        string ls = String:concat("fGetTranslatedAcvtivity : Residual fix to force reverse translation of IVR if not properly mapped : Current Activity - ", uppP, ", Activity In - ", ca, ", Translated Activity - ", newca, ", Hacked Activity - ", us); Mez:log(ls);
+        if(us==uppP){
+            newca = us;
+        }
+    }
+    if(newca != ca){
+        BLUnits:saveAllSMSLogs (c, String:concat(ca," : ", newca, " [Translated IVR Activity]"), "Log");
+    }
+    /*
+        END
+        JV - December 2014
+    */
+    
+    return newca;
+}
+                    
+/* ************************************************* */
+/* ************************************************* */
+
+// End Pattern call when made from other sources where current pattern is NOT known
+void fEndUnknownPattern (Client c, string s){
+
+    Pattern p = uGetCurrentSchedule:fGetCurrentPattern(c);
+    string ca; string[] cas; string comps; string uppP;
+    int ls = (String:length(s) - 1);
+    int endcode = 98;                                                       // 98 = The end code for IVR activities
+    
+    if (p != null){
+        if(ls>=6){
+            cas = String:split(s, ";"); if (cas.length()>0){comps = cas.get(0);} else {comps = s;}
+            ls = (String:length(comps) - 1); ca = String:upper(String:substring(comps,6,ls));
+            uppP = String:upper(p.patternID);
+            
+            if(ca == "ALL"){ endcode = 89; }                                // 89 = The end code for activities forced to end manually
+
+            if (ca != uppP && ca != "ALL"){ ca = fGetTranslatedAcvtivity(c, ca, uppP); }
+            
+            if ((ca == uppP) || (ca == "ALL")){
+                
+                int channelID = ActivityController:getActivityChannelKeyID(p);
+                if(channelID==3){
+                    uIVRIntegration:fScheduleIVR (p, c, 11, 0);             // 11 = The code for the IVR to stop serving an activity
+                }
+                
+                fEndPattern (p, c, endcode);        
+
+            } else {
+                BLUnits:saveAllSMSLogs (c, String:concat(s," [Not-CurrentActivity]"), "Log");
+            }
+        } else
+        {
+            BLUnits:saveAllSMSLogs (c, String:concat(s," [Not-CurrentActivity]"), "Log");
+        }
+    } else {
+        BLUnits:saveAllSMSLogs (c, String:concat(s," [No-CurrentActivity]"), "Log");
+    }
+}
+
+/* **************************************************************************************  */
+/* **************************************************************************************  */
+
+Sequence fGetSequenceFromPattern (Pattern p){
+
+    PatternOrder[] pOs; PatternOrder pO; Sequence s = null;
+
+    if(p!=null){
+        pOs = PatternOrder:relationshipIn(pattern_patternOrder, p);
+        if (pOs.length()>0){
+            pO = pOs.first();
+            s = pO.sequence_patternOrder;
+        }
+    }
+    return s;
+
+}
+
+Topic fGetTopicFromSequence (Sequence s){
+
+    SequenceOrder[] sOs; SequenceOrder sO; Topic t = null;
+
+    if (s!=null){
+        sOs = SequenceOrder:relationshipIn(sequence_sequenceOrder, s);
+        if (sOs.length()>0){
+            sO = sOs.first();
+            t = sO.topic_sequenceOrder;
+        }
+    }
+    return t;
+
+}
+
+Topic fGetTopicFromPattern (Pattern p){
+
+    Sequence s = fGetSequenceFromPattern(p);
+    Topic t = fGetTopicFromSequence(s);
+    return t;
+
+}

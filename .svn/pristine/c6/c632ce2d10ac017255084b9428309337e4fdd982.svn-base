@@ -1,0 +1,147 @@
+unit MessageOrderManagement;
+
+MessageOrderTemp[] messageOrdersTemp;
+MessageOrderTemp messageOrderTemp;
+
+PatternMessageText[] messageOrders;
+PatternMessageText messageOrder;
+
+Pattern pattern;
+Message o_message;
+
+Pattern activityFilter;
+
+string msg;
+string nav_return;
+
+void init() {
+
+	if (nav_return == null){
+		nav_return = "nav_message_order_management";
+	}
+
+	messageOrders = MessageOrderController:getMassageOrdersForActivity(activityFilter);
+	messageOrdersTemp = MessageOrderTempController:getMessageOrdersTempForMessageOrderArr(messageOrders);
+}
+
+string navigate(){
+	removeFilters();
+	resetViewCollections();
+	return nav_return;
+}
+
+
+void removeFilters(){
+	activityFilter = null;
+}
+
+void resetViewCollections(){
+	messageOrdersTemp = null;
+	messageOrderTemp = null;
+	messageOrders = null;
+	messageOrder = null;
+}
+
+void removeFiltersButton(){
+	removeFilters();
+	init();
+}
+
+string editMessageOrder() {
+
+	messageOrder = MessageOrderController:getMessageOrderForMessageOrderTemp(messageOrderTemp);
+
+	MessageOrderEdit:messageOrder = messageOrder;
+	MessageOrderEdit:nav_return = "nav_message_order_management";
+	nav_return = "nav_message_order_edit";
+	return navigate();
+}
+
+string editMessage() {
+
+	messageOrder = MessageOrderController:getMessageOrderForMessageOrderTemp(messageOrderTemp);
+
+	MessageEdit:o_message = messageOrder.patternMessageText_Message;
+	MessageEdit:messageOrder = messageOrder;
+	MessageEdit:nav_return = "nav_message_order_management";
+	nav_return = "nav_message_edit";
+	return navigate();
+}
+
+void removeMessageOrder() {
+
+	messageOrder = MessageOrderController:getMessageOrderForMessageOrderTemp(messageOrderTemp);
+
+	PatternMessageText:delete(messageOrder);
+	msg = "Message Order Deleted";
+	Alerter:alert(msg);
+
+	return init();
+}
+
+string navCreateMessageOrder(){
+	MessageOrderEdit:nav_return = "nav_message_order_management";
+	nav_return = "nav_message_order_edit";
+	return navigate();
+}
+
+string navManageActivities(){
+	ActivityManagement:nav_return = "nav_message_order_management";
+	nav_return = "nav_manage_activities";
+	return navigate();
+}
+
+string navManageMessages(){
+	nav_return = "nav_manage_messages";
+	return navigate();
+}
+
+string viewActivityOrder(){
+
+	messageOrder = MessageOrderController:getMessageOrderForMessageOrderTemp(messageOrderTemp);
+
+	if (messageOrder == null){
+		msg = "No Activity Order has been selected";
+   		Alerter:alert(msg);
+		return null;
+	}
+
+	if (messageOrder.patternMessageTextID_pattern == null){
+		msg = "This Activity Order has no associated Activity";
+   		Alerter:alert(msg);
+		return null;
+	}
+
+	PatternOrder[] activityOrders = ActivityOrderController:getActivityOrdersForActivity(messageOrder.patternMessageTextID_pattern);
+
+	if (activityOrders == null){
+		msg = "This Message Order has no associated Activity Orders";
+   		Alerter:alert(msg);
+		return null;
+	}
+
+	PatternOrder activityOrder;
+	if (activityOrders.length() < 1){
+		msg = "This Message Order has no associated Activity Orders";
+   		Alerter:alert(msg);
+		return null;
+	} else if (activityOrders.length() > 1){
+		Pattern a = messageOrder.patternMessageTextID_pattern;
+		if ( a != null ){
+			msg = String:concat("This MessageOrder is associated to multiple Sequences, filtering by selected Activity:", a.patternID);
+	   		Alerter:alert(msg);
+			ActivityOrderManagement:activityFilter = a;
+			ActivityOrderManagement:sequenceFilter = null;
+		}
+	} else {
+		activityOrder = activityOrders.get(0);
+		ActivityOrderManagement:activityFilter = null;
+		ActivityOrderManagement:sequenceFilter = activityOrder.sequence_patternOrder;
+	}
+
+	// ActivityOrderManagement:activityFilter = messageOrder.patternMessageTextID_pattern;
+	// ActivityOrderManagement:sequenceFilter = null;
+
+	nav_return = "nav_activity_orders";
+	return navigate();
+}

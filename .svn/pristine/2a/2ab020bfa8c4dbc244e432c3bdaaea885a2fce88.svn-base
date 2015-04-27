@@ -1,0 +1,151 @@
+unit GroupTopicScheduling;
+
+Umbrella selectedTopic;
+ClientGroup selectedGroup;
+Client[] users;
+
+Client selectedUser;
+
+datetime dStartDateTime;
+bool bIgnoreDefaultTime;
+
+TopicUserSetup[] tusArr;
+TopicUserSetup startTus;
+TopicUserSetup removeTus;
+
+string tusFilter;
+
+string msg;
+
+void init(){
+	resetVars();
+	showAllTus();
+}
+
+void resetVars(){
+	if(BLUnits:fGetConfigSettingInt("DefaultTimeIgnore")==1) { bIgnoreDefaultTime = true; } else { bIgnoreDefaultTime = false; }
+	selectedTopic = null;
+	selectedGroup = null;
+	selectedUser = null;
+	users.clear();
+	dStartDateTime = Mez:now(); /* JV added */
+}
+
+/* ******************************************************** */
+/* ******************************************************** */
+
+void scheduleGroupForTopic(){
+	fCycleThroughGroup(1);
+	showTusForGroup();
+}
+
+void clearGroupForTopic(){
+	fCycleThroughGroup(-1);
+	showTusForGroup();
+}
+
+void runScheduledStartForGroup(){
+	fCycleThroughGroup(2);
+	showTusForGroup();
+}
+
+/* ******************************************************** */
+/* ******************************************************** */
+
+void fCycleThroughGroup(int c){
+	int removecode = 89;
+	if ( selectedGroup==null || (selectedTopic==null && c!=2) ){
+
+		if(c==2){
+			Mez:alert("umbrellaview.noselectionUserGroup");
+		} else {
+			Mez:alert("umbrellaview.noselection");
+		}
+		return;
+	}
+
+	if(selectedGroup != null){
+		UmbrellaScheduling:fSchedulegroupumbrella(selectedGroup, selectedTopic, c, dStartDateTime, bIgnoreDefaultTime);
+	}
+}
+
+void startUserOnTopic(){
+
+	if (startTus == null){
+		msg = "Topic User Setup not found";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+    Client c = startTus.client_topicUserSetup;
+
+	if (c == null){
+		msg = "User not found for selected Topic User Setup";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+    Topic t = uGetCurrentSchedule:fGetCurrentTopic(c);
+    
+    if(t == null){
+        TopicList:startTopic(startTus, 1);
+        startTus = TopicUserSetup:new();
+
+        msg = String:concat("Sub-Topic started for User:", c.firstName, " ", c.surname);
+		Alerter:alert(msg);
+    } else {
+    	msg = String:concat("Sub-Topic not started. There is already an active Sub-Topic for User:", c.firstName, " ", c.surname, " ", c.mobileNumber);
+		Alerter:alert(msg);
+    }
+
+    selectedUser = c;
+    showTusForUser();
+
+}
+
+void endTopicUserSetup() {
+
+	if (removeTus == null){
+		msg = "Scheduled Item could not be found";
+		Alerter:alertError(msg);
+	}
+
+	Client c = removeTus.client_topicUserSetup;
+
+	UmbrellaModelControllers:fDeleteTopicUserSetupExec(removeTus, 89, "endTopicUserSetup");
+	removeTus = null;
+
+	selectedUser = c;
+	showTusForUser();
+}
+
+void showAllTus(){
+	tusArr = TopicUserSetupController:getAllTus();
+	tusFilter = "Displaying All Scheduled Users";
+}
+
+void showTusForUser(){
+
+	if (selectedUser == null){
+		msg = "No User selected";
+		Alerter:alert(msg);
+		return null;
+	}
+
+	tusArr = TopicUserSetupController:getAllTusForUser(selectedUser);
+	tusFilter = String:concat("Displaying Schedule for User:", selectedUser.firstName, " ", selectedUser.surname, " ", selectedUser.mobileNumber);
+}
+
+
+void showTusForGroup(){
+
+	if (selectedGroup == null){
+		msg = "No Group Selected";
+		Alerter:alert(msg);
+		return;
+	}
+
+	tusArr = TopicUserSetupController:getAllTusForGroup(selectedGroup);
+	tusFilter = String:concat("Displaying Schedule for Group:", selectedGroup.name);
+
+}

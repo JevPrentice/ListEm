@@ -1,0 +1,145 @@
+unit GroupEdit;
+
+ClientGroup group;
+
+County county;
+
+SubCounty subCounty;
+SubCounty[] subCounties;
+
+string groupID;
+string groupName;
+GEOGRAPHY geographyType;
+
+bool isEdit;
+bool delGroup;
+
+string msg;
+
+void init() {
+
+	delGroup = false;
+
+	if (group == null){
+		isEdit = false;
+		resetVars();
+	} else {
+		isEdit = true;
+		readyVarsForEdit();
+	}
+}
+
+void readyVarsForEdit(){
+	groupID = group.idd;
+	groupName = group.name;
+	subCounty = group.subCounty;
+	geographyType = group.geographyType;
+	subCounties.append(subCounty);
+}
+
+void resetVars(){
+	group = ClientGroup:new();
+	county = null;
+	subCounty = null;
+	groupID = null;
+	groupName = null;
+	geographyType = null;
+	subCounties = SubCountyController:getAllSubCounties();
+}
+
+string navigate(string location){
+	resetVars();
+	return location;
+}
+
+string back(){
+	return navigate("nav_group_management");
+}
+
+string saveGroup(){
+
+	if (groupID == null || String:length(groupID) <= 0){
+		msg = "Please enter a Group ID";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	if (groupName == null || String:length(groupName) <= 0){
+		msg = "Please enter a Group Name";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	if (geographyType == null){
+		msg = "Please select a Geography Type";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	if (group.client_chews == null){
+		msg = "Please specify a CHEW";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	if (subCounty == null){
+		msg = "Please select a Sub-County";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	group.idd = groupID;
+	group.name = groupName;
+	group.geographyType = geographyType;
+	group.subCounty = subCounty;
+	group.save();
+
+	msg = String:concat("Group ", group.name, " Saved.");
+	Alerter:alert(msg);
+	
+	return navigate("nav_group_management");
+}
+
+void showSubCountiesForCounty(){
+
+	if (county == null){
+		msg = "Please select a County";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	subCounties = SubCountyController:getSubCountiesForCounty(county);
+	
+}
+
+string remove_group(){
+
+	if(delGroup==false){
+        delGroup=true;
+        msg = "Click delete group again to really delete the group";
+		Alerter:alertError(msg);
+		return;
+    }
+
+	Client[] group_clients = group.client_chws;
+	
+	string group_name = group.name;
+
+	if (group_clients.length() > 0){
+		msg = String:concat("Unable to remove group ", group_name, " because they are currently users associated to it. Please unassociate all users from the groups before attempting to remove.");
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	ClientGroup:delete(group);
+
+	if (group != null){
+		if (group.name != null){
+			msg = String:concat("Group ", group.name, " has been removed.");
+			Alerter:alert(msg);	
+		}
+	}
+	
+	return navigate("nav_group_management");
+
+}

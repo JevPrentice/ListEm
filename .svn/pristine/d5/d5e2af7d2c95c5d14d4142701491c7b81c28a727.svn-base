@@ -1,0 +1,15 @@
+@Restrict("FieldWorker", all()) /*NY: added 2014/08/11 */
+@Role("LearningManager")
+persistent object LearningManager {
+	int role_id;
+	
+	datetime registered;
+	
+	string firstNames;
+	string surname;
+	string mobileNumber;
+	
+	beforeCreate {
+		before.role_id = 1;
+	}
+}

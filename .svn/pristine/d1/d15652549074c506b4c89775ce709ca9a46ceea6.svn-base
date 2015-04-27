@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="broadcast_chv.title" unit="BroadcastChv" init="init">
+
+        <navigation outcome="navBroadcastMessage" target="BroadcastMessage" />
+
+        <navigation outcome="navBroadcastChvKit" target="BroadcastChvKit" />
+        <navigation outcome="navBroadcastChvConfig" target="BroadcastChvConfig" />
+        
+
+        <action label="back" action="back"/>
+
+        <!-- These groups must be filtered according to the logged in CHEW -->
+        <select label="group">
+            <binding variable="selectedGroup"/>
+            <collectionSource variable="groups">
+                <displayAttribute name="name"/>
+            </collectionSource>
+        </select>
+
+        <select label="broadcast_message.templateMessage">
+            <binding variable="templateMessage" />
+            <enum>CHVTEMPLATEMESSAGE</enum>
+        </select>
+        
+        <submit label="next" action="next"/>
+    </view>
+</ui>

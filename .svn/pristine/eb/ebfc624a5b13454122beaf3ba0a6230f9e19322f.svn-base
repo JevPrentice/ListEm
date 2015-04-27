@@ -1,0 +1,50 @@
+unit SubCountyController;
+
+SubCounty[] getAllSubCounties(){
+	return SubCounty:all();
+}
+
+SubCounty[] getSubCountiesForCounty(County c){
+	return SubCounty:relationshipIn(county, c);
+}
+
+bool isGroupAssignedToSubCounty(SubCounty subCounty){
+	
+	ClientGroup[] groupsArr = UserGroupController:getAllClientGroups();
+
+	for (int i = 0; i < groupsArr.length(); i++){
+		ClientGroup group = groupsArr.get(i);
+
+		SubCounty groupSubCounty = group.subCounty;
+		// County groupCounty = groupSubCounty.county;
+		if (subCounty == groupSubCounty){
+			return true;
+		}
+	}
+
+	return false;
+
+}
+
+SubCounty[] getSubCountiesForName(string name){
+	return SubCounty:equals(subCountyName, name);
+}
+
+SubCounty getSubCountyForName(string name){
+	SubCounty subCounty;
+	SubCounty[] subCounties = getSubCountiesForName(name);
+
+	if (subCounties.length() > 0){
+		subCounty = subCounties.get(0);
+
+		if (subCounties.length() > 1){
+			string msg = String:concat("WARNING! There are duplications for the SubCounty: ", name);
+			Alerter:alert(msg);
+			Logger:log(msg);
+		}
+
+	}
+
+	return subCounty;
+
+}

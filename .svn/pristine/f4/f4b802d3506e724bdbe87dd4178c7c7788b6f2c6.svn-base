@@ -1,0 +1,181 @@
+unit TopicController;
+
+Umbrella createTopic(string topicID, string topicName, string flags, int maxDuration){
+
+	Umbrella[] check = Umbrella:equals(umbrellaID, topicID); 
+    if(check.length()>0) { 
+    	string msg = String:concat("Unable to create Topic with ID: ", topicID, " becuase it already exists");
+    	Logger:log(msg);
+    	Alerter:alert(msg);
+    	return null; 
+    }
+
+	Umbrella topic = Umbrella:new();
+	topic.umbrellaID = topicID;
+	topic.umbrellaName = topicName;
+	topic.umbrellaFlags = flags;
+	topic.umbrellaMaxDuration = maxDuration;
+	topic.save();
+
+	string msg = String:concat("Topic with ID: ", topicID, " created");
+	Logger:log(msg);
+	Alerter:alert(msg);
+
+	return topic;
+}
+
+Umbrella[] getAllTopics(){
+    return Umbrella:all();
+}
+
+Umbrella[] getAllTopicsNotMarkedNoReport(){
+    return Umbrella:union(
+		    notContains(umbrellaFlags, "nr" ),
+		    empty(umbrellaFlags)
+	    );
+}
+
+Umbrella[] getTopicArrForSubTopic(Topic subTopic){
+	
+	Umbrella[] topicArr;
+
+	UmbrellaTopicSetupTable[] subTopicOrders = SubTopicOrderController:getSubTopicOrdersForSubTopic(subTopic);
+
+	for (int i = 0; i < subTopicOrders.length(); i++){
+		UmbrellaTopicSetupTable subTopicOrder = subTopicOrders.get(i);
+		Umbrella topic = subTopicOrder.umbrella_UmbrellaUserSetup;
+		topicArr.append(topic);
+	}
+
+	return topicArr;
+}
+
+Umbrella getTopicsFromSubTopic(Topic subTopic){
+	
+	UmbrellaTopicSetupTable[] subTopicOrders = SubTopicOrderController:getSubTopicOrdersForSubTopic(subTopic);
+	UmbrellaTopicSetupTable subTopicOrder;
+
+	if (subTopicOrders.length() < 1){
+		return null;
+	}
+
+	subTopicOrder = subTopicOrders.first();
+
+	if (subTopicOrder == null){
+		return null;
+	}
+
+	return subTopicOrder.umbrella_UmbrellaUserSetup;
+
+}
+
+Umbrella[] getTopicsForTopicID(string topicID){
+	Umbrella[] topics = Umbrella:equals(umbrellaID, topicID);
+
+	if (topics.length() > 1){
+		string msg = String:concat("There are currently ", topics.length(), " Topics with TopicID:", topicID);
+        Logger:log(msg);
+        Alerter:alertError(msg);
+
+        msg = String:concat("WARNING: There is duplication for TopicID: ", topicID);
+        Logger:log(msg);
+        Alerter:alertError(msg);
+	}
+
+	return topics;
+}
+
+Umbrella getTopicForTopicID_singleRecord(string topicID){
+	Umbrella[] topics = getTopicsForTopicID(topicID);
+
+	if (topics.length() < 1){
+		return null;
+	}
+
+	return topics.get(0);
+}
+
+Umbrella[] getActiveTopics(){
+
+	Umbrella[] topicArr;
+	
+	TopicUserSetup[] tusArr = TopicUserSetupController:getAllActiveTopicUserSetups();
+
+	for (int i = 0; i < tusArr.length(); i++){
+		TopicUserSetup tus = tusArr.get(i);
+
+		Umbrella[] tArr = tus.umbrella_topicUserSetup;
+
+		for (int j = 0; j < tArr.length(); j++){
+			Umbrella t = tArr.get(j);
+
+			if (isTopicInTopicArray(t, topicArr) == false){
+				topicArr.append(t);	
+			}
+		}
+	}
+
+	return topicArr;
+}
+
+bool isTopicInTopicArray(Umbrella t, Umbrella[] tArr){
+
+	for(int i = 0; i < tArr.length(); i++){
+		if (t == tArr.get(i)){
+			return true;
+		}
+	}
+
+	return false;
+
+}
+
+int getActiveUserCountForTopic(Umbrella t){
+	TopicUserSetup[] tusArr = TopicUserSetupController:getActiveTopicUserSetupsForTopic(t);
+	return tusArr.length();
+}
+
+int getActiveUserCountForTopic(Umbrella t){
+	TopicUserSetup[] tusArr = TopicUserSetupController:getActiveTopicUserSetupsForTopic(t);
+	return tusArr.length();
+}
+
+int countActiveTopics(){
+
+	Umbrella[] topicArr = TopicController:getActiveTopics();
+	return topicArr.length();
+
+}
+
+int getCompletedUserCountForTopic(Umbrella t){
+	int count = 0;
+	UmbrellaPPE[] ppeArr = UmbrellaPPEController:getAllUmbrellaPPEForTopic(t);
+	
+	for (int i = 0; i < ppeArr.length(); i++){
+		UmbrellaPPE ppe = ppeArr.get(i);
+		if (ppe.status == 99){
+			count = count + 1;
+		}
+	}
+
+	return count;
+}
+
+int getExpiredUserCountForTopic(Umbrella t){
+	int count = 0;
+	UmbrellaPPE[] ppeArr = UmbrellaPPEController:getAllUmbrellaPPEForTopic(t);
+	
+	for (int i = 0; i < ppeArr.length(); i++){
+		UmbrellaPPE ppe = ppeArr.get(i);
+		if (ppe.status == 88){
+			count = count + 1;
+		}
+	}
+
+	return count;
+}
+
+
+
+
+

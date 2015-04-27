@@ -1,0 +1,30 @@
+@Restrict("Pharmacist", all()) /*NY: added 2014/08/11 */
+@Role("Pharmacist")
+persistent object Pharmacist {
+	
+	string client_id;	
+	@RequiredAttribute("client.requireName")
+	string firstName;
+	@RequiredAttribute("client.requireSurname")
+	string surname;
+    string nickname;
+	@InternationalNumber("client.requireInternationalNumber")
+	string mobileNumber;
+	datetime registered;
+	LANGUAGE language;
+	
+	string email;
+	
+	//Gender
+	GENDER gender;
+	
+	int roleID;
+	int clients_EscalationUser_id;
+    int chatcount;
+    
+    string deleted;
+    
+    /*Link the pharmacist that will be capturing the information for the care receivers */
+    @OneToOne
+    Pharmacy pharmacist_pharmacy;   
+}

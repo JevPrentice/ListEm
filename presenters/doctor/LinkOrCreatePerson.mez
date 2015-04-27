@@ -1,0 +1,21 @@
+unit LinkOrCreatePerson;
+
+LINKORNEW linkOrNew;
+
+void init (){
+
+}
+
+string navigate(string location){
+	return location;
+}
+
+string back(){
+	return navigate("navManageDoctors");
+}
+
+string next(){
+
+	EditDoctor:doctor = null;
+	return navigate("navEditDoctor");
+}

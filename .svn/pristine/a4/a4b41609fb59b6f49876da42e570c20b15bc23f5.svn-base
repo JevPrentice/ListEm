@@ -1,0 +1,19 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all()) /*NY: added 2014/08/11 */
+persistent object TopicPPE {
+	
+	int progress;
+	int performance;
+	int effort;
+    int score;
+	
+	@ManyToOne
+	Client client_topicPPE;
+    
+	@ManyToOne
+	Topic topic_topicPPE;
+
+	/* JV 2015-04-10 */
+	@ManyToOne
+	Umbrella umbrella_topicPPE;
+}

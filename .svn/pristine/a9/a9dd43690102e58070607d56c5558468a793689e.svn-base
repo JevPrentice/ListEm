@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="system_settings.title" unit="FixMessageList" init="init">
+    
+        <menuitem label="system_settings.title" icon="SystemSettings" order="17">
+            <userRole>LearningManager</userRole>
+            <userRole>ProgramManager</userRole>
+            <userRole>Admin</userRole>
+        </menuitem>
+
+        <info label="release.version">
+            <binding variable="srV">
+            </binding>
+        </info>
+        
+        <info label="fixMessage.sConfigDescription">
+            <binding variable="ctxml">
+                <attribute name="sConfigDescription"/>
+            </binding>
+        </info>
+        
+        <textfield label="config.UpdateValue">
+            <binding variable="ctxml">
+                <attribute name="sConfigValue"/>
+            </binding>
+        </textfield>
+                
+        <submit label="config.UpdateValue" action="fUpdateConfig"/>
+        
+        <table title="fixMessage.iConfigValue.tabletitle">
+                <collectionSource function="fGetAllConfig"/>
+                <column heading="fixMessage.sConfigDescription">
+                    <attributeName>sConfigDescription</attributeName>
+                </column>
+                <column heading="fixMessage.iConfigValue">
+                    <attributeName>iConfigValue</attributeName>
+                </column>
+                <column heading="fixMessage.iConfigValue">
+                    <attributeName>sConfigValue</attributeName>
+                </column>
+                <rowAction label="fixMessage.fEditConfig" action="fEditConfig">
+                    <binding variable="ctxml"/>
+                </rowAction>
+        </table>
+
+        <textfield label="fixMessage.statusID">
+            <binding variable="sKo">
+                <attribute name="statusID"/>
+            </binding>
+        </textfield>
+        <textfield label="fixMessage.statusDescription">
+            <binding variable="sKo">
+                <attribute name="statusDescription"/>
+            </binding>
+        </textfield>
+
+        <submit label="config.UpdateValue" action="fUpdateStatsIDs"/>
+        
+        <table title="fixMessage.statusids.tabletitle">
+            <collectionSource function="fGetAllStatusKeys"/>
+            <column heading="fixMessage.statusID">
+                <attributeName>statusID</attributeName>
+            </column>
+            <column heading="fixMessage.statusDescription">
+                <attributeName>statusDescription</attributeName>
+            </column>
+            <rowAction label="fixMessage.fEditConfig" action="fEditStatusID">
+                <binding variable="sKo"/>
+            </rowAction>
+        </table>
+        
+        <!-- <table title="fixMessage.list.title">
+            <collectionSource function="getAllFixMessages"/>
+            
+             <column heading="fixMessage.language">
+                <attributeName>languageID</attributeName>
+            </column>
+            
+            <column heading="fixMessage.fixedMessageID">
+                <attributeName>fixedMessageID</attributeName>
+            </column>
+
+            <column heading="fixMessage.fixedMessageText">
+                <attributeName>fixedMessageText</attributeName>
+            </column>
+        </table> -->
+
+        <!--<submit label="learningManager.TopicHistory.reactivatebutton" action="TopicUserSetupList:fReactivateAll"/>-->
+        <submit label="learningManager.clientList.clearGroupChat" action="ClientList:fClearGroupChat"/>
+        <submit label="fixMessage.buildFixMessages" action="BLUnits_RunOnce:buildAllStaticSetup"/>
+        <submit label="fixMessage.CreateData" action="uCreateTestData:fCreateTestTopic"/>
+        
+        <!-- TO TEST SCHEDULED FUNCTION -->
+        <!-- <submit label="run" action="ScheduledActions:chewGroupTopicPreStartReminder"/> -->
+
+        <submit label="inviteSmartChews" action="InviteSmartChewsFromClients:inviteSmartChewsFromClients"/>
+
+    </view>
+</ui>

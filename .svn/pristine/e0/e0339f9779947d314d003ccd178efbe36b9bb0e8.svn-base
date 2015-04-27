@@ -1,0 +1,14 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all()) /*NY: added 2014/08/11 */
+persistent object FileObject{
+	
+	blob signature;
+	string status;
+	string deleted;	
+	
+	@ManyToOne 
+	CareReceiver  fileconsent_careReceiver via files;//via s_files;
+	
+	@ManyToOne 
+	OutgoingSMS OutgoingSMS_file ;//via s_files;
+}

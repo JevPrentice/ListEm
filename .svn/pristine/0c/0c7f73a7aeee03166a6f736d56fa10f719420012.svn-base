@@ -1,0 +1,16 @@
+/* JP 2014-12-19
+ * This object is not being populated currently
+ */
+@Role("Chew")
+persistent object Chew {
+	
+	int role_id;
+	datetime registered;
+	
+	@ManyToOne
+	Cho chew_cho via chews;
+	
+	/*beforeCreate {
+		before.role_id = 3;
+	}*/
+}

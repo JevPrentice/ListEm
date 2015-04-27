@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+    <view label="people.manage" unit="ManagePeople" init="init">
+
+        <navigation outcome="navEditPerson" target="EditPerson"/>
+
+        <menuitem label="people.manage" icon="UserManagement" order="2">
+            <userRole>Admin</userRole>
+        </menuitem>
+
+        <action label="people.createPerson" action="createPerson"/>
+
+        <table>
+            <collectionSource variable="allPeople"/>
+            <column heading="firstNames">
+                <attributeName>firstNames</attributeName>
+            </column> 
+            <column heading="surname">
+                <attributeName>surname</attributeName>
+            </column> 
+            <column heading="mobileNumber">
+                <attributeName>mobileNumber</attributeName>
+            </column> 
+            <column heading="idNumber">
+                <attributeName>idNumber</attributeName>
+            </column>
+            <column heading="dateRegistered">
+                <attributeName>dateRegistered</attributeName>
+            </column>
+            <rowAction label="edit" action="editPerson">
+                <binding variable="selectedPerson"/>
+            </rowAction>
+            <rowAction label="remove" action="removePerson">
+                <binding variable="selectedPerson"/>
+                <confirm subject="people.confirmRemove.subject" body="people.confirmRemove.body"/>
+            </rowAction>
+        </table>
+    </view>
+</ui>

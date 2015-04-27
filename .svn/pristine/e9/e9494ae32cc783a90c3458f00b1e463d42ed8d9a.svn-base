@@ -1,0 +1,68 @@
+unit FixMessageController;
+
+string msg;
+
+FixMessage[] getAllFixMessages() {
+	return FixMessage:all();
+}
+
+FixMessage[] getFixMessagesFor_messageId_langId(string messageID, int langID){
+	return FixMessage:and(
+		equals(fixedMessageID, messageID),
+		equals(languageID, langID)
+	);
+}
+
+FixMessage getFixMessageFor_messageId_langId(string messageID, int langID){
+	FixMessage fixMessage = null;
+
+	FixMessage[] fixMessages = getFixMessagesFor_messageId_langId(messageID, langID);
+
+	if (fixMessages.length() > 0){
+		fixMessage = fixMessages.get(0);
+		if (fixMessages.length() > 1){
+			msg = String:concat("There are duplications for FixMessage:fixedMessageID", messageID);
+			Alerter:alertError(msg);
+			Logger:log(msg);
+		}
+	}
+
+	return fixMessage;
+}
+
+string getFixMessageTextFor_messageId_langId(string messageID, int langID){
+
+	FixMessage fixMessage = getFixMessageFor_messageId_langId(messageID, langID);
+	if (fixMessage == null){
+		return null;
+	}
+	return fixMessage.fixedMessageText;
+
+}
+
+// FixMessage[] getFixMessagesFor_messageID_langID(string messageID, int langID){
+// 	return FixMessage:and(
+// 		equals(fixedMessageID, messageID),
+// 		equals(languageID, langID)
+// 	);
+// }
+
+
+
+// FixMessage getFixMessageFor_messageID_langID(string messageID, int langID){
+// 	FixMessage fixMessage = null;
+
+// 	FixMessage[] fixMessages = getFixMessagesFor_messageID_langID(messageID, langID);
+
+// 	if (fixMessages.length() > 0){
+// 		fixMessage = fixMessages.get(0);
+// 		if (fixMessages.length() > 1){
+// 			msg = String:concat("There are duplications for FixMessage:fixedMessageID", messageID);
+// 			Alerter:alertError(msg);
+// 			Logger:log(msg);
+// 		}
+// 	}
+
+// 	return fixMessage;
+// }
+

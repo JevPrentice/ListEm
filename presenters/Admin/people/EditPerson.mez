@@ -1,0 +1,50 @@
+unit EditPerson;
+
+Person person;
+
+string firstNames;
+string surname;
+string mobileNumber;
+string idNumber;
+GENDER gender;
+
+bool isEdit;
+
+void init(){
+
+	if (person == null){
+		isEdit = false;
+		person = Person:new();
+	} else {
+		isEdit = true;
+		firstNames = person.firstNames;
+		surname = person.surname;
+		mobileNumber = person.mobileNumber;
+		idNumber = person.idNumber;
+		gender = person.gender;
+	}
+}
+
+void resetVars(){
+	firstNames = null;
+	surname = null;
+	mobileNumber = null;
+	idNumber = null;
+	gender = null;
+}
+
+string navigate(string location){
+	resetVars();
+	return location;
+}
+string back(){
+	return navigate("navManagePeople");
+}
+
+string savePerson(){
+	person = PersonController:createOrUpdatePerson(firstNames, surname, mobileNumber, idNumber, gender);
+	if (person == null){
+		return null;
+	}
+	return navigate("navManagePeople");
+}

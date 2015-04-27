@@ -1,0 +1,34 @@
+unit DoctorController;
+
+string msg;
+
+Doctor[] getAllDoctors(){
+	return Doctor:all();
+}
+
+Doctor[] getDoctorsForDoctorID(string doctorID){
+	return Doctor:equals(doctorID, doctorID);
+}
+
+Doctor createOrEditDoctor(string doctorID, Person person){
+	Doctor doctor;
+
+  if (doctorID == null || String:length(doctorID) <= 0){
+    msg = "Please enter a Doctor ID"; Alert:alert(msg);
+    return null;
+  }
+
+  Doctor[] flag = getDoctorsForDoctorID(doctorID);
+  	if (flag.length() > 1) {
+  	 doctor = flag.get(0);
+  	} else {
+  		doctor = Doctor:new();
+  	}
+
+    doctor.dateRegistered = Mez:now();
+  	doctor.doctorID = doctorID;
+  	doctor.person = person;
+  	doctor.save();
+
+  	return doctor;
+}

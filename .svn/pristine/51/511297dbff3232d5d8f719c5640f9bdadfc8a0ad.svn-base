@@ -1,0 +1,10 @@
+/* generic menu item for table menu items */
+object MenuItem{
+	
+	/* general purpose fields that satisfy most common uses for generic tables */
+	string description;
+	string description2;
+	int val;
+	int sortnum;
+	datetime tstamp;
+}

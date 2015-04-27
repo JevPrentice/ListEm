@@ -1,0 +1,39 @@
+unit ManageAdmin;
+
+Admin[] allAdmins;
+Admin selectedAdmin;
+
+void init(){
+	allAdmins = AdminController:getAllAdmins();
+}
+
+string navigate(string location){
+	return location;
+}
+string back(){
+	return navigate("navManageAdmins");
+}
+
+string inviteAdmin(){
+	EditAdmin:admin = null;
+	EditAdmin:person = null;
+	return navigate("navEditAdmin");
+}
+
+string editAdmin(){
+	EditAdmin:admin = selectedAdmin;
+	return navigate("navEditAdmin");
+}
+
+void uninviteAdmin(){
+
+	Admin[] allAdmins = AdminController:getAllAdmins();
+	if (allAdmins.length() <= 1){
+		Alert:alert("You cannot remove the last Admin from the system");
+		return null;
+	}
+
+	selectedAdmin.removeRole();
+	Admin:delete(selectedAdmin);
+	init();
+}

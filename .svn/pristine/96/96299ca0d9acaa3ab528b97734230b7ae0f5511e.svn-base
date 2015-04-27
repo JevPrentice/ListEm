@@ -1,0 +1,22 @@
+persistent object vSummaryGroupTopicDisplay {
+	
+	string summarylevel;
+	string groupname;
+	string topicid;
+	datetime groupfirststartdate;
+	datetime grouplastenddate;
+	int percentageactive;
+	int percentagelate;
+	int percentageexpired;
+	int percentagecompleted;
+	int averageduration;
+	int averageprogress;
+	int averagequizscore;
+	int averagequizpercent;
+	int averagechatcount;
+	int averagechatscore;
+	int averagepracticumscore;
+	int averagepracticumpercent;
+	int averagetotalscore;
+
+}

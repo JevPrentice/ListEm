@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="send_custom_sms.title" unit="SendCustomSMS" init="init">
+
+        <navigation outcome="nav_user_management" target="UserActivity" />
+
+        <action label="back" action="back"/>
+
+        <info label="send_custom_sms.messageDirection">
+            <binding variable="smsDirection" />
+        </info>
+
+        <textarea label="message.messageText">
+            <binding variable="smsText" />
+        </textarea>
+
+        <submit label="send_sms" action="sendCustomSms"/>
+
+    </view>
+</ui>

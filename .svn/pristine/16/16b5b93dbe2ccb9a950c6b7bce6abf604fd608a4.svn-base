@@ -1,0 +1,35 @@
+unit PatternTypeTableController;
+
+PatternTypeTable patternTypeTable;
+Pattern pattern;
+PatternType patternType;
+PatternTypeTable deletePatternTypeTable;
+
+void init(){
+    patternTypeTable = PatternTypeTable:new();
+   
+}
+
+PatternTypeTable[] getPatternTypeTables(){
+    return PatternTypeTable:all();
+}
+
+string patternTypeTableEdit(){
+patternType = patternTypeTable.patternTypeTable_PatternType;
+pattern = patternTypeTable.patternTypeTable_Pattern;
+    return null;
+}
+
+string patternTypeTableRemove(){
+    PatternTypeTable:delete(deletePatternTypeTable);
+    return null;
+}
+
+string savePatternTypeTable(){
+    patternTypeTable.patternTypeTable_PatternType = patternType;
+    patternTypeTable.patternTypeTable_Pattern = pattern;
+    patternTypeTable.save();
+    init();
+    Mez:alert("Pattern.PatternList.savePatternTypeAlert");
+    return null;
+}

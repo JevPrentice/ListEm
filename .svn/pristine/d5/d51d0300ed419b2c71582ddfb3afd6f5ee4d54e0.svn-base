@@ -1,0 +1,19 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all())
+persistent object TopicUserSetup {
+	
+	int topicOrder;
+	int active;
+	int runType;
+	datetime topicMinStartDate;
+
+	@ManyToOne
+	Client client_topicUserSetup;
+    
+    @ManyToOne
+    Topic topic_topicUserSetup;
+
+    @ManyToOne
+    Umbrella umbrella_topicUserSetup;
+
+}

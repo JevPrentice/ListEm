@@ -1,0 +1,14 @@
+@Restrict("SmartChew", all())
+persistent object County{
+
+	string countyName;
+
+	// decimal gpsLat;
+	// decimal gpsLong;
+
+	// GEOGRAPHY geography;
+
+	// @OneToMany
+	// SubCounty subCounties via subCounty;
+
+}

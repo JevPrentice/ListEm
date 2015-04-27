@@ -1,0 +1,14 @@
+/* 
+ * Jev Prentice 2014-12-22
+ */
+@Restrict("ProgramManager", all())
+@Role("ProgramManager")
+persistent object ProgramManager {
+
+	datetime registered;
+
+	string firstNames;
+	string surname;
+	string mobileNumber;
+
+}

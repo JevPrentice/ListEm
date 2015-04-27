@@ -1,0 +1,248 @@
+unit SubTopicUserScheduling;
+
+ClientGroup selectedGroup;
+
+Client selectedUser;
+Client[] userArr;
+
+Umbrella selectedTopic;
+
+Topic selectedSubTopic;
+Topic[] subTopicArr;
+
+TopicUserSetup[] tusArr;
+
+TopicUserSetup tusDelete;
+TopicUserSetup tusPause;
+TopicUserSetup tusResume;
+TopicUserSetup tusEnd;
+TopicUserSetup tusStart;
+TopicUserSetup tusEdit;
+
+bool bClearTopicHistory;
+
+string msg;
+string tusFilter;
+string tusFilterMsg;
+
+void init(){
+	
+	bClearTopicHistory = false;
+	
+	refreshCollectionsAndFilter();
+
+}
+
+void refreshCollectionsAndFilter(){
+	refreshCollections();
+	filterTus();
+}
+
+void refreshCollections(){
+	userArr = UserController:getAllUsers();
+	subTopicArr = SubTopicController:getAllSubTopics();
+}
+
+void filterTus(){
+
+	if (tusFilter == null){
+		tusFilter = "User";
+
+		
+	}
+
+	if (tusFilter == "User"){
+		showTusForUser(); /* If no user is selected, show all users */
+	} else if (tusFilter == "Group"){
+		showTusForGroup(); /* If no Group is selected, do nothing */
+	} else if (tusFilter == "Sub-Topic"){
+		showTusForSubTopic();/* If no Sub-Topic is selected, do nothing */
+	}
+
+}
+
+void reset(){
+	tusFilter = null;
+	deselectDropDowns();
+	init();
+}
+
+/* only called on reset submit to honor selection */
+void deselectDropDowns(){
+	selectedGroup = null;
+	selectedUser = null;
+	selectedTopic = null;
+	selectedSubTopic = null;
+}
+
+string navigate(string location){
+	return location;
+}
+
+void showUsersForGroup(){
+
+	if(selectedGroup == null){
+    	msg = "No Group Selected, displaying ALL users";
+   		Alerter:alert(msg);
+        userArr = UserController:getAllUsers();
+    } else {
+        userArr = selectedGroup.client_chws;
+    }
+}
+
+void showSubTopicsForTopic(){
+	if (selectedTopic == null){
+		msg = "No Topic Selected, displaying ALL Sub-Topics";
+   		Alerter:alert(msg);
+		subTopicArr = SubTopicController:getAllSubTopics();
+	}
+
+	subTopicArr = SubTopicController:getSubTopicsForTopic(selectedTopic);
+}
+
+void showAllTus(){
+	tusArr = TopicUserSetupController:getAllTus();
+
+	tusFilter = "User";	
+	tusFilterMsg = "Displaying All Scheduled Users";
+
+}
+
+void showTusForGroup(){
+	
+	if (selectedGroup == null){
+		msg = "No Group Selected";
+		Alerter:alert(msg);
+		return;
+	}
+
+	tusArr = TopicUserSetupController:getAllTusForGroup(selectedGroup);
+	tusFilter = "Group";
+	tusFilterMsg = String:concat("Displaying Schedule for Group:", selectedGroup.name);
+
+}
+
+void showTusForUser(){
+
+	if (selectedUser == null){
+		msg = "No User selected, Displaying ALL Users";
+		Alerter:alert(msg);
+
+		showAllTus();
+		return null;
+	}
+
+	tusArr = TopicUserSetupController:getAllTusForUser(selectedUser);
+	tusFilter = "User";
+	tusFilterMsg = String:concat("Displaying Schedule for User:", selectedUser.firstName, " ", selectedUser.surname, " ", selectedUser.mobileNumber);
+
+}
+
+void showTusForSubTopic(){
+
+	if (selectedSubTopic == null){
+		msg = "No Sub-Topic selected";
+		Alerter:alert(msg);
+		return null;
+	}
+
+	tusArr = TopicUserSetupController:getTopicUserSetupsForSubTopic(selectedSubTopic);
+	tusFilter = "Sub-Topic";
+	tusFilterMsg = String:concat("Displaying Schedule for Sub-Topic:", selectedSubTopic.topicID);
+	
+}
+
+void clearTopicHistory(){
+	
+	if (selectedUser == null){
+		msg = "Please select a User";
+   		Alerter:alert(msg);
+		return;
+	}
+
+	if (selectedSubTopic == null){
+		msg = "Please select a Sub-Topic";
+   		Alerter:alert(msg);
+		return;
+	}
+
+    if(bClearTopicHistory == true){
+        uResetUsers:fReactivateClientSpecificTopic(selectedUser, null, selectedSubTopic, 1);
+        uResetUsers:fRestoreTopicVersion(selectedUser, null, selectedSubTopic);
+        bClearTopicHistory = false;
+		Alerter:alert("User Sub-Topic history has been cleared.");
+    } else {
+        bClearTopicHistory = true;
+		Alerter:alert("Please click the 'Clear User History for Sub-Topic' button again to confirm.");
+    }
+
+}
+
+string navTusCreate(){
+	SubTopicUserScheduleEdit:tus = null;
+	SubTopicUserScheduleEdit:selectedGroup = selectedGroup;
+	SubTopicUserScheduleEdit:selectedUser = selectedUser;
+	SubTopicUserScheduleEdit:selectedTopic = selectedTopic;
+	SubTopicUserScheduleEdit:selectedSubTopic = selectedSubTopic;
+    return navigate("navSubTopicUserScheduleEdit");
+}
+
+string editSelectedTus() {
+    SubTopicUserScheduleEdit:selectedGroup = selectedGroup;
+	SubTopicUserScheduleEdit:selectedUser = selectedUser;
+	SubTopicUserScheduleEdit:selectedTopic = selectedTopic;
+	SubTopicUserScheduleEdit:selectedSubTopic = selectedSubTopic;
+    SubTopicUserScheduleEdit:tus = tusEdit;
+    return navigate("navSubTopicUserScheduleEdit");
+}
+
+void deleteSelectedTus() {
+    TopicUserSetupController:deleteTopicUserSetup(tusDelete);
+    refreshCollectionsAndFilter();
+}
+
+void startSelectedTus(){
+    TopicUserSetupController:startTopicUserSetup(tusStart);
+    refreshCollectionsAndFilter();
+}
+
+void pauseSelectedTus(){
+    TopicUserSetupController:pauseTopicUserSetup(tusPause);
+    refreshCollectionsAndFilter();
+}
+
+void resumeSelectedTus(){
+    TopicUserSetupController:resumeTopicUserSetup(tusResume);
+    refreshCollectionsAndFilter();
+}
+
+void endSelectedTus() {
+    TopicUserSetupController:endTopicUserSetup(tusEnd);
+    refreshCollectionsAndFilter();
+}
+
+// TopicUserSetup[] fGetAllTopicUserSetups(){
+//     TopicUserSetup[] tUS; TopicUserSetup[] tUSr; Client[] cs; int i=0; int maxi=0; Client c;
+
+//     if(client!=null){
+//         tUSr = fAddCollection1(client);
+//         tUS = fAddCollection2(tUS, tUSr);
+//     } else if(sClientGroup==null){
+//         tUS = TopicUserSetup:all();
+//     } else {
+//         tUS.clear();
+//         cs = uPPESummary:fGetAllClientsFromGroup(sClientGroup);
+//         maxi = (cs.length());
+//         for(i=0; i<maxi; i++){
+//             tUSr.clear();
+//             c = cs.get(i);
+//             if(client==null||client==c){
+//                 tUSr = fAddCollection1(c);
+//                 tUS = fAddCollection2(tUS, tUSr);
+//             }
+//         }
+//     }
+    
+//     return tUS;
+// }
+

@@ -1,0 +1,30 @@
+unit RecievedSMSHandler;
+
+@ReceiveSms("Receive SMS Messages")
+void receiveIncomingSms(string number, string smsText) {
+
+    int i = String:length(number);
+    i = i - 1;
+
+    if (i >= 10) {
+
+        string newnumber;
+        if (String:substring(number,0,3) == "tel:"){
+            newnumber = String:concat("254", String:substring(number,4,i)); /* JV : Add Country Code Table */
+        } else {
+            newnumber = number;
+        }
+        
+        Client uClient;
+        Client[] clients = Client:equals(mobileNumber, newnumber);
+        
+    	if(clients.length() > 0) {
+            uClient = clients.get(0);
+            BLUnits:saveAllSMSLogs (uClient, smsText, "MO");
+            IncomingSMSList:assignIncomingSMS(uClient, smsText); //updating the incomingSMS table
+    	} else {
+            BLUnits:saveAllSMSLogs(null, String:concat("From: ", newnumber, ", Message: ", smsText), "Log");   
+        }
+    }
+}
+

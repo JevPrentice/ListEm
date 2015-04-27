@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="ManageCounties.title" unit="ManageCounties" init="init">
+    
+        <menuitem label="Counties" icon="ManageCounties" order="15">
+            <userRole>ProgramManager</userRole>
+        </menuitem>
+        
+        <navigation outcome="navEditCounty" target="EditCounty"/>
+        <navigation outcome="navManageSubCounties" target="ManageSubCounties"/>
+
+        <action label="ManageCounties.createCounty" outcome="navEditCounty"/>
+        <action label="ManageCounties.navManageSubCounties" action="navManageSubCounties"/>
+
+        <table title="ManageCounties.allCounties">
+            <collectionSource function="CountyController:getAllCounties"/>
+            <column heading="County.countyName">
+                <attributeName>countyName</attributeName>
+            </column>
+            <rowAction label="edit" action="editCounty">
+                <binding variable="county"/>
+            </rowAction>
+            <rowAction label="ManageCounties.viewSubCounties" action="navSubCountiesForCounty">
+                <binding variable="county"/>
+            </rowAction>
+            <rowAction label="delete" action="deleteCounty">
+                <binding variable="county"/>
+                <confirm subject="ManageCounties.confirmDelete.subject" body="ManageCounties.confirmDelete.body"/>
+            </rowAction>
+        </table>
+
+    </view>
+</ui>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="group_filter.title" unit="GroupFilter" init="init">
+
+        <navigation outcome="back" target="GroupManagement" />
+        <navigation outcome="nav_group_filter_results" target="GroupFilterResults" />
+
+        <action label="back" outcome="back"/>
+
+        <select label="client_group.info">
+            <binding variable="group"/>
+            <collectionSource function="UserGroupController:getAllClientGroups">
+                <displayAttribute name="name"/>
+            </collectionSource>
+        </select>
+
+        <select label="topic">
+            <binding variable="topic"/>
+            <collectionSource function="TopicController:getAllTopics">
+                <displayAttribute name="umbrellaID"/>
+            </collectionSource>
+        </select>
+
+        <select label="sub_topic">
+            <binding variable="subTopic"/>
+           <collectionSource variable="subTopics">
+                <displayAttribute name="topicID"/>
+            </collectionSource>
+        </select>
+
+        <select label="activity.activityChannel">
+            <binding variable="cko"/>
+            <collectionSource function="ChannelKeyObjectController:getAllChannelKeyObject">
+                <displayAttribute name="patternChannelDescription"/>
+            </collectionSource>
+        </select>
+
+        <submit label="update" action="applyFilter"/>
+        <submit label="content_filter.button.unfilter_drop_downs" action="removeFilter"/>
+        <submit label="content_filter.button.view_results" action="viewResults"/>
+
+        <info label="group_filter.userCount">
+            <binding variable="userCount" />
+        </info>
+
+        <info label="group_filter.group_filter">
+            <binding variable="group" >
+                <attribute name="name"/>
+            </binding>
+        </info>
+
+        <info label="group_filter.topic_filter">
+            <binding variable="topic">
+                <attribute name="umbrellaID"/>
+            </binding>
+        </info>
+
+        <info label="group_filter.sub_topic_filter">
+            <binding variable="subTopic">
+                <attribute name="topicID"/>
+            </binding>
+        </info>
+
+        <info label="group_filter.activity_channel_filter">
+            <binding variable="cko">
+                <attribute name="patternChannelDescription"/>
+            </binding>
+        </info>
+
+
+    </view>
+</ui>

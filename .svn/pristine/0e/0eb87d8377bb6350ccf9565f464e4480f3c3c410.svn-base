@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 5.6.1.final using JasperReports Library version 5.6.1  -->
+<!-- 2015-03-24T11:50:57 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="GroupActivityReportByTopic" pageWidth="1900" pageHeight="600" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="1860" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="8f383946-70bd-49cb-b71b-ee468518e18f">
+	<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ke production"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#E69273">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#E6D5CF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#F8E3DC"/>
+		</conditionalStyle>
+	</style>
+	<style name="Table 1_TH" mode="Opaque" backcolor="#2E8B57">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_CH" mode="Opaque" backcolor="#BFFFDB">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 2_TH" mode="Opaque" backcolor="#6495ED">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 2_CH" mode="Opaque" backcolor="#BFD6FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="view_data_set" uuid="f3dea80a-695b-4db8-a9cc-84719fd965cd">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="RC Data Adapter"/>
+		<parameter name="schemaName" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[select * from $P!{schemaName}.vSummaryGroupTopicDisplay]]>
+		</queryString>
+		<field name="summarylevel" class="java.lang.String"/>
+		<field name="topicid" class="java.lang.String"/>
+		<field name="groupname" class="java.lang.String"/>
+		<field name="percentageactive" class="java.lang.Integer"/>
+		<field name="percentagelate" class="java.lang.Integer"/>
+		<field name="percentageexpired" class="java.lang.Integer"/>
+		<field name="percentagecompleted" class="java.lang.Integer"/>
+		<field name="averageduration" class="java.lang.Integer"/>
+		<field name="averageprogress" class="java.lang.Integer"/>
+		<field name="averagechatscore" class="java.lang.Integer"/>
+		<field name="averagetotalscore" class="java.lang.Integer"/>
+		<field name="_id_" class="java.lang.Object"/>
+		<field name="groupfirststartdate" class="java.sql.Timestamp"/>
+		<field name="grouplastenddate" class="java.sql.Timestamp"/>
+		<field name="averagequizscore" class="java.lang.Integer"/>
+		<field name="averagequizpercent" class="java.lang.Integer"/>
+		<field name="averagechatcount" class="java.lang.Integer"/>
+		<field name="averagepracticumscore" class="java.lang.Integer"/>
+		<field name="averagepracticumpercent" class="java.lang.Integer"/>
+	</subDataset>
+	<parameter name="schemaName" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select * from $P!{schemaName}.vSummaryGroupTopicDisplay]]>
+	</queryString>
+	<field name="summarylevel" class="java.lang.String"/>
+	<field name="groupname" class="java.lang.String"/>
+	<field name="topicid" class="java.lang.String"/>
+	<field name="percentageactive" class="java.lang.Integer"/>
+	<field name="percentagelate" class="java.lang.Integer"/>
+	<field name="percentageexpired" class="java.lang.Integer"/>
+	<field name="percentagecompleted" class="java.lang.Integer"/>
+	<field name="averageduration" class="java.lang.Integer"/>
+	<field name="averageprogress" class="java.lang.Integer"/>
+	<field name="averagechatscore" class="java.lang.Integer"/>
+	<field name="averagetotalscore" class="java.lang.Integer"/>
+	<field name="_id_" class="java.lang.Object"/>
+	<field name="groupfirststartdate" class="java.sql.Timestamp"/>
+	<field name="grouplastenddate" class="java.sql.Timestamp"/>
+	<field name="averagequizscore" class="java.lang.Integer"/>
+	<field name="averagequizpercent" class="java.lang.Integer"/>
+	<field name="averagechatcount" class="java.lang.Integer"/>
+	<field name="averagepracticumscore" class="java.lang.Integer"/>
+	<field name="averagepracticumpercent" class="java.lang.Integer"/>
+	<title>
+		<band height="326" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="12" width="620" height="58" uuid="606e844c-a3d0-4e70-b32f-1dc12e039e9c"/>
+				<textElement textAlignment="Center">
+					<font size="26"/>
+				</textElement>
+				<text><![CDATA[Group Activity Report by Topic]]></text>
+			</staticText>
+			<textField pattern="MMM d, yyyy h:mm:ss a">
+				<reportElement x="630" y="40" width="171" height="30" uuid="b30cb642-26c0-417a-af07-bcb6ce85e888"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="0" y="126" width="1860" height="200" uuid="743e1532-b5a2-48c9-b6ea-647d561620d8"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="view_data_set" uuid="f4894838-692f-4b20-9850-d439af52d118">
+						<datasetParameter name="schemaName">
+							<datasetParameterExpression><![CDATA[$P{schemaName}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="100" uuid="1aced558-a306-4147-8576-26921565c8a4">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="2b98cf1e-45f3-4d88-b7d0-f210d45601b9">
+									<property name="local_mesure_unitwidth" value="pixel"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Summary Level]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="6c1a2daa-0fc3-41de-aae2-75e99e694989">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{summarylevel}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="c48987c9-f456-45c1-bb0e-021b6ef6708f">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="cc9e1f45-a385-40f3-93e5-e2585447d0d2">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Topic ID]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="3e818f62-f92d-4d88-bae1-d828f3a1a052">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{topicid}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="35fc7130-2f7d-4145-bb97-689e8cbcf797">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="af918cbb-55bd-4ee2-b69b-16e90f0e0023">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Group Name]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="a05b87f5-6e5e-49a6-af50-912fc905e4c1">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{groupname}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="d69cc588-452d-408f-8374-fb5b2ed9b51c">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="21b2bc87-451d-4936-bdeb-e5652ebd8ab3">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Percentage Active]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="e1e3096a-ed6a-45ce-ac4f-1cd6a6a6f246">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{percentageactive}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="3f3e7964-3c5b-4f0a-acf9-e787f1520144">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="8d1621c8-0316-4ac8-95d1-8da968d70342">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Percentage Late]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="2bcc34ad-0f9e-4159-8c5c-eeac9a0951e3">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{percentagelate}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="f7cd988a-606c-4e2e-8f74-f5ddc70e538f">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="2c6366f7-6926-4f3b-98eb-7a47dd77cde8">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Percentage Expired]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="741c6279-eee5-406b-9511-808945b52bc5">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{percentageexpired}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="f0b2ccbf-486b-4953-a1e8-3f81c4c80b3d">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="326f7e17-70e2-4cce-b686-8a3cdeaf541b">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Percentage Completed]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="3e21a39e-7eac-4d71-8493-ff7b50b44379">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{percentagecompleted}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="78a5521e-1697-4b91-b1bd-6efbf9610dc1">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="a3948484-a4de-42d7-9ef1-80e3de9086f9">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Average Duration]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="da4a957e-8168-45a5-8a26-518ff1aeac38">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{averageduration}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="7234ac07-b925-4500-98ee-bf6deb9863f0">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="94f14de9-20bc-4e2e-8cb5-59193e075922">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Average Progress]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="9d78e4a7-e00a-43ec-b192-55baddc43fc9">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{averageprogress}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="bc9c4d9c-7da7-46f3-a2a6-fdc4fe629da9">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="1cbd89fa-61d4-4347-848c-476174fcd8ce">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Average Chat Score]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="efe58747-1c64-4baa-96ae-071e80d0aa1b">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{averagechatscore}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="0a66f1ab-3d32-4c81-97b4-a38200d1e7f5">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="455b50ac-3f90-4707-a385-34f6e733ed98">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Average Total Score]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="51102cc8-8648-41c0-87f1-9509e5ad908e">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{averagetotalscore}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="120" uuid="21ac8dc3-4086-44c9-946a-3d58f0ae5a2d">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="120" height="30" uuid="4013a136-184c-4a6f-97cd-372dec8bd33d">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Group First Start Date]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="120" height="30" uuid="158f338b-2636-4c3f-9043-c5b9c22adae5">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<property name="local_mesure_unitwidth" value="pixel"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{groupfirststartdate}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="120" uuid="de11bd62-c0d2-43bc-a957-8e788094c11b">
+						<property name="local_mesure_unitwidth" value="pixel"/>
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="120" height="30" uuid="aa8880a2-3e1e-4aa9-b786-cb2f031412ad">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Group Last End Date]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="120" height="30" uuid="199997ce-b1e8-44f7-80e9-4d79fc035c52">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<property name="local_mesure_unitwidth" value="pixel"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{grouplastenddate}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="fc74ddab-8e0c-4f9e-a3d0-8184cf0f683f">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="a76a1972-91ce-499b-b7a9-6df4db875934">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Average Quiz Score]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="ba28e68f-0c62-416d-92d2-8738208e5e44">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{averagequizscore}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="0a0644f4-6348-462e-ba9e-2e8572c58808">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="568de7f6-c9fb-490b-80e4-5c3751fede4a">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Average Quiz Percent]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="f6948ba9-fd4e-4fa6-9c47-734a4d56d928">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{averagequizpercent}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="e403c605-f4be-4d06-94d8-fd32da86bc84">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="47316863-caa2-48f9-a9e0-cab79e1787a3">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Average Chat Count]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="8098ff57-92a2-4b3d-acf9-a0820208ccc5">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{averagechatcount}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="887aa66a-c3dc-4586-a4f4-f0ebcc7ef1e3">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="075bc611-a307-4308-9b32-23d037e2d47c">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Average Practicum Score]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="73308a9e-9306-4c8d-b3bc-c21facf715d7">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{averagepracticumscore}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="30f8a71d-543c-4021-b903-b4ca42773ffa">
+						<jr:tableHeader style="Table 2_TH" height="30"/>
+						<jr:tableFooter style="Table 2_TH" height="30"/>
+						<jr:columnHeader style="Table 2_CH" height="30">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="30" uuid="93b9c10d-3176-4225-b079-c061690e9bb3">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<text><![CDATA[Average Practicum Percent]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table 2_CH" height="30"/>
+						<jr:detailCell style="Table 2_TD" height="30">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="30" uuid="3d66daf9-21d6-43e1-91f9-bbd1f7bd6fb1">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								</reportElement>
+								<textFieldExpression><![CDATA[$F{averagepracticumpercent}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</title>
+</jasperReport>

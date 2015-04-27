@@ -1,0 +1,5 @@
+unit ChannelKeyObjectController;
+
+ChannelKeyObject[] getAllChannelKeyObject() {
+	return ChannelKeyObject:all();
+}

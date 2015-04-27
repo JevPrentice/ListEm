@@ -1,0 +1,54 @@
+/*
+  JP 2015-03-31 
+  Set searchpath and edit reporter_user per instance
+  Create geography tables and geog fields for group
+*/
+
+--set search_path to help_002;
+set search_path to sandboxed_help_003;
+
+/* county */
+CREATE TABLE county
+(
+  _id_ uuid NOT NULL,
+  _tstamp_ timestamp without time zone NOT NULL,
+  countyname text,
+  CONSTRAINT county_pkey PRIMARY KEY (_id_)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE county
+  OWNER TO helium;
+GRANT ALL ON TABLE county TO helium;
+GRANT SELECT ON TABLE county TO reporter_sandboxed_help_003;
+
+/* subcounty */
+CREATE TABLE subcounty
+(
+  _id_ uuid NOT NULL,
+  _tstamp_ timestamp without time zone NOT NULL,
+  subcountyname text,
+  gpslat numeric(20,10),
+  gpslong numeric(20,10),
+  county_fk uuid,
+  CONSTRAINT subcounty_pkey PRIMARY KEY (_id_),
+  CONSTRAINT subcounty_county_fk_fkey FOREIGN KEY (county_fk)
+      REFERENCES county (_id_) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE SET NULL
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE subcounty
+  OWNER TO helium;
+GRANT ALL ON TABLE subcounty TO helium;
+GRANT SELECT ON TABLE subcounty TO reporter_sandboxed_help_003;
+
+/* clientgroup */
+begin;
+ALTER TABLE clientgroup ADD COLUMN geographyType character varying(64);
+ALTER TABLE clientgroup ADD COLUMN subcounty_fk uuid;
+
+ALTER TABLE clientgroup ADD CONSTRAINT clientgroup_subcounty_fk_fkey FOREIGN KEY (subcounty_fk) REFERENCES subcounty (_id_) MATCH SIMPLE ON UPDATE CASCADE ON DELETE SET NULL;
+end;

@@ -1,0 +1,330 @@
+unit UmbrellaPPEController;
+
+UmbrellaPPE[] getAllUmbrellaPPE(){
+	return UmbrellaPPE:all();
+}
+
+UmbrellaPPE[] getAllUmbrellaPPEForTopic(Umbrella t){
+	return UmbrellaPPE:relationshipIn(umbrella_umbrellaPPE, t);
+}
+
+/* *********************************************************************************************** */
+/* *********************************************************************************************** */
+
+
+UmbrellaPPE fPrepareNewUmbrellaPPE(Client c, Umbrella u){
+
+    UmbrellaPPE uP = UmbrellaPPE:new();
+
+    if(c==null||u==null){ return null; }
+
+    /* ************************************************************** */
+
+    datetime startDate = Mez:now();
+    datetime escalateDate = UserGroupUmbrellaTimeCalculations:fGetUmbrellaDates(u, startDate, null, null, "escalationdate");
+    datetime endDate = UserGroupUmbrellaTimeCalculations:fGetUmbrellaDates(u, startDate, null, null, "enddate");
+
+    /* ************************************************************** */
+
+    uP.umbrellaStartDateTime = startDate;
+    uP.umbrellaEndDateTime = endDate;
+    uP.umbrellaEscalateDateTime = escalateDate;
+    
+    uP.status = 1;
+    uP.duration = 0;
+    uP.flags = "";
+
+    uP.progress = 0;
+    uP.quizscore = 0;
+    uP.chatscore = 0;
+    uP.practicumscore = 0;
+    uP.totalscore = 0;
+
+    uP.quizpercentage = 0;
+    uP.chatscoreadjusted = 0;
+    uP.practicumpercentage = 0;
+    uP.practicumtotalscoreachieved = 0;
+    uP.durationhours = 0;
+
+    uP.client_umbrellaPPE = c;
+    uP.umbrella_umbrellaPPE = u;
+
+    uP.save();
+
+    /* Check to see whether the Group Umbrella needs to be updated */
+    uCalculatePPEGroupUmbrella:fCreateOrUpdateGroupUmbrellaPPE(c, u, uP.umbrellaStartDateTime, uP.umbrellaEscalateDateTime, uP.umbrellaEndDateTime, 0);
+
+    return uP;
+
+}
+
+/* *********************************************************************************************** */
+/* *********************************************************************************************** */
+
+UmbrellaPPE fCreateorUpdateClientUmbrellaPPE(Client c, Umbrella u){
+
+    // Exit if not a valid User or Umbrella
+    if(c==null||u==null){ return null; }
+
+    // Get collection of UmbrellaPPE for User for Umbrella
+    UmbrellaPPE[] uPs = UmbrellaPPE:and(relationshipIn(client_umbrellaPPE, c), relationshipIn(umbrella_umbrellaPPE, u));
+    UmbrellaPPE uP = null; string slog = "";
+
+    // Delete to create new or apply changes to reanimate upon reading
+    if(uPs.length()>0){ uP = uPs.get(0); }
+
+    // Create if null
+    if(uP==null){
+        slog = String:concat("fCreateorUpdateClientUmbrellaPPE : Creating new to replace null : '", c.mobileNumber, "' and Topic '", u.umbrellaID, "'"); Mez:log(slog);
+        uP = UmbrellaPPEController:fPrepareNewUmbrellaPPE(c, u);
+    }
+
+    return uP;
+
+}
+
+/* *********************************************************************************************** */
+/* *********************************************************************************************** */
+
+bool fPassedUmbrellaPPE (UmbrellaPPE uP){
+    int iPass = uCalculatePPE:fGetConfigSetting("PPEPassRate");
+    int cPerf = uP.quizpercentage;
+    bool cPass = false; if(cPerf>=iPass){ cPass = true; }
+    return cPass;
+}
+
+/* *********************************************************************************************** */
+/* *********************************************************************************************** */
+
+UmbrellaPPE fGetClientCurrentUmbrellaPPE(Client c){
+
+    Umbrella u = uGetCurrentSchedule:fGetCurrentUmbrella(c); if(u==null){ return null; }
+    UmbrellaPPE uP = fCreateorUpdateClientUmbrellaPPE(c, u); if(uP==null){ return null; }
+    return uP;
+
+}
+
+/* *********************************************************************************************** */
+/* *********************************************************************************************** */
+
+int fInterpretPPEStatus(UmbrellaPPE uP, int statusin){
+
+     // Create and set default variables
+    int currentstatus = 1; int ireturn = statusin; 
+
+    // Client and Umbrella - set variables
+    Client c = uP.client_umbrellaPPE; 
+    Umbrella u = uP.umbrella_umbrellaPPE;
+    if(c==null||u==null){ return ireturn; }
+
+    // Set two specific variables for logical flow
+    if(uP.status!=null){ currentstatus = uP.status; }
+
+    // Get new value
+    ireturn = uCalculatePPEDetail:fInterpretPPEStatusExec(currentstatus, statusin);
+
+    // Log
+    string slog = String:concat("fInterpretPPEStatus : Check for client '",c.mobileNumber, "' on Topic '", u.umbrellaID, "' with currentstatus '", currentstatus, "' and instruction '", statusin, "' and output '", ireturn , "'."); Mez:log(slog);
+
+    // Return
+    return ireturn;
+
+}
+
+/* *********************************************************************************************** */
+/* *********************************************************************************************** */
+
+void fUpdatePPEDatesOnComplete (Client c, UmbrellaPPE uP){
+
+    datetime dtnow = Mez:now(); decimal dSeconds;
+    
+    // Completed : Update duration
+    uP.duration = Date:daysBetween(uP.umbrellaStartDateTime, dtnow);
+    dSeconds = (Date:secondsBetween(uP.umbrellaStartDateTime, dtnow)/60/60); 
+    uP.durationhours = dSeconds;
+
+    // Completed : If now < the umbrella "must end" date, then update the umbrella to reflect now as end date
+    if(uP.umbrellaEndDateTime>=dtnow){ uP.umbrellaEndDateTime = dtnow; }
+
+    // Completed : If not yet escalated (escalation date > now), then set escalation date to null
+    if(uP.umbrellaEscalateDateTime>=dtnow){ uP.umbrellaEscalateDateTime = null; } 
+
+    uP.save();
+
+    return null;  
+
+}
+
+/* *********************************************************************************************** */
+/* *********************************************************************************************** */
+
+void fUpdateUmbrellaPPE (Client c, TopicUserSetup tU, Topic t, TopicPPE tE, bool bDoChatUpdate){
+
+    string slog = ""; int ir = 0; int isuggestedstatus = 0; int tt = t.topicType; if (tt==null) { tt=0; }
+
+    // Get master record to update
+    UmbrellaPPE uP = fGetClientCurrentUmbrellaPPE(c); 
+    if(uP==null||uP.umbrella_umbrellaPPE==null){ return null; }
+
+    // Get master Umbrella to update
+    Umbrella u = uP.umbrella_umbrellaPPE;
+
+    // Calculate adjusted score : Quiz and Practicum
+    ir=uCalculatePPEDetail:fGetAdjustedScore(tE.performance, tt);
+    if(tt==5){ 
+        uP.quizscore = ir;
+        uP.quizpercentage = tE.performance; 
+    } else if (tt==6){ 
+        uP.practicumscore = ir;
+        uP.practicumpercentage = tE.performance;
+        uP.practicumtotalscoreachieved = tE.score;
+        uPPESMSUnit:fSendPPESMS(uP, "PracticumscoreSMS");
+    }
+
+    // Calculate adjusted score : Quiz and Practicum
+    slog = String:concat("fUpdateUmbrellaPPE : fGetAdjustedScore for client '", c.mobileNumber, "' on Topic '", u.umbrellaID, "' with score '", tE.performance, "' and weighting '", ir, "'."); Mez:log(slog);
+
+    // Calculate adjusted score : Chat
+    if(bDoChatUpdate==true){
+        uP.chatscoreadjusted = uCalculatePPEDetail:fGetAdjustedChat(c, u, uP.chatscore);
+    }
+    
+    // Calculate total score
+    uP.totalscore = (uP.quizscore + uP.practicumscore + uP.chatscoreadjusted);
+    
+    // Calculate progress through Umbrella
+    uP.progress = uCalculatePPEDetail:fGetProgressUmbrella(c, u);
+
+    // Only if Umbrella has been completed in full in terms of Sub-Topics completed
+    if(uP.progress==100){
+        
+        // Do not suggest fully complete (99) if quiz was failed - rather suggest 39
+        if(fPassedUmbrellaPPE(uP)==true){ isuggestedstatus = 99; } else{ isuggestedstatus = 39; }
+
+        // Interpret PPE status and save
+        uP.status = fInterpretPPEStatus(uP, isuggestedstatus);
+        
+        // Update dates
+        fUpdatePPEDatesOnComplete(c, uP);
+
+    }
+
+    // Save 
+    uP.save();       
+
+    // Save log
+    uCalculatePPEDetail:fLogUmbrellaPPE(uP, u, t, c);
+
+    /* ********************************************************** */
+    /* ** Send final SMS messages - but only if Progress = 100 ** */
+    /* ********************************************************** */
+
+    uPPESMSUnit:fSendAllSubTopicsCompletedMessageRealTime(uP);
+
+    /* ********************************************************* */
+    /* ********************************************************* */
+
+}
+
+/* *********************************************************************************************** */
+/* *********************************************************************************************** */
+
+/* JV updated see Trello ticket #380 */
+
+/* #356 instead of r1 and r2 being a count, must be weighted count average (weighted achieved / weighted total * 100 ) */
+/*
+int getWeightedProgressForUserTopic(Client u, Umbrella topic){
+    if (u == null || topic == null){
+        return null;
+    }
+
+    int userProgress = 0;
+    int iScore = 0;
+    int iEffort = 0;
+    LanguageKeyObject lko = u.client_LanguageKey;
+
+    // Calculate Topic Performance Weight for only the topics of the same language as user #356: r2 = fGetTopicNumberSameLanguage(topic, lko);
+    iEffort = getTopicTotalWeight(topic, lko);
+
+    // Calculate percentage progress, based on the number of completed topics out of the total number of topics 
+    if(iEffort > 0){
+    	
+	    // Umbrella Topic setup table - counting the total number of Topics linked to the Umbrella
+        iScore = getPpeWeightforUserTopic(u, topic);
+        userProgress = uCalculatePPESub:fReturnPer(iEffort, iScore);
+        
+    }
+
+    return userProgress;
+
+}
+*/
+
+/* *********************************************************************************************** */
+/* *********************************************************************************************** */
+
+/* JV updated see Trello ticket #380 */
+
+/*
+int getTopicTotalWeight(Umbrella topic, LanguageKeyObject lang){
+        
+        int topicWeight = 0;
+
+        if (topic == null || lang == null){
+        	return null;
+        }
+
+        UmbrellaTopicSetupTable[] subTopicOrderArr = SubTopicOrderController:getSubTopicOrdersForTopic(topic);
+        for(int i = 0; i < subTopicOrderArr.length(); i++){
+            UmbrellaTopicSetupTable subTopicOrder = subTopicOrderArr.get(i);
+
+            if(subTopicOrder != null){
+                Topic subTopic = subTopicOrder.topic_UmbrellaUserSetup;
+                if (subTopic != null){
+                	if(subTopic.topic_LanguageKey == lang){
+                		// #356 iCount = iCount + 1;
+                    	topicWeight = topicWeight + SubTopicController:calculateSubTopicTotalWeightForLanguage(subTopic, lang);
+               		}
+                }
+                
+            }
+        }
+
+    return topicWeight;
+}
+*/
+
+/* *********************************************************************************************** */
+/* *********************************************************************************************** */
+
+/* JV updated see Trello ticket #380 */
+
+/*
+int getPpeWeightforUserTopic(Client u, Umbrella topic){
+
+    int totalTopicWeight = 0;
+    int subTopicWeight = 0;
+
+    UmbrellaTopicSetupTable[] subTopicOrderArr = SubTopicOrderController:getSubTopicOrdersForTopic(topic);
+    for(int i = 0; i < subTopicOrderArr.length(); i++){
+
+        UmbrellaTopicSetupTable subTopicOrder = subTopicOrderArr.get(i);
+        Topic subTopic = subTopicOrder.topic_UmbrellaUserSetup;
+
+        TopicPPE[] subTopicPpe = TopicPPE:and(
+            relationshipIn(client_topicPPE, u),
+            relationshipIn(topic_topicPPE, subTopic),
+            equals(progress, 100)
+        );
+
+        if (subTopicPpe.length() > 0){
+            subTopicWeight = SubTopicController:calculateSubTopicTotalWeightForLanguage(subTopic, null);
+            // #356 icount + weighted value of topic (  )
+            totalTopicWeight = totalTopicWeight + subTopicWeight; 
+        }
+
+    }
+
+    return totalTopicWeight;
+}
+*/

@@ -1,0 +1,120 @@
+unit ManageNPMActivity;
+
+Pharmacy uPharmacy;
+Pharmacy editPharmacy;
+
+Pharmacist uPharmacist;
+Pharmacist pmct;
+string uCallBackOutcome;
+
+bool edit_pharmacy;
+
+void init(){
+    uPharmacy = Pharmacy:new();
+    pmct = Pharmacist:new();
+    
+    edit_pharmacy = false;
+}
+
+void setup(Pharmacist p, string callbackoutcome){
+	uPharmacist = p;
+	uCallBackOutcome = callbackoutcome;
+}
+
+Pharmacist[] getPharmacists(){
+    return Pharmacist:all();
+}
+string removeDataPharmacist(){
+	uPharmacy.pharmacist_pharmacy = null;
+	uPharmacy.save();
+	Mez:alert("pharmacy.pmcyList.submitRemoveAlerted");
+	return null;
+}
+string submitInvite(){
+	pmct.registered = Mez:now();
+    pmct.roleID = 7;
+    pmct.deleted = "Invited";
+    pmct.save();
+    
+    init();
+    Mez:alert("pmct.pmctList.submitInviteAlerted");
+    return "ManagePharmacists";
+}
+
+string savePharmacist(){
+	 if(uPharmacy == null){
+    	 Mez:alertError("pmct.pmctList.pharmacyerror");
+    	 return null;
+    }
+    
+    if(uPharmacy.pharmacist_pharmacy !=null) {
+    	Mez:alertError("pmct.pmctList.pharmacyerror_linkto_pharmacy_exist");
+    	 return null;
+    }
+
+	pmct.registered = Mez:now();
+    pmct.roleID = 7;
+    pmct.deleted = "pending";
+    pmct.pharmacist_pharmacy = uPharmacy;
+    pmct.save();
+    
+	/* JV-Added-Confirmation-Message */
+	BLUnits:fConfirmPharmacistRegistration(pmct, uPharmacy.name);
+	/* ***************************** */
+
+    init();
+    Mez:alert("pmct.pmctList.submitInviteAlert");
+    return null;
+}
+
+string inviteP(){
+	return "invite";
+}
+
+string addData(){
+	return "CareReceiverListForm";
+}
+
+string editData(){
+	uPharmacy =  pmct.pharmacist_pharmacy ;
+	return null;
+}
+
+string editPharmacistData(){
+	uPharmacy =  pmct.pharmacist_pharmacy ;
+	return null;
+}
+
+string  removeData(){
+	if(pmct.deleted =="pending"){ pmct.removeRole(); }
+	pmct.deleted = "yes";
+	pmct.pharmacist_pharmacy = null;
+	pmct.save();
+	
+	init();
+	return null;
+}
+
+string goBack(){
+	return uCallBackOutcome;
+}
+
+string editPharmacy(){
+	edit_pharmacy = true;
+	return "PharmacyEditForm";
+}
+
+string SavePharmacy(){
+
+   if(edit_pharmacy == true){
+    	
+    	editPharmacy.save();
+    	edit_pharmacy = false;
+    	
+    	Mez:alert("pharmacy.alert.edited");
+    } 
+    
+	return "ManagePharmacies";
+}
+
+

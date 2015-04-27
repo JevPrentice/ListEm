@@ -1,0 +1,14 @@
+object PerformanceSummaryTemp{
+	
+	string group;
+	string topic;
+	int percentComplete;
+	int percentInProgress;
+	int percentLate;
+	int percentExpired;
+	int averageDaysToComplete;
+	int averageQuizPerformance;
+	int gamePerformance;
+	int groupChatParticipation;
+	
+}

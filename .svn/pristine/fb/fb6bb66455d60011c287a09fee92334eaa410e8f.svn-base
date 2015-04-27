@@ -1,0 +1,13 @@
+object PatternTypeTableTemp{
+	
+	string patternID;
+	string patternTypeID;
+	int randomPatternMax;
+
+	/*@OneToMany
+	PatternType patternType;
+	
+	@OneToMany
+	Pa ttern pattern;*/
+	
+}

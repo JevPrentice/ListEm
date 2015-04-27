@@ -1,0 +1,18 @@
+// unit ContentTemplates;
+
+// KeyValueTemp[] templates;
+// KeyValueTemp template;
+
+// void init(){
+// 	templates = KeyValueTempController:getContentTemplates();
+// }
+
+// string navigate(string s){
+// 	return s;
+// }
+
+// string configureTemplate(){
+// 	ContentTemplateConfigure:template = template;
+// 	return navigate("navContentTemplateConfigure");
+// }
+

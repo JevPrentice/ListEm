@@ -1,0 +1,13 @@
+unit PerformanceSummary;
+
+GroupUmbrellaPPE deletegUPPE;
+
+void fDeleteGroupUmbrellaPPE(){
+	GroupUmbrellaPPE:delete(deletegUPPE);
+	Mez:alert("GroupUmbrellaPPE.deletedconfirmation");
+	init();
+}
+
+void init (){
+	string s = "s";
+}

@@ -1,0 +1,54 @@
+@Restrict("SmartChew", all())
+@Restrict("Pharmacist", all()) /*NY: added 2014/08/11 */
+persistent object CareReceiver {
+	
+	string client_id;	
+	//@RequiredAttribute("client.requireName")
+	string firstName;
+	//@RequiredAttribute("client.requireSurname")
+	string surname;
+    string nickname;
+	//@InternationalNumber("client.requireInternationalNumber")
+	//@cellNumberValidator("client.requireInternationalNumber")
+	string mobileNumber;
+	datetime registered;
+
+	bool ageCap;
+	bool health_status;
+
+	LANGUAGE language;
+	
+	PRESCRIPTIONFREQUENCY prescription_freq;
+	SURVEYTIME preferred_surveytime;
+	
+	
+	//Gender
+	GENDER gender;
+	
+	int roleID;
+	int clients_EscalationUser_id;
+    int chatcount;
+    int status;
+    
+    string consent;
+    string deleted;
+    
+    @ManyToOne
+	LanguageKeyObject careReceiver_LanguageKey;
+	
+	@ManyToOne
+	Pharmacy careReceiver_pharmacy via careReceivers;
+}
+
+persistent object PharmacyCareReceiverConnection {
+	string pharmacy_name;
+	string carereceiver_mobileNumeber; 
+	
+	@ManyToOne
+	Pharmacy pharmacy_connection via pharmacyCareReceiverConnections;
+	
+	@ManyToOne
+	CareReceiver careReceiver_connection via pharmacyCareReceiverConnections;
+	
+	
+}

@@ -1,0 +1,131 @@
+unit KeyValueTempController;
+
+KeyValueTemp[] getSmsActivitySummary(){
+	KeyValueTemp[] autArr;
+
+	KeyValueTemp aut = KeyValueTemp:new();
+	aut.key = "Active SMS Sessions";
+	aut.iValue = ActivityHistoryController:countSmsActiveSessions();
+	autArr.append(aut);
+
+	aut = KeyValueTemp:new();
+	aut.key = "SMS Messages Sessions Started in Last Hour";
+	aut.iValue = ActivityHistoryController:countSmsSessionsStartedLastHour();
+	autArr.append(aut);
+
+	aut = KeyValueTemp:new();
+	aut.key = "SMS Messages Sessions Completed in Last Hour";
+	aut.iValue = ActivityHistoryController:countSmsSessionsEndedLastHour();
+	autArr.append(aut);
+
+	aut = KeyValueTemp:new();
+	aut.key = "SMS Messages Sent in Last Hour";
+	aut.iValue = ActivityHistoryController:countSmsSentLastHour();
+	autArr.append(aut);
+
+	aut = KeyValueTemp:new();
+	aut.key = "SMS Messages Recieved in Last Hour";
+	aut.iValue = ActivityHistoryController:countSmsRecievedLastHour();
+	autArr.append(aut);
+
+	return autArr;
+}
+
+KeyValueTemp[] getIvrActivitySummary(){
+	KeyValueTemp[] autArr;
+
+	KeyValueTemp aut = KeyValueTemp:new();
+	aut.key = "Active IVR Sessions";
+	aut.iValue = ActivityHistoryController:countActiveIvrSessions();
+	autArr.append(aut);
+
+	aut = KeyValueTemp:new();
+	aut.key = "IVR Sessions Started in Last Hour";
+	aut.iValue = ActivityHistoryController:countIvrSessionsStartedLastHour();
+	autArr.append(aut);
+
+	aut = KeyValueTemp:new();
+	aut.key = "IVR Sessions Completed in Last Hour";
+	aut.iValue = ActivityHistoryController:countIvrSessionsCompletedLastHour();
+	autArr.append(aut);
+
+	return autArr;
+}
+
+KeyValueTemp[] getContentTemplates(){
+
+	KeyValueTemp[] autArr;
+
+	KeyValueTemp aut = KeyValueTemp:new();
+	aut.order = 1;
+	aut.key = "Topic Introduction";
+	autArr.append(aut);
+
+	aut = KeyValueTemp:new();
+	aut.order = 2;
+	aut.key = "Template 2";
+	autArr.append(aut);
+
+	aut = KeyValueTemp:new();
+	aut.order = 3;
+	aut.key = "Quiz";
+	autArr.append(aut);
+
+	aut = KeyValueTemp:new();
+	aut.order = 4;
+	aut.key = "Survey";
+	autArr.append(aut);
+
+	aut = KeyValueTemp:new();
+	aut.order = 5;
+	aut.key = "Practicum";
+	autArr.append(aut);
+
+	return autArr;
+
+}
+
+/* SmartChew - CU Performance Menu */
+KeyValueTemp[] getContentTemplates(){
+
+	KeyValueTemp[] arr;
+
+	KeyValueTemp record = KeyValueTemp:new();
+	record.order = 1;
+	record.key = "View the overall CU performance";
+	arr.append(record);
+
+	record = KeyValueTemp:new();
+	record.order = 2;
+	record.key = "View the CU’s average progress and total score on the rolled out topics";
+	arr.append(record);
+
+	record = KeyValueTemp:new();
+	record.order = 3;
+	record.key = "Notification of Laggards";
+	arr.append(record);
+
+	return arr;
+
+}
+
+// KeyValueTemp[] getActiveTopicsSummary(){
+// 	KeyValueTemp[] autArr;
+
+// 	Umbrella[] topicArr = TopicController:getActiveTopics();
+
+// 	for (int i = 0; i < topicArr.length(); i++){
+// 		Umbrella t = topicArr.get(i);
+// 		KeyValueTemp aut = KeyValueTemp:new();
+// 		aut.key = t.umbrellaID;
+// 		aut.iValue = TopicController:getActiveUserCountForTopic(t);
+// 		autArr.append(aut);
+// 	}
+
+// 	return autArr;
+// }
+
+// KeyValueTemp[] getSearchActivitySummary(){
+// 	KeyValueTemp[] autArr;
+// 	return autArr;
+// }

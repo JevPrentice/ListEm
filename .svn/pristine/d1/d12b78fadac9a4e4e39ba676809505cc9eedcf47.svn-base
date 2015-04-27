@@ -1,0 +1,23 @@
+@Restrict("SmartChew", all())
+@Restrict("Pharmacist", all()) /*NY: added 2014/08/11 */
+persistent object Pharmacy{
+	
+	/* name/description */
+	string name;
+	
+	/* GPS */
+	decimal gpslat;
+	decimal gpslong;
+	
+	/* is the pharmacy registered */
+	string registered;
+	
+	/* does the pharmacy stock Galvus */
+	string stock_galvus;
+	
+	/* number of products stocked */
+	int product_count;
+	
+	//string deleted;
+	
+}

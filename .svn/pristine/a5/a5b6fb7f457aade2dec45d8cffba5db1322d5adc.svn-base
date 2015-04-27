@@ -1,0 +1,192 @@
+unit SubTopicUserScheduleEdit;
+
+ClientGroup selectedGroup;
+
+Client selectedUser;
+Client[] userArr;
+
+Umbrella selectedTopic;
+
+Topic selectedSubTopic;
+Topic[] subTopicArr;
+
+TopicUserSetup tus;
+
+bool isEdit;
+
+int order;
+int active;
+int runType;
+datetime minStartDate;
+
+string msg;
+
+void init(){
+
+	refreshSelectColections();
+
+	if (tus == null){
+		isEdit = false;
+		resetVars();
+		setDefaultVals();
+	} else {
+		isEdit = true;
+		selectedGroup = null;
+		selectedUser = tus.client_topicUserSetup;
+		selectedSubTopic = tus.topic_topicUserSetup;
+		active = tus.active;
+		runType = tus.runType;
+		minStartDate = tus.topicMinStartDate;
+		order = tus.topicOrder;
+	}
+
+}
+
+void refreshSelectColections(){
+	userArr = UserController:getAllUsers();
+	subTopicArr = SubTopicController:getAllSubTopics();
+}
+
+void deselectDropDowns(){
+	selectedGroup = null;
+	selectedUser = null;
+	selectedTopic = null;
+	selectedSubTopic = null;
+}
+
+void resetVars(){
+	tus = TopicUserSetup:new();
+	// selectedGroup = null;
+	// selectedUser = null;
+	// selectedTopic = null;
+	// selectedSubTopic = null;
+	order = null;
+	active = null;
+	runType = null;
+	minStartDate = null;
+}
+
+void setDefaultVals(){
+	active = 2;
+	runType = 1;
+	minStartDate = Mez:now();
+	order = null;
+}
+
+string navigate(string location){
+	resetVars();
+	return location;
+}
+
+string back(){
+	return navigate("navSubTopicUserScheduling");
+}
+
+void showUsersForGroup(){
+
+	if(selectedGroup == null){
+    	msg = "No Group Selected, displaying ALL users";
+   		Alerter:alert(msg);
+        userArr = UserController:getAllUsers();
+    } else {
+        userArr = selectedGroup.client_chws;
+    }
+
+}
+
+void showSubTopicsForTopic(){
+	if (selectedTopic == null){
+		msg = "No Topic Selected, displaying ALL Sub-Topics";
+   		Alerter:alert(msg);
+		subTopicArr = SubTopicController:getAllSubTopics();
+	}
+
+	subTopicArr = SubTopicController:getSubTopicsForTopic(selectedTopic);
+}
+
+string saveTus(){
+
+	if (selectedUser == null){
+		msg = "Please select a User";
+   		Alerter:alert(msg);
+   		return null;
+	}
+
+	if (selectedSubTopic == null){
+		msg = "Please select a SubTopic";
+   		Alerter:alert(msg);
+   		return null;
+	}
+
+	if (order == null){
+		msg = "Please Enter a Order value";
+   		Alerter:alert(msg);
+   		return null;
+	}
+
+	if (runType == null){
+		msg = "Please select a RunType value";
+   		Alerter:alert(msg);
+   		return null;
+	}
+
+	if (active == null){
+		msg = "Please select a Active value";
+   		Alerter:alert(msg);
+   		return null;
+	}
+
+	if (minStartDate == null){
+		msg = "Please select a MinStartDate value";
+   		Alerter:alert(msg);
+   		return null;
+	}
+
+	tus.topicOrder = order;
+	tus.runType = runType;
+	tus.active = active;
+	tus.topicMinStartDate = minStartDate;
+	tus.client_topicUserSetup = selectedUser;
+	tus.topic_topicUserSetup = selectedSubTopic;
+
+	string result = "";
+	int code = 0;
+	if(isEdit == true){
+		code = 1;
+	}
+
+	if (selectedTopic == null){
+		Umbrella[] topics = TopicController:getTopicArrForSubTopic(selectedSubTopic);
+
+		if (topics.length() == 1){
+			selectedTopic = topics.get(0);
+		} /*else if (topics.length() < 1){
+			Alerter:alert("The SubTopic is linked to more than one Topic, we dont know which Topic the user wants because Topic is also not selected, use null.");
+		} else {
+			Alerter:alert("The SubTopic is not linked to any Topics, this is OK use null.");
+		}*/
+
+	}
+
+	result = TopicUserSetupController:saveTopicUserSetupExec(code, selectedUser, selectedSubTopic, tus, selectedTopic);
+	
+	if (result == "EDIT" || result == "NEW"){
+		msg = String:concat("User: ", selectedUser.firstName, " ", selectedUser.surname, " Scheduled on Sub-Topic:", selectedSubTopic.topicID);
+		Alerter:alert(msg);
+    } else if (result == "DUPL"){
+    	msg = String:concat("User: ", selectedUser.firstName, " ", selectedUser.surname, " NOT Scheduled on Sub-Topic:", selectedSubTopic.topicID, " due to a duplication conflict in this users schedule");
+		Alerter:alertError(msg);
+        return;
+    }
+
+    SubTopicUserScheduling:tusFilter = "user";
+    SubTopicUserScheduling:selectedUser = selectedUser;
+
+	return navigate("navSubTopicUserScheduling");
+
+}
+
+void reset(){
+	deselectDropDowns();
+	init();
+}

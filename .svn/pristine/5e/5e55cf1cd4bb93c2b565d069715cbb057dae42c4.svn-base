@@ -1,0 +1,71 @@
+unit SequenceController;
+
+Sequence createSequence(string sid, string sn, string ss, string se, string sr, int ir){
+
+    Sequence[] check = Sequence:equals(sequenceID, sid); 
+    if(check.length() > 0) { 
+        string msg = String:concat("Unable to create Sequence with ID: ", sid, " becuase it already exists");
+        Logger:log(msg);
+        Alerter:alert(msg);
+        return null; 
+     }
+
+    Sequence sequence = Sequence:new();
+    sequence.sequenceID = sid;
+    sequence.sequenceName = sn;
+    sequence.sequenceStartSMS = ss;
+    sequence.sequenceEndSMS = se;
+    sequence.sequenceReminderSMS = sr;
+    sequence.sequenceReminderTime = ir;
+    sequence.save();
+
+    string msg = String:concat("Sequence with ID: ", sid, " created");
+    Logger:log(msg);
+    Alerter:alert(msg);
+
+    return sequence;
+}
+
+Sequence[] getAllSequences(){
+    return Sequence:all();
+}
+
+Sequence[] getSequencesForSubTopic(Topic subTopic){
+
+    SequenceOrder sequenceOrder;
+    SequenceOrder[] sequenceOrders = SequenceOrderController:getSequenceOrdersForSubTopic(subTopic);
+
+    Sequence[] sequences;
+
+    for (int i = 0; i < sequenceOrders.length(); i++){
+        sequenceOrder = sequenceOrders.get(i);
+        sequences.append(sequenceOrder.sequence_sequenceOrder);
+    }
+
+    return sequences;
+}
+
+Sequence[] getSequencesForSequenceID(string sequenceID){
+	Sequence[] sequences;
+
+	if (sequenceID == null || sequenceID == ""){
+		return null;
+	}
+
+	sequences = Sequence:equals(sequenceID, sequenceID);
+
+    if (sequences.length() >= 1){
+
+        if (sequences.length() > 1){
+            string msg = String:concat("There are currently ", sequences.length(), " sequences with SequenceID:", sequenceID);
+            Logger:log(msg);
+            Alerter:alertError(msg);
+
+            msg = String:concat("WARNING: There is duplication for SequenceID: ", sequenceID);
+            Logger:log(msg);
+            Alerter:alertError(msg);
+        }
+    } 
+
+	return sequences;
+}

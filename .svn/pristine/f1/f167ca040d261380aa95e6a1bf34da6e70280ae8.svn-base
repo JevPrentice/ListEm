@@ -1,0 +1,32 @@
+unit BroadcastChvKit;
+
+ClientGroup selectedGroup;
+CHVTEMPLATEMESSAGE templateMessage;
+
+KIT kit;
+
+void init(){
+
+}
+
+string navigate(string location){
+	return location;
+}
+
+string back(){
+	return navigate("navBroadcastChv");
+}
+
+string next(){
+
+	if (kit == null){
+		Alerter:alert("No Kit selected");
+		return;
+	}
+
+	BroadcastChvConfig:selectedGroup = selectedGroup;
+	BroadcastChvConfig:templateMessage = templateMessage;
+	BroadcastChvConfig:kit = kit;
+	return navigate("navBroadcastChvConfig");
+	
+}

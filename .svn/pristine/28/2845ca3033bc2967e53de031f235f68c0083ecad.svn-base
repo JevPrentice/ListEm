@@ -1,0 +1,16 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all()) /*NY: added 2014/08/11 */
+persistent object TopicReminder{
+	
+//	string topicReminderSMS;
+	int esc_id;
+	int reminderTime;
+	datetime reminderDate;
+	string reminderMessage;
+	
+	@ManyToOne
+	Client client_topicReminder;
+	
+	@ManyToOne
+	Topic topic_topicReminder;	
+}

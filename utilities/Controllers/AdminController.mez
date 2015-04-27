@@ -1,0 +1,30 @@
+unit AdminController;
+
+Admin[] getAllAdmins(){
+	return Admin:all();
+}
+
+Admin[] getAdminsForPerson(Person person){
+	return Admin:relationshipIn(person, person);
+}
+
+Admin createOrEditAdmin(Person p){
+
+	if (p == null){
+		return null;
+	}
+
+	Admin[] admins = getAdminsForPerson(p);
+
+	Admin a = Admin:new();
+
+	if (admins.length() > 0){
+		a = admins.get(0);
+	}
+	
+    a.dateRegistered = Mez:now();
+    a.person = p;
+    a.save();
+    
+    return a;
+}

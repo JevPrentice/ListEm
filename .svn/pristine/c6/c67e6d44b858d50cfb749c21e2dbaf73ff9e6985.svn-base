@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="sequence_management.title" unit="SequenceManagement" init="init">
+    
+        <navigation outcome="nav_edit_create" target="SequenceEdit"/>
+        <navigation outcome="nav_subtopic_link_sequence_management" target="SequenceOrderManagement"/>
+        <navigation outcome="nav_activity_order_management" target="ActivityOrderManagement"/>
+        
+        <action label="sequence_management.create_sequence" action="createSequence"/>
+        <action label="back" action="back"/>
+
+        <table title="sequence_management.table.title">
+            <collectionSource function="SequenceController:getAllSequences"/>
+            <column heading="sequence_management.sequenceID">
+                <attributeName>sequenceID</attributeName>
+            </column>
+         	<column heading="sequence_management.sequenceName">
+                <attributeName>sequenceName</attributeName>
+            </column>
+            <column heading="sequence_management.sequenceStartSMS">
+                <attributeName>sequenceStartSMS</attributeName>
+            </column> 
+			<column heading="sequence_management.sequenceEndSMS">
+                <attributeName>sequenceEndSMS</attributeName>
+            </column>
+            <column heading="sequence_management.sequenceReminderSMS">
+                <attributeName>sequenceReminderSMS</attributeName>
+            </column> 
+             <column heading="sequence_management.sequenceReminderTime">
+                <attributeName>sequenceReminderTime</attributeName>
+            </column> 
+            <rowAction label="edit" action="editSequence">
+                <binding variable="sequence"/>
+            </rowAction>
+            <rowAction label="delete" action="deleteSequence">
+                <binding variable="sequence"/>
+                <confirm subject="sequence_management.table.delete.confirm.subject" body="sequence_management.table.delete.confirm.body"/>
+            </rowAction>
+        </table>
+    </view>
+</ui>

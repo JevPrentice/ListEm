@@ -1,0 +1,14 @@
+object GenericDataset{
+
+	string sCol1;
+	string sCol2;
+	string sCol3;
+	string sCol4;
+
+	int iCol1;
+	int iCol2;
+	int iCol3;
+	int iCol4;
+
+}
+

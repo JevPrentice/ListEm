@@ -1,0 +1,20 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all())
+persistent object TopicHistory{
+	
+	datetime startDate;
+	datetime maxEndDate;
+	datetime reminderTime;
+	datetime escalationTime;
+	int statusID;
+	int escalationID;
+	int runType;
+	datetime actualEndDate;
+	
+	@ManyToOne
+	Client client_topicHistory;
+	
+	@ManyToOne
+	Topic topic_topicHistory;
+	
+}

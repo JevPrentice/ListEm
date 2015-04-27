@@ -1,0 +1,66 @@
+unit EditSubCounty;
+
+County county;
+SubCounty subCounty;
+
+string subCountyName;
+
+bool isEdit;
+
+string msg;
+
+void init(){
+
+	if (subCounty == null){
+		isEdit = false;
+		subCounty = SubCounty:new();
+		subCountyName = null;
+		// resetVars();
+	} else {
+		isEdit = true;
+		subCountyName = subCounty.subCountyName;
+		county = subCounty.county;
+	}
+	
+}
+
+void resetVars(){
+	
+	subCountyName = null;
+	county = null;
+	subCounty = null;
+}
+
+string navigate(string location){
+	resetVars();
+	return location;
+}
+
+string back(){
+	return navigate("navManageSubCounties");
+}
+
+string createSubCounty(){
+	
+	if (county == null){
+		msg = "Please Select a for the County for this Sub-County";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	if (subCountyName == null || String:length(subCountyName) <= 0){
+		msg = "Please enter a Name for the Sub-County";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	subCounty.county = county;
+	subCounty.subCountyName = subCountyName;
+	subCounty.save();
+
+	msg = String:concat("Sub-County ", subCounty.subCountyName, " saved.");
+	Alerter:alert(msg);
+
+	return navigate("navManageSubCounties");
+
+}

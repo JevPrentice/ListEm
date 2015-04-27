@@ -1,0 +1,23 @@
+unit CUPerformance;
+
+KeyValueTemp selectedReport;
+
+void init(){
+	ReportReminder:reportReminderRoutine(chew);
+}
+
+string navigate(string location){
+	return location;
+}
+
+string viewReport(){
+	if (selectedReport == null){ return null; }
+	if (selectedReport.order == 1){
+		return navigate("navOverallCUPerformance");
+	} else if (selectedReport.order == 2){
+		return navigate("navAverageCUProgress");
+	} else if (selectedReport.order == 3){
+		return navigate("navLaggards");
+	}
+	return null;
+}

@@ -1,0 +1,9 @@
+unit SmartChewController;
+
+bool isClientLinkedToSmartChew(Client c){
+
+	if (c == null){ return false; }
+	if (c.client_smart_chew == null){ return false; }
+	return true;
+	
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+
+    <view label="LearningManagers.menu" unit="RoleManagement">
+
+	    <menuitem label="LearningManagers" icon="UserManagement" order="3">
+	        <userRole>Admin</userRole>
+	    </menuitem>
+
+        <navigation outcome="invite"    target="InviteLearningManager"/>
+        <navigation outcome="edit"      target="EditLearningManager"/>
+        <action label="invite.learningManager" action="initInviteLM"/>
+
+        <table>
+            <collectionSource function="getLM"/>
+       
+            <column heading="firstNames">
+                <attributeName>firstNames</attributeName>
+            </column> 
+                      
+            <column heading="surname">
+                <attributeName>surname</attributeName>
+            </column> 
+                      
+            <column heading="mobileNumber">
+                <attributeName>mobileNumber</attributeName>
+            </column> 
+                
+            <rowAction label="edit" action="edit">
+                <binding variable="lm"/>
+            </rowAction>
+                
+            <rowAction label="remove" action="uninviteLM">
+                <binding variable="lm"/>
+                <confirm subject="confirm.uninviteLM" body="confirm.uninviteBody"/>
+            </rowAction>
+        </table>
+    </view>
+</ui>

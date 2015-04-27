@@ -1,0 +1,173 @@
+unit GroupFilterResults;
+
+Client[] users;
+Client selectedUser;
+
+ClientGroup group;
+Umbrella topic;
+Topic subTopic;
+ChannelKeyObject cko;
+
+int userCount;
+
+string msg;
+string nav_return;
+
+string messageText;
+
+void init(){
+	userCount = users.length();
+}
+
+bool hasSelectionBeenMade(){
+	if (group == null && topic == null && subTopic == null && cko == null){
+		return false;
+	}
+	return true;
+}
+
+void resetVars(){
+	users.clear();
+	group = null;
+	topic = null;
+	subTopic = null;
+	cko = null;
+	userCount = 0;
+	msg = "";
+}
+
+string navigate(string location){
+	GroupFilter:group = group;
+	GroupFilter:topic = topic;
+	GroupFilter:subTopic = subTopic;
+	GroupFilter:cko = cko;
+	GroupFilter:refresh = "no";
+	resetVars();
+	return location;
+}
+
+string back(){
+	return navigate("back");
+}
+
+string sendCustomSms(){
+
+	if (users.length() <= 0){
+		msg = "There are no Users selected as Recipients";
+	    Alerter:alert(msg);
+		return null;
+	}
+
+	if (messageText == null || String:length(messageText) <= 0 ) {
+		msg = "Please enter the text for the SMS";
+	    Alerter:alert(msg);
+		return null;
+	}
+
+	for (int i = 0; i < users.length(); i++){
+		Client u = users.get(i);
+		
+		if(u != null){
+        	BLUnits:SendSMSToClient(u, messageText);
+	    }	
+	}
+
+    msg = String:concat("Outgoing msg Sent to ", users.length(), " users");
+    Alerter:alert(msg);
+
+	return navigate("back");
+}
+
+
+
+void pauseSelection(){
+
+	if (users.length() <= 0){
+		msg = "There are no Users selected for pause";
+	    Alerter:alert(msg);
+		return null;
+	}
+
+	for (int i = 0; i < users.length(); i++){
+		Client u = users.get(i);
+		TopicUserSetup[] tusArr = TopicUserSetupController:getActiveTopicUserSetupsForUser(u);
+		for (int j = 0; j < tusArr.length(); j++){
+			TopicUserSetup tus = tusArr.get(j);
+			if(u != null && tus != null){
+		        string result = TopicUserSetupController:fActionTopicUser(1 , tus);
+		        if (result == ""){
+		        	Alerter:alert(String:concat("", users.length(), " users Paused"));
+		        }
+		    }
+		}
+	}
+}
+
+void resumeSelection(){
+
+	if (users.length() <= 0){
+		msg = "There are no Users selected for resume";
+	    Alerter:alert(msg);
+		return null;
+	}
+
+	for (int i = 0; i < users.length(); i++){
+		Client u = users.get(i);
+		TopicUserSetup[] tusArr = TopicUserSetupController:getPausedTopicUserSetupsForUser(u);
+		for (int j = 0; j < tusArr.length(); j++){
+			TopicUserSetup tus = tusArr.get(j);
+			if(u != null && tus != null){
+		        string result = TopicUserSetupController:fActionTopicUser(2 , tus);
+
+		        if (result == ""){
+		        	Alerter:alert(String:concat("", users.length(), " users Resumed"));
+		        }
+		    }
+		}
+	}
+
+}
+
+void rewindSelection(){
+
+	if (users.length() <= 0){
+		msg = "There are no Users selected for rewind";
+	    Alerter:alert(msg);
+		return null;
+	}
+
+	for (int i = 0; i < users.length(); i++){
+		Client u = users.get(i);
+		TopicUserSetup[] tusArr = TopicUserSetupController:getActiveTopicUserSetupsForUser(u);
+		for (int j = 0; j < tusArr.length(); j++){
+			TopicUserSetup tus = tusArr.get(j);
+			if(u != null && tus != null){
+		        NewFlowControllers:fRewindToSequence(u);
+	        	Alerter:alert(String:concat("", users.length(), " users Rewound to sequence"));
+		    }
+		}
+	}
+}
+
+void removeUser(){
+
+
+	if (selectedUser == null){
+		msg = "Please select a user";
+	    Alerter:alert(msg);
+		return null;
+	}
+
+	for (int i = users.length() - 1; i >= 0; i--){
+		Client u = users.get(i);
+		if (selectedUser == u){
+			users.remove(i);
+			init();
+			Alerter:alert("User was unselected");
+			return;
+		}
+	}
+
+    Alerter:alert("User not found");
+
+}

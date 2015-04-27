@@ -1,0 +1,79 @@
+unit ReportReminder;
+
+/*
+*   =================================
+*   SmartCHEW reminder
+*   =================================
+*   AUTHOR: Beyers Nel 21/04/15
+*		
+*	Reminds the Chew user to view reports monthly
+*	Runs everytime a Chew loads the default screen / dashboard
+*	Shows a reminder if after the remind date and sets a new date
+*/
+
+void reportReminderRoutine(SmartChew chew){
+
+	if (chew == null) {
+		return;
+	}
+
+	date dNow = Date:now();
+	date dLast = getLastReport(chew);
+
+	if (dLast == null) {
+		return;
+	}
+
+	if (dNow >= dLast) {
+		Alerter:alert("Dear CHEW, Please remember to check CHV reports frequently to stay up to date with your groups progress");
+		incrementDate(chew);
+	}
+}
+
+void incrementDate(SmartChew chew){
+
+	if (chew == null) {
+		return;
+	}
+
+	chew.reportReminder = Date:addMonths(chew.reportReminder, 1);
+}
+
+date getLastReport(SmartChew chew){
+
+	if (chew == null) {
+		return null;
+	}
+
+	if (chew.reportReminder == null ) {
+		chew.reportReminder = Date:now();
+		chew.save();
+	}
+	return chew.reportReminder;
+}
+
+void updateDate(SmartChew chew){
+
+	if (chew == null) {
+		return;
+	}
+
+	chew.reportReminder = Date:now();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

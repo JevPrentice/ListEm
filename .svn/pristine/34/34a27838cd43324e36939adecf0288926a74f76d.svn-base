@@ -1,0 +1,25 @@
+unit CurrentSequenceList;
+
+CurrentSequence currentSequence;
+
+void init() {
+	currentSequence = CurrentSequence:new();
+}
+
+string saveCurrentSequence() {
+	currentSequence.save();
+	return null;
+}
+
+string editCurrentSequence() {
+	return null;
+}
+
+string deleteCurrentSequence() {
+	CurrentSequence:delete(currentSequence);
+	return null;
+}
+
+CurrentSequence[] getAllCurrentSequences() {
+	return CurrentSequence:all();
+}

@@ -1,0 +1,159 @@
+unit SubTopicOrderController;
+
+string msg;
+
+UmbrellaTopicSetupTable createSubTopicOrder(string sTopic, string sSubTopic, int ordernum, 
+	datetime previousdate, datetime fixeddate, int relativestartnum,
+	int dowstartnum){
+
+	Umbrella[] tArr = Umbrella:equals(umbrellaID, sTopic);
+    Topic[] stArr = Topic:equals(topicID, sSubTopic);
+
+    if (tArr.length() != 1){
+
+    	if (tArr.length() > 1){
+    		msg = String:concat("There is duplication for the TopicID<Umbrella>:", sTopic);
+    		Logger:log(msg);
+    		Alerter:alert(msg);
+    	} else {
+    		msg = String:concat("There was no Topic found for TopicID: ", sTopic);
+    		Logger:log(msg);
+    		Alerter:alert(msg);
+    		return null;
+    	}
+    } 
+
+    if (stArr.length() != 1){
+
+    	if (stArr.length() > 1){
+    		msg = String:concat("There is duplication for the SubTopicID<Topic>:", sSubTopic);
+    		Logger:log(msg);
+    		Alerter:alert(msg);
+    	} else {
+    		msg = String:concat("There was no SubTopic found for SubTopicID: ", sSubTopic);
+    		Logger:log(msg);
+    		Alerter:alert(msg);
+    		return null;
+    	}
+    }
+
+    Umbrella t = tArr.get(0);
+    Topic st = stArr.get(0);
+    UmbrellaTopicSetupTable[] check = UmbrellaTopicSetupTable:and(relationshipIn(umbrella_UmbrellaUserSetup, t),relationshipIn(topic_UmbrellaUserSetup,st)); 
+    if(check.length()>0) { 
+        msg = String:concat("SubTopicOrder not saved the Topic:", t.umbrellaID, " and the SubTopic: ", st.topicID, " are already associated");
+        Logger:log(msg);
+        Alerter:alert(msg);
+        return null;
+    }
+
+	UmbrellaTopicSetupTable subTopicOrder = UmbrellaTopicSetupTable:new();
+
+	subTopicOrder.ordernum = ordernum;
+	subTopicOrder.previousdate = previousdate;
+	subTopicOrder.fixeddate = fixeddate;
+	subTopicOrder.relativestartnum = relativestartnum;
+	subTopicOrder.dowstartnum = dowstartnum;
+	subTopicOrder.topic_UmbrellaUserSetup = st;
+	subTopicOrder.umbrella_UmbrellaUserSetup = t;
+	subTopicOrder.save();
+
+    msg = String:concat("SubTopicOrder saved with Topic:", t.umbrellaID, " and SubTopic: ", st.topicID);
+    Logger:log(msg);
+    Alerter:alert(msg);
+
+	return subTopicOrder;
+}
+
+UmbrellaTopicSetupTable[] getAllSubTopicOrders(){
+	return UmbrellaTopicSetupTable:all();
+}
+
+UmbrellaTopicSetupTable[] getSubTopicOrdersForSubTopic(Topic subTopic){
+	
+	UmbrellaTopicSetupTable[] arr;
+	if (subTopic == null){
+		arr = getAllSubTopicOrders();
+	} else {
+		arr = UmbrellaTopicSetupTable:relationshipIn(topic_UmbrellaUserSetup, subTopic);
+	}
+	
+	return arr;
+}
+
+UmbrellaTopicSetupTable[] getSubTopicOrdersForTopic(Umbrella topic){
+    return UmbrellaTopicSetupTable:relationshipIn(umbrella_UmbrellaUserSetup, topic);
+}
+
+UmbrellaTopicSetupTable[] getSubTopicOrdersForTopicSubTopic(Umbrella topic, Topic subTopic){
+    return UmbrellaTopicSetupTable:and(
+    	relationshipIn(umbrella_UmbrellaUserSetup, topic),
+		relationshipIn(topic_UmbrellaUserSetup, subTopic)
+	);
+}
+
+UmbrellaTopicSetupTable getSubTopicOrdersForTopicSubTopic_singleRecord(Umbrella topic, Topic subTopic){
+	UmbrellaTopicSetupTable[] subTopicOrders = getSubTopicOrdersForTopicSubTopic(topic, subTopic);
+	if (subTopicOrders.length() < 1){
+		return null;
+	}
+
+	return subTopicOrders.get(0);
+}
+
+int getSubTopicOrderNumberForTopicSubTopic(Umbrella topic, Topic subTopic){
+    UmbrellaTopicSetupTable[] arr;
+    UmbrellaTopicSetupTable subTopicOrder;
+
+    if (topic == null || subTopic == null){
+        return 0;
+    }
+
+    arr = UmbrellaTopicSetupTable:and(
+        relationshipIn(umbrella_UmbrellaUserSetup, topic),
+        relationshipIn(topic_UmbrellaUserSetup, subTopic)
+    );
+
+    if (arr == null){
+        return 0;
+    }
+
+    if (arr.length() < 1){
+        return 0;
+    }
+
+    if (arr.length() > 1){
+        string msg = String:concat("WARNING: There is a duplication of SubTopicOrders, TopicID=", topic.umbrellaID, " SubTopicID=", subTopic.topicID);
+        Logger:log(msg);
+        Alerter:alert(msg);
+    }
+
+    subTopicOrder = arr.get(0);
+
+    if (subTopicOrder == null){
+        return 0;
+    }
+
+    return subTopicOrder.ordernum;
+}
+
+bool isSubTopicOrderAssignedToTopic(Umbrella t, int orderNumber){
+    UmbrellaTopicSetupTable[] arr;
+
+    if (t == null || orderNumber == null){
+        return false;
+    }
+
+    arr = UmbrellaTopicSetupTable:and(
+        relationshipIn(umbrella_UmbrellaUserSetup, t),
+        equals(ordernum, orderNumber)
+    );
+
+    if (arr.length() <= 0){
+        return false;
+    }
+
+    return true;
+
+}
+

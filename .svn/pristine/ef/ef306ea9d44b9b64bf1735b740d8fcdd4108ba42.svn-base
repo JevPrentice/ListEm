@@ -1,0 +1,391 @@
+unit ManageVariableInput;
+
+Client uClient;
+Client csvClient;
+AllSMSLog vAdHocSMS;
+AllSMSLog csvAdHocSMS;
+
+string uCallBackOutCome;
+
+
+OutgoingSMS uOutgoingsms;
+IncomingSMS uIncomingSMS;
+
+Message uMessage;
+Message[] messages;
+
+/*to populate dropdown / Multiselect list  */
+InputTypeObject uInputTypeObject;
+InputTypeObject[] uInputTypeObjects;
+
+int index;
+string[] itemsBuilder;
+string[] items;
+string selectedItems;
+string csvProgressMessage;
+string csvURL;
+bool csvResetClient;
+decimal gpslat;
+decimal gpslong;
+
+
+
+void init(){
+	/* Getting the current user  */
+	uClient = Client:user();
+	
+	gpslat = 0;
+	gpslong = 0;
+	
+    /* Custom collection objects */
+    itemsBuilder.clear();
+	uInputTypeObjects.clear();
+	
+	itemsBuilder.append("Status");
+	itemsBuilder.append("Group");
+	
+	messages.clear();
+	messages = MessageController:getAllMessages();
+	messages.sortAsc("maxMultipleChoice");
+	
+	index = 0;
+	vAdHocSMS = AllSMSLog:new();
+	uInputTypeObject = InputTypeObject:new();
+
+	selectedItems = null;
+
+}
+
+/****************************************************** */
+// variable input navigation setup function 
+/****************************************************** */
+
+void setup(Client client, Message message, InputTypeObject inputtype, string callBackOutcome){
+	uClient = client;
+	uMessage = message;
+	uInputTypeObject = inputtype;
+	uCallBackOutCome = callBackOutcome;
+}
+
+string goBack(){
+	return uCallBackOutCome;
+}
+
+/****************************************************** */
+// variable input navigation setup function 
+/****************************************************** */
+string captureDate(){
+	if(messages.length() == 0){
+		return "MobileuserList";
+	}
+	if(uInputTypeObject.dateValue == null){
+		return null;
+	}
+	vAdHocSMS.messageText =Strings:concat(uInputTypeObject.dateValue, "");
+
+	return resetVariables();
+}
+
+/****************************************************** */
+// variable input navigation setup function 
+/****************************************************** */
+string captureDateTime(){
+	if(messages.length() == 0){
+		return "MobileuserList";
+	}
+	if(uInputTypeObject.datetimeValue == null){
+		return null;
+	}
+	vAdHocSMS.messageText =Strings:concat(uInputTypeObject.datetimeValue, "");
+	return resetVariables();
+}
+
+/****************************************************** */
+// variable input navigation setup function 
+/****************************************************** */
+string captureDrawing(){
+	if(messages.length() == 0){
+		return null;
+	}
+	vAdHocSMS.messageText = "Drawing Captured";
+		
+	uInputTypeObject.msg_signiture_file = uMessage;
+	uInputTypeObject.deleted = "no";
+	uInputTypeObject.timestamp = Mez:now();
+	uInputTypeObject.save();
+
+	return resetVariables();
+}
+
+/****************************************************** */
+// variable input navigation setup function 
+/****************************************************** */
+string captureImage(){
+	if(messages.length() == 0){
+		return null;
+	}
+	vAdHocSMS.messageText = "Image Captured";
+	
+	uInputTypeObject.msg_signiture_file = uMessage;
+	uInputTypeObject.deleted = "no";
+	uInputTypeObject.timestamp = Mez:now();
+	uInputTypeObject.save();
+	
+	return resetVariables();
+}
+
+/****************************************************** */
+// variable input navigation setup function 
+/****************************************************** */
+string captureNumber(){
+	if(messages.length() == 0){
+		return "MobileuserList";
+	}
+	if((uInputTypeObject.numericValue == null)){
+		return null;
+	}
+	vAdHocSMS.messageText = Strings:concat("",uInputTypeObject.numericValue);
+	return resetVariables();
+}
+
+/****************************************************** */
+// variable input navigation setup function 
+/****************************************************** */
+string captureNumberDecimal(){
+	if(messages.length() == 0){
+		return "MobileuserList";
+	}
+	if((uInputTypeObject.decimalValue == null)){
+		return null;
+	}
+	vAdHocSMS.messageText = Strings:concat("",uInputTypeObject.decimalValue);
+	return resetVariables();
+}
+
+/****************************************************** */
+// variable input navigation setup function 
+/****************************************************** */
+string captureFreeText(){
+	if(messages.length() == 0){
+		return "MobileuserList";
+	}
+	if((uInputTypeObject.text == null)){
+		return "MobileuserList";
+	}
+	vAdHocSMS.messageText = Strings:concat("",uInputTypeObject.text);
+	return resetVariables();
+}
+
+/****************************************************** */
+// variable input navigation setup function 
+/****************************************************** */
+
+string captureFromMultiSelect(){
+	if(messages.length() == 0){
+		return null;
+	}
+	
+	if((selectedItems == null)){
+		return null;
+	}
+	vAdHocSMS.messageText = selectedItems ; //uInputTypeObject.text;
+	selectedItems = null;
+	return resetVariables();
+}
+
+/****************************************************** */
+// variable input navigation setup function 
+/****************************************************** */
+
+string captureFromDropDown(){
+	if(messages.length() == 0){
+		return null;
+	}
+	if((uInputTypeObject.text == null)){
+		return null;
+	}
+	vAdHocSMS.messageText = uInputTypeObject.text;
+	return resetVariables();
+}
+
+/****************************************************** */
+// NY : 20141126
+/****************************************************** */
+string captureGPSCoordinates(){
+	if(messages.length() == 0){
+		return "MobileuserList";
+	}
+	
+	if((uInputTypeObject.gpslat == null ) || (uInputTypeObject.gpslong == null )){
+		return null;
+	}
+	vAdHocSMS.messageText =Strings:concat(gpslat, ",",gpslong);
+	return resetVariables();
+}
+
+/****************************************************** */
+// NY : 20141126
+/****************************************************** */
+string captureFromSingleSelect(){
+	if(messages.length() == 0){
+		return null;
+	}
+	/*if((uInputTypeObject.text == null)){
+		return null;
+	}*/
+	vAdHocSMS.messageText = uInputTypeObject.text;
+	
+	return resetVariables();
+}
+
+/****************************************************** */
+// variable input navigation selector sub function 
+/****************************************************** */
+void selecteOption(){
+	uInputTypeObject.status = Strings:concat("√", "");
+	for(int i=0; i<uInputTypeObjects.length(); i++){
+		InputTypeObject temp =uInputTypeObjects.get(i);
+		if((temp.text !=uInputTypeObject.text) && (temp.status == "√")){
+			temp.status = " ";
+			uInputTypeObjects.remove(i);
+			uInputTypeObjects.append(temp);
+		}
+	}
+}
+
+/****************************************************** */
+// variable input navigation selector sub function 
+/****************************************************** */
+void selecteMOption(){
+	
+	if(uInputTypeObject.status != "√"){
+		uInputTypeObject.status = "√";
+	    selectedItems = Strings:concat(uInputTypeObject.text,";"); 
+	}
+	
+}
+
+/********************************************************************* */
+// variable input navigation function to build sub option items  
+/********************************************************************** */
+void setInputTypeObjects(){
+	
+	//clean
+	uInputTypeObjects.clear();
+	for(int i=0; i<itemsBuilder.length(); i++){
+		InputTypeObject tempInput = InputTypeObject:new();
+		tempInput.text = itemsBuilder.get(i);
+		tempInput.status = "";
+		tempInput.save();
+		uInputTypeObjects.append(tempInput);
+	}
+	
+}
+
+/****************************************************** */
+// variable input navigation selector sub function 
+/****************************************************** */
+void buildClientSummaryView(){
+    if(csvAdHocSMS==null){ csvAdHocSMS = AllSMSLog:new(); }
+    if(csvClient==null){ csvClient = Client:new(); }
+    csvResetClient = false; 
+    csvAdHocSMS.messageText = "";
+    csvProgressMessage = "";
+    csvURL = uIVRIntegration:fGetIVRReportURL(csvClient);
+}
+
+
+void builduIncominfSMSList(){
+    RecievedSMSHandler:receiveIncomingSms(uClient.mobileNumber, vAdHocSMS.messageText);
+    vAdHocSMS = AllSMSLog:new();
+    Mez:alert("AllSMSLog.sentconfirmationIN");
+}
+
+
+string procceed(){
+	if(messages.length() == 0){
+		return null;
+	}
+	messages.sortAsc("maxMultipleChoice");
+	uMessage = messages.get(index);
+	index++;
+	return getContinueScreen(uMessage, index);
+}
+
+/****************************************************** */
+// variable input navigation selector sub function 
+/****************************************************** */
+void getValue(){
+	itemsBuilder.clear();
+	if((uMessage.maxMultipleChoice == 3) || (uMessage.maxMultipleChoice == 4) || (uMessage.maxMultipleChoice == 7)){
+		string text =  uMessage.informCorrectText;
+		itemsBuilder =String:split(text, ";");
+	}
+	
+	//get the list
+	setInputTypeObjects();
+}
+
+/****************************************************** */
+// variable input navigation selector sub function 
+/****************************************************** */
+string back(){
+	return "MobileuserList";//callBackOutCome;
+}
+
+/****************************************************** */
+// variable input navigation selector sub function 
+/****************************************************** */
+void buildOutgoingSMS(){
+	OutgoingSMS temp = OutgoingSMS:new();
+	temp.responseText = vAdHocSMS.messageText;
+	temp.messageText = uMessage._MT_text;
+	temp.save();
+}
+
+/****************************************************** */
+// variable input navigation selector sub function 
+/****************************************************** */
+string gotoDrawview(){
+	return "drawing";
+}
+
+/****************************************************** */
+// variable input navigation selector sub function 
+/****************************************************** */
+string gotoImageCapture(){
+	return "ImageCapture";
+}
+
+string resetVariables(){
+	uMessage = messages.get(index);
+	index++;
+		
+	builduIncominfSMSList();
+	vAdHocSMS = AllSMSLog:new();
+    uInputTypeObject = InputTypeObject:new();
+    return getContinueScreen(uMessage,index ); 
+}
+
+
+/****************************************************** */
+// variable input navigation rule function
+/****************************************************** */
+string getContinueScreen (Message mss , int index){
+    if(messages.length() == index){return "MobileuserList";}	
+	if(mss.maxMultipleChoice == 0){return "freetext";}
+	else if(mss.maxMultipleChoice == 5){return "InfoForm";}
+	else if(mss.maxMultipleChoice == 7){return "multiselect";}
+	else if(mss.maxMultipleChoice == 6){return "dateinput";}
+	else if(mss.maxMultipleChoice == 4){return "dropdown";}
+	else if(mss.maxMultipleChoice == 1){return "numeric";}
+	
+	else if(mss.maxMultipleChoice == 2){return "DateTimeInput";}
+    else if(mss.maxMultipleChoice == 9){return "FileBrowserInfoForm";}
+	else if(mss.maxMultipleChoice == 8){return "GPSLocation";}
+	else if(mss.maxMultipleChoice == 3){return "SingleSelectInput";}
+	else if(mss.maxMultipleChoice == 10){return "NumericDecimalInput";}
+	
+	else{return "MobileuserList";}	
+}
+

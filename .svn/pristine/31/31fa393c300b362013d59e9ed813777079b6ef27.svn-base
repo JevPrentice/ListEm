@@ -1,0 +1,70 @@
+unit OutgoingSMSList;
+
+OutgoingSMS uOutgoingSMS;
+
+Client client;
+Pattern pattern;
+Message o_message;
+
+string message;
+
+void init() {
+	uOutgoingSMS = OutgoingSMS:new();
+}
+
+OutgoingSMS[] getAllOutgoingSMSs() {
+	return OutgoingSMS:all();
+}
+
+string saveOutgoingSMS() {
+	uOutgoingSMS.outgoingSMS_client =client;
+	uOutgoingSMS.outgoingSMS_pattern = pattern;
+	uOutgoingSMS.outgoingSMS_Message = o_message;
+	uOutgoingSMS.save();
+	message = "Data has been saved";
+    Alerter:alert(message);
+	return null;
+}
+
+//Insert into Outgoing_SMS_Table : All Message History
+OutgoingSMS updateOutGoingSMS(Client client, Pattern pattern, Message m) {
+	
+	OutgoingSMS outgoingSMS = OutgoingSMS:new();
+	
+	CurrentSMSPattern currentSMSPattern = client.currentSMSPattern_clientID; // CurrentSMSPattern:relationshipIn(currentSMSPattern_clientID, client); //, relationshipIn(currentSMSPattern_PatternID, pattern), relationshipIn(currentSMSPattern_MessageSetup, o_message));
+	
+	if(currentSMSPattern !=null ) {
+		
+		outgoingSMS.outgoingSMS_client = client;
+		outgoingSMS.outgoingSMS_pattern = pattern;
+		outgoingSMS.outgoingSMS_Message = m;
+		
+		outgoingSMS.dateTimeStamp = Mez:now();
+		outgoingSMS.messageText = m._MT_text;
+		outgoingSMS.maxMultipleChoice = m.maxMultipleChoice;
+		outgoingSMS.correctAnswer = m.correctAnswer;
+		outgoingSMS.validFirstLetter = currentSMSPattern.validFirstLetter;
+		outgoingSMS.responseText = "";
+		outgoingSMS.userScore = 0;
+		outgoingSMS.save();
+		
+	
+	}else if(currentSMSPattern ==null ) {
+
+		outgoingSMS.outgoingSMS_client = client;
+		outgoingSMS.outgoingSMS_pattern = pattern;
+		outgoingSMS.outgoingSMS_Message = m;
+		
+		outgoingSMS.dateTimeStamp = Mez:now();
+		outgoingSMS.messageText = m._MT_text;
+		outgoingSMS.maxMultipleChoice = m.maxMultipleChoice;
+		outgoingSMS.correctAnswer = m.correctAnswer;
+		outgoingSMS.responseText = "";
+		outgoingSMS.userScore = 0;
+		outgoingSMS.save();
+		
+	}
+
+	return outgoingSMS;
+		
+}

@@ -1,0 +1,206 @@
+unit uIncoming_Client_Topic;
+
+void fIncomingClientHandler(Client c, string st){
+    return null;
+}
+
+
+/*
+
+    JV : December 2014 : Adjust "rewind" to new specifications
+
+    Client nc = fGetNewClient(c, st);
+    Pattern p = null; Sequence s = null; Topic t = null; TopicUserSetup tus = null;
+ 
+    if(nc != null){
+        
+        t = fGetNewTopic(st);
+        
+        if(t != null){
+            Mez:log("IncomingClientHandler..... Schedule Topic");
+            tus = TopicList:fGetTopicUserSetup(nc, t);
+            if(tus == null){
+                tus = fCreateNewTopicUserSetup(nc, t);
+            }
+        }
+        
+        if (tus != null) {
+            
+            Mez:log("IncomingClientHandler..... Start Topic");
+            TopicList:startTopic(tus, 0);
+        
+        } else {
+            s = fGetNewSequence(st); s = null; //avoid the sequence level for now
+            if (s != null){
+                
+                s = s;
+                
+            } else {
+                Mez:log("IncomingClientHandler..... Get Pattern");
+                p = fGetNewPattern(c, st);
+                if (p != null){
+                    
+                    Mez:log("IncomingClientHandler..... Start Pattern");
+                    SequenceList:fStartNextPatternIncoming(nc, p);
+                    
+                } else {
+                    
+                    uIncomingSMSForward:fSendErrorReturn(c, "", 14);
+                    
+                }
+            }
+        }
+        
+    }
+*/
+
+/* **************************************************************************** */
+/* **************************************************************************** */
+
+TopicUserSetup fCreateNewTopicUserSetup(Client c, Topic t){
+
+    if(c != null && t != null){
+        TopicUserSetup tUS = TopicUserSetup:new();
+        tUS.topicOrder = 1;
+        tUS.active = 0;
+        tUS.topicMinStartDate = Mez:now();
+    	tUS.client_topicUserSetup = c;
+        tUS.topic_topicUserSetup = t;
+        tUS.save();
+        return tUS;
+    } else {
+        return null;
+    }  
+    
+}
+
+/* **************************************************************************** */
+/* **************************************************************************** */
+
+Client fGetNewClient (Client cin, string st){
+    string cstr = fSMSInterpreter (st, "client");
+    Client[] cs = Client:equals(mobileNumber, cstr); Client c = null; Mez:log(cstr);
+    if (cstr == "me"){
+            c = cin;
+    } else if (cs.length()>0){
+            c = cs.get(0);
+        } else {
+            c = null;
+            //c = fCreateNewClient (cstr);
+        }
+    return c;
+}
+
+/* **************************************************************************** */
+/* **************************************************************************** */
+
+Client fCreateNewClient (string s){
+int i = String:length(s);
+if (i>5){
+    
+    Client c = Client:new();
+    string cid = "Incoming-SMS";
+    c.client_id = "";    
+    c.firstName = "";
+    c.surname = cid;
+    c.mobileNumber = s;
+
+    LearningManager lManager = LearningManager:user();
+    c.roleID = 2;
+    c.client_LearningManager = lManager;  
+    
+    LanguageKeyObject[] lks = LanguageKeyObject:equals(languageID, 1);
+    c.client_LanguageKey = lks.get(0);
+    
+    c.registered = Mez:now();
+    c.save();
+    return c;
+
+}
+    
+}
+
+/* **************************************************************************** */
+/* **************************************************************************** */
+
+Topic fGetNewTopic (string st){
+    string tstr = String:upper(fSMSInterpreter (st, "topic"));
+    Topic[] ts = Topic:equals(topicID, tstr); Topic t = null;
+    if (ts.length()>0){
+        t = ts.get(0);
+    }
+    return t;
+}
+
+Sequence fGetNewSequence (string st){
+    string tstr = String:upper(fSMSInterpreter (st, "topic"));
+    Sequence[] ss = Sequence:equals(sequenceID, tstr); Sequence s = null;
+    if (ss.length()>0){
+        s = ss.get(0);
+    }
+    return s;
+}
+
+Pattern fGetNewPattern (Client c, string st){
+    Pattern[] ps; Pattern p = null; string tstr = String:upper(fSMSInterpreter (st, "topic")); 
+    if(tstr == ""){
+        p = uGetCurrentSchedule:fGetCurrentPattern(c);
+    } else if(tstr == "1" || tstr == "2" || tstr == "3" || tstr == "4" || tstr == "5"){
+        p = fGetRewindPattern(c, tstr);
+    } else {
+        ps = Pattern:equals(patternID, tstr);
+        if (ps.length()>0){
+            p = ps.get(0);
+        }
+    }
+    return p;
+}
+
+/* **************************************************************************** */
+/* **************************************************************************** */
+
+Pattern fGetRewindPattern(Client c, string tstr){
+    int i = Integer:fromString(tstr); int maxi; Pattern pr = null; string s; PatternHistory ph;
+    if(i!=0 && i!=null){
+        i = i + 1;
+        PatternHistory[] phs = PatternHistory:relationshipIn(client_patternHistory, c); maxi = phs.length();
+        if (maxi>0){
+            if(maxi<i){ i = maxi; }
+            phs.sortDesc("startDate");
+            ph = phs.get(i-1); 
+            pr = ph.pattern_patternHistory;
+            Mez:log(pr.patternID);
+        }
+    }
+    return pr;
+}
+
+/* **************************************************************************** */
+/* **************************************************************************** */
+
+// rewind me TEST1
+// rewind me TEST1S1A1
+// rewind 254835912369 TEST1S1A1
+
+string fSMSInterpreter (string st, string c){
+    st = String:lower(st);
+    string[] rs = String:split(st, " "); string r = ""; int rsc = rs.length(); int i = 0;
+    if (rsc > 0){ if (rs.get(0) == "resetactivity"){i = 0;} }
+    
+    if (c == "client" && rsc > 1) { r = rs.get(i+1); return r; }
+    if (c == "topic" && rsc > 2) { r = rs.get(i+2); return r; }
+    
+    return r;
+}
+
+/* **************************************************************************** */
+/* **************************************************************************** */
+
+void fSaveLog (string[] rs){
+    Client c;
+    if(rs.length()>0){
+        for(int i = 0; i<rs.length(); i++){
+            BLUnits:saveAllSMSLogs(c, rs.get(i), "splitstring");
+        }
+    }
+}

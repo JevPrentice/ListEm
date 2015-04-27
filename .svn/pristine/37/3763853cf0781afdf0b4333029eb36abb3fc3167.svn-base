@@ -1,0 +1,98 @@
+unit ContentFilter;
+
+string message;
+
+Umbrella topic;
+Umbrella[] topics;
+
+Topic subTopic;
+Topic[] subTopics;
+
+Sequence sequence;
+Sequence[] sequences;
+
+Pattern activity;
+Pattern[] activities;
+
+Message o_message;
+Message[] messages;
+
+string refreshSelection;
+
+void init() {
+
+    message = "";
+
+    if (refreshSelection == null || refreshSelection == ""){
+        refreshSelection = "true";
+    } 
+
+    if (refreshSelection == "true"){
+        resetVars();
+    }
+}
+
+void resetVars(){
+
+    topic = null;
+    subTopic = null;
+    sequence = null;
+    activity = null;
+    o_message = null;
+
+    topics = TopicController:getAllTopics();
+    subTopics = SubTopicController:getAllSubTopics();
+    sequences = SequenceController:getAllSequences();
+    activities = ActivityController:getAllActivities();
+    messages = MessageController:getAllMessages();
+
+}
+
+void filterDropDowns(){
+
+    Topic[] topics_new;
+
+    if ( (topic == null) && (subTopic == null) && (sequence == null) && (activity == null) && (o_message == null) ){
+        message = "Please select categories to filter on";
+        Alerter:alert(message);
+        return null;
+    }
+
+    if (topic != null){
+        subTopics = SubTopicController:getSubTopicsForTopic(topic);
+    } 
+
+    if (subTopic != null){
+        sequences = SequenceController:getSequencesForSubTopic(subTopic);        
+    }
+
+    if (sequence != null){
+        activities = ActivityController:getActivitiesForSequence(sequence);
+    }
+
+    if (activity != null){
+        messages = MessageController:getMessagesForActivity(activity);
+    }
+
+
+    return null;
+}
+
+string viewResults(){
+
+    if ( (topic == null) && (subTopic == null) && (sequence == null) && (activity == null) && (o_message == null) ){
+        message = "Please select categories to filter on";
+        Alerter:alert(message);
+        return null;
+    }
+
+    filterDropDowns();
+
+    ContentViewer:topic = topic;
+    ContentViewer:subTopic = subTopic;
+    ContentViewer:sequence = sequence;
+    ContentViewer:activity = activity;
+    ContentViewer:o_message = o_message;
+
+    return "nav_content_viewer";
+}

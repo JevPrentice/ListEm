@@ -1,0 +1,6 @@
+{
+	"name":"User Activity Report by Topic and Sub-Topic",
+	"description":"User Activity Report by Topic and Sub-Topic",
+	"rolesAllowed":["ProgramManager"],
+	"hiddenFormats":["HTML", "PDF"]
+}

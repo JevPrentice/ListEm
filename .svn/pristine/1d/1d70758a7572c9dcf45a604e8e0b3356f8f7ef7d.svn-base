@@ -1,0 +1,57 @@
+unit Globals;
+
+string msg;
+
+bool isStringNumeric(string s){
+
+	int len = String:length(s);
+	
+	/* Its safe to cast to int; < 9 */
+	if (len < 9){
+		return isStringValidInt(s);
+	}
+
+	/* Iterate over the string, 9 'digits' at a time, return false for any char which isnt a num*/
+	for (int i = 0; len > 9; i++){
+
+		/* Get & Test first 9 digits of str */
+		bool isNumeric = isStringValidInt(String:substring(s, 0, 8));
+		if (isNumeric == false){
+			return false;
+		}
+		/* Move over the 9 digits */
+		s = String:substring(s, 8, (len - 1) );
+		/* update len */
+		len = String:length(s);
+	}
+
+	return isStringValidInt(s);
+}
+
+bool isStringValidInt(string s){
+	int i = Integer:fromString(s);
+	if (i == null){
+		return false;
+	}
+	return true;
+}
+
+Pharmacy[] getAllPharmacies(){
+	return Pharmacy:all(); //equals(deleted, "no");
+}
+
+Pharmacist[] getPharmacists(){
+	return Pharmacist:notEquals(deleted, "yes");
+}
+
+CareReceiver[] getCareReceivers(){
+	return CareReceiver:equals(deleted, "no");
+}
+
+LearningManager[] getAllLearningManagers() {
+	return LearningManager:all();
+}
+
+Npm[] getAllNpms() {
+	return Npm:equals(deleted, "no");
+}

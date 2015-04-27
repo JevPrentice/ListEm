@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="learningManager.GroupPPESummary.menu" unit="uPPESummary" init="initgroup">
+    
+        <!--<menuitem label="learningManager.PPESummary.mainmenu" icon="PPESummary" order="6">
+            <userRole>LearningManager</userRole>
+            <userRole>ProgramManager</userRole>
+        </menuitem>-->
+
+        <navigation outcome="ppe" target="vTSP_PPE_List" />
+        <action label="learningManager.PPESummary.menu" outcome="ppe"/>
+
+       <select label="client_group.info">
+            <binding variable="sClientGroup"/>
+			<collectionSource function="UserGroupController:getAllClientGroups">
+				<displayAttribute name="name"/>
+			</collectionSource>
+		</select>
+        
+    	<select label="sub_topic.subTopicID">
+			<binding variable="sTopic"/>
+			<collectionSource function="TopicList:getAllTopics">
+				<displayAttribute name="topicID"/>
+			</collectionSource>
+		</select>
+            
+        <submit label="ClientSummaryView.View" action="fFilterForGroup"/>
+        <submit label="PPE.groupmessagesendCHEW" action="fSendGroupMessagesCHEW"/>
+        <submit label="PPE.groupmessagesendTop" action="fSendGroupMessagesTop"/>
+        <submit label="PPE.groupmessagesendCHV" action="fSendGroupMessagesCHV"/>
+        
+        <table title="PPE.groupmessagetable">
+            <collectionSource function="fGetGroupMessages"/>
+            <column heading="PPE.groupmessageID">
+                <attributeName>iConfigValue</attributeName>
+            </column>
+            <column heading="PPE.groupmessagedestination">
+                <attributeName>sConfigValue</attributeName>
+            </column>
+            <column heading="PPE.groupmessagetext">
+                <attributeName>sConfigDescription</attributeName>
+            </column>
+        </table>
+        
+        <table title="learningManager.PPE.topictitle">
+            <collectionSource function="fShowAllTopicPPEsGroup"/>
+            <column heading="PPE.client">
+                <attributeName>client_topicPPE.mobileNumber</attributeName>
+                <attributeName>client_topicPPE.firstName</attributeName>
+            </column>
+            <column heading="PPE.topic">
+                <attributeName>topic_topicPPE.topicName</attributeName>
+            </column>
+            <column heading="PPE.progress">
+                <attributeName>progress</attributeName>
+            </column>
+            <column heading="PPE.effort">
+                <attributeName>effort</attributeName>
+            </column>
+            <column heading="PPE.score">
+                <attributeName>score</attributeName>
+            </column>
+            <column heading="PPE.performance">
+                <attributeName>performance</attributeName>
+            </column>
+        </table>
+
+        <table title="learningManager.PPE.sequencetitle">
+            <collectionSource function="fShowAllSequencePPEsGroup"/>
+            <column heading="PPE.client">
+                <attributeName>client_sequencePPE.mobileNumber</attributeName>
+                <attributeName>client_sequencePPE.firstName</attributeName>
+            </column>
+            <column heading="PPE.sequence">
+                <attributeName>sequence_sequencePPE.sequenceName</attributeName>
+            </column>
+            <column heading="PPE.progress">
+                <attributeName>progress</attributeName>
+            </column>
+            <column heading="PPE.effort">
+                <attributeName>effort</attributeName>
+            </column>
+            <column heading="PPE.score">
+                <attributeName>score</attributeName>
+            </column>            
+            <column heading="PPE.performance">
+                <attributeName>performance</attributeName>
+            </column>
+        </table>
+
+        <table title="learningManager.PPE.patterntitleGroup">
+            <collectionSource function="fShowAllPatternPPEsGroup"/>
+            <column heading="PPE.client">
+                <attributeName>client_patternPPE.mobileNumber</attributeName>
+                <attributeName>client_patternPPE.firstName</attributeName>
+            </column>
+            <column heading="PPE.pattern">
+                <attributeName>pattern_patternPPE.patternID</attributeName>
+            </column>
+            <column heading="PPE.progress">
+                <attributeName>progress</attributeName>
+            </column>
+            <column heading="PPE.effort">
+                <attributeName>effort</attributeName>
+            </column>
+            <column heading="PPE.score">
+                <attributeName>score</attributeName>
+            </column>            
+            <column heading="PPE.performance">
+                <attributeName>performance</attributeName>
+            </column>
+        </table>
+        
+    </view>
+</ui>

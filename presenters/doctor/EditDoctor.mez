@@ -1,0 +1,88 @@
+unit EditDoctor;
+
+/* When null create new, else edit */
+// Person person;
+
+Doctor doctor;
+
+string firstNames;
+string surname;
+string mobileNumber;
+string idNumber;
+GENDER gender;
+string doctorID;
+
+bool isEdit;
+string isEditDesc;
+
+void init(){
+
+	// if (person == null){
+	// 	person = Person:new();	
+	// }
+
+	if (doctor != null){
+		isEdit = true;
+		isEditDesc = "Edit Existing Doctor";
+
+		/* Set person if already associated */
+		// person = doctor.person;
+
+	} else {
+		isEdit = false;
+		isEditDesc = "Invite New Doctor";
+
+		doctor = Doctor:new();
+
+	}
+}
+
+void resetVars(){
+	// person = null;
+	doctor = null;
+	// mobileNumber = "";
+}
+
+string navigate(string location){
+	resetVars();
+	return location;
+}
+
+string back(){
+	return navigate("navManagePeople");
+}
+
+string saveDoctor(){
+
+	Person p = PersonController:createOrUpdatePerson(firstNames, surname, mobileNumber, idNumber, gender);
+
+	Doctor d = DoctorController:createOrEditDoctor(doctorID, p);
+
+	return navigate("navManageDoctors");
+}
+
+/*
+
+
+string saveDoctor(){
+
+	Person person = PersonController:createOrUpdatePerson(firstNames, surname, mobileNumber, idNumber, gender);
+
+	if (isEdit == false){ 
+
+	  	doctor.dateRegistered = Mez:now();
+	  	doctor.invite(mobileNumber);
+
+	} else {
+		if (mobileNumber != null || String:length(mobileNumber) > 0){
+			Alert:alert("Please note that the MobileNumber field cannot be updated");	
+		}
+	}
+
+	doctor.person = person;
+	doctor.save();
+
+	return navigate("navManageDoctors");
+}
+
+*/

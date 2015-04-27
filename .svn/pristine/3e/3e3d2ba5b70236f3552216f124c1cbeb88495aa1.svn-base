@@ -1,0 +1,46 @@
+unit ActivityTypeTableController;
+
+string msg;
+
+PatternTypeTable[] getActivityTypeTablesForActivityType(PatternType activityType){
+	return PatternTypeTable:relationshipIn(patternTypeTable_PatternType, activityType);
+}
+
+PatternTypeTable linkActivityActivityType(string patternid, string ptS, int rpm){
+    
+    Pattern[] p = Pattern:equals(patternID, patternid);
+    PatternType[] pt = PatternType:equals(patternTypeID, ptS);
+
+    if( (p.length()==0) || (pt.length() == 0) ){
+        msg = String:concat("UploadLog : linkActivityActivityType : No pattern or pattern type : ", patternid, " : ", ptS); 
+        Alerter:alert(msg);
+        Logger:log(msg);
+        return null;
+    }
+
+    /* ************ */
+    Pattern pC = p.get(0);
+    PatternType ptC = pt.get(0);
+    //PatternTypeTable[] check = PatternTypeTable:and(relationshipIn(patternTypeTable_PatternType, ptC),relationshipIn(patternTypeTable_Pattern,pC)); 
+    //if(check.length()>0) { return null; }                                                                                   // Prevents duplication
+    /* ************ */
+
+    /* ************ */
+    int channelID = ActivityController:getActivityChannelKeyID(pC);
+    if(channelID == 3){ return null; }
+    /* ************ */
+
+    PatternTypeTable ptt = PatternTypeTable:new();
+ 
+    ptt.randomPatternMax = rpm;
+    ptt.patternTypeTable_PatternType = ptC;
+    ptt.patternTypeTable_Pattern = pC;
+    ptt.save();
+
+    msg = String:concat("Activity:", patternid, " has been associated to ActivityType: ", ptC.patternTypeID); 
+    Alerter:alert(msg);
+    Logger:log(msg);
+
+    return ptt;
+ 
+}

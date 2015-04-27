@@ -1,0 +1,505 @@
+unit uCalculatePPESub;
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+int fGetConfigSetting(string cv){
+    
+    ConfigTable[] cfs = ConfigTable:equals(sConfigDescription, cv);
+  
+    if(cfs.length()>0){
+        ConfigTable cf = cfs.get(0);
+        return cf.iConfigValue;
+    } else {
+        return 0;
+    }
+}
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+void fCalculatePatternPPE (Client c, Pattern p, string s, int sc){
+
+    string slog = "";
+    if(sc!=0){
+        int channelID = ActivityController:getActivityChannelKeyID(p);
+        slog = String:concat("fCalculatePatternPPE for client : ", c.mobileNumber, 
+            " for pattern : ", p.patternID, 
+            " with Channel Type : ", channelID ,
+            " and with s : '", s,
+            "' and sc : ", sc); 
+        Mez:log(slog); 
+    }
+
+    if(fGetConfigSetting("PPE") == 0) { return null; }                          // Check Config for PPE setting
+    
+    if(uGetCurrentSchedule:fGetCurrentRunType(c) == 40) { return null; }        // Do not calculate PPE for Search runType
+
+    int tt = uGetCurrentSchedule:fGetCurrentTopicType(c);                       // Do not calculate Performance and Effort for Standard Topic Types (1-4)
+
+    if(tt==40) { return null; }                                                 // Do not calculate PPE for Search TopicType
+
+    fCalculatePatternPPEExec (c, p, tt, sc);
+    
+    fUpdateSequencePPE (c);
+    fUpdateTopicPPE (c);
+
+    /*  JV : Removed as Phase 2 does not use the IVR report back functionality for scoring
+        else if ((p.patternChannelID == "3") && (s != "")) { fCalculatePatternPPEIVR (c, p, s, tt, sc); }
+    }*/
+
+    return null;
+
+}
+
+/* ********************************************************************************************************** */
+/* *********************************** TOPIC PPE              *********************************************** */
+/* ********************************************************************************************************** */
+
+SequencePPE[] fGetSequencePPEforTopic(Client c, SequenceOrder[] sos){
+    SequencePPE[] sppes_comp; sppes_comp.clear();
+    SequencePPE[] sppes_all = SequencePPE:relationshipIn(client_sequencePPE, c); 
+    
+    int maxsppeloop = sppes_all.length(); int maxsoloop = sos.length();
+    SequencePPE sppe; SequenceOrder so; int i1; int i2; Sequence s1; Sequence s2;
+    
+    if ( (maxsppeloop != 0) && (maxsoloop != 0) ){
+    
+        for (i1 = 0; i1<maxsppeloop; i1++){
+            sppe = sppes_all.get(i1); s1 = sppe.sequence_sequencePPE;
+            for (i2 =0; i2<maxsoloop; i2++){
+                so = sos.get(i2); s2 = so.sequence_sequenceOrder;
+                if(s1 == s2){
+                    sppes_comp.append(sppe);
+                    i2 = maxsoloop;
+                }
+            }
+        }
+    
+    }
+     
+    return sppes_comp;
+}
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+TopicPPE[] fGetTopicPPECollections(Client c, Topic t, Umbrella u, int iProgress){
+
+    TopicPPE[] tppes;
+
+    if(c==null){ 
+        return null;
+    } else if(t==null&&u==null){
+        tppes = TopicPPE:relationshipIn(client_topicPPE, c);
+    } else if(t==null){
+        tppes = TopicPPE:and(relationshipIn(client_topicPPE, c),relationshipIn(umbrella_topicPPE, u)); 
+    } else if(u==null){
+        tppes = TopicPPE:and(relationshipIn(client_topicPPE, c),relationshipIn(topic_topicPPE, t)); 
+    } else {
+        if(iProgress==0){
+            tppes = TopicPPE:and(relationshipIn(client_topicPPE, c),relationshipIn(topic_topicPPE, t),relationshipIn(umbrella_topicPPE, u));
+        } else {
+            tppes = TopicPPE:and(relationshipIn(client_topicPPE, c),relationshipIn(topic_topicPPE, t),relationshipIn(umbrella_topicPPE, u), equals(progress, iProgress));
+        }
+    }
+
+    return tppes;
+
+}
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+TopicPPE fGetTopicPPE (Client c, Topic t, Umbrella u, int iProgress){
+
+    TopicPPE[] tppes = fGetTopicPPECollections(c, t, u, iProgress); TopicPPE tppe = null; 
+
+    if(tppes.length()>0){
+        tppe = tppes.get(0);    
+    } else {
+        tppe = TopicPPE:new();
+        tppe.client_topicPPE = c;
+        tppe.topic_topicPPE = t;
+        tppe.umbrella_topicPPE = u;
+    }
+
+    return tppe;
+
+}
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+TopicPPE fCalculateTopicPPE (TopicPPE te, int maxs, SequencePPE[] s_c){
+    
+    te.progress = 0; te.effort = 0; te.score = 0; te.performance = 0;
+    int maxc = s_c.length(); SequencePPE sppe; int maxcuse = 0;
+    
+    for(int i = 0; i<maxc; i++){
+        sppe = s_c.get(i); 
+        if(sppe.progress == 100) { maxcuse = maxcuse + 1;}
+        if(sppe.effort != null) { te.effort = te.effort + sppe.effort; }
+        if(sppe.score != null) { te.score = te.score + sppe.score; }
+    }
+    te.progress = fReturnPer(maxs, maxcuse);
+    te.performance = fReturnPer(te.effort, te.score);
+    
+    return te;
+    
+}
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+void fUpdateTopicPPE (Client c){
+
+    Topic t = uGetCurrentSchedule:fGetCurrentTopic (c); if(t==null){ return null; }
+    TopicUserSetup tU = uGetCurrentSchedule:fGetCurrentTopicUserSetup(c, t); if(tU==null){ return null; }
+    Umbrella u = tU.umbrella_topicUserSetup;
+
+    if( t != null){
+
+        // Find the relevant PPE record
+        TopicPPE tE = fGetTopicPPE(c, t, u, 0);
+
+        // Get all Sequences in the relevant Topic
+        SequenceOrder[] sos = SequenceOrder:relationshipIn(topic_sequenceOrder, t); int maxs = sos.length();
+
+        // Get the collection of Sequence PPEs that must be considered
+        SequencePPE[] sppes_comp = fGetSequencePPEforTopic(c, sos);
+
+        // Update the Topic PPE values
+        tE = fCalculateTopicPPE(tE, maxs, sppes_comp);
+        tE.save();
+
+        // Update the Umbrella PPE
+        if(tE.progress==100){ UmbrellaPPEController:fUpdateUmbrellaPPE (c, tU, t, tE, false); }
+
+    }
+
+    return null;
+
+}
+
+/* ********************************************************************************************************** */
+/* *********************************** SEQUENCE PPE            ********************************************** */
+/* ********************************************************************************************************** */
+
+PatternPPE[] fGetPatternPPEforSequence(Client c, PatternOrder[] pos){
+    PatternPPE[] pppes_comp; pppes_comp.clear();
+    PatternPPE[] pppes_all = PatternPPE:relationshipIn(client_patternPPE, c); 
+    
+    int maxpppeloop = pppes_all.length(); int maxpoloop = pos.length();
+    PatternPPE pppe; PatternOrder po; int i1; int i2; Pattern p1; Pattern p2;
+    
+    if ( (maxpppeloop != 0) && (maxpoloop != 0) ){
+    
+        for (i1 = 0; i1<maxpppeloop; i1++){
+            pppe = pppes_all.get(i1); p1 = pppe.pattern_patternPPE;
+            for (i2 =0; i2<maxpoloop; i2++){
+                po = pos.get(i2); p2 = po.pattern_patternOrder;
+                if(p1 == p2){
+                    pppes_comp.append(pppe);
+                    i2 = maxpoloop;
+                }
+            }
+        }
+    
+    }
+     
+    return pppes_comp;
+}
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+SequencePPE fGetSequencePPE (Client c, Sequence s){
+    SequencePPE sppe = null; SequencePPE[] sppes = SequencePPE:and(relationshipIn(client_sequencePPE, c),relationshipIn(sequence_sequencePPE, s)); 
+    if(sppes.length()>0){
+        sppe = sppes.get(0);    
+    } else {
+        sppe = SequencePPE:new();
+    }
+    sppe.client_sequencePPE = c;
+    sppe.sequence_sequencePPE = s;
+    return sppe;
+}
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+SequencePPE fCalculateSequencePPE (SequencePPE se, int maxp, PatternPPE[] p_c){
+    
+    se.progress = 0; se.effort = 0; se.score = 0; se.performance = 0;
+    int maxc = p_c.length(); int maxcuse = 0; PatternPPE pppe;
+    
+    for(int i = 0; i<maxc; i++){
+        pppe = p_c.get(i);
+        if(pppe.progress == 100) { maxcuse = maxcuse + 1; }        
+        if(pppe.effort != null) { 
+            se.effort = se.effort + pppe.effort;
+            if(pppe.effort != 0 ){
+                if(pppe.score != null) { se.score = se.score + pppe.score; }
+            }
+        }
+    }
+    se.progress = fReturnPer(maxp, maxcuse);
+    se.performance = fReturnPer(se.effort, se.score);
+    
+    return se;
+    
+}
+
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+void fUpdateSequencePPE (Client c){
+
+    Sequence s = uGetCurrentSchedule:fGetCurrentSequence (c); int i;
+    
+    if( s != null){
+        SequencePPE se = fGetSequencePPE(c, s);
+        PatternOrder[] pos = PatternOrder:relationshipIn(sequence_patternOrder, s); int maxp = pos.length();
+        PatternPPE[] pppes_comp = fGetPatternPPEforSequence(c, pos);
+        se = fCalculateSequencePPE(se, maxp, pppes_comp);
+        se.save();
+    }
+}
+
+/* ********************************************************************************************************** */
+/* *********************************** PATTERN PPE            *********************************************** */
+/* ********************************************************************************************************** */
+
+PatternPPE fGetPatternPPE (Client c, Pattern p){
+    PatternPPE pppe = null; PatternPPE[] pppes = PatternPPE:and(relationshipIn(client_patternPPE, c),relationshipIn(pattern_patternPPE, p)); 
+    if(pppes.length()>0){
+        pppe = pppes.get(0);    
+    } else {
+        pppe = PatternPPE:new();
+    }
+    pppe.client_patternPPE = c;
+    pppe.pattern_patternPPE = p;
+    return pppe;
+}
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+    int fReturnEffortSMSNew (string o, int tt){
+
+        // Set variables for later use
+        int r = 0; int rreturn = 0; int ds = 1;
+
+        // Get response status key
+        int c = Integer:fromString(o); if (c == null) { return rreturn; }
+
+        // Indicate whether to score response... only done for answers that are correct (100) or that were considered and are incorrect (30-39)
+        if ( ( (c >= 30) && (c <= 39) ) || (c == 100) ) { r = 1; }
+        
+        // Get default score based on topic type
+        string scorekey = "DefaultScore";
+        if(tt==6){ scorekey = "DefaultScorePracticum"; }
+        ds = BLUnits:fGetConfigSettingInt(scorekey); 
+        if(ds==null){ ds = 1; }
+
+        // Calculate actual return        
+        rreturn = r*ds;
+        return rreturn;
+    
+    }
+
+    /*int fReturnEffortSMS (string o){
+        int r = 0; int c = Integer:fromString(o); if (c == null) { return 0; }
+        if ( ( (c >= 30) && (c <= 39) ) || (c == 100) ) { r = 1; }
+        return r;
+    }*/
+
+    /* ******************************************** */
+
+    int fReturnScoreSMSNew (int o){
+        if (o==null) {  o = 0; }
+        return o;   
+
+    }
+
+    /*int fReturnScoreSMS (string o){
+        int r = 0; int c = Integer:fromString(o); if (c == null) { return 0; }
+        if ( (c == 100) ) { r = 1; }
+        return r;    
+    }*/
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+    int fGBP(string s, string s1){
+        int m = String:length(s); if(m<=0) {return 0;}
+        string s2;
+        for(int i = 0; i<m; i++){
+            s2 = ""; s2 = String:substring(s,i,i);
+            if (s1 == s2) { return i; }
+        }
+        return m;
+    }
+
+    /* ******************************************** */
+
+    int fI(string s){
+        int r1 = 0; int r2 = 0; string subs = ""; int m = String:length(s); int b = fGBP(s, ".");
+        if (b == m) {  
+            r1 = Integer:fromString(s);
+        } else if ( (b>=0) && ((b+1)<m) ) {
+            subs = String:substring(s, 0, b-1); r1 = Integer:fromString(subs);
+            subs = String:substring(s, b+1, b+1); r2 = Integer:fromString(subs);
+            if(r2>=5){r1 = r1 + 1;}
+        }
+        return r1;
+    }
+
+    /* ******************************************** */
+
+    int fReturnPer (decimal iE, decimal iS){ /* iEffort, iScore */
+        decimal maxP = 100; decimal d; string s; int r;
+        if(iE == 0 || iS == 0){
+            r = 0;
+        } else {
+            d = ((iS / iE * maxP));
+            s = String:concat("", d);
+            r = fI(s);
+            if(r>maxP){r = maxP;}
+        }
+        return r;
+    }
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+PatternPPE fCalculateSMSPatternValues(PatternPPE pppe, int tt, int sc){
+
+    Pattern p = pppe.pattern_patternPPE; int iS = 0; int iE = 0; int iP = 0;
+    Client c = pppe.client_patternPPE;
+    bool bIsSMS = false; 
+
+    /* JP HEL-178 */
+    int channelID = ActivityController:getActivityChannelKeyID(p);
+    if(channelID == 1){ bIsSMS = true; }
+
+    if(p == null || c == null){ return pppe; }
+
+    if(tt>=5 && tt<=10 && bIsSMS==true){    
+        OutgoingSMS[] oss = OutgoingSMS:and(relationshipIn(outgoingSMS_client, c), relationshipIn(outgoingSMS_pattern, p));
+        OutgoingSMS o; int maxi = (oss.length()-1); 
+            if (maxi>=0){
+                for(int i = 0; i <= maxi; i++ ){
+                    o = oss.get(i);
+                    iE = iE + fReturnEffortSMSNew (o.status, tt);
+                    iS = iS + fReturnScoreSMSNew (o.userScore);
+                }
+            }
+    }
+
+    if(sc==1){ iP=100; }
+
+    pppe.effort = iE;
+    pppe.score = iS;
+    pppe.performance = fReturnPer(iE, iS);
+    pppe.progress = iP;    
+    return pppe;
+}
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+void fCalculatePatternPPEExec (Client c, Pattern p, int tt, int sc){
+    PatternPPE pppe = fGetPatternPPE(c, p);
+    pppe = fCalculateSMSPatternValues(pppe, tt, sc);
+    pppe.save();
+    return null;
+}
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+
+//*done*TEST1S1A2;User_ID=254725754454;Language_ID=1;Activity_ID=T3S5A2;Pass_Fail_A=true;Pass_Fail_B=0;Pass_Fail_C=0;Pass_Fail_D=5;Activity_Score=4;Instruction_Code=3;Comment=T3S5A2
+/*
+    int fExtractIVR2(string s2, string splits){
+        int r = 0; string ex; int exs; int exe;
+        if(String:startsWith(s2, splits) == true){
+            exs = String:length(splits);
+            exe = String:length(s2)-1;
+            if(exs<=exe){
+                ex = String:substring(s2, exs, exe);
+                r = Integer:fromString(ex);
+                if (r == null) {r = -99;}
+            }
+        }
+        return r;
+    }
+ */   
+    /* ******************************************** */
+/*
+    int fExtractIVR(string s, string splits){
+        string s2; int i = 0; int r = 0; int m = 0; string[] ss = String:split(s, ";");
+        
+        if (ss!=null){
+            m = (ss.length());
+            if(m>0){
+                for (i=0; i<m; i++){
+                    s2 = ss.get(i);
+                    r = fExtractIVR2(s2, splits);
+                    if (r == -99) { r = 0; return r; } else if (r != 0 ) { return r; }
+                }
+            }
+        }
+        
+        return r;
+    }
+*/
+    /* ******************************************** */
+/*    
+    int fReturnEffortIVR (string s){
+        int r = fExtractIVR(s, "Pass_Fail_D=");
+        return r;
+    }
+*/
+    /* ******************************************** */
+/*
+    int fReturnScoreIVR (string s){
+        int r = fExtractIVR(s, "Activity_Score=");
+        return r;
+    }
+ */   
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+/*
+PatternPPE fCalculateIVRPatternValues(PatternPPE pppe, string s, int tt, int sc){
+
+    int iS = 0; int iE = 0; int iP = 0;
+    
+    if(tt>=5 && tt<=10){
+        iS = fReturnScoreIVR(s);
+        iE = fReturnEffortIVR(s);
+    }
+
+    if(sc==1) { iP=100; }
+
+    pppe.effort = iE;
+    pppe.score = iS;
+    pppe.performance = fReturnPer(iE, iS);
+    pppe.progress = iP;    
+    return pppe;
+}
+*/
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */
+/*
+void fCalculatePatternPPEIVR (Client c, Pattern p, string s, int tt, int sc){
+    PatternPPE pppe = fGetPatternPPE(c, p);
+    pppe = fCalculateIVRPatternValues(pppe, s, tt, sc);
+    pppe.save();
+    return null;
+}
+*/
+
+/* ********************************************************************************************************** */
+/* ********************************************************************************************************** */

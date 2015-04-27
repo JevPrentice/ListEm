@@ -1,0 +1,77 @@
+unit UserProfile;
+
+Client uClient;
+string groupName;
+ClientDetails uClientDetails;
+UserPerformanceOverview[] rows;
+bool csvResetClient;
+string nav_destination_on_back;
+string msg;
+
+void init() {
+
+	uClientDetails = uClient.client_details;
+	csvResetClient = false;
+}
+
+string back(){
+
+	if ( String:length(nav_destination_on_back) > 0 ){
+        return nav_destination_on_back;
+    }
+    
+    return null;	
+}
+
+string edit_profile(){
+	UserEdit:uClient = uClient;
+	UserEdit:nav_destination_after_save = "UserProfile";
+	return "nav_user_edit";
+}
+
+UserPerformanceOverview[] getUserPerformanceOverview(){	
+	rows = null;
+	rows.clear();
+	return rows;
+}
+
+string fReactivateClient(){
+    if(uClient != null){
+        if(csvResetClient == false){
+            Mez:alert("clientsummary.reactivatewarning");
+            csvResetClient = true;
+        } else {
+            uResetUsers:fReactivateClient(uClient);
+            uClient = Client:new();
+            init();
+        }
+    }
+    return null;
+}
+
+void activate_or_deactivate(){
+
+    if(uClient == null){
+        msg = "Client Not Found";
+        Alerter:alertError(msg);
+        return;
+    }
+
+    if (uClient.isActive == null){
+        uClient.isActive = true;
+        msg = "Client Activated";
+        Alerter:alert(msg);
+        return;
+    }
+
+    if (uClient.isActive == true){
+        uClient.isActive = false;
+        msg = "Client Deactivated";
+        Alerter:alert(msg);
+    } else {
+        uClient.isActive = true;
+        msg = "Client Activated";
+        Alerter:alert(msg);
+    }
+
+}

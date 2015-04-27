@@ -1,0 +1,433 @@
+unit uGetCurrentSchedule;
+
+/* ************************************************************************************** */
+/* Functions to retrieve the current Topic, Sequence and Pattern where they are not known */
+/* ************************************************************************************** */
+
+void fSendStatusSummary(Client c){
+    Mez:log("Status of T S A returned to user");
+    Topic t = fGetCurrentTopic(c);
+    Sequence s = fGetCurrentSequence(c);
+    Pattern p = fGetCurrentPattern(c);
+    string pT; string rT;
+    if(t != null){
+        int channelID = ActivityController:getActivityChannelKeyID(p);
+        if(channelID==1){pT = String:concat(p.patternID," - SMS");}else if(channelID==3){pT = String:concat(p.patternID," - IVR");}
+        rT = Strings:concat("Your current topic is [", t.topicID, " : ", t.topicName,"] and your current sequence is [", s.sequenceID, " : ", s.sequenceName,"]. Your current activity ID is [", pT, "].");
+        BLUnits:SendSMSToClient(c,rT);
+    }
+}
+
+/* ************************************************************************************ */
+/* ************************************************************************************ */
+
+int fGetCurrentRunType(Client c){
+
+    int r = 0;
+    TopicUserSetup tU = TopicUserSetupList:getActiveTopicFromTopicUserSetup(c);
+    /* JP HEL-178 */
+    if(tU!=null){ 
+        r = tU.runType;
+    }
+    return r;
+}
+
+/* ************************************************************************************ */
+/* ************************************************************************************ */
+
+Umbrella fGetLastUmbrella(Client c, Topic t){
+
+    Umbrella rU = null;
+
+    TopicUserSetup[] tUs = TopicUserSetup:and(relationshipIn(client_topicUserSetup, c), relationshipIn(topic_topicUserSetup, t)); TopicUserSetup tU;
+    if(tUs.length()>0){
+        tUs.sortDesc("topicMinStartDate"); tU = tUs.get(0);
+        rU = tU.umbrella_topicUserSetup;
+        if(rU==null){
+            rU = fGetLastUmbrella2(t);
+        }
+    }
+
+    return rU;
+}
+
+Umbrella fGetLastUmbrella2(Topic t){
+
+    Umbrella uR = null;
+
+    UmbrellaTopicSetupTable[] uts = UmbrellaTopicSetupTable:relationshipIn(topic_UmbrellaUserSetup,t);
+    UmbrellaTopicSetupTable ut;
+
+    if(uts.length()>0){
+        ut = uts.get(0);
+        uR = ut.umbrella_UmbrellaUserSetup;
+    }
+
+    return uR;
+
+}
+
+/* ************************************************************************************ */
+/* ************************************************************************************ */
+
+Umbrella fGetCurrentUmbrella(Client c){
+    Umbrella ur = null;
+
+    TopicUserSetup tU = TopicUserSetupList:getActiveTopicFromTopicUserSetup(c);
+    if(tU!=null){
+        ur = tU.umbrella_topicUserSetup;
+    }
+    
+    return ur;
+}
+
+/* ************************************************************************************ */
+/* ************************************************************************************ */
+
+
+// Check to see if the Topic is the First Topic in the Umbrella - that will reset the maximum allowed period for the Umbrella
+bool fIsFirstorLastTopicInUmbrella(TopicUserSetup tUS, string code){
+    bool r = true;
+
+    Umbrella u = tUS.umbrella_topicUserSetup;
+    Topic t = tUS.topic_topicUserSetup; Topic tComp;
+    Client c = tUS.client_topicUserSetup;
+    LanguageKeyObject lko = c.client_LanguageKey;
+
+    if( u!=null && t!=null && c!=null && lko!=null ){
+
+        tComp = Umbrella:fGetIndexZeroTopicInUmbrella(u, lko, code);
+        if(tComp != t){ r = false; }
+
+    }
+
+    return r;
+}
+
+/* ************************************************************************************ */
+/* ************************************************************************************ */
+
+int fGetCurrentTopicType(Client c){
+
+    int r = 0;
+    Topic t = fGetCurrentTopic(c);
+    if(t!=null){
+        r = t.topicType;
+    }
+    return r;
+
+}
+
+/* ************************************************************************************ */
+/* ************************************************************************************ */
+
+TopicUserSetup fGetCurrentTopicUserSetup(Client c, Topic t){
+    TopicUserSetup tU = TopicList:fGetLatestTopicUserSetupByCode(c, t, 1);
+    return tU;
+}
+
+/* ************************************************************************************ */
+/* ************************************************************************************ */
+
+Topic fGetLastPausedTopic(Client c){
+    TopicUserSetup[] tUs = TopicUserSetup:and(relationshipIn(client_topicUserSetup,c), equals(active,20)); TopicUserSetup tU;
+    if(tUs.length()>0){
+        tUs.sortAsc("topicMinStartDate");
+        tU = tUs.get(0);
+        return tU.topic_topicUserSetup;
+    }
+    return null;
+}
+
+/* ************************************************************************************ */
+/* ************************************************************************************ */
+
+// Get Previous Topic where not known
+Topic fGetPreviousTopic(Client c){
+    
+    TopicHistory[] ths = TopicHistory:and(relationshipIn(client_topicHistory, c), notEquals(statusID, 1));
+    TopicHistory th;
+    Topic t;
+    
+    if (ths.length() == 0){
+        return null;
+    } else {
+        ths.sortAsc("startDate");
+        th = ths.last();
+        t = th.topic_topicHistory;
+        return t;
+    }
+    
+}
+
+// Get Current Topic where not known
+Topic fGetCurrentTopic(Client c){
+
+    TopicHistory[] ths = TopicHistory:and(relationshipIn(client_topicHistory, c), equals(statusID, 1));
+    TopicHistory th;
+    Topic t;
+    
+    if (ths.length() == 0){
+        return null;
+    } else {
+        ths.sortDesc("startDate");
+        th = ths.get(0);
+        t = th.topic_topicHistory;
+        return t;
+    }
+    
+}
+
+/* JP */
+Topic fGetCurrentTopicIncludePaused(Client c){
+
+    //TopicHistory[] ths = TopicHistory:and(relationshipIn(client_topicHistory, c), equals(statusID, 1));
+
+    TopicHistory[] ths = TopicHistory:union(
+        and(
+            relationshipIn(client_topicHistory, c),
+            equals(statusID,1)),
+        and(
+            relationshipIn(client_topicHistory, c),
+            equals(statusID,20))
+    );
+    
+    TopicHistory th;
+    Topic t;
+    
+    if (ths.length() == 0){
+        return null;
+    } else {
+        ths.sortDesc("startDate");
+        th = ths.get(0);
+        t = th.topic_topicHistory;
+        return t;
+    }
+    
+}
+
+/* ************************************************************************************ */
+/* ************************************************************************************ */
+
+// 19Nov13 - JV
+// Get Previous Topic where not known
+Sequence fGetPreviousSequence(Client c){
+    
+    SequenceHistory[] shs = SequenceHistory:and(relationshipIn(client_sequenceHistory, c), notEquals(statusID, 1));
+    SequenceHistory sh; Sequence s;
+    
+    if (shs.length() == 0){
+        return null;
+    } else {
+        shs.sortAsc("startDate");
+        sh = shs.last();
+        s = sh.sequence_sequenceHistory;
+        return s;
+    }
+    
+}
+
+// Get Current Sequence where not known
+Sequence fGetCurrentSequence(Client c){
+
+    SequenceHistory[] shs = SequenceHistory:and(relationshipIn(client_sequenceHistory, c), equals(statusID, 1));
+    SequenceHistory sh; Sequence s;    
+    
+    if (shs.length() == 0){
+        return null;
+    } else {
+        shs.sortDesc("startDate");
+        sh = shs.get(0);
+        s = sh.sequence_sequenceHistory;
+        return s;
+    }
+    
+}
+
+/* ************************************************************************************ */
+/* ************************************************************************************ */
+
+// 19Nov13 - JV
+// Get Previous Topic where not known
+Pattern fGetPreviousPattern(Client c){
+    
+    PatternHistory[] phs = PatternHistory:and(relationshipIn(client_patternHistory, c), notEquals(statusID, 1));
+    PatternHistory ph; Pattern p;
+    
+    if (phs.length() == 0){
+        return null;
+    } else {
+        phs.sortAsc("startDate");
+        ph = phs.last();
+        p = ph.pattern_patternHistory;
+        return p;
+    }
+    
+}
+
+// Get Current Pattern where not known
+Pattern fGetCurrentPattern(Client c){
+
+    PatternHistory[] phs = PatternHistory:and(relationshipIn(client_patternHistory, c), equals(statusID, 1));
+    PatternHistory ph; Pattern p;
+    
+    if (phs.length() == 0){
+        return null;
+    } else {
+        phs.sortDesc("startDate");
+        ph = phs.get(0);
+        p = ph.pattern_patternHistory;
+        return p;
+    }
+    
+}
+
+/* ************************************************************************************ */
+/* ************************************************************************************ */
+
+/*
+string fGetLastMessage (Client c){
+    OutgoingSMS[] osmss = OutgoingSMS:relationshipIn(outgoingSMS_client, c);
+    OutgoingSMS osms;
+    if (osmss.length()>0){
+        osmss.sortDesc("dateTimeStamp");
+        osms = osmss.first();
+        return osms.messageText;
+    } else
+    {
+        return "";
+    }
+}
+*/
+
+/* ************************************************************************************ */
+/* ************************************************************************************ */
+
+string fGetProgressMessage (Client c, int iCode){
+
+    string st = "";
+    string current_smspatternsms = ""; // First send message in current SMS pattern table
+    string current_patternstartsms = ""; // Then send start message of current pattern if current pattern = IVR
+    string previoustopicendsms = ""; // Then send end message of previous topic - if it exists
+    string previoussequenceendsms = ""; // Then send end message of previous sequence - if it exists
+    string previouspatternendsms = ""; // Then send end message of previous pattern - if it exists
+    string previousmessagesms = ""; // Then send previous message as per outgoing message table
+    string defaultprogresssms = ""; // Then send default progress sms
+
+    /* ************************************************************************************ */
+    /* *** ERROR IN THIS SECTION WHEN CALLED FROM PROGRESS : REWORKED BY JV 15 JAN 2015 *** */
+
+    Pattern p = fGetCurrentPattern(c);
+
+    if(p!=null){
+        int channelID = ActivityController:getActivityChannelKeyID(p);
+        if(channelID == 3){
+
+            if(p.patternStartSMS!=null){
+                current_patternstartsms = p.patternStartSMS;
+                if (current_patternstartsms==null){current_patternstartsms = "";}
+                if (current_patternstartsms != ""){st = current_patternstartsms; return st;}
+            }
+
+        } else if(channelID == 1) {
+
+            OutgoingSMS[] oSs = OutgoingSMS:relationshipIn(outgoingSMS_client, c); OutgoingSMS oS;
+            if(oSs.length()>0) { 
+
+                oSs.sortDesc("dateTimeStamp"); oS = oSs.get(0);
+                current_smspatternsms = oS.messageText;
+                if(current_smspatternsms==null){current_smspatternsms = "";}
+                if (current_smspatternsms != ""){st = current_smspatternsms; return st;}
+
+            }
+
+        }
+
+    }
+
+     /* *** ERROR IN THIS SECTION WHEN CALLED FROM PROGRESS : REWORKED BY JV 15 JAN 2015 *** */
+    /* ************************************************************************************ */
+
+    /* ************************************************************************************ */
+    Topic prevTopic = fGetPreviousTopic(c);
+    if(prevTopic != null){
+        previoustopicendsms = prevTopic.topicEndSMS;
+    }
+    if (previoustopicendsms==null){previoustopicendsms = "";}
+    if (previoustopicendsms != ""){st = previoustopicendsms; return st;} 
+    /* ************************************************************************************ */
+
+    /* ************************************************************************************ */
+    Sequence prevSequence = fGetPreviousSequence(c);
+    if(prevSequence != null){
+        previoussequenceendsms = prevSequence.sequenceEndSMS;
+    }
+    if (previoussequenceendsms==null){previoussequenceendsms = "";}
+    if (previoussequenceendsms != ""){st = previoussequenceendsms; return st;}
+    /* ************************************************************************************ */
+
+    /* ************************************************************************************ */
+    Pattern prevPattern = fGetPreviousPattern(c);
+    if(prevPattern != null){
+        previouspatternendsms = prevPattern.patternEndSMS;
+    }
+    if (previouspatternendsms==null){previouspatternendsms = "";}
+    if (previouspatternendsms != ""){st = previouspatternendsms; return st;}
+    /* ************************************************************************************ */  
+ 
+    /* ************************************************************************************ */   
+    defaultprogresssms = FixMessageList:fMessageStringPerFixedMessages(c, "7"); 
+    if (defaultprogresssms != ""){st = defaultprogresssms; return st;}
+    /* ************************************************************************************ */   
+    
+    return st;
+
+}
+
+/* ************************************************************************************ */    
+
+/* ********************************************* */
+/* ********************************************* */
+
+int fPauseCurrentOrResumeLastTopicLocal(Client c, int i){
+    Topic t = null; int r = 0; string sreturn = "";
+
+    if(i==1){
+        t = fGetCurrentTopic(c);
+    } else if(i==2){
+        t = fGetLastPausedTopic(c);
+    }
+
+    if(c!=null&&t!=null){
+        sreturn = NewFlowControllers:fPauseTopic(c, t, i); r = 1;
+    }
+
+    return r;
+
+}
+
+/* ************************************************************************************ */  
+/* ************************************************************************************ */  
+/* ************************************************************************************ */  
+
+void fsmsCHWProgressTextExec(Client c){
+
+    string st = ""; int r = 0;
+    
+    r = NewFlowControllers:fPurgeSearchTopics(c);                       // Purge search topics if there are any available
+
+    if(r!=0){
+        FixMessageList:sendFixedMessage(c, "20", "");
+        r = fPauseCurrentOrResumeLastTopicLocal(c, 2);                  // Pause or resume after purge
+    }
+
+   if(r==0){                                                            // If not paused or resumed after purge, then send progress message
+
+        st = fGetProgressMessage (c, 1);
+        if(st != "") {
+            BLUnits:SendSMSToClient(c, st);
+        } 
+
+    }
+
+}

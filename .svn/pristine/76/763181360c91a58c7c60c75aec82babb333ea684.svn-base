@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="group_edit.title" unit="GroupEdit" init="init">
+
+        <navigation outcome="nav_group_management" target="GroupManagement" />
+        <!-- <navigation outcome="navToUserManagement" target="UserManagement" /> -->
+
+        <action label="back" action="back"/>
+
+        <textfield label="client_group._id">
+             <binding variable="groupID" />
+        </textfield>
+
+        <textfield label="group_management.groupName">
+             <binding variable="groupName" />
+        </textfield>
+
+        <select label="group_management.geographyType">
+            <binding variable="geographyType">
+                <!-- <attribute name="geographyType"/> -->
+            </binding>
+            <enum>GEOGRAPHY</enum>
+        </select>
+
+        <select label="client_group.assing_chew">
+            <binding variable="group">
+                 <attribute name="client_chews"/>
+            </binding>
+           <collectionSource function="ClientList:getClients">
+                <displayAttribute name="firstName"/>
+                <displayAttribute name="surname"/>
+                <displayAttribute name="mobileNumber"/>
+            </collectionSource>
+        </select>
+
+        <select label="group_edit.countyFilter">
+            <binding variable="county" />
+           <collectionSource function="CountyController:getAllCounties">
+                <displayAttribute name="countyName"/>
+            </collectionSource>
+        </select>
+
+        <submit label="group_edit.showSubCountiesForCounty" action="showSubCountiesForCounty"/>
+
+        <select label="Counties">
+            <binding variable="subCounty" />
+           <collectionSource variable="subCounties">
+                <displayAttribute name="subCountyName"/>
+            </collectionSource>
+        </select>
+
+        <submit label="delete" action="remove_group"/>
+        <submit label="save" action="saveGroup"/>
+
+    </view>
+</ui>

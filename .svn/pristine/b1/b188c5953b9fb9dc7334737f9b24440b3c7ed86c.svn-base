@@ -1,0 +1,44 @@
+unit BroadcastMessage;
+
+CLIENTTYPE selectedType;
+
+AllSMSLog[] smsLog;
+
+void init(){
+	SmartChew chew = SmartChew:user();
+
+	if (chew == null){
+		Alerter:alert("No SmartChew Found"); return null;
+	}
+
+	Client c = chew.client;
+	smsLog = AllSmsLogController:getAllSmsLogsForUser(c);
+}
+
+string navigate(string location){
+	return location;
+}
+
+string next(){
+
+	if (selectedType == null){
+		Alerter:alertError("Please select a Boradcast Type.");
+		return null;
+	}
+
+	if (selectedType == CLIENTTYPE.Chv){
+		return navigate("navBroadcastChv");
+	} else if (selectedType == CLIENTTYPE.Chew){
+		// Alerter:alertError("Not yet.");
+		// return null;
+		return navigate("navBroadcastChew");
+	} else {
+		Alerter:alertError("Please select a valid Boradcast Type.");
+		return null;
+	}
+
+}
+
+string update(){
+	init();
+}

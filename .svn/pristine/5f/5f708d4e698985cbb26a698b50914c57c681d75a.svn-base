@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="EditCounty.title" unit="EditCounty" init="init">
+        
+        <navigation outcome="navManageCounties" target="ManageCounties"/>
+
+        <action label="back" outcome="navManageCounties"/>
+
+        <textfield label="County.countyName">
+            <binding variable="countyName" />
+        </textfield>
+
+        <!-- <textfield label="County.gpsLat">
+            <binding variable="gpsLat" />
+        </textfield>
+
+        <textfield label="County.countyName">
+            <binding variable="gpsLong" />
+        </textfield> -->
+
+        <!-- <select label="County.geography">
+            <binding variable="geography" />
+            <enum>GEOGRAPHY</enum>
+        </select> -->
+
+        <submit label="save" action="createCounty"/>
+
+    </view>
+</ui>

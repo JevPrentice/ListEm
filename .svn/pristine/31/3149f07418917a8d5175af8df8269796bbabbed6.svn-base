@@ -1,0 +1,20 @@
+unit AverageCUProgress;
+
+vSummaryGroupTopicDisplay[] results;
+
+void init(){
+
+	SmartChew chew = SmartChew:user();
+	Client c = chew.client;
+	Umbrella[] topics = TopicController:getTopicsWithActiveAndScheduledChvsForChew(c);
+	results = ViewControllers:getSummaryGroupTopicDisplayForTopics(topics);
+
+}
+
+string navigate(string location){
+	return location;
+}
+
+string back(){
+	return navigate("navCUPerformance");
+}

@@ -1,0 +1,67 @@
+unit ManageSubCounties;
+
+County county; /* Filter */
+SubCounty subCounty;
+
+SubCounty[] subCounties;
+
+string msg;
+
+void init(){
+	populateSubCounties();
+}
+
+void populateSubCounties(){
+	if (county == null){
+		subCounties = SubCountyController:getAllSubCounties();
+	} else {
+		subCounties = SubCountyController:getSubCountiesForCounty(county);
+	}
+}
+
+void resetVars(){
+	subCounty = null;
+	county = null;
+	subCounties.clear();
+}
+
+string navigate(string location){
+	resetVars();
+	return location;
+}
+
+string back(){
+	return navigate("navManageCounties");
+}
+
+string navCreateSubCounty(){
+	EditSubCounty:county = county;
+	return navigate("navEditSubCounty");
+}
+
+string editSubCounty(){
+	EditSubCounty:subCounty = subCounty;
+	return navigate("navEditSubCounty");
+}
+
+void deleteCounty(){
+
+	if (subCounty == null){
+		msg = "The selected Sub-County could not be found.";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	if (SubCountyController:isGroupAssignedToSubCounty(subCounty) == true){
+		msg = "The selected Sub-County could not be removed, it is currently associated to at least one User Group.";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	SubCounty:delete(subCounty);
+
+	msg = "Sub-County Deleted";
+	Alerter:alert(msg);
+
+	resetVars();
+}

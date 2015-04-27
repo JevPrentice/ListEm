@@ -1,0 +1,149 @@
+unit CareReceiverList;
+
+CareReceiver uCareReceiver;
+Pharmacist uPhamacist;
+
+FileObject uFileObject;
+DisclaimerMessage uDisclaimerMessage;
+DisclaimerMessage acceptDM;
+
+string uCallBackOutcome;
+bool bEditCareReceiver; 
+bool bDeleteCareReceiver;
+
+CareReceiver editCareReceiver;
+CareReceiver deleteCareReceiver;
+
+InputTypeObject uInputTypeObject;
+LanguageKeyObject languageKey;
+
+void init(){
+	
+	uInputTypeObject = InputTypeObject:new();
+    uCareReceiver = CareReceiver:new();
+    uCareReceiver.deleted = "no";
+    
+    uFileObject = FileObject:new();
+    
+    bEditCareReceiver = false;
+    bDeleteCareReceiver = false;
+   
+    DisclaimerMessage[] dms = DisclaimerMessage:and(equals(languageID, 1),equals(typeID, 1));
+    if(dms.length() >0){
+    	uDisclaimerMessage = dms.first();
+    }
+    
+}
+/******************************************************************************** */
+
+/******************************************************************************** */
+void setup(Pharmacist p, string callbackoutcome){
+	uPhamacist = p;
+	uCallBackOutcome = callbackoutcome;
+}
+/******************************************************************************** */
+
+/******************************************************************************** */
+CareReceiver[] getCareReceivers(){
+    return CareReceiver:all();
+}
+/******************************************************************************** */
+
+/******************************************************************************** */
+string saveCareReceiver(){
+	
+	uCareReceiver.mobileNumber = String:concat("", uInputTypeObject.numericValue);
+	
+    if(uInputTypeObject.numericValue == null){ return null;    }
+    
+	if((uCareReceiver.ageCap == false) || (uCareReceiver.health_status == false)){
+		Mez:alert("alert_error_message.carereciever_registration");
+		return "PharmacistForm";
+	}
+	
+	uPhamacist = Pharmacist:user();
+	int i = String:length(uCareReceiver.mobileNumber); 
+	
+	if(i<8){  
+		Mez:alert("careR.careRList.saveCareReceiverAlertInvalidNumber");
+		return null;
+	}
+
+    if(bEditCareReceiver==true){
+        editCareReceiver.registered = Mez:now();
+        editCareReceiver.careReceiver_LanguageKey = languageKey;
+        
+        /* Link the care receiver to a pharmacy */
+        uCareReceiver.careReceiver_pharmacy =  uPhamacist.pharmacist_pharmacy;
+        editCareReceiver.save();
+        
+        Mez:alert("careR.careRList.submitInviteAlert");
+    } else {
+    	uCareReceiver.registered = Mez:now();
+    	uCareReceiver.roleID = 7;
+		uCareReceiver.deleted = "no";
+		uCareReceiver.status =1;
+        uCareReceiver.careReceiver_LanguageKey = languageKey;
+        
+        /* Link the care receiver to a pharmacy */
+        uCareReceiver.careReceiver_pharmacy =  uPhamacist.pharmacist_pharmacy;
+    }
+    return "DisclaimerForm"; 
+}
+
+string editCareReceiver(){
+	setup(Pharmacist:user(), "PharmacistForm");
+	return "CareReceiverListForm";
+}
+string viewCareReceiver(){
+	setup(Pharmacist:user(), "PharmacistForm");
+	return "viewCareReceiverListForm";
+}
+
+string  removeCareReceiver(){
+	if((uCareReceiver.status == 1) && (uCareReceiver.deleted == "no")){
+		uCareReceiver.deleted ="yes";
+		uCareReceiver.save();
+	}
+	setup(Pharmacist:user(), "PharmacistForm");
+	return "PharmacistForm";
+}
+
+/******************************************************************************** */
+
+/******************************************************************************** */
+string Signconsent(){
+	uFileObject.fileconsent_careReceiver = uCareReceiver;
+	uCareReceiver.consent = "yes";
+	uCareReceiver.save();
+	uFileObject.save();
+	Mez:alert("careR.careRList.submitInviteAlert");
+	
+	init();
+	return "PharmacistForm";
+}
+
+/******************************************************************************** */
+/******************************************************************************** */
+string goBack(){
+	return uCallBackOutcome;
+}
+/******************************************************************************** */
+/******************************************************************************** */
+string Continue(){
+	acceptDM = DisclaimerMessage:new();
+	acceptDM.disclaimerMessageText = "Thank you for accepting the disclaimer. On the next screen, you will be asked to sign with your finger on the screen of the phone to confirm that you accept the terms and conditions of this program.";
+	return "DisclaimerAcceptance_confirm_message";
+}
+/******************************************************************************** */
+
+/******************************************************************************** */
+string disclamerAcceptanceContinue(){
+	return "Signconsent";
+}
+/******************************************************************************** */
+
+/******************************************************************************** */
+string Cancel(){
+	return "Cancel";
+}

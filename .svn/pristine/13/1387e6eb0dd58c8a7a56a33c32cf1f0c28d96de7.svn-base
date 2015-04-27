@@ -1,0 +1,72 @@
+unit PatternHistoryList;
+
+PatternHistory patternHistory;
+
+void init() {
+	patternHistory = PatternHistory:new();
+}
+
+string editPatternHistory() {
+	return null;
+}
+
+string savePatternHistory() {
+	patternHistory.save();
+	return null;
+}
+
+string deletePatternHistory() {
+	PatternHistory:delete(patternHistory);
+	return null;
+}
+
+PatternHistory[] fGetAllPatternHistorys() {
+	return PatternHistory:all();
+}
+
+/* ************************************************ */
+/* ************************************************ */
+
+void fUpdatePatternHistory(Pattern p, Client c, int i){
+ 
+    PatternHistory ph;
+    PatternHistory[] phs = PatternHistory:intersect(relationshipIn(pattern_patternHistory, p), relationshipIn(client_patternHistory, c), equals(statusID, 1));
+    
+    if(phs.length() > 0) {
+    	phs.sortAsc("startDate");
+        ph = phs.last();
+		ph.statusID = i;
+		ph.actualEndDate = Mez:now();
+		ph.save();
+	}
+}
+
+/* ********************************************* */
+/* ********************************************* */
+
+void fCreatePatternHistory (Sequence s, Pattern p, Client c){
+
+    PatternHistory ph;
+    PatternHistory[] phs = PatternHistory:intersect(relationshipIn(pattern_patternHistory, p), relationshipIn(client_patternHistory, c), equals(statusID, 1));
+
+    if (phs.length()>0){
+        ph = phs.get(0);
+    } else {
+        ph = PatternHistory:new();
+    }
+    
+        ph.statusID = 1;
+        ph.escalationID = 0;
+        ph.pattern_patternHistory = p;
+    	ph.client_patternHistory = c;
+        ph.sequence_patternHistory = s;
+    
+        datetime startDate = Mez:now();
+        ph.startDate = startDate;
+        ph.reminderTime = Date:addDays(startDate, p.patternReminderTime);
+    	ph.save();
+
+}
+ 
+/* ********************************************* */
+/* ********************************************* */

@@ -1,0 +1,61 @@
+unit BroadcastChv;
+
+ClientGroup selectedGroup;
+
+/* Only display groups associated to logged in CHEW */
+ClientGroup[] groups;
+
+// KIT kit;
+CHVTEMPLATEMESSAGE templateMessage;
+
+// SmartChew smartChew;
+// Client client;
+
+void init(){
+
+	SmartChew chew = SmartChew:user();
+
+	if (chew == null){
+		Alerter:alert("No SmartChew Found"); return;
+	}
+
+	Client c = chew.client;
+
+	// groups = c.group;
+	// groups = UserGroupController:getGroupsForWhichClientIsChew(c);
+	// groups = group.client_chews;
+	groups = UserGroupController:getGroupsForWhichClientIsLinked(c);
+}
+
+string navigate(string location){
+	return location;
+}
+
+string back(){
+	return navigate("navBroadcastMessage");
+}
+
+string next(){
+
+	if (selectedGroup == null){
+		Alerter:alert("No Group selected");
+		return;
+	}
+
+	if (templateMessage == null){
+		Alerter:alert("No Template selected");
+		return;
+	}
+
+	if (templateMessage == CHVTEMPLATEMESSAGE.KitsReady){
+		BroadcastChvKit:selectedGroup = selectedGroup;
+		BroadcastChvKit:templateMessage = templateMessage;
+		return navigate("navBroadcastChvKit");	
+	}
+	
+	BroadcastChvConfig:selectedGroup = selectedGroup;
+	BroadcastChvConfig:templateMessage = templateMessage;
+	BroadcastChvConfig:kit = null;
+	return navigate("navBroadcastChvConfig");
+	
+}

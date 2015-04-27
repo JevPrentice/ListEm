@@ -1,0 +1,30 @@
+@Restrict("SmartChew", all())
+persistent object JumpTo {
+
+	string userResponse;
+	int scoreAdjustment;
+	int jumpToType;
+
+	/* Incoming message restriction - in other words only act if responding to specific message */
+
+	@ManyToOne
+	Message messageIn_JumpTo;
+
+	/* Destination : Jump To */
+
+	@ManyToOne
+	Umbrella umbrella_JumpTo;
+
+	@ManyToOne
+	Topic topic_JumpTo;
+
+	@ManyToOne
+	Pattern pattern_JumpTo;
+
+	@ManyToOne
+	Sequence sequence_JumpTo;
+
+	@ManyToOne
+	Message messageTo_JumpTo;
+
+}

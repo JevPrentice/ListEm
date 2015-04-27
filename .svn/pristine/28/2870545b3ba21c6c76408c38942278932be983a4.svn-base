@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="broadcast_message.title" unit="BroadcastMessage" init="init">
+
+        <navigation outcome="navBroadcastChv" target="BroadcastChv" />
+        <navigation outcome="navBroadcastChew" target="BroadcastChew" />
+
+        <menuitem label="broadcast_message.title" icon="UserSystemsReport" order="1">
+            <userRole>SmartChew</userRole>
+        </menuitem>
+
+        <select label="broadcast_message.clientType">
+            <binding variable="selectedType" />
+            <enum>CLIENTTYPE</enum>
+        </select>
+        
+        <submit label="next" action="next"/>
+        
+        <table title="broadcast_message.messages" defaultSortColumn="0" defaultSortDirection="descending">
+            <collectionSource variable="smsLog"/>
+            <column heading="AllSMSLog.dateTimeStamp">
+                <attributeName>dateTimeStamp</attributeName>
+            </column>
+              <column heading="AllSMSLog.messageText">
+                <attributeName>direction</attributeName>
+                <attributeName>messageText</attributeName>
+            </column>
+        </table>
+        <submit label="update" action="update"/>
+    </view>
+</ui>

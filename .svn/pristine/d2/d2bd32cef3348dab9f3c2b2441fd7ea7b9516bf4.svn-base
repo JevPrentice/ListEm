@@ -1,0 +1,90 @@
+unit GroupUsers;
+
+ClientGroup group; /* Group on which page is filtered */
+
+Client unLinkedUser;
+Client linkedUser;
+
+Client[] associated_clients;
+Client[] unassociated_clients;
+
+string message;
+string nav_return;
+
+void init() {
+	resetVars();
+}
+
+void resetVars() {
+	unassociated_clients = UserController:getAllUnassociatedClients();
+	associated_clients = UserController:getAssociatedClientsForGroup(group);
+
+	// unLinkedUser = null;
+	// linkedUser = null;
+}
+
+string back(){
+	nav_return = "nav_group_management";
+	return navigate();
+}
+
+string navigate(){
+	resetVars();
+	return nav_return;
+}
+
+string edit_user(){
+	UserEdit:group = group;
+	UserEdit:nav_destination_after_save = "GroupUsers";
+	nav_return = "nav_user_edit";
+	return navigate();
+}
+
+void linkUser(){
+	unLinkedUser.group = group;
+	unLinkedUser.save();
+
+	message = String:concat("User ", unLinkedUser.firstName, " ", unLinkedUser.surname, " linked to Group: ", group.name);
+	Alerter:alert(message);
+
+	init();
+}
+
+void unLinkUser(){
+
+	linkedUser.group = null;
+	linkedUser.save();
+
+	message = String:concat("User ", linkedUser.firstName, " ", linkedUser.surname, " unlinked from Group: ", group.name);
+	Alerter:alert(message);
+
+	init();
+
+}
+
+string view_activity(){
+
+	UserActivity:uClient = linkedUser;
+	UserActivity:nav_destination_on_back = "nav_group_users";
+	
+	nav_return = "nav_user_activty";
+	return navigate();
+
+}
+
+string view_profile(){
+
+	UserProfile:uClient = linkedUser;
+	UserProfile:nav_destination_on_back = "nav_group_users";
+	nav_return = "nav_user_profile";
+	return navigate();
+
+}
+
+string nav_group_performance(){
+
+	GroupPerformance:group = group;
+	nav_return = "nav_group_performance";
+	return navigate();
+
+}

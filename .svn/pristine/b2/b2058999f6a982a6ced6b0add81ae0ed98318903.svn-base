@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="message_management.title" unit="MessageManagement" init="init">
+
+        <navigation outcome="nav_message_order_management" target="MessageOrderManagement" />
+        <navigation outcome="nav_message_edit" target="MessageEdit" />
+
+        <action label="back" action="back"/>
+        <action label="message_management.createMessage" action="createMessage"/>
+        
+        <table title="message_management.table">
+            <collectionSource function="MessageController:getAllMessages"/>
+            <column heading="message_management.messageID">
+                <attributeName>_MTID</attributeName>
+            </column>
+            <column heading="message_management.messageText">
+                <attributeName>_MT_text</attributeName>
+            </column>
+            <column heading="message_management.maxMultipleChoice">
+                <attributeName>maxMultipleChoice</attributeName>
+            </column>
+              <column heading="message_management.correctAnswer">
+                <attributeName>correctAnswer</attributeName>
+            </column>
+            <column heading="message_management.informCorrectText">
+                <attributeName>informCorrectText</attributeName>
+            </column>
+            <rowAction label="edit" action="editMessage">
+                <binding variable="o_message"/>
+            </rowAction>
+            <rowAction label="delete" action="deleteMessage">
+                <binding variable="o_message"/>
+                <confirm subject="message_management.table.delete.confirm.subject" body="message_management.table.delete.confirm.body"/>
+            </rowAction>
+        </table>
+    </view>
+</ui>

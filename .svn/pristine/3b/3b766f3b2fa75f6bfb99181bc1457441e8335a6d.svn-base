@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="activity_order_edit.title" unit="ActivityOrderEdit" init="init">
+        
+        <navigation outcome="nav_activity_order_management" target="ActivityOrderManagement" />
+        <navigation outcome="nav_content_viewer" target="ContentViewer"/>
+        
+        <action label="back" action="navigate"/>
+        
+        <select label="sequence">
+			<binding variable="sequence"/>
+			<collectionSource function="SequenceList:getAllSequences">
+				<displayAttribute name="sequenceID"/>
+			</collectionSource>
+		</select>
+		
+		<select label="activity">
+			<binding variable="activity"/>
+			<collectionSource function="PatternList:getPatterns">
+				<displayAttribute name="patternID"/>
+			</collectionSource>
+		</select>
+       
+		<textfield label="activityOrder">
+            <binding variable="orderNumber" />
+        </textfield>
+		
+		<submit label="submit" action="saveActivityOrder"/>
+        
+    </view>
+</ui>

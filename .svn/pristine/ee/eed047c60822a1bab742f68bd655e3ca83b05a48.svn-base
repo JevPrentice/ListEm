@@ -1,0 +1,24 @@
+persistent object vAll {
+	
+	int reportorder;
+	string summarylevel;
+	string topicid;
+	string subtopicid;
+	int subtopictype;
+	string groupname;
+	string firstname;
+	string surname;
+	string mobilenumber;
+	datetime startdate;
+	datetime enddate;
+	string statusid;
+	int duration;
+	string statusdescription;
+	int progress;
+	int quizscore;
+	int chatcount;
+	int chatscore;
+	int practicumscore;
+	int totalscore;
+
+}

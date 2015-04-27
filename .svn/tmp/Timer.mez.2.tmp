@@ -1,0 +1,6 @@
+/* BN 2015-04-21 */
+persistent object Timer {
+
+    datetime lastcheck;
+    int time_threshold;
+}

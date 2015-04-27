@@ -1,0 +1,86 @@
+unit PersonController;
+
+string msg;
+
+Person[] getAllPeople(){
+	return Person:all();
+}
+
+Person[] getPeopleForMobileNumber(string mobileNumber){
+	return Person:equals(mobileNumber, mobileNumber);
+}
+
+Person[] getPeopleForIdNumber(string idNumber){
+	return Person:equals(idNumber, idNumber);
+}
+
+Person getPersonForIdNumber(string idNumber){
+	Person[] matchingPeople = Person:equals(idNumber, idNumber);
+	if (matchingPeople.length() <= 0){
+		return null;
+	}
+	return matchingPeople.get(0);
+}
+
+Person createOrUpdatePerson(string firstNames, string surname, string mobileNumber, string idNumber, GENDER gender){
+
+	if (firstNames == null || String:length(firstNames) < 1){
+		msg = "Please enter a First Name"; Alert:alert(msg);
+		return null;
+	}
+
+	if (surname == null || String:length(surname) < 1){
+		msg = "Please enter a Surname"; Alert:alert(msg);
+		return null;
+	}
+
+	if (mobileNumber == null || String:length(mobileNumber) < 8 || String:length(mobileNumber) > 12){
+		msg = "Please enter a MobileNumber"; Alert:alert(msg);
+		return null;
+	}
+
+	if (Globals:isStringNumeric(mobileNumber) == false){
+		msg = "Please enter a numeric MobileNumber"; Alert:alert(msg);
+		return null;
+	}
+
+	if (idNumber == null || String:length(idNumber) != 13){
+		msg = "Please enter a IDNumber"; Alert:alert(msg);
+		return null;
+	}
+
+	if (gender == null){
+		msg = "Please select a Gender"; Alert:alert(msg);
+		return null;
+	}
+
+	Person person = getPersonForIdNumber(idNumber);
+	bool isEdit = true;
+
+  	if (person == null) {
+  		person = Person:new();
+  		person.dateRegistered = Mez:now();
+  		isEdit = false;
+  	}
+
+	person.firstNames = firstNames;
+	person.surname = surname;
+	person.mobileNumber = mobileNumber;
+	person.idNumber = idNumber;
+	person.gender = gender;
+	
+	if (isEdit == false){
+		person.save();	
+	}
+
+	return person;
+	
+}
+
+// bool doesPersonExist(string idNumber){
+// 	Person[] flag = getPeopleForIdNumber(idNumber);
+// 	if (flag.length() <= 0) {
+//   		return false;
+//   	}
+//   	return true;
+// }

@@ -1,0 +1,390 @@
+unit UserController;
+
+string msg;
+
+Client[] getAllUsers(){
+    return Client:all();
+}
+
+
+/* roleID 1 = CHV; roleID 2 = CHEW */
+Client[] getCHEWUsers(){
+    return Client:equals(roleID, 2);
+}
+
+Client getLogUserTestUser(){
+    Client[] arr = Client:and(
+        equals(firstName, "LogUser"),
+        equals(surname, "LogUser"),
+        equals(nickname, "LogUser"),
+        equals(mobileNumber, "27000000000")
+        );
+
+    if (arr == null || arr.length() <= 0){
+        return null;
+    }
+    return arr.get(0);
+}
+
+Client getJevPrenticeTestUser(){
+    Client[] arr = Client:and(
+        equals(firstName, "JP"),
+        equals(surname, "JP"),
+        equals(nickname, "JP"),
+        equals(mobileNumber, "27766432235")
+        );
+
+    if (arr == null || arr.length() <= 0){
+        return null;
+    }
+    return arr.get(0);
+}
+
+Client getJohnVorsterTestUser(){
+    Client[] arr = Client:and(
+        equals(firstName, "JV"),
+        equals(surname, "JV"),
+        equals(nickname, "JV"),
+        equals(mobileNumber, "27835912369")
+        );
+
+    if (arr == null || arr.length() <= 0){
+        return null;
+    }
+    return arr.get(0);
+}
+
+Client[] getAllUnassociatedClients(){
+
+	Client[] all_clients = Client:all(); 
+    Client[] returnArray = null; 
+    Client c;
+    ClientGroup cg;
+
+    for(int i = 0; i < all_clients.length(); i++){
+        c = all_clients.get(i);
+        cg = c.group;
+        
+        if (cg == null){
+        	returnArray.append(c);
+        }
+    }
+
+    return returnArray;
+}
+
+Client[] getAssociatedClientsForGroup(ClientGroup cgIn){
+    Client[] clientReturnArr = null;   
+
+    Client[] allClients = Client:all();
+    
+    Client c;
+    ClientGroup cg;
+
+    for(int i = 0; i < allClients.length(); i++){
+        c = allClients.get(i);
+        cg = UserGroupController:getGroupForClient(c);
+        
+        if (cg == cgIn){
+            clientReturnArr.append(c);
+        }
+    }
+
+    return clientReturnArr;    
+}
+
+Client[] getClientsActiveForTopic(Umbrella t){
+
+    TopicUserSetup[] tusArr = TopicUserSetupController:getActiveTopicUserSetupsForTopic(t);
+    Client[] clients = getNonDuplicateUsersForTopicUserSetupArr(tusArr); 
+
+    return clients;
+}
+
+// Client[] getClientsForTopic(Umbrella t){
+
+//     TopicUserSetup[] tusArr = TopicUserSetupController:getTopicUserSetupsForTopic(t);
+//     Client[] clients = getNonDuplicateUsersForTopicUserSetupArr(tusArr); 
+
+//     return clients;
+// }
+
+// Client[] getClientsForSubTopic(Topic st){
+
+//     TopicUserSetup[] tusArr = TopicUserSetupController:getTopicUserSetupsForSubTopic(st);
+//     Client[] clients = getNonDuplicateUsersForTopicUserSetupArr(tusArr);
+
+//     for(int i = 0; i < clients.length(); i++){
+//         Client c = clients.get(i);
+//     }
+
+//     return clients;
+// }
+
+Client[] getClientsActiveForSubTopic(Topic st){
+
+    TopicUserSetup[] tusArr = TopicUserSetupController:getActiveTopicUserSetupsForSubTopic(st);
+    Client[] clients = getNonDuplicateUsersForTopicUserSetupArr(tusArr);
+
+    for(int i = 0; i < clients.length(); i++){
+        Client c = clients.get(i);
+    }
+
+    return clients;
+}
+
+Client[] getClientsActiveForChannel(ChannelKeyObject cko){
+
+    // msg = String:concat("Searching Active Patterns that are channel=", cko.patternChannelDescription);
+    // Logger:log(msg);
+
+    Client[] users;
+
+    if (cko == null){
+        return null;
+    }
+
+    TopicUserSetup[] tusArr = TopicUserSetupController:getAllActiveTopicUserSetups();
+
+    // msg = String:concat("There are ", tusArr.length(), " active TopicUserSetups");
+    // Logger:log(msg);
+
+
+    for (int i = 0; i < tusArr.length(); i++){
+        TopicUserSetup tus = tusArr.get(i);
+
+        Topic st = tus.topic_topicUserSetup;
+
+        // msg = String:concat("TopicUserSetup:", i, " - ", st.topicID, " is the SubTopic");
+        // Logger:log(msg);
+
+        if (st != null){
+           Sequence[] sArr = SequenceController:getSequencesForSubTopic(st);
+
+            // msg = String:concat(st.topicID, "has :", sArr.length(), " Sequences");
+            // Logger:log(msg);
+
+            for(int j = 0; j < sArr.length(); j++){
+                Sequence s = sArr.get(j);
+                Pattern[] aArr = ActivityController:getActivitiesForSequence(s);
+
+                // msg = String:concat("Sequence: ", j, " - has ", aArr.length(), " Activities ");
+                // Logger:log(msg);
+
+                for (int k = 0; k < aArr.length(); k++){
+                    Pattern a = aArr.get(k);
+
+                    if (a != null){
+                        ChannelKeyObject activityCko = a.PatternChannelKey;
+                        Client[] tusClientArr;
+                        if (activityCko != null){
+                            if (activityCko.patternChannelID == cko.patternChannelID){
+                                
+                                tusClientArr = tus.client_topicUserSetup;
+
+                                // msg = String:concat("Activity=", a.patternID, " is channel: ", activityCko.patternChannelDescription ," process these ", tusClientArr.length() ," users");
+                                // Logger:log(msg);
+
+                                for (int q = 0; q < tusClientArr.length(); q++){
+                                    Client c = tusClientArr.get(i);
+                                    Pattern currentActivity = uGetCurrentSchedule:fGetCurrentPattern(c);
+
+                                    // msg = String:concat("Activity=", a.patternID, "Client[",q, "]=", c.firstName);
+                                    // Logger:log(msg);
+
+                                    if (currentActivity == a){
+                                        // msg = String:concat("Client[",q, "]=", c.firstName, " is CURRENTLY BUSY with this activity, COUNT IT");
+                                        // Logger:log(msg);
+                                        users = combineClientCollections(users, tusClientArr);
+                                    } 
+                                    // else {
+                                    //     msg = String:concat("Client[",q, "]=", c.firstName, " is CURRENTLY NOT BUSY with this activity, DONT COUNT IT");
+                                    //     Logger:log(msg);
+                                    // }
+                                }
+                            } 
+                            // else {
+                            //     msg = String:concat("Activity=", a.patternID, " is channel: ", activityCko.patternChannelDescription ," DO NOT process however many users are busy with this");
+                            //     Logger:log(msg);
+                            // }
+                        }
+                    }
+                }
+           }
+        }
+    }
+    return users;
+}
+
+Client[] getNonDuplicateUsersForTopicUserSetupArr(TopicUserSetup[] tusArr){
+    Client[] users;
+    users.clear();
+    for(int i = 0; i < tusArr.length(); i++){
+        TopicUserSetup tus = tusArr.get(i);
+
+        if (tus != null){
+            Client[] tusClientArr = tus.client_topicUserSetup;
+
+            users = combineClientCollections(users, tusClientArr);
+        }
+    }
+    return users;
+}
+
+Client[] combineClientCollections(Client[] arr1, Client[] arr2){
+
+    if (arr1 == null || arr1.length() == 0){
+        return arr2;
+    }
+
+    if (arr2 == null || arr2.length() == 0){
+        return arr1;
+    }
+
+    for(int i = 0; i < arr2.length(); i++){
+        Client c = arr2.get(i);
+
+        if (isClientInClientCollection(c, arr1) == false){
+            arr1.append(c);
+        }
+
+    }
+
+    return arr1;
+}
+
+Client[] getRecordsInBothCollections(Client[] arr1, Client[] arr2){
+
+    Client[] returnArr;
+
+    if (arr1 == null || arr1.length() == 0 || arr2 == null || arr2.length() == 0){
+        return null;
+    }
+
+    for (int i = 0; i < arr1.length(); i++){
+        Client c = arr1.get(i);
+
+        if (isClientInClientCollection(c, arr2) == true){
+            returnArr.append(c);
+        }
+    }
+
+    return returnArr;
+}
+
+bool isClientInClientCollection(Client needle, Client[] haystack){
+
+    Client c;
+    for (int i = 0; i < haystack.length(); i++){
+        c = haystack.get(i);
+        if (needle == c){
+            return true;
+        }
+    }
+    return false;
+}
+
+Client[] getUniqueScheduledUsers(){
+
+    //Get all scheduled users
+    TopicUserSetup[] scheduledTusArr = TopicUserSetupController:getScheduledTus();
+    Client[] scheduledUsers = getNonDuplicateUsersForTopicUserSetupArr(scheduledTusArr);
+
+    //get all active users
+    TopicUserSetup[] activeTusArr = TopicUserSetupController:getActiveTus();
+    Client[] activeUsers = getNonDuplicateUsersForTopicUserSetupArr(activeTusArr);
+
+    // collect users who are scheduled and not active
+    Client[] usersReturn;
+    for(int i = 0; i < scheduledUsers.length(); i++){
+        Client scheduledUser = scheduledUsers.get(i);
+        
+        if (isClientInClientCollection(scheduledUser, activeUsers) == false){
+            usersReturn.append(scheduledUser);
+        }
+    }
+
+    return usersReturn;
+}
+
+Client[] getActiveAndScheduledInProgressUsers(){
+    TopicUserSetup[] tusArr = TopicUserSetupController:getActiveAndScheduledInProgressTus();
+    Client[] users = getNonDuplicateUsersForTopicUserSetupArr(tusArr);
+    return users;
+}
+
+Client[] getUniqueActiveUsers(){
+    TopicUserSetup[] tusArr = TopicUserSetupController:getActiveTus();
+    Client[] users = getNonDuplicateUsersForTopicUserSetupArr(tusArr);
+    return users;
+}
+
+//6 and 7
+//isScheduled=true -- Scheduled for another Topic
+//isScheduled=false -- Not Scheduled for another Topic
+int countUniqueSearchingButScheduledForAnotherTopic(bool isScheduled){
+
+    Client[] usersReturn;
+
+    TopicUserSetup[] tusScheduledAndSearching = TopicUserSetupController:getActiveScheduledAndSearchingTus();
+    Client[] usersScheduledAndSearching = getNonDuplicateUsersForTopicUserSetupArr(tusScheduledAndSearching);
+    
+    // string str = String:concat("tusScheduledAndSearching: ", tusScheduledAndSearching.length());
+    // Logger:log(str);
+    // Alerter:alert(str);
+
+    TopicUserSetup[] tusPausedButNotSearching = TopicUserSetupController:getPausedButNotSearching();
+    Client[] usersPausedButNotSearching = getNonDuplicateUsersForTopicUserSetupArr(tusPausedButNotSearching);
+
+    // str = String:concat("usersPausedButNotSearching: ", usersPausedButNotSearching.length());
+    // Logger:log(str);
+    // Alerter:alert(str);
+
+    for(int i = 0; i < usersScheduledAndSearching.length(); i++){
+        Client userScheduledAndSearching = usersScheduledAndSearching.get(i);
+
+        if (isClientInClientCollection(userScheduledAndSearching, usersPausedButNotSearching) == isScheduled){
+            usersReturn.append(userScheduledAndSearching);
+        }
+    }
+
+    return usersReturn.length();
+}
+
+int countUniqueNotScheduled(){
+    
+    Client[] userReturn;
+
+    /* Get Scheduled Users */
+    Client[] scheduledUsers;
+
+    TopicUserSetup[] tusArr = TopicUserSetupController:getActiveAndScheduled();
+    for (int i = 0; i < tusArr.length(); i++){
+        TopicUserSetup tus = tusArr.get(i);
+        if (tus != null){
+            scheduledUsers.append(tus.client_topicUserSetup);
+        }
+    }
+
+    /* Get Users not in Scheduled Users list */
+    Client[] users = getAllUsers();
+
+    int count = 0;
+
+    for (int i = 0; i < users.length(); i++){
+        Client c = users.get(i);
+
+        if (isClientInClientCollection(c, scheduledUsers) == false){
+            userReturn.append(c);
+            // Alerter:alert(String:concat("count: ", c.firstName));    
+        } 
+        // else {
+            // Alerter:alert(String:concat("dont count: ", c.firstName));    
+
+        // }
+    }
+    return userReturn.length();
+}
+
+
+

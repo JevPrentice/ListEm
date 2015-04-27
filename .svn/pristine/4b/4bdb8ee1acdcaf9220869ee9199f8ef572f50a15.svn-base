@@ -1,0 +1,69 @@
+unit Laggards;
+
+Client selectedLaggard;
+Client[] laggards;
+
+void init(){
+
+	SmartChew chew = SmartChew:user();
+	Client c = chew.client;
+
+	laggards = getLaggardsSummary(c);
+
+}
+
+Client[] getLaggardsSummary(Client chew){
+
+	Client[] arr;
+
+	ClientGroup[] groups = UserGroupController:getGroupsForWhichClientIsLinked(chew);
+	for (int i = 0; i < groups.length(); i++){
+		ClientGroup group = groups.get(i);
+
+		Client[] groupChvs = group.client_chws;
+
+		for (int j = 0; j < groupChvs.length(); j++){
+			Client chv = groupChvs.get(j);
+		
+			UmbrellaPPE[] ppeArr = UmbrellaPPEController:getLaggingTopicsForUser(chv);
+			if (ppeArr.length() > 0){
+				arr.append(chv);	
+			}
+		}
+	}
+
+	return arr;
+}
+
+string navigate(string location){
+	return location;
+}
+
+string back(){
+	return navigate("navCUPerformance");
+}
+
+string sendReminder(){
+
+	UmbrellaPPE currentPPE;
+
+	// UmbrellaPPE currentPPE = UmbrellaPPEController:fGetClientCurrentUmbrellaPPE(selectedLaggard);
+	UmbrellaPPE[] ppeArr = UmbrellaPPEController:getLaggingTopicsForUser(selectedLaggard);
+
+	if (ppeArr.length() >= 1){
+		// if (ppeArr.length() > 1){
+		// }
+
+		currentPPE = ppeArr.get(0);
+	} else {
+		msg = "Users Topic Not found"; Alerter:alert(msg);
+		return null;
+	}
+
+	Umbrella topic = currentPPE.umbrella_umbrellaPPE;
+
+	string smsText = String:concat("Please remember to complete ", topic.umbrellaID, " topic");
+	BLUnits:SendSMSToClient(selectedLaggard, smsText);
+
+	string msg = String:concat("Laggard Notification Sent to ", selectedLaggard.mobileNumber, ". Message Text:", smsText); Logger:log(msg); Alerter:alert(msg);
+}

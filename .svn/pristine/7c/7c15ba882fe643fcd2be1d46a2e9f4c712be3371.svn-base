@@ -1,0 +1,37 @@
+unit GroupManagement;
+
+ClientGroup group;
+
+string msg;
+
+// void init() {}
+
+string navigate(string location){
+	return location;
+}
+
+string back(){
+	return navigate("back");
+}
+
+string add_group(){
+	GroupEdit:group = null;
+	return navigate("add_edit_group");
+}	
+
+string edit_group(){
+	GroupEdit:group = group;	
+	return navigate("add_edit_group");
+}
+
+string add_multiple_groups(){
+	return navigate("nav_group_bulk_upload");
+}
+
+string manage_group_users(){
+	GroupUsers:group = group;
+	return navigate("manage_group_users");
+}
+
+
+

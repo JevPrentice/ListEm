@@ -1,0 +1,570 @@
+unit uResetUsers;
+
+//uResetUsers:fReactivateClientSpecificPattern (Client c, Pattern p)
+//uResetUsers:fReactivateClientSpecificSequence (Client c, Sequence s)
+//uResetUsers:fReactivateClientSpecificTopic (Client c, Topic t)
+
+/* ************************************************************************************************** */
+/* ************************************************************************************************** */
+
+/* CLEARING WITH KEYS AS CLIENT AND PATTERN */
+
+void fReactivateClientSpecificPattern (Client c, Pattern p){
+
+    if(c==null||p==null){ return null; }
+    //string slog = String:concat("Reactivate... CLEARING WITH KEYS AS CLIENT: ", c.mobileNumber, " AND PATTERN: ", p.patternID); Mez:log(slog);
+
+        PatternHistory[] xxs = PatternHistory:and(relationshipIn(client_patternHistory, c), relationshipIn(pattern_patternHistory, p));
+        PatternHistory x; int maxi = (xxs.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                x = xxs.get(i); PatternHistory:delete(x);
+            }
+        }
+        
+        fCCR_P(c);
+        fCPPE_P(c, p);
+
+        /* JP HEL-178 */
+        int channelID = ActivityController:getActivityChannelKeyID(p);
+
+        if(channelID == 1) { fClearClientOutgoingSMSHistory (c, p); }
+
+}
+
+        /* *************************************************************************************** */
+
+ void fClearClientOutgoingSMSHistory (Client c, Pattern p){
+    
+        OutgoingSMS[] xxs = OutgoingSMS:and(relationshipIn(outgoingSMS_client, c), relationshipIn(outgoingSMS_pattern, p));
+        OutgoingSMS x; int maxi = (xxs.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                x = xxs.get(i); OutgoingSMS:delete(x);
+            }
+        }
+        
+ }
+ 
+/* ************************************************************************************************** */
+/* ************************************************************************************************** */
+
+/* CLEARING WITH KEYS AS CLIENT AND SEQUENCE */
+
+void fReactivateClientSpecificSequence (Client c, Sequence s){
+
+    if(c==null||s==null){ return null; }
+    //string slog = String:concat("Reactivate... CLEARING WITH KEYS AS CLIENT: ", c.mobileNumber, " AND SEQUENCE: ", s.sequenceID); Mez:log(slog);
+
+        SequenceHistory[] xxs = SequenceHistory:and(relationshipIn(client_sequenceHistory, c), relationshipIn(sequence_sequenceHistory, s));
+        SequenceHistory x; int maxi = (xxs.length()-1);
+        if (maxi>=0){    
+            for(int i = 0; i <= maxi; i++){
+                x = xxs.get(i);
+                fReactivateClientPatternBySequence (c, x.sequence_sequenceHistory);
+                SequenceHistory:delete(x);
+            }
+        }
+        
+        fCCR_S(c);
+        fCPPE_S(c, s);
+        
+}
+        /* *************************************************************************************** */
+        
+        void fReactivateClientPatternBySequence (Client c, Sequence s){
+                PatternHistory[] xxs = PatternHistory:and(relationshipIn(client_patternHistory, c), relationshipIn(sequence_patternHistory, s));
+                PatternHistory x; int maxi = (xxs.length()-1);
+                if (maxi>=0){
+                    for(int i = 0; i <= maxi; i++ ){
+                        xxs = PatternHistory:and(relationshipIn(client_patternHistory, c), relationshipIn(sequence_patternHistory, s));
+                        x = xxs.get(0); 
+                        fReactivateClientSpecificPattern (c, x.pattern_patternHistory);
+                    }
+                }
+}
+
+
+/* ************************************************************************************************** */
+/* ************************************************************************************************** */
+
+/* CLEARING WITH KEYS AS CLIENT AND TOPIC */
+
+void fRestoreTopicVersion (Client c, Umbrella u, Topic t){
+    
+    TopicHistoryLog[] thls = TopicList:fGetCollectionTopicHistoryLog(c, u, t);
+    TopicHistoryLog thl; int i;
+
+    if(thls.length()>0){
+        for(i=thls.length()-1;i>=0;i--){
+            thl = thls.get(i);
+            thl.topicAttempt = 0;
+            thl.save();
+        }
+    }
+}
+
+void fReactivateClientSpecificTopic (Client c, Umbrella u, Topic t, int rt){
+
+    if(c==null||t==null){ return null; }
+    string slog = String:concat("Reactivate... CLEARING WITH KEYS AS CLIENT: ", c.mobileNumber, " AND TOPIC: ", t.topicID); Mez:log(slog);
+
+        TopicHistory[] xxs = TopicHistory:and(relationshipIn(client_topicHistory, c),relationshipIn(topic_topicHistory, t));
+        TopicHistory x; int maxi = (xxs.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++){
+                x = xxs.get(i);
+                fReactivateClientSequencebyTopic (c, x.topic_topicHistory);
+                TopicHistory:delete(x);
+            }
+        }
+        
+        if(rt!=40) { 
+            fCCR_T(c);
+            fCPPE_T(c, u, t); 
+        }
+}
+
+        /* *************************************************************************************** */
+
+        void fReactivateClientSequencebyTopic (Client c, Topic t){
+                SequenceHistory[] xxs = SequenceHistory:and(relationshipIn(client_sequenceHistory, c), relationshipIn(topic_sequenceHistory, t));
+                SequenceHistory x; int maxi = (xxs.length()-1);
+                if (maxi>=0){
+                    for(int i = 0; i <= maxi; i++ ){
+                        xxs = SequenceHistory:and(relationshipIn(client_sequenceHistory, c), relationshipIn(topic_sequenceHistory, t));
+                        x = xxs.get(0); 
+                        fReactivateClientSpecificSequence (c, x.sequence_sequenceHistory);
+                    }
+                }
+}
+
+/* ************************************************************************************************** */
+/* ************************************************************************************************** */
+
+/* CLEARING ALL PPE WITH KEY AS CLIENT */
+
+void fClearClientPPEByClient(Client c){
+        
+    fCPPE_T(c, null, null);
+    fCPPE_S(c, null);
+    fCPPE_P(c, null);
+
+}
+
+/* ************************************************************************************************** */
+
+/* CLEARING PATTERN PPE WITH KEY AS CLIENT AND/OR PATTERN */
+
+void fCPPE_P(Client c, Pattern p){
+        PatternPPE[] xxs; PatternPPE x;
+        if (p == null) { xxs = PatternPPE:relationshipIn(client_patternPPE, c); } else
+        { xxs = PatternPPE:and(relationshipIn(client_patternPPE, c), relationshipIn(pattern_patternPPE, p)); }
+        int maxi = (xxs.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                x = xxs.get(i); PatternPPE:delete(x);
+            }
+        }
+}
+
+/* ************************************************************************************************** */
+
+/* CLEARING SEQUENCE PPE WITH KEY AS CLIENT AND/OR SEQUENCE */
+
+void fCPPE_S(Client c, Sequence s){
+        SequencePPE[] xxs; SequencePPE x;
+        if(s == null) { xxs = SequencePPE:relationshipIn(client_sequencePPE, c); } else
+        { xxs = SequencePPE:and(relationshipIn(client_sequencePPE, c), relationshipIn(sequence_sequencePPE, s));  }
+         int maxi = (xxs.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                x = xxs.get(i); SequencePPE:delete(x);
+            }
+        }
+}
+
+/* ************************************************************************************************** */
+
+/* CLEARING TOPIC PPE WITH KEY AS CLIENT AND/OR TOPIC */
+
+void fCPPE_T(Client c, Umbrella u, Topic t){
+
+        TopicPPE[] xxs; TopicPPE x;
+
+        if (t == null) { 
+            xxs = TopicPPE:relationshipIn(client_topicPPE, c); 
+        } else { 
+            xxs = uCalculatePPESub:fGetTopicPPE (c, t, u, 0); 
+        }
+        
+        int maxi = (xxs.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                x = xxs.get(i); TopicPPE:delete(x);
+            }
+        }
+}
+
+/* ************************************************************************************************** */
+/* ************************************************************************************************** */
+
+/* CLEARING ALL REMINDERS WITH KEY AS CLIENT */
+
+void fClearClientRemindersByClient(Client c){
+    
+    if(c==null){ return null; }
+    //string slog = String:concat("Reactivate... CLEARING REMINDERS WITH KEY AS CLIENT: ", c.mobileNumber); Mez:log(slog);
+
+    fCCR_T(c);
+    fCCR_S(c);
+    fCCR_P(c);
+
+}
+
+/* CLEARING TOPIC REMINDERS WITH KEY AS CLIENT */
+
+void fCCR_T(Client c){
+    
+        TopicReminder[] topicReminderArr = TopicReminder:relationshipIn(client_topicReminder, c);
+        TopicReminder topicReminder; 
+        int maxi = (topicReminderArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                topicReminder = topicReminderArr.get(i); 
+                TopicReminder:delete(topicReminder);
+            }
+        }
+
+        TopicEscalator[] topicEscalatorArr = TopicEscalator:relationshipIn(client_topicEscalator, c);
+        TopicEscalator topicEscalator; maxi = (topicEscalatorArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                topicEscalator = topicEscalatorArr.get(i); 
+                TopicEscalator:delete(topicEscalator);
+            }
+        }
+
+        ForceTopicEnd[] forceTopicEndArr = ForceTopicEnd:relationshipIn(client_fTopicEnd, c);
+        ForceTopicEnd forceTopicEnd; maxi = (forceTopicEndArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                forceTopicEnd = forceTopicEndArr.get(i); 
+                ForceTopicEnd:delete(forceTopicEnd);
+            }
+        }
+}
+
+/* CLEARING SEQUENCE REMINDERS WITH KEY AS CLIENT */
+
+void fCCR_S(Client c){
+        SequenceReminder[] xxs = SequenceReminder:relationshipIn(client_sequenceReminder, c);
+        SequenceReminder x; int maxi = (xxs.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                x = xxs.get(i); SequenceReminder:delete(x);
+            }
+        }
+}
+
+/* CLEARING PATTERN REMINDERS WITH KEY AS CLIENT */
+
+void fCCR_P(Client c){
+        PatternReminder[] patternReminderArr = PatternReminder:relationshipIn(client_patternReminder, c);
+        PatternReminder patternReminder; int maxi = (patternReminderArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                patternReminder = patternReminderArr.get(i);
+                PatternReminder:delete(patternReminder);
+            }
+        }
+}
+
+/* ************************************************************************************************** */
+/* ************************************************************************************************** */
+
+/* CLEARING EVERYTHING WITH KEY AS CLIENT */
+void fReactivateClient(Client c){
+
+    string slog = "";
+   
+   if (c != null){
+        if(c.nickname != null) { slog = String:concat(c.mobileNumber, "' - '", c.nickname,"')"); } else { slog = String:concat(c.mobileNumber, "' - 'null')"); }
+        slog = String:concat("Reactivate... CLEARING EVERYTHING WITH KEY AS CLIENT.... : '", slog); Mez:log(slog);
+    
+        TopicUserSetup[] tss = TopicUserSetup:relationshipIn(client_topicUserSetup, c);
+        TopicUserSetup ts;
+        int tl = tss.length();
+        if (tl>0)
+        {
+            for(int i = 0; i < tl; i++ ){
+                ts = tss.get(i); 
+                if(ts.active==1){ ts.active = 0; }
+                ts.save();
+            }
+        }
+    
+        TopicHistory[] topicHistoryArr = TopicHistory:relationshipIn(client_topicHistory, c);
+        TopicHistory topicHistory; int maxi = (topicHistoryArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++){
+                topicHistory = topicHistoryArr.get(i);
+                TopicHistory:delete(topicHistory);
+            }
+        }
+
+        SequenceHistory[] sequenceHistoryArr = SequenceHistory:relationshipIn(client_sequenceHistory, c);
+        SequenceHistory sequenceHistory; maxi = (sequenceHistoryArr.length()-1);
+        if (maxi>=0){    
+            for(int i = 0; i <= maxi; i++){
+                sequenceHistory = sequenceHistoryArr.get(i);
+                SequenceHistory:delete(sequenceHistory);
+            }
+        }
+
+        PatternHistory[] patternHistoryArr = PatternHistory:relationshipIn(client_patternHistory, c);
+        PatternHistory patternHistory; maxi = (patternHistoryArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                patternHistory = patternHistoryArr.get(i);
+                PatternHistory:delete(patternHistory);
+            }
+        }
+        
+        CurrentTopic currentTopic = c.client_currentTopic;
+        if (currentTopic != null){
+            CurrentTopic:delete(currentTopic);
+        }
+
+        CurrentSequence currentSequence = c.client_currentSequence;
+        if (currentSequence != null){
+            CurrentSequence:delete(currentSequence);    
+        }
+
+        // CurrentPattern[] xxs = CurrentPattern:relationshipIn(client_currentPattern, c);
+        CurrentPattern currentPattern = c.client_currentPattern;
+        if (currentPattern != null){
+            CurrentPattern:delete(currentPattern);    
+        }
+        
+        AllSMSLog[] allSMSLogArr = AllSMSLog:relationshipIn(allSMSLog_client, c);
+        AllSMSLog allSMSLog; maxi = (allSMSLogArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                allSMSLog = allSMSLogArr.get(i);
+                AllSMSLog:delete(allSMSLog);
+            }
+        }
+    
+        OutgoingSMS[] outgoingSMSArr = OutgoingSMS:relationshipIn(outgoingSMS_client, c);
+        OutgoingSMS outgoingSMS; maxi = (outgoingSMSArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                outgoingSMS = outgoingSMSArr.get(i);
+                OutgoingSMS:delete(outgoingSMS);
+            }
+        }
+    
+        IncomingSMS[] incomingSMSArr = IncomingSMS:relationshipIn(incomingSMS_clientNumber, c);
+        IncomingSMS incomingSMS; maxi = (incomingSMSArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                incomingSMS = incomingSMSArr.get(i);
+                IncomingSMS:delete(incomingSMS);
+            }
+        }
+    
+        ClientSMSQueue[] clientSMSQueueArr = ClientSMSQueue:relationshipIn(c_clientsmsqueue, c);
+        ClientSMSQueue clientSMSQueue; maxi = (clientSMSQueueArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                clientSMSQueue = clientSMSQueueArr.get(i);
+                ClientSMSQueue:delete(clientSMSQueue);
+            }
+        }
+
+        fClearClientRemindersByClient(c);
+        fClearClientPPEByClient(c);
+        fRestoreTopicVersionForAll (c);
+
+        CurrentSMSPattern currentSMSPattern = c.currentSMSPattern_clientID;
+        if (currentSMSPattern != null){
+            c.currentSMSPattern_clientID = null; c.save();
+            CurrentSMSPattern:delete(currentSMSPattern);
+        }
+
+    }
+}
+
+    /* ************************************************************************************************** */
+
+    void fRestoreTopicVersionForAll (Client c){
+        TopicHistoryLog[] thls = TopicHistoryLog:relationshipIn(client_topicHistoryLog, c);
+        TopicHistoryLog thl; int i;
+        if(thls.length()>0){
+            for(i=thls.length()-1;i>=0;i--){
+                thl = thls.get(i);
+                thl.topicAttempt = 0;
+                thl.save();
+            }
+        }
+    }
+
+/* ************************************************************************************************** */
+/* ************************************************************************************************** */
+
+/* CLEARING ALL WITH NO KEY */
+
+void fReactivateAll(){
+    
+    Mez:log("Reactivate... CLEARING ALL WITH NO KEY....");
+    
+    TopicUserSetup[] tss = TopicUserSetup:all();
+    TopicUserSetup ts;
+    int tl = tss.length();
+    if (tl>0)
+    {
+        for(int i = 0; i < tl; i++ ){
+            ts = tss.get(i); ts.save();
+        }
+    }
+
+    TopicHistory[] topicHistoryArr = TopicHistory:all();
+    TopicHistory topicHistory; int maxi = (topicHistoryArr.length()-1);
+        for(int i = 0; i <= maxi; i++){
+            topicHistory = topicHistoryArr.get(i);
+            TopicHistory:delete(topicHistory);
+        }
+
+    SequenceHistory[] sequenceHistoryArr = SequenceHistory:all();
+    SequenceHistory sequenceHistory; maxi = (sequenceHistoryArr.length()-1);
+        for(int i = 0; i <= maxi; i++){
+            sequenceHistory = sequenceHistoryArr.get(i); SequenceHistory:delete(sequenceHistory);
+        }
+    
+    CurrentTopic[] currentTopicArr = CurrentTopic:all();
+    CurrentTopic currentTopic; maxi = (currentTopicArr.length()-1);
+        for(int i = 0; i <= maxi; i++ ){
+            currentTopic = currentTopicArr.get(i); CurrentTopic:delete(currentTopic);
+        }
+    
+    CurrentSequence[] currentSequenceArr = CurrentSequence:all();
+    CurrentSequence currentSequence; maxi = (currentSequenceArr.length()-1);
+        for(int i = 0; i <= maxi; i++ ){
+            currentSequence = currentSequenceArr.get(i); CurrentSequence:delete(currentSequence);
+        }
+
+    AllSMSLog[] allSMSLogArr = AllSMSLog:all();
+    AllSMSLog allSMSLog; maxi = (allSMSLogArr.length()-1);
+        for(int i = 0; i <= maxi; i++ ){
+            allSMSLog = allSMSLogArr.get(i); AllSMSLog:delete(allSMSLog);
+        }
+    
+    PatternHistory[] patternHistoryArr = PatternHistory:all();
+    PatternHistory patternHistory; maxi = (patternHistoryArr.length()-1);
+        for(int i = 0; i <= maxi; i++ ){
+            patternHistory = patternHistoryArr.get(i); PatternHistory:delete(patternHistory);
+        }
+        
+    CurrentPattern[] currentPatternArr = CurrentPattern:all();
+    CurrentPattern currentPattern; maxi = (currentPatternArr.length()-1);
+        for(int i = 0; i <= maxi; i++ ){
+            currentPattern = currentPatternArr.get(i); CurrentPattern:delete(currentPattern);
+        }
+
+    OutgoingSMS[] outgoingSMSArr = OutgoingSMS:all();
+    OutgoingSMS outgoingSMS; maxi = (outgoingSMSArr.length()-1);
+        for(int i = 0; i <= maxi; i++ ){
+            outgoingSMS = outgoingSMSArr.get(i); OutgoingSMS:delete(outgoingSMS);
+        }
+
+    IncomingSMS[] incomingSMSArr = IncomingSMS:all();
+    IncomingSMS incomingSMS; maxi = (incomingSMSArr.length()-1);
+        for(int i = 0; i <= maxi; i++ ){
+            incomingSMS = incomingSMSArr.get(i); IncomingSMS:delete(incomingSMS);
+        }
+
+    CurrentSMSPattern[] currentSMSPatternArr = CurrentSMSPattern:all();
+    CurrentSMSPattern currentSMSPattern; maxi = (currentSMSPatternArr.length()-1);
+        for(int i = 0; i <= maxi; i++ ){
+            currentSMSPattern = currentSMSPatternArr.get(i); CurrentSMSPattern:delete(currentSMSPattern);
+        }
+      
+    ClientSMSQueue[] clientSMSQueueArr = ClientSMSQueue:all();
+    ClientSMSQueue clientSMSQueue; maxi = (clientSMSQueueArr.length()-1);
+        for(int i = 0; i <= maxi; i++ ){
+            clientSMSQueue = clientSMSQueueArr.get(i); ClientSMSQueue:delete(clientSMSQueue);
+        }
+
+/* ************************************************************ */
+
+        TopicReminder[] topicReminderArr = TopicReminder:all();
+        TopicReminder topicReminder; maxi = (topicReminderArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                topicReminder = topicReminderArr.get(i); TopicReminder:delete(topicReminder);
+            }
+        }
+
+        SequenceReminder[] sequenceReminderArr = SequenceReminder:all();
+        SequenceReminder sequenceReminder; maxi = (sequenceReminderArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                sequenceReminder = sequenceReminderArr.get(i); SequenceReminder:delete(sequenceReminder);
+            }
+        }
+
+        PatternReminder[] patternReminderArr = PatternReminder:all();
+        PatternReminder patternReminder; maxi = (patternReminderArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                patternReminder = patternReminderArr.get(i); PatternReminder:delete(patternReminder);
+            }
+        }
+
+        TopicEscalator[] topicEscalatorArr = TopicEscalator:all();
+        TopicEscalator topicEscalator; maxi = (topicEscalatorArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                topicEscalator = topicEscalatorArr.get(i); TopicEscalator:delete(topicEscalator);
+            }
+        }
+
+        ForceTopicEnd[] forceTopicEndArr = ForceTopicEnd:all();
+        ForceTopicEnd forceTopicEnd; maxi = (forceTopicEndArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                forceTopicEnd = forceTopicEndArr.get(i); ForceTopicEnd:delete(forceTopicEnd);
+            }
+        }
+
+/* ************************************************************ */
+
+        PatternPPE[] patternPPEArr = PatternPPE:all();
+        PatternPPE patternPPE; maxi = (patternPPEArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                patternPPE = patternPPEArr.get(i); PatternPPE:delete(patternPPE);
+            }
+        }
+
+        SequencePPE[] sequencePPEArr = SequencePPE:all();
+        SequencePPE sequencePPE; maxi = (sequencePPEArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                sequencePPE = sequencePPEArr.get(i); SequencePPE:delete(sequencePPE);
+            }
+        }
+
+        TopicPPE[] topicPPEArr = TopicPPE:all();
+        TopicPPE topicPPE; maxi = (topicPPEArr.length()-1);
+        if (maxi>=0){
+            for(int i = 0; i <= maxi; i++ ){
+                topicPPE = topicPPEArr.get(i); TopicPPE:delete(topicPPE);
+            }
+        }
+        
+}
+
+/* ************************************************************************************************** */
+/* ************************************************************************************************** */

@@ -1,0 +1,136 @@
+-- set search_path = anglo20150210_001;
+set search_path = anglo_001;
+
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+
+begin;
+/* county */
+CREATE TABLE county
+(
+  _id_ uuid NOT NULL,
+  _tstamp_ timestamp without time zone NOT NULL,
+  countyname text,
+  CONSTRAINT county_pkey PRIMARY KEY (_id_)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE county
+  OWNER TO helium;
+GRANT ALL ON TABLE county TO helium;
+-- GRANT SELECT ON TABLE county TO reporter_anglo20150210_001;
+GRANT SELECT ON TABLE county TO reporter_anglo_001;
+
+/* subcounty */
+CREATE TABLE subcounty
+(
+  _id_ uuid NOT NULL,
+  _tstamp_ timestamp without time zone NOT NULL,
+  subcountyname text,
+  gpslat numeric(20,10),
+  gpslong numeric(20,10),
+  county_fk uuid,
+  CONSTRAINT subcounty_pkey PRIMARY KEY (_id_),
+  CONSTRAINT subcounty_county_fk_fkey FOREIGN KEY (county_fk)
+      REFERENCES county (_id_) MATCH SIMPLE
+      ON UPDATE CASCADE ON DELETE SET NULL
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE subcounty
+  OWNER TO helium;
+GRANT ALL ON TABLE subcounty TO helium;
+-- GRANT SELECT ON TABLE subcounty TO reporter_anglo20150210_001;
+GRANT SELECT ON TABLE subcounty TO reporter_anglo_001;
+
+end;
+
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+
+
+/* clientgroup */
+begin;
+ALTER TABLE clientgroup ADD COLUMN geographyType character varying(64);
+ALTER TABLE clientgroup ADD COLUMN subcounty_fk uuid;
+end;
+begin;
+ALTER TABLE clientgroup ADD CONSTRAINT clientgroup_subcounty_fk_fkey FOREIGN KEY (subcounty_fk) REFERENCES subcounty (_id_) MATCH SIMPLE ON UPDATE CASCADE ON DELETE SET NULL;
+end;
+
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+
+begin;
+
+ALTER TABLE umbrellappe ADD COLUMN quizpercentage integer;
+ALTER TABLE umbrellappe ADD COLUMN chatscoreadjusted integer;
+ALTER TABLE umbrellappe ADD COLUMN practicumpercentage integer;
+ALTER TABLE umbrellappe ADD COLUMN practicumtotalscoreachieved integer;
+ALTER TABLE umbrellappe ADD COLUMN durationhours integer;
+
+ALTER TABLE groupumbrellappe ADD COLUMN totalUsers integer;
+
+--TODO IN PREPROD - ADD REFERENCE topicppe & topichistorylog
+--BEEN RUN IN PREPROD:
+--ALTER TABLE topicppe ADD COLUMN umbrella_topicppe_fk uuid;
+--ALTER TABLE topichistorylog ADD COLUMN umbrella_topichistorylog_fk uuid;
+
+--BEEN RUN IN PREPROD:
+ALTER TABLE topicppe ADD COLUMN umbrella_topicppe_fk uuid REFERENCES umbrella(_id_);
+ALTER TABLE topichistorylog ADD COLUMN umbrella_topichistorylog_fk uuid REFERENCES umbrella(_id_);
+end;
+
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+
+begin;
+ALTER TABLE client ADD COLUMN isactive boolean;
+UPDATE client SET isactive = true;
+end;
+
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+--rename client->group from client_chws_fk to group_fk
+begin;
+ALTER TABLE client ADD COLUMN group_fk UUID REFERENCES clientgroup(_id_);
+end;
+
+begin;
+UPDATE client SET group_fk = client_chws_fk;
+end;
+
+begin;
+ALTER TABLE client DROP COLUMN client_chws_fk;
+end;
+
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+
+CREATE TABLE admin
+(
+  _id_ uuid NOT NULL,
+  _tstamp_ timestamp without time zone NOT NULL,
+  firstnames text NOT NULL,
+  surname text NOT NULL,
+  mobilenumber text NOT NULL,
+  _firstnames text,
+  _nickname text,
+  _surname text,
+  _locale text,
+  _timezone text,
+  CONSTRAINT admin_pkey PRIMARY KEY (_id_)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE admin
+  OWNER TO helium;
+GRANT ALL ON TABLE admin TO helium;
+GRANT SELECT ON TABLE admin TO reporter_anglo_001;
+
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../xsd/View.xsd">
+	<view label="system_overview.title" unit="SystemOverview" init="init">
+
+		<!-- <navigation outcome="clients" target="ClientList" /> -->
+		<navigation outcome="allsmslog" target="IncomingMessageList" />
+		<navigation outcome="scheduledevents" target="TSPReminder" />
+		<navigation outcome="topic" target="TopicSetupList" />
+		<navigation outcome="sequence" target="SequenceList" />
+		<navigation outcome="sequence_order" target="SequenceOrderList" />
+		<navigation outcome="pattern" target="PatternList" />
+		<navigation outcome="pattern_order" target="PatternOrderList" />
+		<navigation outcome="pattern_type" target="PatternTypeTableController" />
+		<navigation outcome="message" target="MessageList" />
+		<navigation outcome="pattern_message" target="PatternMessageTextController" />
+		<navigation outcome="pattern_type_setups" target="PatternTypeList" />
+		<navigation outcome="learning_manager" target="LearningManagerManagement" />
+		<navigation outcome="program_manager" target="ProgramManagerManagement" />
+		<navigation outcome="fix_messages" target="FixedMessageManagement" />
+		<navigation outcome="IVRMappingTable" target="vIVRMappingTable" />
+		<navigation outcome="monitoring" target="vMonitoring" />
+		<navigation outcome="content_catalogue" target="ContentCatalogue" />
+
+		<menuitem label="system_overview.title" icon="SystemOverview" order="16">
+			<userRole>ProgramManager</userRole>
+			<userRole>Admin</userRole>
+		</menuitem>
+
+		<table title="system_overview.table">
+			<collectionSource function="getAllConfigurableItems" />
+			<column heading="system_overview.table.index">
+				<attributeName>indexvalue</attributeName>
+			</column>
+			<column heading="system_overview.table.desc">
+				<attributeName>description</attributeName>
+			</column>
+			<column heading="system_overview.table.count">
+				<attributeName>count</attributeName>
+			</column>
+			<rowAction label="view" action="viewItem">
+				<binding variable="uSelected" />
+			</rowAction>
+		</table>
+	</view>
+	
+</ui>

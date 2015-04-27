@@ -1,0 +1,451 @@
+unit PatternList;
+
+Pattern pattern;
+Pattern deletePattern;
+
+CurrentSMSPattern currentSMSPatternTemp;
+ChannelKeyObject uChannelKeyObject;
+
+string message;
+
+void init(){
+    pattern = Pattern:new();
+}
+
+Pattern[] getPatterns(){
+    return Pattern:all();
+}
+
+Pattern[] fGetSMSPatterns(){
+    Pattern[] ps = Pattern:all(); 
+    int ml = (ps.length()-1);
+    Pattern[] psr;
+    Pattern p;
+    for(int i = 0; i<=ml; i++){
+        p = ps.get(i);
+        /* JP HEL-178 */
+        int channelID = ActivityController:getActivityChannelKeyID(p);
+        if(channelID == 1){
+            psr.append(p);
+        }
+    }
+    return psr;
+}
+
+string patternEdit(){
+    pattern.patternID = String:upper(pattern.patternID);
+    uChannelKeyObject = pattern.PatternChannelKey;
+    return null;
+}
+
+string patternRemove(){
+    Pattern:delete(deletePattern);
+    return null;
+}
+
+Pattern getPatternFromCSMSP(CurrentSMSPattern csmsp){
+    return csmsp.currentSMSPattern_PatternID;
+}
+
+string savePattern(){
+    pattern.patternID = String:upper(pattern.patternID);
+
+    if (uChannelKeyObject == null){
+    	message = "Channel key must be specified";
+   	    Alerter:alertError(message);	
+	    return null;
+    }
+
+	pattern.PatternChannelKey = uChannelKeyObject;
+	
+	if (uChannelKeyObject.patternChannelID == 1){
+		pattern.patternChannelID = CHANNEL.sms;
+	} else if (uChannelKeyObject.patternChannelID == 3){
+		pattern.patternChannelID = CHANNEL.ivr;
+	}
+	
+	if(pattern.patternStartSMS == null){
+		pattern.patternStartSMS = "";
+	}
+
+    pattern.save();
+    init();
+	message = "Activity saved";
+    Alerter:alertError(message);
+    
+    return null;
+}
+
+/* ************************************************ */
+/* JV : Initialize SMS Pattern : Spreadsheet 5 - 12 */
+/* ************************************************ */
+
+void initSMSPattern (Client client, Pattern pattern) {  //is call as per the start of a sequence
+
+/* JV : Reset SMS Pattern */
+	resetSMSPattern(client);
+
+/* JV : Setup SMS Pattern */
+	setUpSMSPattern(client, pattern);
+
+/* JV : Start SMS Pattern */
+    startSMSPattern(client, pattern);
+    
+}
+
+/* ************************************************ */
+/* ************************************************ */
+
+void resetSMSPattern(Client client) {
+
+//delete currentSMSPattern for the client
+	CurrentSMSPattern currentSMSPattern = client.currentSMSPattern_clientID; 	
+	if(currentSMSPattern  != null) {
+        client.currentSMSPattern_clientID = null; client.save();
+		CurrentSMSPattern:delete(currentSMSPattern);
+	}
+
+}
+
+/* ************************************************ */
+/* ************************************************ */
+
+void setUpSMSPattern(Client client, Pattern pattern) {
+    
+	CurrentSMSPattern csp = CurrentSMSPattern:new();
+	
+	csp.currentSMSPattern_clientID = client;
+	csp.currentSMSPattern_PatternID = pattern;
+	csp.save();
+
+    client.currentSMSPattern_clientID = csp;
+    client.save();
+
+}
+
+/* ************************************************ */
+/* ************************************************ */
+
+void startSMSPattern(Client client, Pattern pattern) {
+		sendNextSMS (client, pattern, "");
+}
+
+/* ************************************************ */
+/* ************************************************ */
+
+PatternMessageText fGetMatchingPatternMessageText(Pattern p, string pmtns){
+
+    PatternMessageText[] pmts; PatternMessageText pmt = null; Message[] ms; Message m;
+    
+    if(String:lower(pmtns) == "endactivity"){
+        pmt = null;
+    } else {
+        ms = Message:equals(_MTID, pmtns);
+        if (ms.length()>0){
+            m = ms.get(0);
+            pmts = PatternMessageText:and(relationshipIn(patternMessageTextID_pattern, p), relationshipIn(patternMessageText_Message, m));
+            if(pmts.length()>0){
+                pmt = pmts.get(0);
+            }   
+        }
+    }
+    return pmt;
+    
+}
+
+/* ************************************************ */
+/* ************************************************ */
+
+/* ***** DEVLOG FLAG UNEXPECTED PATTERN END TO KEY HELPDESK USERS ***** */
+
+void sendNextSMS(Client c, Pattern p, string pmtns) {
+    string ls = String:concat("Send Next SMS for client : ", c.mobileNumber, " | With incoming : ", pmtns, " ..."); Mez:log(ls); PatternMessageText pmT;
+    
+    if((pmtns != "") && (pmtns != null)){
+        pmT = fGetMatchingPatternMessageText(p, pmtns);   
+    } else {
+        pmT = evaluateNextMTIDInOrder(c, p);
+    }
+        
+	if(pmT != null) {
+		sendMTIDToUser(c, p, pmT);
+	} else {
+        endSMSPattern(c, p);
+	}		
+}
+
+/* ************************************************ */
+/* ************************************************ */
+
+int getRandomNumber(int rad) {
+	for(int i=0; i<100; i++){
+        int rV = getrandomInt();
+        if((rV >= 0) && (rV < rad)) { 
+            return rV;
+        }
+    }
+	return 0;
+}
+
+/* ************************************************ */
+/* ************************************************ */
+
+int getrandomInt() {
+    decimal r = Math:random(); string s = Strings:concat("",r); int lM = String:length(s); string rs; int v = -1;
+	if(lM > 4){
+		rs = String:substring(s,2,3); v = Integer:fromString(rs); v = v - 1;
+	}
+	return v;
+}
+
+/* ********************************* */
+/* ********************************* */
+
+PatternMessageText evaluateNextMTIDInOrder (Client c, Pattern p) {
+	
+	PatternTypeTable ptt = p.patternTypeTable_Pattern; if(ptt == null) { return null; }
+    PatternType pt = ptt.patternTypeTable_PatternType; if(pt == null) { return null; }
+	PatternMessageText[] pmts = getPatternMessageTextsClean(c, p); int maxi = pmts.length(); int rV;
+    
+	if(pmts.length() == 0) {
+        return null;
+	} else {
+        pmts.sortAsc("_MTID_order");   
+	}	
+    
+	if(pt.MOMultiple == 0) {                   
+
+		for(int i=0; i<maxi; i++){
+			sendMTIDToUser(c, p, pmts.get(i));
+		}
+		return null;
+				
+	} else if(pt.RandomPattern == 1) { 
+        
+        if(checkRandomMaxToSendUser(c, ptt) == true) { 
+            return null; 
+        } else {
+            rV  = getRandomNumber(pmts.length());
+			return pmts.get(rV);
+        }
+        
+	} else if(pt.RandomPattern == 0) { 
+	    return pmts.get(0);
+	    
+    } else {                                    
+        return null; 
+    }
+    
+}
+
+/* ************************************************ */
+/* ************************************************ */
+
+string fStart5(string s){
+	int i = String:length(s); string r = "";
+	if(i>0){
+		if(i>=5){r = String:substring(s,0,4);} else {r = String:substring(s,0,i-1);}
+	} 
+	return r;
+}
+
+
+PatternMessageText [] getPatternMessageTextsClean(Client client , Pattern pattern) {
+
+		/* ************************************************************************************************ */
+		OutgoingSMS[] outgoingSMSs = OutgoingSMS:and(relationshipIn(outgoingSMS_client, client), relationshipIn(outgoingSMS_pattern, pattern)); outgoingSMSs.sortAsc("dateTimeStamp"); 
+		string ls1 = String:concat("getPatternMessageTextsClean...... Client:", client.mobileNumber," | Pattern:", pattern.patternID, " | outgoingSMSs count: ", outgoingSMSs.length()); //Mez:log(ls1);
+		/* ************************************************************************************************ */
+		
+		/* ************************************************************************************************ */
+		PatternMessageText[] patternMessageTexts = PatternMessageText:relationshipIn(patternMessageTextID_pattern, pattern); patternMessageTexts.sortAsc("_MTID_order");
+		string ls2 = String:concat("getPatternMessageTextsClean...... Pattern:", pattern.patternID, " | patternMessageTexts count: ", patternMessageTexts.length()); //Mez:log(ls2);
+		/* ************************************************************************************************ */
+
+		PatternMessageText[] pMTC; PatternMessageText pMT; OutgoingSMS oS; Message m1; Message m2; bool addToList; string lr = String:concat("ExitLog > ", ls1, " > getPatternMessageTextsClean...... Message removed from patternMessageText: ");
+		
+		for(int i = 0; i<patternMessageTexts.length(); i++) {
+			addToList = true;
+			pMT = patternMessageTexts.get(i);
+			
+			for(int j=0; j<outgoingSMSs.length(); j++) {
+				
+				m1 = pMT.patternMessageText_Message; oS = outgoingSMSs.get(j); m2 = oS.outgoingSMS_Message; 
+
+				if (m1==m2){
+					/* ************************************************ */
+					addToList = false;
+					lr = String:concat(lr, m1._MTID, " | ", fStart5(m1._MT_text), " | ");
+					/* ************************************************ */
+				}
+			}
+			if(addToList == true) { pMTC.append(pMT); }
+		}
+	Mez:log(lr);
+	return pMTC;
+}
+
+/* ************************************************ */
+/* ************************************************ */
+    
+    string fAddValidFirstLetterMessage (Client c, string mT, string fL){
+        string mT2 = mT; string[] fMs;
+        string fM = FixMessageList:fMessageStringPerFixedMessages (c, "8"); if(fM == null){ fM = ""; }
+        
+        if (fM != ""){
+            fMs = String:split(fM, "validfirstletter");
+            if (fMs.length()>0){
+                mT2 = String:concat(mT2, " ", fMs.get(0), fL, fMs.get(1));
+            }
+        }
+        
+        return mT2;
+    }
+
+    /* ************************************************ */
+    
+    string fGetMessageWithValidFirstLetter (Client c, Pattern p, Message m, string fL){
+        string mT = m._MT_text;
+        PatternTypeTable ptt = p.patternTypeTable_Pattern; if(ptt == null) { return mT; }
+        PatternType pT = ptt.patternTypeTable_PatternType; if(pT == null) { return mT; }
+        
+        if(pT.RespValQO == 1){
+            mT = fAddValidFirstLetterMessage (c, mT, fL); 
+        }
+        return mT;
+    }
+
+/* ************************************************ */
+/* ************************************************ */
+
+void sendMTIDToUser (Client c, Pattern p, PatternMessageText pmT) {
+
+    string fL = ""; Message m = pmT.patternMessageText_Message;
+    
+	if(m._MTID != "") {
+
+    	fL = findNextValidFirstLetter(c, pmT);
+        string smsText = fGetMessageWithValidFirstLetter (c, p, m, fL);
+        
+		int mmc = m.maxMultipleChoice; string ca = m.correctAnswer; string ict = m.informCorrectText;		
+
+		OutgoingSMS os = OutgoingSMSList:updateOutGoingSMS(c, p, m);
+		CurrentSMSPatternController:updateCurrentSMSPatternTable(c, p, m);
+		BLUnits:SendSMSToClient(c, smsText);
+
+		if(fConsiderEnding(os)==true){
+			endSMSPattern(c, p);
+		}
+
+	} else {
+		return null ;
+	}
+}
+
+/* ************************************************ */
+/* ************************************************ */
+
+string findNextValidFirstLetter(Client client, PatternMessageText patternMessageText) {
+
+	CurrentSMSPattern currentSMSPattern = client.currentSMSPattern_clientID; string fL = "";
+		
+	if(currentSMSPattern != null) {
+
+		if(currentSMSPattern.validFirstLetter == "" || currentSMSPattern.validFirstLetter == null) {
+
+			currentSMSPattern.validFirstLetter = "A";
+			currentSMSPattern.save();
+			
+		}else if(currentSMSPattern.validFirstLetter == "Z") {
+
+            currentSMSPattern.validFirstLetter = "A";
+			currentSMSPattern.save();
+			
+		} else if(currentSMSPattern.validFirstLetter != "" || currentSMSPattern.validFirstLetter !=null) { //
+
+			string vfletter = currentSMSPattern.validFirstLetter;
+			ValidFirstLetterObject[] validFirstLetterObjects = ValidFirstLetterObject:equals(validFirstLetter, vfletter);
+			ValidFirstLetterObject validFirstLetterObject;
+			if(validFirstLetterObjects.length() != 0){
+				validFirstLetterObject = validFirstLetterObjects.get(0);
+			}
+			int order = validFirstLetterObject.ValidFirstLetterID + 1;
+			validFirstLetterObjects = ValidFirstLetterObject:equals(ValidFirstLetterID, order);
+			if(validFirstLetterObjects.length() != 0) {
+				validFirstLetterObject = validFirstLetterObjects.get(0);
+				if(validFirstLetterObject != null) {
+					currentSMSPattern.validFirstLetter = validFirstLetterObject.validFirstLetter;
+					currentSMSPattern.save();
+				}
+			}
+					
+		}
+	}
+    
+    if(currentSMSPattern != null) {                         
+        if(currentSMSPattern.validFirstLetter != null){     
+            fL = currentSMSPattern.validFirstLetter;        
+            if (fL == null) { fL = ""; }                    
+        }
+    }
+    return fL;                                              
+}
+
+/* ************************************************ */
+/* ************************************************ */
+
+//complete using "currentsms db" to check for max random number to send in current iteration of pattern
+bool checkRandomMaxToSendUser(Client c, PatternTypeTable ptt) {
+    
+    bool boolreturn = false; string ls= "";
+	CurrentSMSPattern csp =  c.currentSMSPattern_clientID;
+    int rpm = ptt.randomPatternMax; if(rpm == null){ rpm = 0; }
+    ValidFirstLetterObject[] vOs; ValidFirstLetterObject vO; string lV;
+	
+    if((csp != null) && (ptt != null)){
+    	lV = csp.validFirstLetter;
+    	vOs = ValidFirstLetterObject:equals(validFirstLetter,lV);
+
+    	if(vOs.length() > 0) {
+    	    vO = vOs.get(0);                                        
+            ls = String:concat("CheckRandomMaxToSendUser.......... : ", c.mobileNumber, " : ", lV, " : ", vO.ValidFirstLetterID, " : ", rpm); Mez:log(ls);
+        	if(vO.ValidFirstLetterID >= rpm) {
+        		boolreturn = true;
+        	}	
+        }
+    }
+    
+    return boolreturn;
+}
+
+/* ************************************************ */
+/* ************************************************ */
+
+bool fConsiderEnding(OutgoingSMS os){
+	bool r = false;
+		if(os.correctAnswer=="endactivity"){
+			r = true;
+		}
+	return r;
+}
+
+/* ************************************************ */
+/* ************************************************ */
+
+void endSMSPattern(Client client, Pattern pattern) {
+    
+    if(client == null){
+        return null;
+    } 
+    
+    if(pattern == null){
+         return null;
+    }
+   
+   	int channelID = ActivityController:getActivityChannelKeyID(pattern);
+    if(channelID == 1) {
+    	resetSMSPattern(client);
+    }
+    
+    SequenceList:fEndPattern(pattern, client, 99);
+}

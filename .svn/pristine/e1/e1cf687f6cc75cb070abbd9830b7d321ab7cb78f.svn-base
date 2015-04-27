@@ -1,0 +1,29 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all()) /*NY: added 2014/08/11 */
+persistent object OutgoingSMS{
+	
+	//string _UUID;
+	//uuid _MTID;
+
+	string messageText;
+	string validFirstLetter;
+	int maxMultipleChoice;
+	string correctAnswer;
+	datetime dateTimeStamp;
+	string responseText;
+	string status;
+	int userScore;
+	
+	@ManyToOne
+	Client outgoingSMS_client via outgoingsmss;
+	
+	@ManyToOne
+	Pattern outgoingSMS_pattern; 
+	
+	@ManyToOne
+	Message outgoingSMS_Message;
+	
+	
+		
+}
+

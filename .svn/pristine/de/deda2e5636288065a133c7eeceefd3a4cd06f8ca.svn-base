@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="topic_activity_summary.title" unit="TopicActivitySummary" init="init">
+    
+        <navigation outcome="nav_system_report" target="SystemReport" />
+
+        <action label="back" outcome="nav_system_report"/>
+
+        <table title="topic_activity_summary.topic_activity">
+            <collectionSource variable="topicActivitySummaryArr"/>
+            <column heading="topic">
+                <attributeName>topic</attributeName>
+            </column>
+            <column heading="topic_activity_summary.activeUsers">
+                <attributeName>activeUsers</attributeName>
+            </column>
+            <column heading="topic_activity_summary.completeUsers">
+                <attributeName>completeUsers</attributeName>
+            </column>
+             <column heading="topic_activity_summary.expiredUsers">
+                <attributeName>expiredUsers</attributeName>
+            </column>
+             <column heading="topic_activity_summary.totalUsers">
+                <attributeName>totalUsers</attributeName>
+            </column>
+        </table>
+
+        <table title="topic_activity_summary.grand_total">
+            <collectionSource variable="topicActivitySummaryTotal"/>
+            <column heading="topic">
+                <attributeName>topic</attributeName>
+            </column>
+            <column heading="topic_activity_summary.activeUsers">
+                <attributeName>activeUsers</attributeName>
+            </column>
+            <column heading="topic_activity_summary.completeUsers">
+                <attributeName>completeUsers</attributeName>
+            </column>
+             <column heading="topic_activity_summary.expiredUsers">
+                <attributeName>expiredUsers</attributeName>
+            </column>
+             <column heading="topic_activity_summary.totalUsers">
+                <attributeName>totalUsers</attributeName>
+            </column>
+        </table>
+
+        <submit label="refresh" action="init"/>
+        
+    </view>
+</ui>

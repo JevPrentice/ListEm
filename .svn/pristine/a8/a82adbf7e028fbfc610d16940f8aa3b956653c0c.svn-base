@@ -1,0 +1,14 @@
+@Restrict("SmartChew", all())
+persistent object UmbrellaTopicSetupTable{
+	int ordernum;
+	datetime previousdate;
+	datetime fixeddate;
+	int relativestartnum;
+	int dowstartnum;
+
+	@ManyToOne
+	Topic topic_UmbrellaUserSetup;
+
+	@ManyToOne
+	Umbrella umbrella_UmbrellaUserSetup;
+}

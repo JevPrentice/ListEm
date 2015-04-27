@@ -1,0 +1,146 @@
+unit FixMessageList;
+
+FixMessage uFixMessage;
+StatusKeyObject sKo;
+
+ConfigTable ctxml;
+string srV;
+
+void init() {
+    srV = BLUnits:fGetReleaseVersion();
+    uFixMessage = FixMessage:new();
+    sKo = StatusKeyObject:new();
+    ctxml = ConfigTable:new();
+}
+
+StatusKeyObject[] fGetAllStatusKeys(){
+    return StatusKeyObject:all();
+}
+
+ConfigTable[] fGetAllConfig(){
+    return ConfigTable:all();
+}
+
+string submit(){
+	uFixMessage.save();
+    uFixMessage = FixMessage:new();
+	return null;
+}
+
+string edit() {
+	return null;
+}
+
+/* ********************************************************************************************** */
+/* ********************************************************************************************** */
+
+void fEditStatusID(){
+    return null;
+}
+
+void fUpdateStatsIDs(){
+
+    int compval = sKo.statusID*-1;
+    StatusKeyObject[] sKos = StatusKeyObject:equals(statusID, compval); StatusKeyObject sKol;
+
+    if(sKos.length()>0){
+        StatusKeyObject:delete(sKos.first());
+    } else if(sKo.statusDescription!=null){
+        compval = sKo.statusID;
+        sKos = StatusKeyObject:equals(statusID, compval);
+        if(sKos.length()==0)
+        {
+            sKo.statusString = String:concat(sKo.statusID,"");
+            sKo.save();
+        }
+    }
+
+    init();
+    return null;
+}
+
+/* ********************************************************************************************** */
+/* ********************************************************************************************** */
+
+void fUpdateConfig(){
+    if(ctxml.sConfigDescription!=null){
+        ctxml.iConfigValue = Integer:fromString(ctxml.sConfigValue);
+        ctxml.save();
+    }
+    ctxml = ConfigTable:new();
+}
+
+void fEditConfig(){
+    return null;
+}
+
+/* ********************************************************************************************** */
+/* ********************************************************************************************** */
+
+    string fGetFixedMessageDefault(string f){
+        Client c = BLUnits:fGetLogClient();
+        string s = fMessageStringPerFixedMessages(c, f);
+        return s;
+    }
+
+/* ********************************************************************************************** */
+/* ********************************************************************************************** */
+
+    void fSetFixedMessageDefault(string fmID, string textArea){
+        FixMessage[] fMs = FixMessage:and(equals(languageID, 1), equals(fixedMessageID, fmID)); FixMessage fM;
+        if(fMs.length()>0){
+            fM = fMs.get(0);
+            fM.fixedMessageText = textArea;
+            fM.save();
+        } 
+    }
+
+/* ********************************************************************************************** */
+/* ********************************************************************************************** */
+
+    string fMessageStringPerFixedMessages (Client c, string fmID){
+        
+        string rt = ""; FixMessage[] fMs; FixMessage fM; int lK;
+
+        LanguageKeyObject lO = c.client_LanguageKey; 
+        
+        if(lO != null) {
+            lK = lO.languageID;
+            fMs = FixMessage:and(equals(languageID, lK), equals(fixedMessageID, fmID)); 
+        	if(fMs.length() > 0) {
+        		fM = fMs.get(0);
+                if(fM.fixedMessageText!=null){rt = fM.fixedMessageText;}
+        	}
+        }
+        return rt;
+    }
+
+/* ********************************************************************************************** */
+/* ********************************************************************************************** */
+
+//Send fixed message to User (@FixedMessageID)
+void sendFixedMessage(Client c, string fmID, string text) {
+
+    if(fmID==null){ fmID = ""; }
+    if(text==null){ text = ""; }
+
+    string textadd = "";
+    string textsend = fMessageStringPerFixedMessages (c, fmID);
+    
+    if(textsend != ""){
+        
+        if (String:length(text) > 0){
+            if(fmID == "5" || fmID == "6"){
+                textadd = "";
+            } else if(fmID == "2" || fmID == "4"){
+                textadd = ".";
+            } else {
+                textadd = ".";
+            }
+        }
+        textsend = Strings:concat(textsend, " ", text, textadd);
+        BLUnits:SendSMSToClient(c, textsend);
+        
+    }
+
+}

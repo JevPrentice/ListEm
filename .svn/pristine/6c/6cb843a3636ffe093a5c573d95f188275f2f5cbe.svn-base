@@ -1,0 +1,232 @@
+unit UserBulkUpload;
+
+string msg;
+string csv_template_header;
+string csv_template_content;
+
+UploadedFile uploadedFile;
+ClientGroup uClientGroup;
+
+void init() {
+	uploadedFile = UploadedFile:new();
+
+	csv_template_header = "first_name,surname,nickname,mobile_number,language,gender,role_id,clients_escalation_user_id,chat_count"; 
+	csv_template_content = "test_fname,test_sname,test_nname,27000000000,English,Male,1,1,1"; 
+}
+
+string back(){
+	return "nav_user_management";
+}
+
+string processCSV(){
+
+	bool isError = false;
+	string[] errorMsgs;
+
+	if (uClientGroup == null){
+		msg = "Please select a group";
+		Alerter:alert(msg);
+		return null;
+	}
+
+	if (uploadedFile.data == null){
+		msg = "Please upload a CSV";
+		Alerter:alert(msg);
+		return null;
+	}
+
+	ClientCSV[] csv;
+    csv = ClientCSV:fromCsv(uploadedFile.data);
+    
+    Client[] clientsToSave;
+
+	for (int i = 0; i < csv.length(); i++){
+		
+		if (isError == false){
+			ClientCSV csv_entry = csv.get(i);
+
+			Client client = Client:new();
+			
+			if (csv_entry.first_name == null){
+				csv_entry.first_name = "";
+				isError = true;
+				errorMsgs.append("A user has no first name not populated");
+			}
+
+			int lengthCheck = String:length(csv_entry.first_name);
+			if (lengthCheck <= 0 || csv_entry.first_name == ""){
+				isError = true;
+				errorMsgs.append("A user has no first name not populated");
+			}
+
+			if (csv_entry.surname == null){
+				isError = true;
+				msg = String:concat("User with firstname: ", csv_entry.first_name, " has no surname populated");
+				errorMsgs.append(msg);
+			} else {
+				lengthCheck = String:length(csv_entry.surname);
+				if (lengthCheck <= 0){
+					isError = true;
+					msg = String:concat("User with firstname: ", csv_entry.first_name, " has no surname populated");
+					errorMsgs.append(msg);
+				}
+			}
+
+			if (csv_entry.nickname == null){
+				isError = true;
+				msg = String:concat("User with firstname: ", csv_entry.first_name, " has no nickname populated");
+				errorMsgs.append(msg);
+			} else {
+				lengthCheck = String:length(csv_entry.nickname);
+				if (lengthCheck <= 0){
+					isError = true;
+					msg = String:concat("User with firstname: ", csv_entry.first_name, " has no nickname populated");
+					errorMsgs.append(msg);
+				}
+			}
+
+			if (csv_entry.mobile_number == null){
+				isError = true;
+				msg = String:concat("User with firstname: ", csv_entry.first_name, " has no mobile_number populated");
+				errorMsgs.append(msg);
+			} else {
+				lengthCheck = String:length(csv_entry.mobile_number);
+				if (lengthCheck <= 0){
+					isError = true;
+					msg = String:concat("User with firstname: ", csv_entry.first_name, " has no mobile_number populated");
+					errorMsgs.append(msg);
+				}
+
+				if (String:length(csv_entry.mobile_number) < 9 || String:length(csv_entry.mobile_number) > 12) {
+					isError = true;
+					msg = String:concat("User with firstname: ", csv_entry.first_name, " has a mobile_number an international mobile number between 9 and 12 digits long");
+					errorMsgs.append(msg);
+				}
+
+				if (Globals:isStringNumeric(csv_entry.mobile_number) == false){
+					isError = true;
+					msg = String:concat("User with firstname: ", csv_entry.first_name, " has a mobile_number which is not numeric");
+					errorMsgs.append(msg);
+				}
+			}
+
+			if (csv_entry.role_id == null){
+				isError = true;
+				msg = String:concat("User with firstname: ", csv_entry.first_name, " has no role_id populated");
+				errorMsgs.append(msg);
+			} else {
+
+				if (Globals:isStringNumeric(csv_entry.role_id) == false){
+					isError = true;
+					msg = String:concat("User with firstname: ", csv_entry.first_name, " has role_id not numeric");
+					errorMsgs.append(msg);
+				}
+			}
+
+			if (csv_entry.clients_escalation_user_id == null){
+				isError = true;
+				msg = String:concat("User with firstname: ", csv_entry.first_name, " has no clients_escalation_user_id populated");
+				errorMsgs.append(msg);
+			} else {
+				if (Globals:isStringNumeric(csv_entry.clients_escalation_user_id) == false){
+					isError = true;
+					msg = String:concat("User with firstname: ", csv_entry.first_name, " has clients_escalation_user_id not numeric");
+					errorMsgs.append(msg);
+				}
+			}
+
+			if (csv_entry.chat_count == null){
+				isError = true;
+				msg = String:concat("User with firstname: ", csv_entry.first_name, " has no or an invalid chat_count populated");
+				errorMsgs.append(msg);
+			} else {
+
+				if (Globals:isStringNumeric(csv_entry.chat_count) == false){
+					isError = true;
+					msg = String:concat("User with firstname: ", csv_entry.first_name, " has chat_count not numeric");
+					errorMsgs.append(msg);
+				}
+			}
+
+			if (csv_entry.language == "English" || csv_entry.language == "english"){
+				client.language = LANGUAGE.English;
+				client.client_LanguageKey = LanguageKeyController:getLanguageKeyByID(1);
+			} else if (csv_entry.language == "Swahili" || csv_entry.language == "swahili"){
+				client.language = LANGUAGE.Swahili;
+				client.client_LanguageKey = LanguageKeyController:getLanguageKeyByID(2);
+			} else {
+				isError = true;
+				msg = String:concat("User with firstname: ", csv_entry.first_name, " has no or an invalid value for language populated");
+				errorMsgs.append(msg);
+			}
+
+			if (csv_entry.gender == "Male" || csv_entry.gender == "male"){
+				client.gender = GENDER.Male;
+			} else if (csv_entry.gender == "Female" || csv_entry.gender == "female"){
+				client.gender = GENDER.Female;
+			} else {
+				isError = true;
+				msg = String:concat("User with firstname: ", csv_entry.first_name, " has no or an invalid value for gender populated");
+				errorMsgs.append(msg);
+			}
+
+			client.group = uClientGroup;
+
+			RoleKeyObject rko = RoleKeyController:getRoleKeyByID(csv_entry.role_id);
+			if (rko == null){
+				isError = true;
+				msg = String:concat("User with firstname: ", csv_entry.first_name, " has no or an invalid value for role_id populated");
+				errorMsgs.append(msg);
+			}
+
+			if (isError == false){
+				// client.save();
+				client.firstName = csv_entry.first_name;	
+			 	client.surname = csv_entry.surname;	
+				client.nickname = csv_entry.nickname;	
+				client.mobileNumber = csv_entry.mobile_number;
+				client.registered = Mez:now();	
+				
+				client.roleID = csv_entry.role_id;
+				client.client_RoleKey = rko;
+
+				client.clients_EscalationUser_id = csv_entry.clients_escalation_user_id;	
+				client.chatcount = csv_entry.chat_count;
+			
+				clientsToSave.append(client);
+			}
+		}
+
+	}
+
+
+	if (isError == true){
+		msg = "ERROR: CSV NOT IMPORTED. NO USERS ADDED OR SAVED";
+		Alerter:alertError(msg);
+
+		for (int i = 0; i < errorMsgs.length(); i++){
+			string msg = errorMsgs.get(i);
+			Alerter:alertError(msg);
+		}
+		
+	} 
+
+	if (isError == false) {
+		// clientsToSave.save();
+
+		for (int i = 0; i < clientsToSave.length(); i++){
+			Client c = clientsToSave.get(i);
+			c.isActive = true;
+			c.save();
+
+			msg = String:concat("User: ", c.firstName, " ", c.surname, " ", c.mobileNumber, " saved.");
+			Alerter:alert(msg);
+
+		}
+
+		msg = String:concat("CSV Imported Successfully ", clientsToSave.length(), " users saved.");
+		Alerter:alert(msg);
+	}
+	
+	return back();
+}

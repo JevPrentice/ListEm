@@ -1,0 +1,174 @@
+unit ContentCatalogue;
+
+ContentCatalogueTemp[] topicContentCataloguesEng;
+ContentCatalogueTemp[] topicContentCataloguesSw;
+ContentCatalogueTemp[] allSubtopicContentCatalogues;
+
+string message;
+
+void init (){
+	topicContentCataloguesEng = getTopicContentCatalogues(1);	
+	topicContentCataloguesSw = getTopicContentCatalogues(2);	
+	allSubtopicContentCatalogues = getAllContentCatalogues();
+}
+
+ContentCatalogueTemp[] getTopicContentCatalogues(int languageID){
+	
+	ContentCatalogueTemp[] cctArr;
+
+	LanguageKeyObject lko = LanguageKeyController:getLanguageKeyByID(languageID);
+
+	Umbrella[] tArr = TopicController:getAllTopicsNotMarkedNoReport();
+	// Alerter:alert(String:concat("Examining ", tArr.length(), " Topics (Umbrellas)"));
+	for (int i = 0; i < tArr.length(); i++){
+		Umbrella t = tArr.get(i);
+	
+		// Logger:log(String:concat("t: ", t.umbrellaID));
+
+		int topicSmsMtCount = 0;
+		int topicSmsMoCount = 0;
+		int topicSmsTotalCount = 0;
+		int topicIvrLength = 0;
+		int topicTotalWeight = 0;
+
+		Topic[] stArr = SubTopicController:getSubTopicsForTopic(t);
+
+		// Logger:log(String:concat("Examining ", stArr.length(), " SubTopics (Topics)"));
+
+		for (int j = 0; j < stArr.length(); j++){
+			Topic st = stArr.get(j);
+			if (st != null){
+				// Logger:log(String:concat("st: ", st.topicID));
+				LanguageKeyObject lko = st.topic_LanguageKey;
+
+				if (lko.languageID == languageID){
+					topicSmsMtCount = topicSmsMtCount + SubTopicController:countMtForSubTopic(st, lko);
+					topicSmsMoCount = topicSmsMoCount + SubTopicController:countMoForSubTopic(st, lko);
+					topicIvrLength = topicIvrLength + SubTopicController:countIvrLengthInSecondsForSubTopic(st, lko);
+					topicTotalWeight = topicTotalWeight + SubTopicController:calculateSubTopicTotalWeightForLanguage(st, lko);
+				}
+			}
+		}
+
+		ContentCatalogueTemp cct = ContentCatalogueTemp:new();
+		cct.topic_id = t.umbrellaID;
+		cct.topic_name = t.umbrellaName;
+		cct.sms_mt = topicSmsMtCount;
+		cct.sms_mo = topicSmsMoCount;
+		cct.sms_total = (topicSmsMtCount + topicSmsMoCount);
+		cct.ivr_length = getTimeStringForSeconds(topicIvrLength);
+		cct.weight = topicTotalWeight;
+		cctArr.append(cct);
+	}
+	return cctArr;
+}
+
+ContentCatalogueTemp[] getAllContentCatalogues(){
+	ContentCatalogueTemp[] contentCataloguesTemp;
+
+	Topic[] subTopics = SubTopicController:getAllSubTopics();
+	Topic subTopic;
+
+	contentCataloguesTemp.clear();
+
+	for (int i = 0; i < subTopics.length(); i++){
+		subTopic = subTopics.get(i);
+
+		if (subTopic != null){
+
+			ContentCatalogueTemp cct = ContentCatalogueTemp:new();
+
+			Umbrella[] topics = TopicController:getTopicArrForSubTopic(subTopic);
+			if (topics.length() > 0){
+				/* for(int j = 0; j < topics.length(); j++){Topic topic = topics.get(j);} */
+				Umbrella topic = topics.get(0);
+				cct.topic_id = topic.umbrellaID;
+				cct.topic_name = topic.umbrellaName;
+			} else {
+				cct.topic_id = "";
+				cct.topic_name = "";
+			}
+
+			cct.sub_topic_id = subTopic.topicID;
+			cct.sub_topic_description = subTopic.topicName;
+
+			LanguageKeyObject lang = subTopic.topic_LanguageKey;
+			if (lang != null){
+				cct.language = lang.language;	
+			}
+			
+			int smsMtCount = SubTopicController:countMtForSubTopic(subTopic, null);
+			int smsMoCount = SubTopicController:countMoForSubTopic(subTopic, null);
+
+			cct.sms_mt = smsMtCount;
+			cct.sms_mo = smsMoCount;
+			cct.sms_total = smsMtCount + smsMoCount;
+
+			int secs = SubTopicController:countIvrLengthInSecondsForSubTopic(subTopic, null);
+			cct.ivr_length = getTimeStringForSeconds(secs);
+
+			cct.weight = SubTopicController:calculateSubTopicTotalWeightForLanguage(subTopic, null);
+
+			contentCataloguesTemp.append(cct);
+
+		}
+	}
+	
+	return contentCataloguesTemp;
+}
+
+string back(){
+	return "back";
+}
+
+
+
+int getIvrMinutesForSeconds(int secs){
+
+	int mins = 0;
+
+	bool b = true;
+	for (; b == true; ){
+		if (secs >= 60){
+			mins = mins + 1;
+			secs = secs - 60;
+		} else {
+			b = false;
+		}
+	}
+
+	if (secs > 0){
+		mins = mins + 1;
+	}
+
+	return mins;
+
+}
+
+string getTimeStringForSeconds(int secs){
+
+	int mins = 0;
+	string strSecs = "";
+	string strMins = "";
+
+	bool b = true;
+	for (; b == true; ){
+		if (secs >= 60){
+			mins = mins + 1;
+			secs = secs - 60;
+		} else {
+			b = false;
+		}
+	}
+
+	if (secs <= 10) { 
+		strSecs = String:concat("0", secs);
+	} else {
+		strSecs = String:concat("", secs);
+	}
+
+	strMins = String:concat("", mins);
+
+	string timeString = String:concat(strMins, ":", strSecs);
+	return timeString;	
+}

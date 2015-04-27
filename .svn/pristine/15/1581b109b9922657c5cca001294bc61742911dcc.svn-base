@@ -1,0 +1,8 @@
+object KeyValueTemp{
+
+	int order;
+	string key;
+	int iValue;
+	string sValue;
+
+}

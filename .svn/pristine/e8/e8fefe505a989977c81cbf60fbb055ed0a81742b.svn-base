@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="learningManager.PPESummary.menu" unit="uPPESummary" init="init">
+
+        <navigation outcome="groupppe" target="vTSP_PPE_Group_List" />
+        <action label="learningManager.GroupPPESummary.menu" outcome="groupppe"/>
+        
+        <table title="learningManager.PPE.topictitle">
+            <collectionSource function="fgetAllTopicPPEs"/>
+            <column heading="PPE.client">
+                <attributeName>client_topicPPE.firstName</attributeName>
+                <attributeName>client_topicPPE.mobileNumber</attributeName>
+            </column>
+            <column heading="PPE.topic">
+                <attributeName>topic_topicPPE.topicID</attributeName>
+            </column>
+            <column heading="PPE.progress">
+                <attributeName>progress</attributeName>
+            </column>
+            <column heading="PPE.effort">
+                <attributeName>effort</attributeName>
+            </column>
+            <column heading="PPE.score">
+                <attributeName>score</attributeName>
+            </column>
+            <column heading="PPE.performance">
+                <attributeName>performance</attributeName>
+            </column>
+        </table>
+
+        <table title="learningManager.PPE.sequencetitle">
+            <collectionSource function="fgetAllSequencePPEs"/>
+            <column heading="PPE.client">
+                <attributeName>client_sequencePPE.firstName</attributeName>
+                <attributeName>client_sequencePPE.mobileNumber</attributeName>
+            </column>
+            <column heading="PPE.sequence">
+                <attributeName>sequence_sequencePPE.sequenceID</attributeName>
+            </column>
+            <column heading="PPE.progress">
+                <attributeName>progress</attributeName>
+            </column>
+            <column heading="PPE.effort">
+                <attributeName>effort</attributeName>
+            </column>
+            <column heading="PPE.score">
+                <attributeName>score</attributeName>
+            </column>            
+            <column heading="PPE.performance">
+                <attributeName>performance</attributeName>
+            </column>
+        </table>
+
+        <table title="learningManager.PPE.patterntitle">
+            <collectionSource function="fgetAllPatternPPEs"/>
+            <column heading="PPE.client">
+                <attributeName>client_patternPPE.firstName</attributeName>
+                <attributeName>client_patternPPE.mobileNumber</attributeName>
+            </column>
+            <column heading="PPE.pattern">
+                <attributeName>pattern_patternPPE.patternID</attributeName>
+            </column>
+            <column heading="PPE.progress">
+                <attributeName>progress</attributeName>
+            </column>
+            <column heading="PPE.effort">
+                <attributeName>effort</attributeName>
+            </column>
+            <column heading="PPE.score">
+                <attributeName>score</attributeName>
+            </column>            
+            <column heading="PPE.performance">
+                <attributeName>performance</attributeName>
+            </column>
+        </table>
+        
+    </view>
+</ui>

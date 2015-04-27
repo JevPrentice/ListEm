@@ -1,0 +1,337 @@
+// unit ContentTemplateConfigure;
+
+// Umbrella topic;
+// KeyValueTemp template;
+// string baseValue;
+// bool bAllLanguages;
+
+// LanguageKeyObject[] languages;
+// Umbrella[] topics;
+
+// string msg;
+
+// PatternType[] activityTypesArr;
+
+// void init(){
+
+// 	bAllLanguages = false;
+// 	topics = TopicController:getAllTopics();
+
+// 	// languages = KeyValueTempController:getContentTemplates();
+
+// 	activityTypesArr = ActivityTypeController:getAllActivityTypes();
+// 	if (activityTypesArr.length() <= 0){
+// 		Alerter:alert("Build static content first!");
+// 		return null;
+// 	}
+// 	activityTypesArr.sortAsc("patternTypeID");
+// }
+
+// string navigate(string s){
+// 	return s;
+// }
+
+// bool validation(){
+
+// 	if (topic == null){
+// 		Alerter:alert("Please Select a topic from the drop-down menu");
+// 		return false;
+// 	}
+
+// 	if (template == null){
+// 		Alerter:alert("Please Select a template from the Template table");
+// 		return false;
+// 	}
+
+// 	if (baseValue == null || String:length(baseValue) <= 0){
+// 		Alerter:alert("Please enter a base value for the Sub-Topic(s)");
+// 		return false;
+// 	}
+
+// 	if (languages == null){
+// 		msg = "No Language Selected, Stopping Content Generation";
+// 		Logger:log(msg);
+//         Alerter:alert(msg);
+// 		return false;
+// 	}
+
+// 	return true;
+// }
+
+// string createContent(){
+
+// 	bool v = validation();
+// 	if (v == false){
+// 		return null;
+// 	}
+
+// 	if (template.order == 1){
+		
+// 		buildTemplateOne(topic, baseValue);
+
+// 	} else if (template.order == 2){
+
+// 		buildTemplateTwo();
+
+// 	} else {
+// 		Alerter:alert("Only select templeates 1 and 2 please, others are Not Implemented Yet :(");	
+// 		return false;	
+// 	}
+
+	
+
+// 	ContentViewer:topic = topic;
+//     // ContentViewer:subTopic = subTopic;
+//  //    ContentViewer:sequence = sequence;
+//  //    ContentViewer:activity = activity;
+//  //    ContentViewer:o_message = message;
+
+// 	return navigate("navContentViewer");
+// }
+
+// void buildTemplateTwo(){
+// 	return;
+// }
+
+// void buildTemplateOne(Umbrella t, string base){
+
+// 	Topic[] stArr;
+
+// 	for (int i = 0; i < languages.length(); i++){
+// 		LanguageKeyObject language = languages.get(i);
+
+// 		string stID;
+// 		if (language.languageID == 1){
+// 			stID = String:concat(base, "E-1");
+// 		} else if (language.languageID == 2){
+// 			stID = String:concat(base, "SW-1");
+// 		} else {
+// 			msg = "Invalid Language ID";
+// 			Logger:log(msg);
+// 	        Alerter:alert(msg);
+// 			return null;
+// 		}
+
+// 		Topic subTopic = SubTopicController:createSubTopic(
+// 			1, 
+// 			language.languageID,
+// 			"",
+// 			stID,
+// 			"Topic Introduction",
+// 			"Default Sub-Topic Start SMS",
+// 			"Default Sub-Topic End SMS",
+// 			"Default Sub-Topic Reminder SMS",
+// 			2, 
+// 			4, 
+// 			7);
+		
+// 		if(subTopic == null){
+// 			msg = "No SubTopic Created, Stopping Content Generation";
+// 			Logger:log(msg);
+// 	        Alerter:alert(msg);
+// 			return null;
+// 		}
+
+// 		stArr.append(subTopic);
+
+// 		for (int j = 0; j < stArr.length(); j++){
+// 			Topic st = stArr.get(j);
+// 			string stID = st.topicID;
+// 			int orderID = (j + 1);
+// 			SubTopicOrderController:createSubTopicOrder(t.umbrellaID, stID, orderID, null, null, 0, 0);
+
+// 			// if (subtopic == 1)
+// 			createSequencesForSubTopic1(stID);		
+// 		}
+// 	}
+// }
+
+// void createSequencesForSubTopic1(string stID){
+
+// 	string sID = String:concat(stID, "S1");
+// 	Sequence sequence = SequenceController:createSequence(sID, "Engagement", "", "", "", 0);
+
+// 	if(sequence == null){
+// 		msg = "No Sequence Created, Stopping Content Generation";
+// 		Logger:log(msg);
+//         Alerter:alert(msg);
+// 		return null;
+// 	}
+
+// 	SequenceOrder sequenceOrder = SequenceOrderController:createSequenceOrder(stID, sID, 1);
+
+// 	if(sequenceOrder == null){
+// 		msg = "No SequenceOrder Created, Stopping Content Generation";
+// 		Logger:log(msg);
+//         Alerter:alert(msg);
+// 		return null;
+// 	}
+
+// 	createActivitiesForSubTopic1(sequence);
+// }
+
+// void createActivitiesForSubTopic1(Sequence sequence){
+
+// 	/* ******************************************************************************************* */	
+
+// 	string sID = sequence.sequenceID;
+
+// 	string aID = String:concat(sID, "A1");
+// 	string startMsg = String:concat("Activity is now ", aID ," starting");
+// 	string endMsg = String:concat("Activity ", aID ," has now ended");
+// 	string remindMsg = String:concat("Please Dont forget to complete activity ", aID);
+
+// 	Pattern activity = ActivityController:createActivity(aID, startMsg, endMsg, remindMsg, 0, 1, "");
+
+// 	if(activity == null){
+// 		msg = "No Activity Created, Stopping Content Generation";
+// 		Logger:log(msg);
+//         Alerter:alert(msg);
+// 		return null;
+// 	}
+
+// 	PatternType at = activityTypesArr.get(0);
+// 	string atID = at.patternTypeID;
+
+// 	PatternOrder activityOrder = ActivityOrderController:createActivityOrder(sID, aID, 1, atID, 0);
+
+// 	createMessagesForSubTopic1A1(activity);
+
+// 	/* ******************************************************************************************* */
+
+// 	aID = String:concat(sID, "A2");
+// 	startMsg = String:concat("Activity is now ", aID ," starting");
+// 	endMsg = String:concat("Activity ", aID ," has now ended");
+// 	remindMsg = String:concat("Please Dont forget to complete activity ", aID);
+
+// 	activity = ActivityController:createActivity(aID, startMsg, endMsg, remindMsg, 0, 3, aID);
+
+// 	if(activity == null){
+// 		msg = "No Activity Created, Stopping Content Generation";
+// 		Logger:log(msg);
+//         Alerter:alert(msg);
+// 		return null;
+// 	}
+
+// 	activityOrder = ActivityOrderController:createActivityOrder(sID, aID, 2, atID, 0);
+
+// 	/* ******************************************************************************************* */
+
+// 	aID = String:concat(sID, "A3");
+// 	startMsg = String:concat("Activity is now ", aID ," starting");
+// 	endMsg = String:concat("Activity ", aID ," has now ended");
+// 	remindMsg = String:concat("Please Dont forget to complete activity ", aID);
+
+// 	activity = ActivityController:createActivity(aID, startMsg, endMsg, remindMsg, 0, 1, "");
+
+// 	if(activity == null){
+// 		msg = "No Activity Created, Stopping Content Generation";
+// 		Logger:log(msg);
+//         Alerter:alert(msg);
+// 		return null;
+// 	}
+
+// 	at = activityTypesArr.get(0);
+// 	atID = at.patternTypeID;
+
+// 	activityOrder = ActivityOrderController:createActivityOrder(sID, aID, 3, atID, 0);
+
+// 	createMessagesForSubTopic1A3(activity);
+
+// 	/* ******************************************************************************************* */
+
+// 	/* ******************************************************************************************* */
+
+// 	aID = String:concat(sID, "A4");
+// 	startMsg = String:concat("Activity is now ", aID ," starting");
+// 	endMsg = String:concat("Activity ", aID ," has now ended");
+// 	remindMsg = String:concat("Please Dont forget to complete activity ", aID);
+
+// 	activity = ActivityController:createActivity(aID, startMsg, endMsg, remindMsg, 0, 1, "");
+
+// 	if(activity == null){
+// 		msg = "No Activity Created, Stopping Content Generation";
+// 		Logger:log(msg);
+//         Alerter:alert(msg);
+// 		return null;
+// 	}
+
+// 	at = activityTypesArr.get(0);
+// 	atID = at.patternTypeID;
+
+// 	activityOrder = ActivityOrderController:createActivityOrder(sID, aID, 4, atID, 0);
+
+// 	createMessagesForSubTopic1A4(activity);
+
+// }
+
+// void createMessagesForSubTopic1A1(Pattern activity){
+// 	string aID = activity.patternID;
+// 	Message[] mArr;
+
+// 	string mID = String:concat(aID, "M1");
+// 	Message message = MessageController:createMessage(mID, "Message one text", 0, "", "");
+// 	mArr.append(message);
+
+// 	mID = String:concat(aID, "M2");
+// 	message = MessageController:createMessage(mID, "Message two text", 0, "", "");
+// 	mArr.append(message);
+	
+// 	mID = String:concat(aID, "M3");
+// 	message = MessageController:createMessage(mID, "Message three text", 0, "", "");
+// 	mArr.append(message);
+
+// 	mID = String:concat(aID, "M4");
+// 	message = MessageController:createMessage(mID, "Message four text", 0, "", "");
+// 	mArr.append(message);
+
+// 	createMessageOrders(activity, mArr);
+
+// }
+
+// void createMessagesForSubTopic1A3(Pattern activity){
+	
+// 	string aID = activity.patternID;
+// 	Message[] mArr;
+
+// 	string mID = String:concat(aID, "M1");
+// 	Message message = MessageController:createMessage(mID, "Message one text", 0, "", "");
+// 	mArr.append(message);
+
+// 	mID = String:concat(aID, "M2");
+// 	message = MessageController:createMessage(mID, "Message two text", 0, "", "");
+// 	mArr.append(message);
+
+// 	createMessageOrders(activity, mArr);
+// }
+
+// void createMessagesForSubTopic1A4(Pattern activity){
+
+// 	string aID = activity.patternID;
+// 	Message[] mArr;
+
+// 	string mID = String:concat(aID, "M1");
+// 	Message message = MessageController:createMessage(mID, "Message one text", 0, "", "");
+// 	mArr.append(message);
+
+// 	mID = String:concat(aID, "M2");
+// 	message = MessageController:createMessage(mID, "Message two text", 0, "", "");
+// 	mArr.append(message);
+
+// 	createMessageOrders(activity, mArr);
+
+// }
+
+// void createMessageOrders(Pattern activity, Message[] mArr){
+// 	string aID = activity.patternID;
+
+// 	for(int i = 0; i < mArr.length(); i++){
+// 		Message message = mArr.get(i);
+// 		int order = i + 1;
+// 		if (message != null){
+// 			string mID = message._MTID;
+// 			PatternMessageText messageOrder = MessageOrderController:createMessageOrder(aID, mID, order);	
+// 		}
+		
+// 	}
+// }

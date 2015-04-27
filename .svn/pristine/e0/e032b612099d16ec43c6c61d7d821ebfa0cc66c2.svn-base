@@ -1,0 +1,38 @@
+@Role("National Program Manager")
+persistent object Npm{
+	
+	/* the first name */
+	@defaultValidator("error.null_field")
+    string fname;
+    
+    /* the surname */
+    @defaultValidator("error.null_field")
+    string sname;
+    
+    /* the national ID number */
+    //@defaultValidator("error.null_field")
+    string npmid;
+    
+    /* the country NPM is stationed in */
+    @defaultValidator("error.null_field")
+    string country;
+    
+    /* e-mail address */
+    //@emailValidator("error.invalid_email")
+    string email;
+    
+    /* cell number */
+    @cellNumberValidator("error.invalid_cell_number")
+    string cell;
+    
+    /* land line number */
+    //@cellNumberValidator("error.invalid_cell_number")
+    string landline;
+    
+    /* sets the user as deleted */
+    string deleted;
+    
+    //NY:20141022
+    int roleID;
+    string registered;
+}

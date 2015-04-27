@@ -1,0 +1,8 @@
+object SMS_IVR_Activity{
+	
+	string timestamp;
+	string direction;
+	string message;
+	string status;
+
+}

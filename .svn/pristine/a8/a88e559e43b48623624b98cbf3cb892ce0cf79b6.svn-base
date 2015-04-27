@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="sub_topic_edit.title" unit="SubTopicEdit" init="init">
+       
+       <navigation outcome="nav_sub_topic_management" target="SubTopicManagement"/>
+       <navigation outcome="nav_content_viewer" target="ContentViewer"/>
+       <navigation outcome="nav_sub_topic_order_management" target="SubTopicOrderManagement"/>
+       <navigation outcome="nav_sub_topic_order_edit" target="SubTopicOrderEdit"/>
+
+       <action label="back" action="navigate"/>
+
+       <textfield label="sub_topic.subTopicID">
+            <binding variable="subTopicID" />
+        </textfield>
+
+        <textfield label="sub_topic.subTopicName">
+            <binding variable="subTopic">
+                <attribute name="topicName" />
+            </binding>
+        </textfield>
+
+        <textfield label="sub_topic.subTopicType">
+            <binding variable="subTopic">
+                <attribute name="topicType" />
+            </binding>
+        </textfield>
+
+        <select label="sub_topic.subTopicLanguage">
+            <binding variable="languageKey" />
+            <collectionSource function="LanguageKeyController:getAllLanguageKeys">
+                <displayAttribute name="languageID" />
+                <displayAttribute name="language" />
+            </collectionSource>
+        </select>
+
+        <submit label="sub_topic_edit.set_default_reminder" action="generateDefaults" />
+
+         <textfield label="sub_topic.subTopicReminderTime_required">
+            <binding variable="topicReminderTime">
+            </binding>
+        </textfield>
+
+        <textfield label="sub_topic.subTopicEscalationTime_required">
+            <binding variable="topicEscalationTime">
+            </binding>
+        </textfield>
+
+        <textfield label="sub_topic.subTopicMaxDuration_required">
+            <binding variable="topicMaxDuration">
+            </binding>
+        </textfield>
+
+        <textfield label="sub_topic.subTopicFlags">
+            <binding variable="subTopic">
+                <attribute name="topicFlags" />
+            </binding>
+        </textfield>
+
+        <textfield label="sub_topic.subTopicStartSMS">
+            <binding variable="subTopic">
+                <attribute name="topicStartSMS" />
+            </binding>
+        </textfield>
+
+        <textfield label="sub_topic.subTopicReminderSMS">
+            <binding variable="subTopicReminderSMS">
+            </binding>
+        </textfield>
+        <textfield label="sub_topic.subTopicEndSMS">
+            <binding variable="subTopic">
+                <attribute name="topicEndSMS" />
+            </binding>
+        </textfield>
+
+        <submit label="save" action="saveSubTopicButton" />
+        <submit label="sub_topic_management.save_create_order" action="saveSubTopicCreateOrderButton" />
+
+    </view>
+</ui>

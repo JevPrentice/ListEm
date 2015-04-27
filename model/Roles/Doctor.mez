@@ -1,0 +1,14 @@
+@Restrict("Admin", all())
+@Restrict("Doctor", all())
+@Role("Doctor")
+persistent object Doctor {
+
+	datetime dateRegistered;
+
+	@RequiredAttribute("validatror.doctorID")
+	string doctorID;
+	
+	@OneToOne
+	Person person via doctor_person;
+
+}

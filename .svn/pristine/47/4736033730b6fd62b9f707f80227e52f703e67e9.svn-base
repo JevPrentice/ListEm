@@ -1,0 +1,108 @@
+unit TopicEdit;
+
+string topicID;
+Umbrella topic;
+
+bool isEdit;
+
+string msg;
+string nav_result;
+
+void init() {
+
+	msg = "";
+
+	if (topic == null){
+		topic = Umbrella:new();
+		topic.umbrellaMaxDuration = 6;
+		topicID = null;
+		isEdit = false;
+	} else {
+		isEdit = true;
+		topicID = topic.umbrellaID;
+	}
+
+	if (nav_result == null || nav_result == ""){
+		nav_result = "nav_topic_management";
+	}
+}
+
+string saveTopic(){
+
+	if (topic == null){
+		msg = "No Topic found";
+		Alerter:alertError(msg);
+		return null;
+	} 
+
+	if (topicID == null || String:length(topicID) <= 0){//
+		msg = "Please enter a Topic ID";
+		Alerter:alertError(msg);
+		return null;
+	}
+	
+	if (topic.umbrellaName == null || String:length(topic.umbrellaName) <= 0){
+		msg = "Please enter a Topic Name";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	if (topic.umbrellaMaxDuration == null){
+		msg = "Please enter a Topic Max Duration";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	topicID = String:upper(topicID);
+
+	Umbrella[] topics = TopicController:getTopicsForTopicID(topicID);
+	if (topics.length() >= 1){
+
+		if (isEdit == true){
+			if (topic.umbrellaID != topicID){
+				msg = String:concat("A Topic with Topic ID: ", topicID, " already exists, please ensure that the Topic ID is unique, Topic NOT updated" );
+				Alerter:alertError(msg);
+				return null;
+			}
+		} else {
+			msg = String:concat("A Topic with Topic ID: ", topicID, " already exists, please ensure that the Topic ID is unique, Topic NOT saved");
+			Alerter:alertError(msg);
+			return null;
+		}
+	}
+
+	topic.umbrellaID = topicID;
+	topic.umbrellaFlags = String:lower(topic.umbrellaFlags);
+	topic.save();
+
+	msg = "Topic Saved";
+	Alerter:alert(msg);
+
+	return navigate();
+}
+
+string createSubTopic(){
+	SubTopicEdit:topic = topic;
+	nav_result = "nav_sub_topic_edit";
+	return navigate();
+}
+
+void resetVars(){
+	topic = null;
+	topicID = null;
+}
+
+string navigate(){
+
+	resetVars();
+
+	if (nav_result == "nav_topic_management"){
+		TopicManagement:nav_result = "nav_topic_order_management";
+	}
+	
+	return nav_result;
+}
+
+string backButton(){
+	return navigate();
+}

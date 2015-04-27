@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="topic_edit.title" unit="TopicEdit" init="init">
+      
+        <navigation outcome="nav_topic_management" target="TopicManagement"/>
+        <navigation outcome="nav_content_viewer" target="ContentViewer"/>
+
+        <action label="back" action="navigate"/>
+
+        <textfield label="topic_edit.umbrellaID">
+            <binding variable="topicID" />
+        </textfield>
+        <textfield label="topic_edit.umbrellaName">
+            <binding variable="topic">
+                <attribute name="umbrellaName"/>
+            </binding>
+        </textfield>
+        <textfield label="topic_edit.umbrellaMaxDuration">
+            <binding variable="topic">
+                <attribute name="umbrellaMaxDuration"/>
+            </binding>
+        </textfield> 
+        <textfield label="topic_edit.umbrellaFlags">
+            <binding variable="topic">
+                <attribute name="umbrellaFlags"/>
+            </binding>
+        </textfield>   
+
+        <submit label="save" action="saveTopic"/>
+
+    </view>
+</ui>

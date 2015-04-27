@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="learningManager.sequenceOrderList.title" unit="SequenceOrderList" init="init">
+    
+        <!--<menuitem label="learningManager.sequenceOrderList.menu" icon="Users" order="32">
+            <userRole>LearningManager</userRole>
+        </menuitem>-->
+        
+        <navigation outcome="back" target="SystemOverview" />
+        <action label="back" outcome="back"/>
+
+        <select label="sub_topic.subTopicID">
+    		<binding variable="topic"/>
+			<collectionSource function="TopicList:getAllTopics">
+				<displayAttribute name="topicID"/>
+			</collectionSource>
+		</select>
+        <select label="sequence.sequenceID">
+			<binding variable="sequence"/>
+			<collectionSource function="SequenceList:getAllSequences">
+				<displayAttribute name="sequenceID"/>
+			</collectionSource>
+		</select>
+		<textfield label="sequenceOrder.sequenceOrder">
+            <binding variable="sequenceOrder">
+                <attribute name="sequenceOrder"/>
+            </binding>
+        </textfield>
+        
+		<submit label="submit" action="saveSequenceOrder"/>
+
+        <table title="learningManager.sequenceOrderList.list">
+            <collectionSource function="getAllSequenceOrders"/>
+            <column heading="sequence.sequenceID">
+                <attributeName>sequence_sequenceOrder.sequenceID</attributeName>
+            </column>
+         	<column heading="sub_topic.subTopicID">
+                <attributeName>topic_sequenceOrder.topicID</attributeName>
+            </column>
+			<column heading="sequenceOrder.sequenceOrder">
+                <attributeName>sequenceOrder</attributeName>
+            </column> 
+            <rowAction label="learningManager.sequenceOrderList.list.edit" action="editSequenceOrder">
+                <binding variable="sequenceOrder"/>
+            </rowAction>
+
+            <rowAction label="learningManager.sequenceOrderList.list.remove" action="deleteSequenceOrder">
+                <binding variable="deleteSequenceOrder"/>
+            </rowAction>
+        </table>
+    </view>
+</ui>

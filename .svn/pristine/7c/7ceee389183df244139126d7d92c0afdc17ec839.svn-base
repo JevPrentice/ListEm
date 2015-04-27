@@ -1,0 +1,223 @@
+unit GroupPerformanceSummary;
+
+Client vClient;
+ClientGroup vClientGroup;
+Umbrella vUmbrella;
+UmbrellaPPE[] vFilterForUmbrella;
+UmbrellaPPE vUmbrellaPPE;
+
+/* ****************************************************************************************** */
+/* ****************************************************************************************** */
+
+string view_activity(){
+
+    vClient = vUmbrellaPPE.client_umbrellaPPE;
+    UserActivity:uClient = vClient;
+    UserActivity:nav_destination_on_back = "nav_user_management";
+    return "nav_user_activty";
+
+}
+
+/* ****************************************************************************************** */
+/* ****************************************************************************************** */
+
+void init(){
+    vFilterForUmbrella = fFilterForUmbrella();
+}
+
+UmbrellaPPE[] fFilterForUmbrella(){
+    return fGetMatchingUmbrellaPPEByGroup(vUmbrella, vClientGroup);
+}
+
+void fRecreateSummaries(){
+    if(vClientGroup!=null&&vUmbrella!=null){
+        vFilterForUmbrella = fFilterForUmbrella();
+        fRecalculateUmbrellaPPEChatCount(vFilterForUmbrella);
+        init();
+        Mez:alert("ClientSummaryView.RecreateSummaries.confirmation");
+    } else {
+        Mez:alert("ClientSummaryView.RecreateSummaries.alert");
+    }
+}
+
+void fSendSummaryReports(){
+    if(vClientGroup!=null&&vUmbrella!=null){
+        vFilterForUmbrella = fFilterForUmbrella();
+        uPPESMSUnit:fSendUmbrellaPPEReportsOnEscalation(vFilterForUmbrella);
+        init();    
+        Mez:alert("ClientSummaryView.SendSummaryReports.confirmation");
+    } else {
+        Mez:alert("ClientSummaryView.SendSummaryReports.alert");
+    }
+}
+
+void fSendTopPerformersReports(){
+    if(vClientGroup!=null&&vUmbrella!=null){
+        vFilterForUmbrella = fFilterForUmbrella();
+        uPPESMSUnit:fSendOverallTopPerformers(vFilterForUmbrella);
+        init();    
+        Mez:alert("ClientSummaryView.SendOverallTopPerformers.confirmation");
+    } else {
+        Mez:alert("ClientSummaryView.SendOverallTopPerformers.alert");
+    }
+}
+
+/* ****************************************************************************************** */
+/* ****************************************************************************************** */
+
+    UmbrellaPPE[] fGetMatchingUmbrellaPPEByGroup(Umbrella u, ClientGroup cgo){
+
+        // Set variables  
+        UmbrellaPPE[] uPs1; UmbrellaPPE[] uPsR; UmbrellaPPE uP; ClientGroup cgcomp; Client clientcomp; if(cgo==null){ return null; }
+        
+        // Get base collection
+        if(u!=null){
+            uPs1 = UmbrellaPPE:relationshipIn(umbrella_umbrellaPPE, u);
+        } else {
+            uPs1 = UmbrellaPPE:all();
+        }
+
+        // Loop through original Umbrella PPE set, as derived from Umbrella
+        for(int i = uPs1.length()-1; i>=0; i--){
+
+            // Get UmbrellaPPE-specific record
+            uP = uPs1.get(i);
+
+            // Get individual client and corresponding group
+            clientcomp = uP.client_umbrellaPPE;
+            cgcomp = ClientGroupList:getGroupForClient(clientcomp);
+
+            // Check for nulls, them compare and add to return collection if there is a match
+            if(cgcomp!=null){  
+                if(cgo==cgcomp){
+                    uPsR.append(uP);
+                }
+            }
+        }
+
+        return uPsR;
+
+    }
+
+/* ****************************************************************************************** */
+/* ****************************************************************************************** */
+
+void fRecalculateUmbrellaPPEChatCount(UmbrellaPPE[] uPs){
+    
+    int maxi = uPs.length(); int i = 0; UmbrellaPPE uP; Client c; Umbrella u;
+
+    for(i=0; i<maxi; i++){
+
+        uP = uPs.get(i);
+        c = uP.client_umbrellaPPE;
+        u = uP.umbrella_umbrellaPPE;
+
+        uP.chatscoreadjusted = uCalculatePPEDetail:fGetAdjustedChat(c, u, uP.chatscore);
+        uP.totalscore = (uP.quizscore + uP.practicumscore + uP.chatscoreadjusted);
+        uP.save();
+
+    }
+
+}
+
+/* ****************************************************************************************** */
+/* ****************************************************************************************** */
+
+void fDoGroupTopicMessagingButton(){
+    fDoGroupTopicMessaging(1);
+}
+
+void fDoGroupTopicMessagingSchedule(){
+    fDoGroupTopicMessaging(0);
+}
+
+/* ****************************************************************************************** */
+/* ****************************************************************************************** */
+
+void fDoGroupTopicMessaging( int iForce ){
+
+    int i1 = fDoGroupTopicMessagingEscalate (iForce);
+    int i2 = fDoGroupTopicMessagingEnd (iForce);
+
+    string s = String:concat(" Messaging completed. Groups escalated (", i1, ") and ended (", i2, ")."); Mez:log(s);
+    Alerter:alert(s);
+
+}
+
+/* ****************************************************************************************** */
+/* ****************************************************************************************** */
+
+int fDoGroupTopicMessagingEscalate(int iForce){
+
+    // Assign variables
+    int i; string slog; GroupUmbrellaPPE gUPPE; ClientGroup cg; Umbrella u; UmbrellaPPE[] uPs;
+
+    // Check for where status = 1 (ie busy) and escalationdate < now
+    datetime dtnow = Mez:now();
+    GroupUmbrellaPPE[] gUPPEsEscalate = GroupUmbrellaPPE:and(equals(status,1), lessThan(groupUmbrellaEscalateDateTime, dtnow));
+
+    // If forced to run to test the scheduling
+    if(iForce==1){ gUPPEsEscalate = GroupUmbrellaPPE:equals(status,1); }
+
+    for(i=0; i<gUPPEsEscalate.length(); i++){
+
+        // Assign loop-specific variables
+        gUPPE = gUPPEsEscalate.get(i); u = gUPPE.umbrella_groupUmbrellaPPE; cg = gUPPE.group_groupUmbrellaPPE;
+        
+        // Create log entry for visibility
+        slog = String:concat("fDoGroupTopicMessaging (Escalation) for Group : '", cg.name, "' and Topic : '", u.umbrellaID, "'."); Mez:log(slog);
+
+        // Get collection of users in same group
+        uPs = fGetMatchingUmbrellaPPEByGroup(u, cg);
+
+        // Recalculate to adjust chat score
+        fRecalculateUmbrellaPPEChatCount(uPs);
+
+        // a. Send CHEW list of laggards + b. Send Performance SMS to all with progress = 100
+        uPPESMSUnit:fDoEscalateDayIndivMessages(uPs, cg);
+
+        // Set gUPPE to 9 = Already escalated
+        gUPPE.status = 9; gUPPE.save();
+
+    }
+
+    return i;
+}
+
+/* ****************************************************************************************** */
+/* ****************************************************************************************** */
+
+int fDoGroupTopicMessagingEnd (int iForce){
+
+    // Assign variables
+    int i; string slog; GroupUmbrellaPPE gUPPE; ClientGroup cg; Umbrella u; UmbrellaPPE[] uPs;
+
+    // Check for where status = 9 (ie already late) and enddate < now
+    datetime dtnow = Mez:now();
+    GroupUmbrellaPPE[] gUPPEsEnd = GroupUmbrellaPPE:and(equals(status,9), lessThan(groupUmbrellaEndDateTime, dtnow));
+
+    // If forced to run to test the scheduling
+    if(iForce==1){ gUPPEsEnd = GroupUmbrellaPPE:equals(status,9); }
+
+    for(i=0; i<gUPPEsEnd.length(); i++){
+
+        // Assign loop-specific variables
+        gUPPE = gUPPEsEnd.get(i); u = gUPPE.umbrella_groupUmbrellaPPE; cg = gUPPE.group_groupUmbrellaPPE;
+        
+        // Create log entry for visibility
+        slog = String:concat("fDoGroupTopicMessaging (End) for Group : '", cg.name, "' and Topic : '", u.umbrellaID, "'."); Mez:log(slog);
+
+        // Get collection of users in same group
+        uPs = fGetMatchingUmbrellaPPEByGroup(u, cg);
+
+        // a. Send top performer report to all CHVs
+        uPPESMSUnit:fSendOverallTopPerformers(uPs);
+
+        // Change status to 99 = All Done
+        gUPPE.status = 99; gUPPE.save();
+
+    }
+
+    return i;
+}
+

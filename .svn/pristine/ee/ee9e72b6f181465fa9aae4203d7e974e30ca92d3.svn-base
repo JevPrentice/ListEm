@@ -1,0 +1,32 @@
+unit ProgramManagerList;
+
+ProgramManager programManager;
+
+string message;
+void init() {
+	programManager = ProgramManager:new();
+}
+
+ProgramManager[] getAllProgramManagers() {
+	return ProgramManager:all();
+}
+
+string submitInvite(){
+    //programManager.role_id = 1;
+    programManager.registered = Mez:now();
+    programManager.save();
+
+    programManager.invite(programManager.mobileNumber);
+    
+    init();
+
+    message = "Learning Manager saved";
+    Alerter:alert(message);
+
+    return null;
+}
+
+
+void editProgramManager(){
+	return null;
+}

@@ -1,0 +1,7 @@
+@Restrict("SmartChew", all())
+persistent object Umbrella {
+	string umbrellaID;
+	string umbrellaName;
+	string umbrellaFlags;
+	int umbrellaMaxDuration;
+}

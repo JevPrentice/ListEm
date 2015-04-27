@@ -1,0 +1,16 @@
+/* 
+ * Jev Prentice 2015-04-17
+ */
+@Restrict("Admin", all())
+@Restrict("ProgramManager", all())
+@Restrict("SmartChew", all())
+@Role("SmartChew")
+persistent object SmartChew {
+
+	datetime registered;
+	datetime reportReminder;
+
+	@OneToOne
+	Client client via client_smart_chew; 
+
+}

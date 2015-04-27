@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+    <view label="admin.edit" unit="EditAdmin" init="init">
+
+        <navigation outcome="navManageAdmins" target="ManageAdmins"/>
+        <action label="back" action="back"/>
+
+        <info label="pageMode">
+            <binding variable="isEditDesc" />
+        </info>
+
+        <textfield label="firstNames">
+            <binding variable="firstNames"/>
+        </textfield>
+
+        <textfield label="surname">
+            <binding variable="surname"/>
+        </textfield>
+
+        <textfield label="mobileNumber_r">
+            <binding variable="mobileNumber" />
+        </textfield>
+
+        <textfield label="idNumber">
+            <binding variable="idNumber"/>
+        </textfield>
+
+        <select label="gender">
+            <binding variable="gender" />
+            <enum>GENDER</enum>
+        </select>
+
+        <!-- <select label="person">
+            <binding variable="person" />
+            <collectionSource variable="allPeople">
+                <displayAttribute name="firstNames"/>
+            </collectionSource>
+        </select> -->
+        
+        <submit label="save" action="saveAdmin"/>
+
+    </view>
+</ui>

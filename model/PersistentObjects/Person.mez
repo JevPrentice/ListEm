@@ -1,0 +1,18 @@
+@Restrict("Admin", all())
+persistent object Person {
+	
+	@RequiredAttribute("validatror.firstNames")
+	string firstNames;
+	@RequiredAttribute("validatror.surname")
+	string surname;
+	@InternationalNumber("validatror.mobileNumber")
+	string mobileNumber;
+
+	@IDNumberValidator("validatror.idNumber")
+	string idNumber;
+
+	datetime dateRegistered;
+	
+	GENDER gender;
+
+}

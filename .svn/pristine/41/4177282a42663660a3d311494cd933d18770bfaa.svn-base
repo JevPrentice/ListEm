@@ -1,0 +1,19 @@
+@Restrict("SmartChew", all())
+persistent object SequenceHistory{
+	datetime startDate;
+	datetime maxEndDate;
+	datetime reminderTime;
+	datetime escalationTime;
+	int statusID;
+	int escalationID;
+	datetime actualEndDate;
+
+	@ManyToOne
+	Client client_sequenceHistory;
+	
+	@ManyToOne
+	Topic topic_sequenceHistory;
+	
+	@ManyToOne
+	Sequence sequence_sequenceHistory;
+}

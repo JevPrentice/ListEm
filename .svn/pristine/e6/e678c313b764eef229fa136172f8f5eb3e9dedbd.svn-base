@@ -1,0 +1,534 @@
+unit JumpToList;
+
+JumpTo jt;
+JumpTo jtViewText;
+
+string configHelp;
+
+Message mPlaceHolder;
+Message jt_messageIn_JumpTo;
+Umbrella jt_umbrella_JumpTo;
+Topic jt_topic_JumpTo;
+Message jt_messageTo_JumpTo;
+Pattern jt_activityfilter_JumpTo;
+Pattern jt_activityfilter_JumpTo_filter;
+
+string sjt_userResponse;
+string sjt_scoreAdjustment;
+string sjt_messageIn_JumpTo;
+string sjt_umbrella_JumpTo;
+string sjt_topic_JumpTo;
+string sjt_messageTo_JumpTo;
+string sjt_jumpToType;
+string sjt_activityfilter_JumpTo;
+
+string messageTextIn;
+string messageTextOut;
+
+bool bIgnorescore;
+bool bEdit;
+bool bEndimmediately;
+
+JumpTo[] vJs;
+Umbrella[] vUs;
+Topic[] vTs;
+Sequence[] vSs;
+Pattern[] vPs;
+Message[] vMs;
+
+/* **************************************************************************************************************************************** */
+/* **************************************************************************************************************************************** */
+
+void fRefreshLabels(int it){
+
+	configHelp = FixMessageList:fGetFixedMessageDefault("vJumpTo");
+
+	sjt_activityfilter_JumpTo = "Activity Filter : Show only content from this activity";
+	sjt_userResponse = "Incoming : User response that will be evaluated";
+	sjt_messageIn_JumpTo = "Incoming : If the user response is only relevant to a specific incoming message";
+	sjt_umbrella_JumpTo = "Skip Logic Destination : Topic (considered first)";
+	sjt_topic_JumpTo = "Skip Logic Destination : Sub-Topic (considered second)";
+	sjt_messageTo_JumpTo = "Skip Logic Destination : Message";
+	messageTextIn = ""; messageTextOut = "";
+
+	sjt_jumpToType = String:concat("Skip Logic Type : For further options see Helpful Hints. (Default for 'Search' = ",it,")");
+
+	int ii = BLUnits:fGetConfigSettingInt("DefaultScorePracticum");
+	sjt_scoreAdjustment = String:concat("Score Adjustment : The score allocated to the specific user response. (Max practicum score = ",ii,")");
+
+	jt = JumpTo:new();
+	jt.jumpToType = it;
+
+	bEdit = false;
+
+	return null;
+
+}
+
+/* **************************************************************************************************************************************** */
+/* **************************************************************************************************************************************** */
+
+void initaftersave(int i){
+
+	fRefreshLabels(i);
+	fRefreshData();
+	return null;
+
+}
+
+void init(){
+
+	int i = BLUnits:fGetConfigSettingInt("DefaultTypeSearchJumpTo");
+	fRefreshLabels(i);
+	fRefreshData();
+
+	return null;
+
+}
+
+void initmessage(){
+
+	string uR = jt.userResponse;
+	fRefreshLabels(1);
+	fRefreshData();
+	jt.userResponse = uR;
+	bEndimmediately = false;
+
+	return null;
+
+}
+
+void initmessagetext(){
+	return null;
+}
+
+void inittopic(){
+
+	int i = BLUnits:fGetConfigSettingInt("DefaultTypeSearchJumpTo");
+	
+	fRefreshLabels(i);
+	fRefreshData();
+	bIgnorescore = true;
+	mPlaceHolder = null;
+	
+	return null;
+
+}
+
+/* **************************************************************************************************************************************** */
+/* **************************************************************************************************************************************** */
+
+void fFilterJumpToMessage(){
+	if(jt_activityfilter_JumpTo_filter==null){ 
+		jt_activityfilter_JumpTo_filter = jt_activityfilter_JumpTo; } else { jt_activityfilter_JumpTo_filter = null; }
+	fRefreshData();
+}
+
+/* **************************************************************************************************************************************** */
+/* **************************************************************************************************************************************** */
+
+void fRefreshData(){
+	
+	// Show only SMS activities
+	vPs = jumpto_patterns(jt_activityfilter_JumpTo_filter);
+
+	// Show only messages linked to the selected activity
+	vMs = jumpto_messages(jt_activityfilter_JumpTo_filter);
+
+	// Show only skip logic setups linked to selected activity
+	vJs = jumpto_jumptos(jt_activityfilter_JumpTo_filter);
+
+	vUs = jumpto_umbrellas();
+	vTs = jumpto_topics();
+	
+}
+
+/* ******************************************************************** */
+
+Umbrella[] jumpto_umbrellas(){
+	return Umbrella:all();
+}
+
+/* ******************************************************************** */
+
+Topic[] jumpto_topics(){
+	return Topic:all();
+}
+
+/* **************************************************************************************************************************************** */
+/* **************************************************************************************************************************************** */
+
+JumpTo[] jumpto_jumptos(Pattern p){
+	JumpTo[] jjS;
+
+	if(p==null){
+		jjS = JumpTo:all();
+	} else {
+		jjS = fGetJumpToBasedOnMessage(p);
+	}
+
+	return jjS;
+}
+
+/* ******************************************************************** */
+
+Pattern[] jumpto_patterns(Pattern p){
+	Pattern[] ppS;
+	if(p==null){
+		ppS = fGetSMSPatterns();
+	} else {
+		ppS.append(p);
+	}
+	return ppS;
+}
+
+/* ******************************************************************** */
+
+Message[] jumpto_messages(Pattern p){
+	Message[] mmS;
+	if(p==null){
+		mmS = Message:all();
+	} else {
+		mmS = fGetLinkedMessages(p);
+	}
+	return mmS;
+}
+
+/* **************************************************************************************************************************************** */
+/* **************************************************************************************************************************************** */
+
+JumpTo[] fGetJumpToBasedOnMessage(Pattern p){
+	Message[] mmS = fGetLinkedMessages(p); Message[] mmF; Message m;
+	JumpTo[] jjSr; JumpTo[] jjS; JumpTo[] jjA = JumpTo:all(); JumpTo j;
+
+	for(int i=0; i<mmS.length(); i++){
+		m = mmS.get(i);
+		jjS = jjA.select(relationshipIn(messageIn_JumpTo,m));
+		for(int i2=0; i2<jjS.length(); i2++){
+			jjSr.append(jjS.get(i2));
+		}
+	}
+
+	return jjSr;
+}
+
+/* ******************************************************************** */
+
+Pattern[] fGetSMSPatterns(){
+    Pattern[] ps = Pattern:all(); 
+    int ml = (ps.length()-1);
+    Pattern[] psr;
+    Pattern p;
+    for(int i = 0; i<=ml; i++){
+        p = ps.get(i);
+
+        /* JP HEL-178 */
+  	    int channelID = ActivityController:getActivityChannelKeyID(p);
+        if(channelID == 1){
+            psr.append(p);
+        }
+    }
+    return psr;
+}
+
+/* ******************************************************************** */
+
+Message[] fGetLinkedMessages (Pattern p){
+	Message[] mS; PatternMessageText pM; Message m;
+
+	PatternMessageText[] pMs = PatternMessageText:relationshipIn(patternMessageTextID_pattern, p); 
+
+	pMs.sortAsc("_MTID_order");
+	for(int i = 0; i<pMs.length(); i++){
+		pM = pMs.get(i);
+		if(pM.patternMessageText_Message!=null){
+			m = pM.patternMessageText_Message;
+			mS.append(m);
+		}
+	}
+	
+	return mS;
+}
+
+/* **************************************************************************************************************************************** */
+/* **************************************************************************************************************************************** */
+
+string viewJumpToMessageTextrow(){
+
+	messageTextIn = ""; messageTextOut = "";
+
+	if(jt.messageIn_JumpTo==null||jt.messageTo_JumpTo==null){ return ""; }
+
+	jtViewText = jt;
+	
+	jt_messageIn_JumpTo = jtViewText.messageIn_JumpTo;
+	jt_messageTo_JumpTo = jtViewText.messageTo_JumpTo;	
+
+	Message m1 = jtViewText.messageIn_JumpTo;
+	Message m2 = jtViewText.messageTo_JumpTo;
+	
+	if(m1!=null){ messageTextIn = m1._MT_text; }
+	if(m2!=null){ messageTextOut = m2._MT_text; }
+	
+	return "vJumpToMessageText";
+
+}
+
+string viewJumpToMessageText(){
+
+	messageTextIn = ""; messageTextOut = "";
+	if(jt_messageIn_JumpTo!=null){ messageTextIn = jt_messageIn_JumpTo._MT_text; }
+	if(jt_messageTo_JumpTo!=null){ messageTextOut = jt_messageTo_JumpTo._MT_text; }
+	return "vJumpToMessageText";
+
+}
+
+/* **************************************************************************************************************************************** */
+/* **************************************************************************************************************************************** */
+
+/* DEVLOG : CHECK FOR DUPLICATION WHEN SAVING SEARCH */
+
+void saveConfig(){
+	
+	FixMessageList:fSetFixedMessageDefault("vJumpTo", configHelp);
+	return null;
+
+}
+
+void saveJumpToMessage(){
+	int i = saveJumpTo();
+	if(i==1){ Mez:alert("jumpto.confirmmessage"); }
+	return null;
+}
+
+void saveJumpToTopic(){
+	bIgnorescore = true;
+	int i = saveJumpTo();
+	if(i==1){ Mez:alert("jumpto.confirmtopic"); }
+	return null;
+}
+
+/* ************************************************************************************** */
+/* ************************************************************************************** */
+
+int saveJumpTo(){
+
+	JumpTo jtSave = JumpTo:new();
+
+	// Check a valid user response
+	if((jt.userResponse==null)||(jt.jumpToType==null)){	Mez:alert("jumpto.alert"); return 0; }
+
+	// Change user response to string:lower
+	jt.userResponse = String:lower(jt.userResponse);
+
+	// Check for duplication
+	if( (fCheckDuplicates(jt_messageIn_JumpTo, jt.userResponse)!=0 && bEdit==false)||(jt_messageIn_JumpTo==jt_messageTo_JumpTo) ){ 
+		Mez:alert("jumpto.saveduplicates"); return 0; 
+	}
+	
+	// Check for default values for bIgnorescore and scoreAdjustment and jumpToType
+	if(bIgnorescore==true){ jt.scoreAdjustment=null; } else if(jt.scoreAdjustment==null){ jt.scoreAdjustment=0; }
+	if(jt.jumpToType==null){ jt.jumpToType=1; }
+
+	// Save jt based on web selection
+	/* ******************************************* */
+	/* ******************************************* */
+		jt.messageIn_JumpTo = jt_messageIn_JumpTo;
+		jt.umbrella_JumpTo =  jt_umbrella_JumpTo;
+		jt.topic_JumpTo = jt_topic_JumpTo;
+		jt.messageTo_JumpTo = jt_messageTo_JumpTo;
+		jt.save();
+		jtSave = jt;
+	/* ******************************************* */
+	/* ******************************************* */
+
+	// Blank out correctAnswer to move to new method if skip logic is saved
+	jt_messageIn_JumpTo.correctAnswer = ""; jt_messageIn_JumpTo.save();
+
+	// If end immediately then save parameter in correctAnswer field
+	if(bEndimmediately==true){ jt_messageTo_JumpTo.correctAnswer = "endactivity"; jt_messageTo_JumpTo.save(); }
+
+	// Init after save
+	initaftersave(jt.jumpToType);
+
+	// Set clever defaults for UI
+	if( (jtSave.messageTo_JumpTo!=null) && (BLUnits:fGetConfigSettingInt("UseCleverSkipLogic")==1) ){ fSetCleverDefaults(jtSave); }
+
+	return 1;
+
+}
+
+/* ************************************************************************************** */
+/* ************************************************************************************** */
+
+int fCheckDuplicates(Message mComp, string uRComp){
+	int r = 0;
+
+	JumpTo[] jTs = JumpTo:and(relationshipIn(messageIn_JumpTo,mComp), equals(userResponse,uRComp));
+	if(jTs.length()>0){
+		r = 1;
+	}
+
+	return r;
+}
+
+/* ************************************************************************************************** */
+/* ************************************************************************************************** */
+/* ************************************************************************************************** */
+
+	void fSetCleverDefaults(JumpTo jtSave){
+		if(jtSave==null){ return null; }
+
+		int mChange = fSetCleverMessages(jtSave);
+
+		int mUserresponse = fSetCleverUserResponse(jtSave, mChange);
+
+		int mIgnorescore = fSetCleverIgnoreScore(jt_messageIn_JumpTo);
+
+		return null;
+
+	}
+
+	/* ***************************************************** */
+
+	int fSetCleverMessages(JumpTo jtSave){
+
+		// Get previous user response saved - to be compared
+		int r = 0; string pU = jtSave.userResponse; Message mLocal;
+
+		// If the previous user response saved was also the last option (max MMC), also increment the Message In
+		if(pU==fGetMaxMMC(jtSave.messageIn_JumpTo)){
+
+			// Increment the incoming message to the next one in order
+			jt_messageIn_JumpTo = fGetCleverNextMessage(jt_activityfilter_JumpTo, jt_messageIn_JumpTo, null, "from");
+			
+			if(mPlaceHolder!=null){
+				// Move immediately to first message after the sequence of skip logic destinations
+				mLocal=mPlaceHolder;
+			} else {
+				// Increment as per normal - move to message after the incoming one
+				mLocal=jt_messageIn_JumpTo;
+			}
+
+			// Increment the outgoing message to the next one in order, using mPlaceHolder
+			jt_messageTo_JumpTo = fGetCleverNextMessage(jt_activityfilter_JumpTo, null, mLocal, "to");
+
+			// On first "normal" run, remove the placeholder
+			if(jt_messageIn_JumpTo==mPlaceHolder){ mPlaceHolder = null; }
+
+			r = 1;
+
+		} else {
+
+			jt_messageTo_JumpTo = fGetCleverNextMessage(jt_activityfilter_JumpTo, null, jt_messageTo_JumpTo, "to");
+			mPlaceHolder = jt_messageTo_JumpTo;
+
+		}
+
+		return r;
+
+	}
+
+	/* ***************************************************** */
+
+	int fSetCleverUserResponse(JumpTo jtSave, int mChange){
+		int r = 0;
+		if(mChange==1) { jt.userResponse = 1; }
+		else { jt.userResponse = fCleverIncrementUserResponse(jtSave.userResponse); r = 1; }
+		return r;
+	}
+
+	/* ***************************************************** */
+
+	int fSetCleverIgnoreScore(Message m){
+		int r = 0;
+		if(fGetMaxMMC(m)==1){
+			bIgnorescore = true;
+			jt.scoreAdjustment = null;
+			r = 1;
+		} else {
+			bIgnorescore = false;
+		}
+		return r;
+	}
+
+	/* ***************************************************** */
+
+	int fGetMaxMMC(Message m){
+		if (m==null){ return 0; }
+		if (m.maxMultipleChoice==null){ return 0; }
+		return m.maxMultipleChoice;
+	}
+
+	/* ***************************************************** */
+
+	Message fGetCleverNextMessage(Pattern p, Message mFrom, Message mTo, string code){
+		Message mReturn;
+
+		if(code=="from"){
+			mReturn = fGetCleverNextMessageIncrement(p, mFrom);
+		} else if (code=="to"){
+			mReturn = fGetCleverNextMessageIncrement(p, mTo);
+		}
+
+		return mReturn;
+	}
+
+	/* ***************************************************** */
+
+	Message fGetCleverNextMessageIncrement(Pattern p, Message m){
+		Message mReturn = m; PatternMessageText[] pmTs; PatternMessageText pmT; int mo;
+
+			pmTs = PatternMessageText:and(relationshipIn(patternMessageTextID_pattern, p), relationshipIn(patternMessageText_Message, m));
+			if(pmTs.length()>0){
+				pmT = pmTs.get(0); mo = pmT._MTID_order + 1;
+				pmTs = PatternMessageText:and(relationshipIn(patternMessageTextID_pattern, p), equals(_MTID_order, mo));
+				if(pmTs.length()>0){
+					pmT = pmTs.get(0);
+					mReturn = pmT.patternMessageText_Message;
+				} else {
+					mReturn = null;
+				}
+			}
+
+		return mReturn;
+
+	}
+	
+	/* ***************************************************** */
+
+	string fCleverIncrementUserResponse(string s){
+		string sr = s;
+		if(s=="1"){ sr = "2"; } 
+		else if (s=="2") { sr = "3"; }
+		else if (s=="3") { sr = "4"; }
+		else if (s=="4") { sr = "5"; }
+		return sr;
+	}
+
+/* ************************************************************************************************** */
+/* ************************************************************************************************** */
+/* ************************************************************************************************** */
+
+void editJumpTo(){
+
+	bEdit = true;
+
+	if(jt.scoreAdjustment==null){ bIgnorescore=true; } else { bIgnorescore=false; }
+
+	jt_messageIn_JumpTo = jt.messageIn_JumpTo;
+	jt_umbrella_JumpTo =  jt.umbrella_JumpTo;
+	jt_topic_JumpTo = jt.topic_JumpTo;
+	jt_messageTo_JumpTo = jt.messageTo_JumpTo;
+
+	return null;
+
+}
+
+void deleteJumpTo(){
+
+	JumpTo:delete(jt);
+	initaftersave(jt.jumpToType);
+	return null;
+
+}

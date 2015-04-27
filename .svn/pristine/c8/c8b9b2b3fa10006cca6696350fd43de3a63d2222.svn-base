@@ -1,0 +1,152 @@
+unit MessageList;
+
+Message message;
+Message deleteMessage;
+
+bool bEdit;
+string sAddFromString;
+
+void init() {
+	message = Message:new();
+	bEdit = false;
+}
+
+/* ********************************************************************************************************* */
+/* ********************************************************************************************************* */
+
+void saveMessage(){
+	int r = 0;
+	if(sAddFromString==null||sAddFromString==""){
+		r = saveMessageExec(message, "");
+	} else {
+		fSaveLoop(sAddFromString);
+	}
+	init();
+}
+
+string fSaveLoop(string sloop){
+	int r = 0; string salert = "";
+	string[] isEs = String:split(sloop,"--");
+	string[] isDs; string isD; string is; Message sm; string posspattern = "";
+
+	for(int i=0; i<isEs.length(); i++){
+		isD = isEs.get(i);
+
+		if(String:length(isD)<=3){
+			salert = String:concat("String length alert : ", isD); Alerter:alert(salert);
+
+		} else {
+
+			isDs = String:split(isD,"::");
+
+			if(isDs.length()==5){
+
+				sm = Message:new();
+				sm._MTID = isDs.get(0); if(sm._MTID==" "){ sm._MTID = ""; }
+				sm._MT_text = isDs.get(1); if(sm._MT_text==" "){ sm._MT_text = ""; } 
+
+				/* JP 2015-02-18 HEL-178 */
+				int maxMultipleChoice = Integer:fromString(isDs.get(2));
+				sm.maxMultipleChoice = maxMultipleChoice; 
+
+				if(sm.maxMultipleChoice==" "){ sm.maxMultipleChoice = 0; }
+
+				sm.correctAnswer = isDs.get(3); if(sm.correctAnswer==" "){ sm.correctAnswer = ""; }
+				sm.informCorrectText = isDs.get(4); if (sm.informCorrectText==" "){ sm.informCorrectText = ""; }
+				r = r + saveMessageExec(sm, posspattern);
+
+			} else {
+				posspattern = isD; salert = String:concat("Index = ", i, " | Length = ", isDs.length()," | Activity ID = '",posspattern,"'"); Alerter:alert(salert);
+			}
+
+		}
+	}
+	salert = String:concat("Split : ",isEs.length(), " | Created and linked : ", r); Alerter:alert(salert);
+	return null;
+}
+
+//TESTE3S1A1:STE13-6S1A1M1;Welcome dear learner to the HELP mLearning gamification. This first game will enhance your skill on the Family Planning topic.Reply 1 to continue  ;1;1:STE13-6S1A1M2;
+
+/* ********************************************************************************************************* */
+/* ********************************************************************************************************* */
+
+int fGetLastM(string s){
+	int ir = 0; string x;
+	for(int i=0; i<String:length(s); i++){
+		x = String:substring(s, i, i);
+		x = String:upper(x);
+		if(x=="M"){ ir = i; }
+	}
+	return ir;
+}
+
+int fGuessActivityLink (string posspattern, Message m){
+	
+	int r =0; string os; int o; string ms = m._MTID;
+	int lastm = fGetLastM(ms); int lastchar = String:length(ms)-1;
+
+	if(lastm>0&&lastm<lastchar){
+
+		os = String:substring(ms,lastm+1,lastchar); Mez:log(os);
+		if(os!=null){
+			o = Integer:fromString(os);
+			if(o!=null){
+				MessageOrderController:createMessageOrder(posspattern, ms, o); r = 1;
+			}
+		}
+ 	}
+
+ 	return r;
+
+}
+
+/* ********************************************************************************************************* */
+/* ********************************************************************************************************* */
+
+int saveMessageExec(Message saveMessage, string posspattern) {
+
+	int r = 0;
+
+	if(saveMessage._MTID == null||saveMessage._MTID == ""){ return r; }
+
+	/* JV : December 2014 : Adding defaults to prevent failures in Pattern operation */
+
+	if(saveMessage._MTID_order==null) { saveMessage._MTID_order=0; }
+	if(saveMessage._MT_text==null) { saveMessage._MT_text=""; }
+	if(saveMessage.maxMultipleChoice==null) { saveMessage.maxMultipleChoice = 0;}
+	if(saveMessage.correctAnswer==null){ saveMessage.correctAnswer=""; }
+	if(saveMessage.informCorrectText==null){ saveMessage.informCorrectText=""; }
+
+	/* JV : December 2014 : Adding defaults to prevent failures in Pattern operation */
+
+	Message[] mS = Message:equals(_MTID, saveMessage._MTID);
+	if(mS.length()>0 && bEdit==false){  
+		Mez:alert("learningManager.messageList.savewarning");
+	} else {
+		saveMessage.save();
+		Mez:alert("learningManager.messageList.saveconfirmation");
+	}
+
+	if(posspattern!=""){
+		r = fGuessActivityLink(posspattern, saveMessage);
+	}
+
+	return r;
+
+}
+
+/* ********************************************************************************************************* */
+/* ********************************************************************************************************* */
+
+void editMessage() {
+	bEdit = true;
+	message =message;
+}
+
+void removeMessage() {
+	Message:delete(deleteMessage);
+}
+
+Message[] getAllMessages() {
+	return Message:all();
+}

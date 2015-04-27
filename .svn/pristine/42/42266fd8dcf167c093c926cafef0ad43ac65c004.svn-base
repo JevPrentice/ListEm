@@ -1,0 +1,212 @@
+unit uIncomingSMSForward;
+
+bool guessGroup;
+
+/* ********************************************************** */
+/* ********************************************************** */
+
+void fResendFromDateExec(datetime dt){
+
+    AllSMSLog[] aSs = AllSMSLog:greaterThan(dateTimeStamp, dt);
+    int maxi = aSs.length(); int i; AllSMSLog aS;
+
+    if(maxi>0){
+        aSs.sortAsc("dateTimeStamp");
+        for(i=0; i<maxi; i++){
+            aS = aSs.get(i);
+            BLUnits:SendSMSToClient(aS.allSMSLog_client, aS.messageText);        
+        }
+    }
+}
+
+/* ********************************************************** */
+/* ********************************************************** */
+
+int fCheckMaxChat(Client c){
+    int maxchat = BLUnits:fGetConfigSettingInt("MaxChatCount"); int i = 0;
+    int clientchat = c.chatcount; if(clientchat == null){clientchat = 0;}
+    if ( (clientchat <= maxchat) || (c.roleID!=1) ){
+        if ( (clientchat < maxchat) || (c.roleID!=1) ){ 
+            i = 1; 
+        } else {
+            fSendErrorReturn(c, "", 12);
+        }
+        clientchat = clientchat + 1; 
+        c.chatcount = clientchat;
+        uCalculatePPEDetail:fUpdateChatCount(c);
+        c.save();
+    }
+    return i;
+}
+
+
+/* ********************************************************** */
+/* ********************************************************** */
+
+Client fGuessClientUpperCase(string s1){
+    Client[] cs = Client:all(); Client c; int maxi = cs.length(); int i = 0; string s;
+    s1 = String:lower(s1);
+    if (maxi>0){
+        for(i=0; i<maxi; i++){
+            c = cs.get(i); s = String:lower(c.nickname); if (s == null){ s = "";}
+            if(s1 == s){
+                return c;
+            }
+        }
+    }
+    return null;
+}
+
+/* ********************************************************** */
+/* ********************************************************** */
+
+void fChatMessage(Client c, string smsText){
+
+    if(fCheckMaxChat(c) == 1){
+        string schv = fGetSplitString(smsText, 2, 2);
+        Client ctarget = fGuessClientUpperCase(schv);
+        if (ctarget!=null){
+            Client[] clients; clients.clear(); clients.append(ctarget);
+            smsText = String:concat("chat ", c.nickname, ": ", fGetSplitString(smsText, 3, 99));
+            BLUnits:fSendDirect(clients, smsText, "Chat");
+        } else {
+            fSendErrorReturn(c, schv, 10);
+        }
+    }
+    return null;
+
+}
+
+/* ********************************************************** */
+/* ********************************************************** */
+
+void fsmsCHEW(Client c, string smsText) {
+
+    if(fCheckMaxChat(c) == 1){
+        Client chew = ClientGroupList:getClientCHEW(c);
+        if(chew != null){
+            Client[] clients; clients.clear(); clients.append(chew);
+            smsText = String:concat(c.nickname, ": ", fGetSplitString(smsText, 2, 99));
+            BLUnits:fSendDirect(clients, smsText, "Chat");
+        } else {
+            fSendErrorReturn(c, "", 11);
+        }
+    }
+
+}
+
+/* ********************************************************** */
+/* ********************************************************** */
+
+string fGetSplitString(string s, int codestart, int codeend){
+    string[] ss = String:split(s, " "); int maxi = ss.length(); string s1 = "";
+    if(codestart<=maxi && codestart>0){
+        s1 = ss.get(codestart - 1); 
+        if (codeend == 99) {
+            for(int i = codestart; i<maxi; i++){
+                s1 = String:concat(s1," ",ss.get(i));
+            }
+        }
+    }
+    return s1;
+}
+
+/* ********************************************************** */
+/* ********************************************************** */
+
+ClientGroup fGuessGroupUpperCase(string s1){
+    ClientGroup[] cgs = ClientGroup:all(); ClientGroup cg; int maxi = cgs.length(); int i = 0; string s;
+    s1 = String:upper(s1); string sName; string sID;
+    if (maxi>0){
+        for(i=0; i<maxi; i++){
+            cg = cgs.get(i); 
+                sID = String:upper(cg.idd); if (sID == null){ sID = ""; }
+                sName = String:upper(cg.name); if (sName ==null) { sName = ""; }
+            if(s1 == sID || s1 == sName){
+                return cg;
+            }
+        }
+    }
+    return null;
+}
+
+ClientGroup fGuessClientGroup (string smsText){
+    ClientGroup[] cgs; ClientGroup cg = null;
+    string s1 = fGetSplitString(smsText, 2, 2);
+    cg = fGuessGroupUpperCase(s1);
+    return cg;
+}
+
+ClientGroup fGuessGetGroup(Client c, string smsText){
+    ClientGroup cg = fGuessClientGroup (smsText);
+    if(cg == null){
+        guessGroup = false;
+        cg = ClientGroupList:getGroupForClient(c);
+    }
+    return cg;
+}
+
+/* ********************************************************** */
+/* ********************************************************** */
+
+void fsmsToAllCHWSOfGroup(Client c, string smsText) {
+
+    if(fCheckMaxChat(c) == 1){
+        
+        guessGroup = true;
+        ClientGroup cg = fGuessGetGroup(c, smsText);
+        if(guessGroup==true){
+            smsText = fGetSplitString(smsText, 3, 99);
+        } else {
+            smsText = fGetSplitString(smsText, 2, 99);
+        }
+        
+        if(cg != null){
+            Client[] chws = ClientGroupList:getAllClientsFromGroupIn(cg);
+            Client chew = ClientGroupList:getClientCHEW(c);
+            Client[] clients; Client chw;
+        
+            if(chws.length() > 0) {
+                string s = String:concat("fsmsToAllCHWSOfGroup: ", cg.name," : Forward message to each CHW in and CHEW of GROUP....."); Mez:log(s);
+                string resultingText = Strings:concat("group ",cg.name, " ", c.nickname, ": ", smsText);
+                   for(int i= 0; i<chws.length(); i++) {
+                        chw = chws.get(i);
+                        if(chw != chew){
+                            clients.append(chw);
+                        }
+                    }
+                if(chew != null){ clients.append(chew); }        
+                if(clients.length()>0){ BLUnits:fSendDirect(clients, resultingText, "Chat"); }
+            } else {
+                fSendErrorReturn(c, "", 13);
+            }
+        } else {
+            fSendErrorReturn(c, "", 13);
+        }
+    }
+    return null;
+}
+
+/* ********************************************************** */
+/* ********************************************************** */
+
+void fsmsCHWProgressText(Client c, string smsText) {
+
+    uGetCurrentSchedule:fsmsCHWProgressTextExec(c);
+
+}
+
+/* ********************************************************** */
+/* ********************************************************** */
+
+void fSendErrorReturn(Client c, string s, int code){
+
+    string scode = code;
+    string sT = FixMessageList:fMessageStringPerFixedMessages (c, scode); // 10 = Chat, 11 = Chew, 12 = Maximum, 13 = Group, 14 = Unknown
+    if(code == 10) {sT = BLUnits:fSS(sT, "nickname", s);}
+    BLUnits:SendSMSToClient(c, sT);
+    
+}
+
+/* ********************************************************** */
+/* ********************************************************** */

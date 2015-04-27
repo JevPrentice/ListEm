@@ -1,0 +1,4 @@
+object ClientGroupCSV{
+	string idd;
+	string name;
+}

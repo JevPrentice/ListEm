@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="message_edit.title" unit="MessageEdit" init="init">
+ 
+        <navigation outcome="nav_message_order_management" target="MessageOrderManagement" />
+        <navigation outcome="nav_message_management" target="MessageManagement" />
+        <navigation outcome="nav_content_viewer" target="ContentViewer"/>        
+        <navigation outcome="nav_create_message_order" target="MessageOrderEdit"/>        
+
+        <action label="back" action="back"/>
+        
+        <textfield label="message_edit.message_id">
+            <binding variable="messageID">
+                <!-- <attribute name="_MTID"/> -->
+            </binding>
+        </textfield>
+
+        <textarea label="message_edit.message_text">
+            <binding variable="o_message">
+                <attribute name="_MT_text"/>
+            </binding>
+        </textarea>
+        
+         <textfield label="message_edit.maxMultipleChoice">
+            <binding variable="o_message">
+                <attribute name="maxMultipleChoice"/>
+            </binding>
+        </textfield>
+        <textfield label="message_edit.correctAnswer">
+            <binding variable="o_message">
+                <attribute name="correctAnswer"/>
+            </binding>
+        </textfield>
+        <textfield label="message_edit.informCorrectText">
+            <binding variable="o_message">
+                <attribute name="informCorrectText"/>
+            </binding>
+        </textfield>
+		
+        <submit label="save" action="saveMessageButton"/>
+		<submit label="message_edit.save_nav_message_order_edit" action="saveMessageNavMessageOrderEditButton"/>
+
+    </view>
+</ui>

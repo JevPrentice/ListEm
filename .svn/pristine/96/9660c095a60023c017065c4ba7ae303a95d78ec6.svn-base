@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <!-- init="init" -->
+    <view label="cu_perfomance.title" unit="CUPerformance" >
+
+        <navigation outcome="navOverallCUPerformance" target="OverallCUPerformance" />
+        <!-- <navigation outcome="navAverageCUProgress" target="AverageCUProgress" />
+        <navigation outcome="navLaggards" target="Laggards" /> -->
+
+        <menuitem label="cu_perfomance.title" icon="UserSystemsReport" order="1">
+            <userRole>SmartChew</userRole>
+        </menuitem>
+        
+        <!-- title="cu_perfomance.reports"  -->
+        <table>
+            <collectionSource function="KeyValueTempController:getContentTemplates"/>
+            <column heading="cu_perfomance.table.reportNum">
+                <attributeName>order</attributeName>
+            </column>
+            <column heading="cu_perfomance.table.reportName">
+                <attributeName>key</attributeName>
+            </column>
+            <rowAction label="view" action="viewReport">
+                <binding variable="selectedReport"/>
+            </rowAction>
+        </table>
+    </view>
+</ui>

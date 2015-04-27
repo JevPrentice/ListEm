@@ -1,0 +1,87 @@
+unit MessageController;
+
+string msg;
+
+Message createMessage(string mid, string mt, int mm, string ca, string ict){
+
+    Message[] check = Message:equals(_MTID, mid); 
+    if(check.length()>0) {
+        msg = String:concat("Unable to create Message with ID: ", mid, " becuase it already exists");
+        Logger:log(msg);
+        Alerter:alert(msg);
+        return null; 
+    }
+
+    Message message = Message:new();
+    message._MTID = mid;
+    message._MT_text = mt;
+    message.maxMultipleChoice = mm;
+    message.correctAnswer = ca;
+    message.informCorrectText = ict;
+    message.save();
+
+    msg = String:concat("Message with ID: ", message._MTID, " created");
+    Logger:log(msg);
+    Alerter:alert(msg);
+
+    return message;
+}
+
+
+Message[] getAllMessages() {
+	return Message:all();
+}
+
+Message[] getMessagesForActivity(Pattern p){
+
+    PatternMessageText pattern_message;
+    PatternMessageText[] pattern_message_arr = MessageOrderController:getMassageOrdersForActivity(p);
+
+    Message[] messages_new;
+
+    for (int i = 0; i < pattern_message_arr.length(); i++){
+        pattern_message = pattern_message_arr.get(i);
+        messages_new.append(pattern_message.patternMessageText_Message);
+    }
+    return messages_new;
+}
+
+Message[] getMessagesFromMessageOrders(PatternMessageText[] messageOrders){
+
+	PatternMessageText messageOrder;
+	Message[] messages;
+
+	for(int i = 0; i < messageOrders.length(); i++){
+		messageOrder = messageOrders.get(i);
+		messages.append(messageOrder.patternMessageText_Message);
+	}
+
+	return messages;
+}
+
+Message getMessageForMessageID(string messageID){
+
+    Message message;
+    Message[] messages = Message:equals(_MTID, messageID);
+
+    if (messages.length() >= 1){
+        if (messages.length() > 1){
+
+            string msg = String:concat("There are currently ", messages.length(), " messages with MessageID:", messageID);
+            Logger:log(msg);
+            Alerter:alertError(msg);
+
+            msg = String:concat("WARNING: There is duplication for MessageID: ", messageID);
+            Logger:log(msg);
+            Alerter:alertError(msg);
+        }
+
+        message = messages.get(0);
+
+    } else {
+        return null;
+    }
+
+    return message;
+
+}

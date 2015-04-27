@@ -1,0 +1,59 @@
+unit TopicActivitySummaryTempController;
+
+TopicActivitySummaryTemp[] getTopicActivitySummaryTemp(){
+
+	TopicActivitySummaryTemp[] topicActivitySummary;
+
+	Umbrella[] topicArr = TopicController:getAllTopics();
+
+	TopicActivitySummaryTemp topicActivity;
+
+	for (int i = 0; i < topicArr.length(); i++){
+		Umbrella t = topicArr.get(i);
+
+		topicActivity = TopicActivitySummaryTemp:new();
+		topicActivity.topic = t.umbrellaID;
+
+		int activeUsers = TopicController:getActiveUserCountForTopic(t);
+		int completeUsers = TopicController:getCompletedUserCountForTopic(t);
+		int expiredUsers = TopicController:getExpiredUserCountForTopic(t);
+		int totalUsers = activeUsers + completeUsers + expiredUsers;
+
+		topicActivity.activeUsers = activeUsers;
+		topicActivity.completeUsers = completeUsers; 
+		topicActivity.expiredUsers = expiredUsers;
+		topicActivity.totalUsers = totalUsers;
+
+		topicActivitySummary.append(topicActivity);
+	}
+
+	return topicActivitySummary;
+}
+
+TopicActivitySummaryTemp[] getTopicActivitySummaryGrandTotal(TopicActivitySummaryTemp[] tasArr){
+
+	TopicActivitySummaryTemp[] grandTotalArr;
+
+	int grandTotalActiveUsers = 0;
+	int grandTotalCompleteUsers = 0;
+	int grandTotalExpiredUsers = 0;
+	int grandTotalUsers = 0;
+
+	for (int i = 0; i < tasArr.length(); i++){
+		TopicActivitySummaryTemp tas = tasArr.get(i);
+		grandTotalActiveUsers = grandTotalActiveUsers + tas.activeUsers;
+		grandTotalCompleteUsers = grandTotalCompleteUsers + tas.completeUsers;
+		grandTotalExpiredUsers = grandTotalExpiredUsers + tas.expiredUsers;
+		grandTotalUsers = tas.totalUsers;
+	}
+
+	TopicActivitySummaryTemp grandTotalTemp = TopicActivitySummaryTemp:new();
+	grandTotalTemp.topic = "Total";
+	grandTotalTemp.activeUsers = grandTotalActiveUsers;
+	grandTotalTemp.completeUsers = grandTotalCompleteUsers; 
+	grandTotalTemp.expiredUsers = grandTotalExpiredUsers;
+	grandTotalTemp.totalUsers = grandTotalUsers;
+
+	grandTotalArr.append(grandTotalTemp);
+	return grandTotalArr;
+}

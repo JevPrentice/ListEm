@@ -1,0 +1,1575 @@
+unit uCreateTestDataExec;
+
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+
+void fCreateTopics(){
+
+	
+	createTopic15();
+
+	// create_subtopic_sve2();
+
+	// create_subtopic_STSW13_6();
+
+	// create_subtopic_STE6_7();
+	// create_sequence_STE6_7();
+	// create_pattern_STE6_7();
+	// schedule_pattern_STE6_7();
+	// message_STE6_7();
+	// pattern_message_STE6_7();
+	
+	// create_subtopic();
+	// create_sequence();
+	// create_pattern();
+	// schedule_pattern();
+	// message();
+	// pattern_message();
+
+	// create_subtopic_ST21();
+
+
+	IVRMappingTable:buildIVRMappingTable();
+
+	Alerter:alert("Data has been uploaded.");
+
+}
+
+void createTopic15(){
+	TopicController:createTopic("T15", "T15", "", 6);
+
+	create_topic_15_eng();
+	create_topic_15_sw();
+}
+
+//SQL Upload Topic 15_PO 28-1-25v1.0Swa
+void create_topic_15_sw(){
+
+	SubTopicController:createSubTopic(1, 1, "", "STSW15-1", "Utangulizi wa Mada", "", "", "Una siku moja tu kuimaliza mada, usisahau kukamilisha shuguli zote kabla ya muda huo kuisha! Tuma ujumbe 'kuendelea' kwa nambari 21899 ili kujua yafuatayo", 5, 6, 10);
+	SubTopicController:createSubTopic(1, 1, "", "STSW15-2", "Dalili Hatari katika Ujauzito na Baada ya Kujifungua.", "", "", "Una siku moja tu kuimaliza mada, usisahau kukamilisha shuguli zote kabla ya muda huo kuisha! Tuma ujumbe 'kuendelea' kwa nambari 21899 ili kujua yafuatayo", 5, 6, 10);
+	SubTopicController:createSubTopic(1, 1, "", "STSW15-3", "Muhtasari wa Mada", "", "", "Una siku moja tu kuimaliza mada, usisahau kukamilisha shuguli zote kabla ya muda huo kuisha! Tuma ujumbe 'kuendelea' kwa nambari 21899 ili kujua yafuatayo", 5, 6, 10);
+	SubTopicController:createSubTopic(1, 1, "", "STSW15-4", "Zoezi la mada", "", "", "Una siku moja tu kuimaliza mada, usisahau kukamilisha shuguli zote kabla ya muda huo kuisha! Tuma ujumbe 'kuendelea' kwa nambari 21899 ili kujua yafuatayo", 5, 6, 10);
+	SubTopicController:createSubTopic(1, 1, "", "STSW15-5", "Muhtasari wa mada", "", "", "Una siku moja tu kuimaliza mada, usisahau kukamilisha shuguli zote kabla ya muda huo kuisha! Tuma ujumbe 'kuendelea' kwa nambari 21899 ili kujua yafuatayo", 5, 6, 10);
+	SubTopicController:createSubTopic(1, 1, "", "STSW15-6", "Mchezo", "", "", "Una siku moja tu kuimaliza mada, usisahau kukamilisha shuguli zote kabla ya muda huo kuisha! Tuma ujumbe 'kuendelea' kwa nambari 21899 ili kujua yafuatayo", 5, 6, 10);
+
+	SubTopicOrderController:createSubTopicOrder("T15", "STSW15-1", 1, null, null, 0, 0);
+	SubTopicOrderController:createSubTopicOrder("T15", "STSW15-2", 2, null, null, 0, 0);
+	SubTopicOrderController:createSubTopicOrder("T15", "STSW15-3", 3, null, null, 0, 0);
+	SubTopicOrderController:createSubTopicOrder("T15", "STSW15-4", 4, null, null, 0, 0);
+	SubTopicOrderController:createSubTopicOrder("T15", "STSW15-5", 5, null, null, 0, 0);
+	SubTopicOrderController:createSubTopicOrder("T15", "STSW15-6", 6, null, null, 0, 0);
+
+	SequenceController:createSequence("STSW15-1S1", "STSW15-1S1", "", "", "", 0);
+	SequenceController:createSequence("STSW15-2S1", "STSW15-2S1", "", "", "", 0);
+	SequenceController:createSequence("STSW15-2S2", "STSW15-2S2", "", "", "", 0);
+	SequenceController:createSequence("STSW15-2S3", "STSW15-2S3", "", "", "", 0);
+
+	SequenceController:createSequence("STSW15-3S4", "STSW15-3S4", "", "", "", 0);
+	SequenceController:createSequence("STSW15-4S4", "STSW15-4S4", "", "", "", 0);
+	SequenceController:createSequence("STSW15-5S4", "STSW15-5S4", "", "", "", 0);
+	SequenceController:createSequence("STSW15-6S1", "STSW15-6S1", "", "", "", 0);
+
+	SequenceOrderController:createSequenceOrder("STSW15-1", "STSW15-1S1", 1);
+	SequenceOrderController:createSequenceOrder("STSW15-2", "STSW15-2S1", 1);
+	SequenceOrderController:createSequenceOrder("STSW15-2", "STSW15-2S2", 2);
+	SequenceOrderController:createSequenceOrder("STSW15-2", "STSW15-2S3", 3);
+
+	SequenceOrderController:createSequenceOrder("STSW15-4", "STSW15-3S4", 1);
+	SequenceOrderController:createSequenceOrder("STSW15-4", "STSW15-4S4", 1);
+	SequenceOrderController:createSequenceOrder("STSW15-5", "STSW15-5S4", 1);
+	SequenceOrderController:createSequenceOrder("STSW15-6", "STSW15-6S1", 1);
+
+	ActivityController:createActivity("STSW15-1S1A1", "", "", "", 0, 1,"STE15-1S1A1");
+	ActivityController:createActivity("STSW15-1S1A2", "Ili kuanza shughuli, piga nambari 0800 722 689.", "", "", 0, 3,"STE15-1S1A2");
+	ActivityController:createActivity("STSW15-1S1A3", "", "", "", 0, 1,"STE15-1S1A3");
+	ActivityController:createActivity("STSW15-1S1A4", "", "", "", 0, 1,"STE15-1S1A4");
+	
+	ActivityController:createActivity("STSW15-2S1A1", "", "", "", 0, 1,"STE15-2S1A1");
+	ActivityController:createActivity("STSW15-2S2A1", "4/4 Ili kuanza shughuli, piga nambari 0800 722 689.", "", "", 0, 3,"STE15-2S2A1");
+	ActivityController:createActivity("STSW15-2S2A2", "Ili kuanza shughuli, piga nambari 0800 722 689.", "", "", 0, 3,"STE15-2S2A2");
+	ActivityController:createActivity("STSW15-2S2A3", "Ni dalili hatari zipi ambazo ulitambua katika kisa kilichotangulia cha Mama Atieno? ", "", "", 0, 1,"STE15-2S2A3");
+	ActivityController:createActivity("STSW15-2S2A4", "Tafadhali piga nambari 0800 722 689 ili kuendelea na shughuli inayofuatia", "", "", 0, 3,"STE15-2S2A4");
+	ActivityController:createActivity("STSW15-2S2A5", "", "", "", 0, 1,"STE15-2S2A5");
+	ActivityController:createActivity("STSW15-2S2A6", "Tafadhali piga nambari 0800 722 689ili kuendelea na shughuli inayofuatia", "", "", 0, 3,"STE15-2S2A6");
+	ActivityController:createActivity("STSW15-2S3A1", "Hii ndiyo kazi yako: Tembelea akina mama 4-5 wajawazito na waliojifungua hivi maajuzi katika jamii yako. Bainisha yale wanayopitia.", "", "", 0, 1,"STE15-2S3A1");
+	ActivityController:createActivity("STSW15-2S3A2", "1/7 Hongera kwa kukamilisha kazi! Jibu maswali yafuatayo ili uripoti kuhusu ziara.", "", "", 0, 1,"STE15-2S3A2");
+	ActivityController:createActivity("STSW15-2S3A3", "", "", "", 0, 1,"STE15-2S3A3");
+	
+	ActivityController:createActivity("STSW15-3S4A1", "Ili kuanza sehemu ya muhtasari wa mada ya Dalili Hatari katika Ujauzito na Baada ya Kujifungua, tafadhali piga nambari 0800 722 689.", "", "", 0, 3,"STE15-3S4A1");
+	
+	ActivityController:createActivity("STSW15-4S4A1", "Utapokea maswali matano ili kujaribu ulichojifunza. Alama ya kupita ni 80%. Una nafasi mbili za kujaribu mtihani. Jibu Inayofuatia ili kuendelea", "", "", 0, 1,"STE15-4S4A1");
+	
+	ActivityController:createActivity("STSW15-5S5A1", "", "", "", 0, 1,"STE15-5S5A1");
+	ActivityController:createActivity("STSW15-5S5A2", "", "", "", 0, 1,"STE15-5S5A2");
+	
+	ActivityController:createActivity("STSW15-6S1A1", "", "", "", 0, 1,"STSW15-6S1A1");
+
+	ActivityOrderController:createActivityOrder ("STSW15-6S1", "STSW15-6S1A1", 1, 11, 0);
+
+	MessageController:createMessage("STSW15-1S1A1M1", "1/4 Hujambo. Karibu kwenye mafunzo ya wahudumu wa kujitolea wa afya ya jamii. Mada hii ni Dalili Hatari katika Ujauzito na Baada ya Kujifungua. Ina sehemu moja", 0, "", "");
+	MessageController:createMessage("STSW15-1S1A1M2", "2/4 Sehemu hiyo inahusu Dalili Hatari katika Ujauzito na Baada ya Kujifungua.", 0, "", "");
+	MessageController:createMessage("STSW15-1S1A1M3", "3/4 Katika wiki hii utapokea jumbe fupi za simu, na utasikiliza visa vilivyorekodiwa katika simu na kufunzwa yote yanayohusu Dalili Hatari katika Ujauzito na Baada ya Kujifungua.", 0, "", "");
+	MessageController:createMessage("STSW15-1S1A1M4", "4/4 Tafadhali fuata maagizo ya jinsi ya kupitia shughuli zote. Wasiliana na mhudumu wako wa afya wa nje akueleze vile utakavyotumia simu ya mkono.", 0, "", "");
+	MessageController:createMessage("STSW15-1S1A3M1", "Lengo la Mada (1/2): Kufikia mwisho wa mada hii, utaweza A. Kutambua dalili hatari katika ujauzito na baada ya kujifungua. ", 0, "", "");
+	MessageController:createMessage("STSW15-1S1A3M2", "Lengo la Mada (2/2) B. Kuwashauri wanajamii kuhusu dalili hatari katika ujauzito na baada ya kujifungua.", 0, "", "");
+	
+	MessageController:createMessage("STSW15-1S1A4M1", "1/2 Asante kwa kukamilisha sehemu hii ya utangulizi wa mada ya Dalili Hatari katika Ujauzito na Baada ya Kujifungua. ", 0, "", "");
+	MessageController:createMessage("STSW15-1S1A4M2", "2/2 Sasa utapokea SMS iliyo na maelezo jinsi utakavyoendelea kwa sehemu inayofuata.", 0, "", "");
+	
+	MessageController:createMessage("STSW15-2S1A1M1", "1/3 Hujambo mwanafunzi na karibu katika mada hii ndogo. Katika mada hii ndogo, utajifunza kuhusu Dalili Hatari katika Ujauzito na Baada ya Kujifungua.", 0, "", "");
+	MessageController:createMessage("STSW15-2S1A1M2", "2/3 Utapokea SMS na utasikiliza hadithi zilizo rekodiwa, zote zikiongea juu ya Dalili Hatari katika Ujauzito na Baada ya Kujifungua.", 0, "", "");
+	MessageController:createMessage("STSW15-2S1A1M3", "3/3 Tafadhali fuata maagizo ya jinsi ya kupitia shughuli zote. Wasiliana na mhudumu wako wa afya wa nje akueleze vile utakavyotumia simu ya mkono.", 0, "", "");
+	
+	MessageController:createMessage("STSW15-2S2A3M1", "Tafadhali peana majibu yako kwenye mazungumzo ya vikundi.", 0, "", "");
+	MessageController:createMessage("STSW15-2S2A3M2", "Asante kwa jibu lako. Natumai kuwa umepeana jibu lako kwenye mazungumzo ya vikundi. Bonyeza 1 kuendelea", 0, "", "");
+	MessageController:createMessage("STSW15-2S2A3M3", "Natumai uliona kisunzi, miguu iliyovimba, mikono na maumivu mabaya ya fumbatio. Utajifunza kuhusu hizi na dalili hatari zingine unapoendelea. Bonyeza 1", 0, "", "");
+	MessageController:createMessage("STSW15-2S2A5M1", "Ni dalili hatari zipi zinazofahamika ambazo wanawake wajawazito hukumbana nazo katika jamii yako? Peana jibu lako kwenye mazungumzo ya vikundi. Jibu 1 ukiwa tayari kupata shuguli inayofuata.", 0, "", "");
+	MessageController:createMessage("STSW15-2S2A5M2", "Tafadhali peana majibu yako kwenye mazungumzo ya vikundi na utume ujumbe 'Tayari' ukimaliza ili uendelee.", 0, "", "");
+	MessageController:createMessage("STSW15-2S2A5M3", "Asante kwa jibu lako. Natumai kuwa umepeana jibu lako kwenye mazungumzo ya vikundi. Jibu 1 ukiwa tayari kupata shuguli inayofuata.", 0, "", "");
+	MessageController:createMessage("STSW15-2S3A1M1", "Jadiliana nao kuhusu dalili hatari za ujauzito na baada ya kujifungua. Tuma ujumbe mfupi 'Tayari' ukiwa tayari kuripoti matokeo.", 0, "", "");
+	MessageController:createMessage("STSW15-2S3A2M1", "2/7 Ulikutana na akina mama wangapi wajwazito na wanaendeleaje (Jibu kwa ujumbe mfupi wa simu)?", 0, "", "");
+	MessageController:createMessage("STSW15-2S3A2M2", "3/7 Je, kuna wajawazito wowote wanaopata dalili hatari? Kama wapo, ni dalili zipi hatari wanazopata (Jibu kwa ujumbe mfupi wa simu)?", 0, "", "");
+	MessageController:createMessage("STSW15-2S3A2M3", "4/7 Ulikutana na wamama wangapi waliojifungua hivi maajuzi (Jibu kwa ujumbe mfupi wa simu)?", 0, "", "");
+	MessageController:createMessage("STSW15-2S3A2M4", "5/7 Je, kuna wamama waliojifungua hivi maajuzi wanaopata dalili hatari? Kama wapo, ni dalili zipi hatari wanazopata (Jibu kwa ujumbe mfupi wa simu)?", 0, "", "");
+	MessageController:createMessage("STSW15-2S3A2M5", "6/7 Kama ulikutana na wamama wajawazito au waliojifungua hivi maajuzi wanaopata dalili hatari, uliwashauri kufanya nini (Jibu kwa ujumbe mfupi wa simu)?", 0, "", "");
+	MessageController:createMessage("STSW15-2S3A2M6", "7/7 Asante! Jadili haya mambo unapotembelea wamama wajawazito au waliojifungua hivi maajuzi. Hongera! Tafadhali ngoja SMS inayofuatia.", 0, "", "");
+	MessageController:createMessage("STSW15-2S3A3M1", "Vizuri, umekamilisha mada ndogo ya Dalili Hatari katika Ujauzito na Baada ya Kujifungua! Utapokea SMS kuhusu shuguli inayofuatia. ", 0, "", "");
+
+	MessageController:createMessage("STSW15-4S4A1M1", "A. Kati ya zifuatazo, ni ipi dalili hatari katika wamama wajawazito? 1. Kisunzi na miguu iliyovimba. 2. Hamu ya samaki. 3. Kununa. Jibu 1/2/3", 3, 1, "");
+	MessageController:createMessage("STSW15-4S4A1M2", "B. Kati ya zifuatazo, ni ipi dalili hatari baada ya kujifungua? 1. Joto la juu. 2. Utokwaji damu nyingi. 3. Zote 1 na 2. Jibu 1/2/3", 3, 3, "");
+	MessageController:createMessage("STSW15-4S4A1M3", "C: Uvimbe wa miguu na nguyu wakati wa ujauzito inaweza kusababishwa: 1. Uvivu. 2. Ukusanyikaji wa fluidi za mwili. 3. Kufanya kazi nyingi. Jibu 1/2/3", 3, 2, "");
+	MessageController:createMessage("STSW15-4S4A1M4", "D. Mjamzito anayepata dalili hatari anapaswa: 1. Kutumia mitishamba. 2. Kufanya mazoezi na kula vizuri. 3. Kutembelea kituo cha afya. Jibu 1/2/3", 3, 3, "");
+	MessageController:createMessage("STSW15-4S4A1M5", "E:Kama CHV, elimisha jamii yako juu ya dalili hatari za ujauzito na baada ya kujifungua. Washauri kutembelea kliniki kuangaliwa. 1. Ukweli. 2. Uwongo Jibu 1/2", 2, 1, "");
+	
+	MessageController:createMessage("STSW15-5S5A1M1", "1/5 Hujambo, sasa utapokea SMS ili kukukumbusha mambo muhimu kuhusu Dalili Hatari katika Ujauzito na Baada ya Kujifungua. ", 0, "", "");
+	MessageController:createMessage("STSW15-5S5A1M2", "2/5 Dalili hatari katika ujauzito ni kama kutapika vibaya bila kuisha, kisunzi, kupunguka damu, kumwa fumbatio sana na kupungua misogeo ya mtoto tumboni.", 0, "", "");
+	MessageController:createMessage("STSW15-5S5A1M3", "3/5 Dalili hatari katika ujauzito ni kama utokwaji damu nyingi, uzuiaji wa kondo la nyuma, joto kuu na uvimbe wa miguu.", 0, "", "");
+	MessageController:createMessage("STSW15-5S5A1M4", "4/5 Wamama wajawazito wanaopata dalili hatari wanapaswa kutembelea kituo cha afya kilicho karibu nao mara moja.", 0, "", "");
+	MessageController:createMessage("STSW15-5S5A1M5", "5/5 Kama CHV, elimisha jamii yako juu ya dalili hatari za ujauzito na baada ya kujifungua. Washauri kutembelea kliniki kufanyiwa uchunguzi wa matibabu.", 0, "", "");
+	MessageController:createMessage("STSW15-5S5A2M1", "1/3 Hongera! Umekamilisha mada ndogo ya mwisho ya Dalili Hatari katika Ujauzito na Baada ya Kujifungua.", 0, "", "");
+	MessageController:createMessage("STSW15-5S5A2M2", "2/3 Sasa utapokea swali la kujibu kwa kutumia maarifa uliyo nayo kuhusu Dalili Hatari katika Ujauzito na Baada ya Kujifungua. Majibu yako yatasahihishwa.", 0, "", "");
+	MessageController:createMessage("STSW15-5S5A2M3", "3/3 Alama yako katika zoezi itahesabiwa katika alama jumla katika mada. Jibu 1 ukiwa tayari kujibu swali.", 0, "", "");
+	
+	MessageController:createMessage("STSW15-6S1A1M1", "Karibu mwanafunzi mpendwa kwa mchezo wa tatu wa HELP. Utaweza kuboresha ujuzi wako kuhusu dalili hatari katika ujauzito na baada ya kujifungua. Jibu 1 kuendelea", 1, "1;STSW15-6S1S1A1M2", "");
+	MessageController:createMessage("STSW15-6S1A1M2", "Utapokea SMS ikiwa na hadithi fupi, swali na majibu tatu. Utachagua jibu ambalo liko sawa kabisa. Jibu 1 kuendelea", 1, "1;STSW15-6S1S1A1M3", "");
+	MessageController:createMessage("STSW15-6S1A1M3", "Tafadhali chagua jibu lililo sawa kabisa kulingana na kinachoendelea katika maswali yanaofuata. Jibu 1 kuendelea", 1, "1;STSW15-6S1S1A1M4", "");
+	MessageController:createMessage("STSW15-6S1A1M4", "Wewe ni mhudumu wa afya katika CU yenu. Unapokula chakula cha mchana, Juma anaingia na anakuambia kuhusu bibi yake aliye na mimba ya miezi miwili na ni mngonjwa", 1, "1;STSW15-6S1S1A1M5", "");
+	MessageController:createMessage("STSW15-6S1A1M5", "Hii ni mimba yake ya kwanza. Juma anakuuliza kama kuna dawa za kienyeji zozote ambazo zinaweza kumsaidia bibi yake.", 1, "1;STSW15-6S1S1A1M6", "");
+	MessageController:createMessage("STSW15-6S1A1M6", "Utamshauri aje? 1. utampatia dawa ya kienyeji unayokuza nyumbani mwako? 2. Uta ulizia dalili ambazo mke wake anaonyesha? Jibu 1 au 2", 2, "1;STSW15-6S1S1A1M7;2;STSW15-6S1S1A1M8", "");
+	MessageController:createMessage("STSW15-6S1A1M7", "Sio sahihi kabisa. Unafaa uulizie dalili ambazo mke wake anaonyesha. Jibu 1 kuendelea", 1, "1;STSW15-6S1S1A1M9", "");
+	MessageController:createMessage("STSW15-6S1A1M8", "Kweli kabisa, ulizia dalili ambazo mke wake anaonyesha. Jibu 1 kuendelea ", 1, "1;STSW15-6S1S1A1M9", "");
+	MessageController:createMessage("STSW15-6S1A1M9", "Juma anasema kuwa mke wake amekuwa akitapika mchana na usiku kwa siku tatu zilizopita. Alikfikiria kwamba itaisha lakini bado inaendelea. Jibu 1 kuendelea", 1, "1;STSW15-6S1S1A1M10", "");
+	MessageController:createMessage("STSW15-6S1A1M10", "Utamshauri? 1. amchunguze wiki 1 kabla ya kuenda hospitali. 2. ampatie vinywaji 3. kutapika ni kawaida mama akiwa kwa miezi yake ya kwanza. Jibu 1/2/3/ ", 3, "1;STSW15-6S1S1A1M11;2;STSW15-6S1S1A1M12;STSW15-6S1S1A1M13", "");
+	MessageController:createMessage("STSW15-6S1A1M11", "Sio sahihi kabisa. Mshauri ampatie bibi yake vinywaji mingi kama maji, chai, maji ya machungwa ili asikaukiwe na maji mwilini. ", 1, "1;STSW15-6S1S1A1M14", "");
+	MessageController:createMessage("STSW15-6S1A1M12", "Kweli kabisa. Mshauri ampatie bibi yake vinywaji kama maji, chai, maji ya machungwa ili asikaukiwe na maji mwilini. ", 1, "1;STSW15-6S1S1A1M14", "");
+	MessageController:createMessage("STSW15-6S1A1M13", "Sio sahihi kabisa. Mshauri ampatie bibi yake vinywaji mingi kama maji, chai, maji ya machungwa ili asikaukiwe na maji mwilini. ", 1, "1;STSW15-6S1S1A1M14", "");
+	MessageController:createMessage("STSW15-6S1A1M14", "Juma anongezea kwamba bibi yake amekuwa na uchovu wa mwili, mnyonge, anaskia kizungu zungu na mikono yake inaonekana kama haina damu", 1, "1;STSW15-6S1S1A1M15", "");
+	MessageController:createMessage("STSW15-6S1A1M15", "Hizi ni dalili za maradhi gani katika uja uzito? 1. Kutokwa kwa damu ukeni. 2. Upungufu wa damu au 3. kutapika kusiko kuisha. Jibu 1/2/3", 3, "1;STSW15-6S1S1A1M16;2;STSW15-6S1S1A1M17;3;STSW15-6S1S1A1M18", "");
+	MessageController:createMessage("STSW15-6S1A1M16", "Sio sahihi. Kusikia uchovu, kizungu zungu, unyonge, na mikono ikioneka ni kama haina damu ni dalili ya upungufu was damu. ", 1, "1;STSW15-6S1S1A1M19", "");
+	MessageController:createMessage("STSW15-6S1A1M17", "Kweli Kabisa. Kusikia uchovu, kizungu zungu, unyonge, na mikono ikioneka ni kama haina damu ni dalili ya upungufu was damu. ", 1, "1;STSW15-6S1S1A1M19", "");
+	MessageController:createMessage("STSW15-6S1A1M18", "Sio sahihi. Kusikia uchovu, kizungu zungu, unyonge, na mikono ikioneka ni kama haina damu ni dalili ya upungufu was damu. ", 1, "1;STSW15-6S1S1A1M19", "");
+	MessageController:createMessage("STSW15-6S1A1M19", "Juma pia anashindwa kama upungufu wa damu ndio unaosababisha kuvimba kwa miguu. Jibu 1 kuendelea", 1, "1;STSW15-6S1S1A1M20", "");
+	MessageController:createMessage("STSW15-6S1A1M20", "Utamshauri? 1. Kuvimba miguu ni kawaida lakini anafaa ampeleke hospitali. 2. Kuvimba miguu ni kawaida, asisumbuke hata kuvimba kukiendelea. Jibu 1 au 2 ", 2, "1;STSW15-6S1S1A1M21;2;STSW15-6S1S1A1M22", "");
+	MessageController:createMessage("STSW15-6S1A1M21", "Kweli Kabisa. Kuvimba miguu kidogo ni kawaida lakini anafaa ampeleke bibi yake hospitali kuvimba kukiendelea. Jibu 1 Kuendelea", 1, "1;STSW15-6S1S1A1M23;", "");
+	MessageController:createMessage("STSW15-6S1A1M22", "Sio sahihi. Kuvimba miguu kidogo ni kawaida lakini anafaa ampeleke bibi yake hospitali kuvimba kukiendelea. Jibu 1 Kuendelea", 1, "1;STSW15-6S1S1A1M23;", "");
+	MessageController:createMessage("STSW15-6S1A1M23", "Bibi ya Jirani ya Juma, Tum ana mimba ya miezi mitano. Tum alifurahia kumwelezea Juma kuhusu vile mtoto anapiga mateke akiwa kwa tumbo. Jibu 1 kuendelea ", 1, "1;STSW15-6S1S1A1M24", "");
+	MessageController:createMessage("STSW15-6S1A1M24", "Juma anaanza kushindwa mbona yeye hajaskia bibi yake akiongea kuhusu mateke ya mtoto. Jibu 1 Kuendelea", 1, "1;STSW15-6S1S1A1M25", "");
+	MessageController:createMessage("STSW15-6S1A1M25", "Utamshauri? 1. Apatie bibi chakula mingi 2. Mimba iko sawa, mtoto anaanza kupiga mateke mwezi wa nne 3. Bibi lazima amwambie mtoto atakapo piga teke. Jibu 1/2/3", 3, "1;STSW15-6S1S1A1M26;2;STSW15-6S1S1A1M27;3;STSW15-6S1S1A1M28", "");
+	MessageController:createMessage("STSW15-6S1A1M26", "Sio Sahihi. Mshauri kwamba mimba iko sawa. Bibi yake ataanza kusikia mateke ya mtoto kutoka mwezi wa nne. Jibu 1 kuendelea", 1, "1;STSW15-6S1S1A1M29", "");
+	MessageController:createMessage("STSW15-6S1A1M27", "Kweli kabisa. Mshauri kwamba mimba iko sawa. Bibi yake ataanza kusikia mateke ya mtoto kutoka mwezi wa nne. Jibu 1 kuendelea", 1, "1;STSW15-6S1S1A1M29", "");
+	MessageController:createMessage("STSW15-6S1A1M28", "Sio Sahihi. Mshauri kwamba mimba iko sawa. Bibi yake ataanza kusikia mateke ya mtoto kutoka mwezi wa nne. Jibu 1 kuendelea", 1, "1;STSW15-6S1S1A1M29", "");
+	MessageController:createMessage("STSW15-6S1A1M29", "Tum anakimbia kwa jirani yake Msa kumuelezea ya kwamba bibi yake anapata umaji maji ulio na harufu mbaya kutoka uke wake kutoka asubuhi. Jibu 1 Kuendelea", 1, "1;STSW15-6S1S1A1M30", "");
+	MessageController:createMessage("STSW15-6S1A1M30", "Unafikiria? 1. Lazima akuelezee zaidi jinsi bibi yake anavyo hisi 2. Tum amkimbize bibi hospitali 3. Kutokwa umaji maji katika mimba ni kawaida. Jibu 1/2/3", 3, "1;STSW15-6S1S1A1M31;2;STSW15-6S1S1A1M32;3;STSW15-6S1S1A1M33", "");
+	MessageController:createMessage("STSW15-6S1A1M31", "Sio sahihi. Toka na Tum, elekea nyumbani kwa Tum na mkimbize bibi yake hospitalini aangaliwe na daktari. Jibu 1 Kuendelea", 1, "1;STSW15-6S1S1A1M34", "");
+	MessageController:createMessage("STSW15-6S1A1M32", "Kweli Kabisa. Toka na Tum, elekea nyumbani kwa Tum na mkimbize bibi yake hospitalini aangaliwe na daktari. Jibu 1 Kuendelea", 1, "1;STSW15-6S1S1A1M34", "");
+	MessageController:createMessage("STSW15-6S1A1M33", "Sio sahihi. Toka na Tum, elekea nyumbani kwa Tum na mkimbize bibi yake hospitalini aangaliwe na daktari. Jibu 1 Kuendelea", 1, "1;STSW15-6S1S1A1M34", "");
+	MessageController:createMessage("STSW15-6S1A1M34", "Baada ya kumtazama mkewe Tum, Mhudumu wa afya katika hospitali anawaelezea kwamba bibiye Tum ako sawa. Jibu 1 kuendelea", 1, "1;STSW15-6S1S1A1M35", "");
+	MessageController:createMessage("STSW15-6S1A1M35", "Ana kupongeza kwa hatua mufti uliochukua ulipoona dalili hatari. Mhudumu wa afya anawashauri kurudi baada ya wiki moja ili bibi yake Tum aangaliwe zaidi. ", 1, "1;STSW15-6S1S1A1M36", "");
+	MessageController:createMessage("STSW15-6S1A1M36", "Hii inaweza kuwa dalili gani? 1. kutokwa maji maji yenye harufu mbaya katika uke 2. Mama kutokwa na maji ya mtoto. 3.Kutokwa na damu katika uke. Jibu 1/2/3 ", 3, "1;STSW15-6S1S1A1M37;2;STSW15-6S1S1A1M38;3;STSW15-6S1S1A1M39", "");
+	MessageController:createMessage("STSW15-6S1A1M37", "Sio Sahihi. Inaweza kuwa bibi yake Tum alikuwa anatokwa na maji ya mtoto ", 1, "1;STSW15-6S1S1A1M40", "");
+	MessageController:createMessage("STSW15-6S1A1M38", "Kweli kabisa. Inaweza kuwa bibi yake Tum alikuwa anatokwa na maji ya mtoto ", 1, "1;STSW15-6S1S1A1M40", "");
+	MessageController:createMessage("STSW15-6S1A1M39", "Sio Sahihi. Inaweza kuwa bibi yake Tum alikuwa anatokwa na maji ya mtoto ", 1, "1;STSW15-6S1S1A1M40", "");
+	MessageController:createMessage("STSW15-6S1A1M40", "Juma na Tumo wameshukuru sana kwa ushauri wako na kazi njema unayoifanya kwa Jamii yako. Jibu 1 Kuendelea. ", 1, "1;STSW15-6S1S1A1M41", "");
+	MessageController:createMessage("STSW15-6S1A1M41", "Kumalizia, 1. Wanajamii wanafaa kukuongelesha ama kufika kliniki wanapopata shida ya kiafya 2. Kutulia mpaka shida ieneze 3. Wajisaidie wenyewe shida ikitokea", 3, "1;STSW15-6S1S1A1M42;2;STSW15-6S1S1A1M43;STSW15-6S1S1A1M44", "");
+	MessageController:createMessage("STSW15-6S1A1M42", "Kweli Kabisa, Wanajamii wanafaa kukuongelesha ama kufika kliniki haraka iwezekanavyo shida inapotokea. ", 1, "1;STSW15-6S1S1A1M45", "");
+	MessageController:createMessage("STSW15-6S1A1M43", "Sio Kweli. Wanajamii wanafaa kukuongelesha ama kufika kliniki haraka iwezekanavyo shida inapotokea. ", 1, "1;STSW15-6S1S1A1M45", "");
+	MessageController:createMessage("STSW15-6S1A1M44", "Sio Kweli. Wanajamii wanafaa kukuongelesha ama kufika kliniki haraka iwezekanavyo shida inapotokea. ", 1, "1;STSW15-6S1S1A1M45", "");
+	MessageController:createMessage("STSW15-6S1A1M45", "Juma na Tumo sasa wameelewa dalili hatari katika uja uzito na baada ya kujifungua. Asante sana kwa usaidizi wako. Jibu 1 kuendelea. ", 1, "1;STSW15-6S1S1A1M46", "");
+	MessageController:createMessage("STSW15-6S1A1M46", "Hongera! Umekamilisha Mchezo huu wa tatu. Ili kucheza tena, tafadhali pigia Help desk. Utapata matokeo ya mchezo huu hivi karibuni. Jibu 1 kumaliza. ", 1, "endactivity", "");
+
+	MessageOrderController:createMessageOrder("STSW15-1S1A1", "STSW15-1S1A1M1", 1);
+	MessageOrderController:createMessageOrder("STSW15-1S1A1", "STSW15-1S1A1M2", 2);
+	MessageOrderController:createMessageOrder("STSW15-1S1A1", "STSW15-1S1A1M3", 3);
+	MessageOrderController:createMessageOrder("STSW15-1S1A1", "STSW15-1S1A1M4", 4);
+
+	MessageOrderController:createMessageOrder("STSW15-1S1A3", "STSW15-1S1A3M1", 1);
+	MessageOrderController:createMessageOrder("STSW15-1S1A3", "STSW15-1S1A3M2", 2); // used
+
+	// i changed these 2
+	// MessageOrderController:createMessageOrder("STSW15-1S1A4", "STSW15-1S2A1M1", 1); //
+	// MessageOrderController:createMessageOrder("STSW15-1S1A4", "STSW15-1S2A1M2", 2); //
+
+	MessageOrderController:createMessageOrder("STSW15-1S1A4", "STSW15-1S1A4M1", 1); //
+	MessageOrderController:createMessageOrder("STSW15-1S1A4", "STSW15-1S1A4M2", 2); //
+	//
+
+	MessageOrderController:createMessageOrder("STSW15-2S2A3", "STSW15-2S2A3M1", 1); // used
+	MessageOrderController:createMessageOrder("STSW15-2S2A3", "STSW15-2S2A3M2", 2);
+	MessageOrderController:createMessageOrder("STSW15-2S2A3", "STSW15-2S2A3M3", 3);
+
+	MessageOrderController:createMessageOrder("STSW15-2S2A5", "STSW15-2S2A5M1", 1);
+	MessageOrderController:createMessageOrder("STSW15-2S2A5", "STSW15-2S2A5M2", 2);
+
+	MessageOrderController:createMessageOrder("STSW15-2S3A1", "STSW15-2S3A1M1", 1);
+	MessageOrderController:createMessageOrder("STSW15-2S3A2", "STSW15-2S3A2M1", 1);
+	MessageOrderController:createMessageOrder("STSW15-2S3A2", "STSW15-2S3A2M2", 2);
+	MessageOrderController:createMessageOrder("STSW15-2S3A2", "STSW15-2S3A2M3", 3);
+	MessageOrderController:createMessageOrder("STSW15-2S3A2", "STSW15-2S3A2M4", 4);
+	MessageOrderController:createMessageOrder("STSW15-2S3A2", "STSW15-2S3A2M5", 5);
+	MessageOrderController:createMessageOrder("STSW15-2S3A2", "STSW15-2S3A2M6", 6);
+	MessageOrderController:createMessageOrder("STSW15-2S3A3", "STSW15-2S3A3M1", 1);
+
+	MessageOrderController:createMessageOrder("STSW15-4S4A1", "STSW15-4S4A1M1", 1);
+	MessageOrderController:createMessageOrder("STSW15-4S4A1", "STSW15-4S4A1M2", 2);
+	MessageOrderController:createMessageOrder("STSW15-4S4A1", "STSW15-4S4A1M3", 3);
+	MessageOrderController:createMessageOrder("STSW15-4S4A1", "STSW15-4S4A1M4", 4);
+	MessageOrderController:createMessageOrder("STSW15-4S4A1", "STSW15-4S4A1M5", 5);
+
+	MessageOrderController:createMessageOrder("STSW15-5S5A1", "STSW15-5S5A1M1", 1);
+	MessageOrderController:createMessageOrder("STSW15-5S5A1", "STSW15-5S5A1M2", 2);
+	MessageOrderController:createMessageOrder("STSW15-5S5A1", "STSW15-5S5A1M3", 3);
+	MessageOrderController:createMessageOrder("STSW15-5S5A1", "STSW15-5S5A1M4", 4);
+	MessageOrderController:createMessageOrder("STSW15-5S5A1", "STSW15-5S5A1M5", 5);
+	MessageOrderController:createMessageOrder("STSW15-5S5A2", "STSW15-5S5A2M1", 1);
+	MessageOrderController:createMessageOrder("STSW15-5S5A2", "STSW15-5S5A2M2", 2);
+	MessageOrderController:createMessageOrder("STSW15-5S5A2", "STSW15-5S5A2M3", 3);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M1", 1);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M2", 2);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M3", 3);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M4", 4);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M5", 5);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M6", 6);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M7", 7);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M8", 8);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M9", 9);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M10", 10);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M11", 11);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M12", 12);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M13", 13);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M14", 14);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M15", 15);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M16", 16);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M17", 17);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M18", 18);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M19", 19);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M20", 20);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M21", 21);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M22", 22);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M23", 23);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M24", 24);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M25", 25);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M26", 26);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M27", 27);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M28", 28);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M29", 29);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M30", 30);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M31", 31);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M32", 32);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M33", 33);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M34", 34);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M35", 35);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M36", 36);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M37", 37);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M38", 38);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M39", 39);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M40", 40);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M41", 41);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M42", 42);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M43", 43);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M44", 44);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M45", 45);
+	MessageOrderController:createMessageOrder("STSW15-6S1A1", "STSW15-6S1A1M46", 46);
+	return null;
+}
+
+
+//SQL Upload Topic 15_ENG28-1-25v2.0.xlsm
+void create_topic_15_eng(){
+
+	SubTopicController:createSubTopic(1, 1, "", "STE15-1", "Topic Introduction", "", "", " You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21899 to see what's next", 5, 6, 10);
+	SubTopicController:createSubTopic(1, 1, "", "STE15-2", "Danger Signs in Pregnancy and After Delivery", "", "", " You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21899 to see what's next", 5, 6, 10);
+	SubTopicController:createSubTopic(1, 1, "", "STE15-3", "Summary Intro", "", "", " You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21899 to see what's next", 5, 6, 10);
+	SubTopicController:createSubTopic(1, 1, "", "STE15-4", "Topic Quiz", "", "", " You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21899 to see what's next", 5, 6, 10);
+	SubTopicController:createSubTopic(1, 1, "", "STE15-5", "Topic Summary", "", "", " You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21899 to see what's next", 5, 6, 10);
+	SubTopicController:createSubTopic(1, 1, "", "STE15-6", "Gamification", "", "", " You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21899 to see what's next", 5, 6, 10);
+
+	SubTopicOrderController:createSubTopicOrder("T15", "STE15-1", 1, null, null, 0, 0);
+	SubTopicOrderController:createSubTopicOrder("T15", "STE15-2", 2, null, null, 0, 0);
+	SubTopicOrderController:createSubTopicOrder("T15", "STE15-3", 3, null, null, 0, 0);
+	SubTopicOrderController:createSubTopicOrder("T15", "STE15-4", 4, null, null, 0, 0);
+	SubTopicOrderController:createSubTopicOrder("T15", "STE15-5", 5, null, null, 0, 0);
+	SubTopicOrderController:createSubTopicOrder("T15", "STE15-6", 6, null, null, 0, 0);
+
+	SequenceController:createSequence("STE15-1S1", "STE15-1S1", "", "", "", 0);
+	SequenceController:createSequence("STE15-2S1", "STE15-2S1", "", "", "", 0);
+	SequenceController:createSequence("STE15-2S2", "STE15-2S2", "", "", "", 0);
+	SequenceController:createSequence("STE15-2S3", "STE15-2S3", "", "", "", 0);
+
+	SequenceController:createSequence("STE15-3S4", "STE15-3S4", "", "", "", 0);
+	SequenceController:createSequence("STE15-4S4", "STE15-4S4", "", "", "", 0);
+	SequenceController:createSequence("STE15-5S4", "STE15-5S4", "", "", "", 0);
+	SequenceController:createSequence("STE15-5S4", "STE15-5S4", "", "", "", 0);
+	SequenceController:createSequence("STE15-6S1", "STE15-6S1", "", "", "", 0);
+	SequenceController:createSequence("STE15-5S5", "STE15-5S5", "", "", "", 0);
+
+	SequenceOrderController:createSequenceOrder("STE15-1", "STE15-1S1", 1);
+	SequenceOrderController:createSequenceOrder("STE15-2", "STE15-2S1", 1);
+	SequenceOrderController:createSequenceOrder("STE15-2", "STE15-2S2", 2);
+	SequenceOrderController:createSequenceOrder("STE15-2", "STE15-2S3", 3);
+
+	SequenceOrderController:createSequenceOrder("STE15-4", "STE15-3S4", 1);
+	SequenceOrderController:createSequenceOrder("STE15-4", "STE15-4S4", 1);
+	SequenceOrderController:createSequenceOrder("STE15-5", "STE15-5S4", 1);
+	SequenceOrderController:createSequenceOrder("STE15-6", "STE15-6S1", 1);
+
+	ActivityController:createActivity("STE15-1S1A1", "", "", "", 0, 1,"STE15-1S1A1");
+	ActivityController:createActivity("STE15-1S1A2", "To start the activity, please dial 0800 722 689.", "", "", 0, 3,"STE15-1S1A2");
+	ActivityController:createActivity("STE15-1S1A3", "", "", "", 0, 1,"STE15-1S1A3");
+	ActivityController:createActivity("STE15-1S1A4", "", "", "", 0, 1,"STE15-1S1A4");
+
+	ActivityController:createActivity("STE15-2S1A1", "", "", "", 0, 1,"STE15-2S1A1");
+
+	ActivityController:createActivity("STE15-2S2A1", "To start the activity, please dial 0800 722 689.", "", "", 0, 3,"STE15-2S2A1");
+	ActivityController:createActivity("STE15-2S2A2", "To start the activity, please dial 0800 722 689.", "", "", 0, 3,"STE15-2S2A2");
+	ActivityController:createActivity("STE15-2S2A3", "What are the pregnancy danger signs you identified in the previous story with Mama Atieno.", "", "", 0, 1,"STE15-2S2A3");
+	ActivityController:createActivity("STE15-2S2A4", "Please call 0800 722 689 to continue to the next activity.", "", "", 0, 3,"STE15-2S2A4");
+	ActivityController:createActivity("STE15-2S2A5", "", "", "", 0, 1,"STE15-2S2A5");
+	ActivityController:createActivity("STE15-2S2A6", "Please call 0800 722 689 to continue to the next activity.", "", "", 0, 3,"STE15-2S2A6");
+	ActivityController:createActivity("STE15-2S3A1", "This is your task : Visit 4-5 pregnant mothers and mothers who delivered recently in your community. Find out their experience. ", "", "", 0, 1,"STE15-2S3A1");
+	ActivityController:createActivity("STE15-2S3A2", "1/7 Congratulations on completing the assignment! Answer the following questions to report on the visits.", "", "", 0, 1,"STE15-2S3A2");
+	ActivityController:createActivity("STE15-2S3A3", "", "", "", 0, 1,"STE15-2S3A3");
+	ActivityController:createActivity("STE15-3S4A1", "To begin the summary section of the Danger Signs in Pregnancy and After Delivery topic, please dial 0800 722 689.", "", "", 0, 3,"STE15-3S4A1");
+	ActivityController:createActivity("STE15-4S4A1", "You will now receive 5 questions to test what you have learnt. Pass mark is 80%. You have 2 chances only to try the quiz. Reply Next to continue.", "", "", 0, 1,"STE15-4S4A1");
+	ActivityController:createActivity("STE15-5S5A1", "", "", "", 0, 1,"STE15-5S5A1");
+	ActivityController:createActivity("STE15-5S5A2", "", "", "", 0, 1,"STE15-5S5A2");
+	ActivityController:createActivity("STE15-6S1A1", "", "", "", 0, 1,"STE15-6S1A1");
+
+	ActivityOrderController:createActivityOrder ("STE15-1S1", "STE15-1S1A1", 1, 1, 0);
+	ActivityOrderController:createActivityOrder ("STE15-1S1", "STE15-1S1A2", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE15-1S1", "STE15-1S1A3", 3, 1, 0);
+	ActivityOrderController:createActivityOrder ("STE15-1S1", "STE15-1S1A4", 4, 1, 0);
+
+	ActivityOrderController:createActivityOrder ("STE15-2S1", "STE15-2S1A1", 1, 1, 0);
+	ActivityOrderController:createActivityOrder ("STE15-2S2", "STE15-2S2A1", 1, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE15-2S2", "STE15-2S2A2", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE15-2S2", "STE15-2S2A3", 3, 4, 0);
+	ActivityOrderController:createActivityOrder ("STE15-2S2", "STE15-2S2A4", 4, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE15-2S2", "STE15-2S2A5", 5, 4, 0);
+	ActivityOrderController:createActivityOrder ("STE15-2S2", "STE15-2S2A6", 6, "IVR", 0);
+
+	ActivityOrderController:createActivityOrder ("STE15-2S3", "STE15-2S3A1", 1, 4, 0);
+	ActivityOrderController:createActivityOrder ("STE15-2S3", "STE15-2S3A2", 2, 4, 0);
+
+	ActivityOrderController:createActivityOrder ("STE15-4S4", "STE15-4S4A1", 1, 2, 0);
+
+	ActivityOrderController:createActivityOrder ("STE15-5S5", "STE15-5S5A1", 1, 1, 0); // s not found
+	ActivityOrderController:createActivityOrder ("STE15-5S5", "STE15-5S5A2", 2, 1, 0);// s not found
+	ActivityOrderController:createActivityOrder ("STE15-6S1", "STE15-6S1A1", 1, 11, 0);
+
+	MessageController:createMessage("STE15-1S1A1M1", "1/4 Hello dear learner & welcome to the Community Health Volunteer training. This topic is on Danger Signs in Pregnancy and After Delivery. It has 1 sub-topic. ", 0, "", "");
+	MessageController:createMessage("STE15-1S1A1M2", "2/4 The sub-topic is Danger Signs in Pregnancy and After Delivery. ", 0, "", "");
+	MessageController:createMessage("STE15-1S1A1M3", "3/4 During the week you will receive SMS messages and listen to recorded phone stories and lectures all related to Danger Signs in Pregnancy and After Delivery.", 0, "", "");
+	MessageController:createMessage("STE15-1S1A1M4", "4/4 Please follow the instructions to go through all the activities. You can contact your CHEW for technical help on using the mobile phone.", 0, "", "");
+	MessageController:createMessage("STE15-1S1A3M1", "Learning Objective (1/2): At the end of this topic, you will be able to: A. Identify danger signs in pregnancy and after delivery.", 0, "", "");
+	MessageController:createMessage("STE15-1S1A3M2", "Learning Objective (2/2) B. Advice the community on danger signs in pregnancy and after delivery.", 0, "", "");
+	MessageController:createMessage("STE15-1S1A4M1", "1/2 Thank you dear learner for completing the introductory session of the topic on Danger Signs in Pregnancy and After Delivery. ", 0, "", "");
+	MessageController:createMessage("STE15-1S1A4M2", "2/2 You will now receive an SMS with instructions on how to proceed to the sub topic.", 0, "", "");
+	
+	MessageController:createMessage("STE15-2S1A1M1", "1/3 Hello dear learner and welcome to this sub- topic. In this sub-topic, you will learn about Danger Signs in Pregnancy and After Delivery. ", 0, "", "");
+	MessageController:createMessage("STE15-2S1A1M2", "2/3 You will receive SMSs & listen to recorded phone stories & lectures, all related to Danger Signs in Pregnancy and After Delivery.", 0, "", "");
+	MessageController:createMessage("STE15-2S1A1M3", "3/3 Please follow the instructions to go through all the activities. You can contact your CHEW for technical help on using the mobile phone.", 0, "", "");
+	MessageController:createMessage("STE15-2S2A3M1", "Please share your response on group chat and sms 'ready' when finished to continue.", 0, "", "");
+	MessageController:createMessage("STE15-2S2A3M2", "Thank you for your response. I hope you have shared your answer on Group chat. Press 1 to continue.", 0, "", "");
+	MessageController:createMessage("STE15-2S2A3M3", "I hope you noted dizzyness, swollen feet, arms, face & severe abdominal pains. You'll learn more about these and other danger signs as you progress.Press 1", 0, "", "");
+	MessageController:createMessage("STE15-2S2A5M1", "What are the most common danger signs that pregnant women experience during pregnancy in your community? Share in group chat. Press 1 to continue. ", 0, "", "");
+	MessageController:createMessage("STE15-2S2A5M2", "Please share your response on group chat and sms 'ready' when finished to continue.", 0, "", "");
+	MessageController:createMessage("STE15-2S2A5M3", " Thank you for your response. I hope you have shared your answer on Group chat. Reply 1 when ready for next activity.", 0, "", "");
+	MessageController:createMessage("STE15-2S3A1M1", "Discuss with them the danger signs in pregnancy and after delivery. SMS 'Ready' when you are done and are ready to report results.", 0, "", "");
+	MessageController:createMessage("STE15-2S3A2M1", "2/7 How many pregnant mothers did you meet and how are they faring on (Reply by SMS)?", 0, "", "");
+	MessageController:createMessage("STE15-2S3A2M2", "3/7 Are any of the pregnant mothers experiencing dangers signs? If so, which danger signs (Reply by SMS)?", 0, "", "");
+	MessageController:createMessage("STE15-2S3A2M3", "4/7 How many mothers who recently delivered did you meet and how are they faring on (Reply with SMS)?", 0, "", "");
+	MessageController:createMessage("STE15-2S3A2M4", "5/7 Are any of the new mothers experiencing danger signs? If so, which danger signs (Reply with SMS)?", 0, "", "");
+	MessageController:createMessage("STE15-2S3A2M5", "6/7 If you met any pregnant or new mother experiencing danger signs, what did you advice them to do (Reply with SMS)?", 0, "", "");
+	MessageController:createMessage("STE15-2S3A2M6", "7/7 Thank you! Discuss these matters whenever you visit households with pregnant or new mothers. Well done! Please wait for next SMS", 0, "", "");
+	MessageController:createMessage("STE15-2S3A3M1", "Well done, you've completed the sub-topic on Danger Signs in Pregnancy and After Delivery! You will receive an SMS on the next activity.", 0, "", "");
+	
+	MessageController:createMessage("STE15-4S4A1M1", "A: Which of the following are danger signs in pregnant mothers? 1. Dizziness and swollen feet. 2. Craving for fish. 3. Mood swings. Reply 1/2/3", 3, 1, "Dizziness and swollen feet are danger signs in pregnant mothers.");
+	MessageController:createMessage("STE15-4S4A1M2", "B: Which one of the following is a danger sign after delivery? 1. High fever. 2. Heavy vaginal bleeding. 3. Both 1&2. Reply 1/2/3", 3, 3, " Both high fever and heavy vaginal bleeding are danger signs after delivery.");
+	MessageController:createMessage("STE15-4S4A1M3", "C: Swelling experienced in legs and ankles during pregnancy may be caused by: 1. Lazying around. 2. Fluid retention. 3. Overworking. Reply 1/2/3", 3, 2, "Swelling experienced in legs and ankles during pregnancy may be caused by fluid retention.");
+	MessageController:createMessage("STE15-4S4A1M4", "D: A pregnant mother presenting with danger signs should: 1. Use herbs. 2. Exercise and eat well. 3. Visit the health facility. Reply 1/2/3", 3, 3, "A pregnant mother presenting with danger signs should visit the health facility.");
+	MessageController:createMessage("STE15-4S4A1M5", "E:As a CHV, educate your community on danger signs in pregnancy & after delivery. Advise them to visit the clinic for check up. 1. True 2. False Reply 1/2", 2, 1, "As a CHV, educate your community on danger signs in pregnancy & after delivery. Advise them to visit the clinic for medical check up.");
+	
+	MessageController:createMessage("STE15-5S5A1M1", "1/5 Hello, you will now receive SMSs to remind you key points on Danger Signs in Pregnancy and After Delivery.", 0, "", "");
+	MessageController:createMessage("STE15-5S5A1M2", "2/5 Danger signs in pregnancy include severe & persistent vomiting, dizziness, anaemia, severe abdominal pain & reduced foetal movement.", 0, "", "");
+	MessageController:createMessage("STE15-5S5A1M3", "3/5 Danger signs after delivery include heavy vaginal bleeding, retained placenta, high fever and swollen legs.", 0, "", "");
+	MessageController:createMessage("STE15-5S5A1M4", "4/5 Pregnant women who present with danger signs should visit the nearest health facility immediately.", 0, "", "");
+	MessageController:createMessage("STE15-5S5A1M5", "5/5 As a CHV, educate your community on danger signs in pregnancy & after delivery. Advise them to visit the clinic for medical check up.", 0, "", "");
+	MessageController:createMessage("STE15-5S5A2M1", "1/3 Congratulations! You've completed the final sub-topic of the Danger Signs in Pregnancy and After Delivery. ", 0, "", "");
+	MessageController:createMessage("STE15-5S5A2M2", "2/3 You will now receive a problem to solve using your knowledge of Danger Signs in Pregnancy and After Delivery. Your responses will be marked. ", 0, "", "");
+	MessageController:createMessage("STE15-5S5A2M3", "3/3: Your score in this problem will be counted towards your overall score in the topic. Reply 1 when you are ready to solve the problem.", 0, "", "");
+	
+	MessageController:createMessage("STE15-6S1A1M1", "Welcome dear learner to the HELP mLearning gamification!The third game will enhance your skill on Danger signs in pregnancy &after delivery.Reply 1 to continue ", 1, "1;STE15-6S1S1A1M2", "");
+	MessageController:createMessage("STE15-6S1A1M2", "You will receive SMSs with questions and answers that are graded differently,Reply 1 to continue", 1, "1;STE15-6S1S1A1M3", "");
+	MessageController:createMessage("STE15-6S1A1M3", "Please select the best decision you would make when faced with different scenarios as you proceed.Enjoy! Reply 1 to continue", 1, "1;STE15-6S1S1A1M4", "");
+	MessageController:createMessage("STE15-6S1A1M4", "You are a CHV in your CU. While having lunch one day, Ole Masai walks in looking disturbed and tells you about his ailing wife, who is 2 months pregnant. ", 1, "1;STE15-6S1S1A1M5", "");
+	MessageController:createMessage("STE15-6S1A1M5", "This is her first pregnancy. He requests for any herbs that might help her. ", 1, "1;STE15-6S1S1A1M6", "");
+	MessageController:createMessage("STE15-6S1A1M6", "What would you do?1:Give him some herbs growing around your homestead,OR, 2:Enquire what symptoms his wife is presenting with.Reply 1/2 to answer", 2, "1;STE15-6S1S1A1M7;2;STE15-6S1S1A1M8", "");
+	MessageController:createMessage("STE15-6S1A1M7", "Not quite, enquire what symptoms his wife is presenting with,Reply 1 to continue", 1, "1;STE15-6S1S1A1M9", "");
+	MessageController:createMessage("STE15-6S1A1M8", "Exactly, enquire what symptoms his wife is presenting with,Reply 1 to continue", 1, "1;STE15-6S1S1A1M9", "");
+	MessageController:createMessage("STE15-6S1A1M9", "Ole Masai says that his wife has been vomiting day and night for the past 3 days. He thought it would cease but it has persisted. Reply 1 to continue", 1, "1;STE15-6S1S1A1M10", "");
+	MessageController:createMessage("STE15-6S1A1M10", "Advice?1:Observe her for 1 week before taking to clinic,2:Give her lots of fluids to avoid dehydration,3:Vomit is normal in 1st trimester,Reply 1/2/3 to answer", 3, "1;STE15-6S1S1A1M11;2;STE15-6S1S1A1M12;STE15-6S1S1A1M13", "");
+	MessageController:createMessage("STE15-6S1A1M11", "Not quite. Request him to ensure she is hydrated by giving her a lot of fluids such as water, tea and fruit juices,Reply 1 to continue", 1, "1;STE15-6S1S1A1M14", "");
+	MessageController:createMessage("STE15-6S1A1M12", "Correct. Request him to ensure that she is hydrated by giving her a lot of fluids such as water, tea and fruit juices,Reply 1 to continue", 1, "1;STE15-6S1S1A1M14", "");
+	MessageController:createMessage("STE15-6S1A1M13", "Not quite. Request him to ensure she is hydrated by giving her a lot of fluids such as water, tea and fruit juices,Reply 1 to continue", 1, "1;STE15-6S1S1A1M14", "");
+	MessageController:createMessage("STE15-6S1A1M14", "He further adds that his wife has been feeling tired, weak, dizzy and has pale palms.Reply 1 to continue", 1, "1;STE15-6S1S1A1M15", "");
+	MessageController:createMessage("STE15-6S1A1M15", "What danger sign could these sign represent?1:Vaginal bleeding, OR 2:Anaemia, OR 3:Persistent vomiting,Reply 1/2/3 to answer", 3, "1;STE15-6S1S1A1M16;2;STE15-6S1S1A1M17;3;STE15-6S1S1A1M18", "");
+	MessageController:createMessage("STE15-6S1A1M16", "Not quite, feeling tired, weak, dizzy and pale palms are signs of anaemia.Reply 1 to continue", 1, "1;STE15-6S1S1A1M19", "");
+	MessageController:createMessage("STE15-6S1A1M17", "Exactly, feeling tired, weak, dizzy and pale palms are signs of anaemia.Reply 1 to continue", 1, "1;STE15-6S1S1A1M19", "");
+	MessageController:createMessage("STE15-6S1A1M18", "Not quite, feeling tired, weak, dizzy and pale palms are signs of anaemia.Reply 1 to continue", 1, "1;STE15-6S1S1A1M19", "");
+	MessageController:createMessage("STE15-6S1A1M19", "Ole Masai wonders whether the anaemia is what is causing his wife to sometimes have swollen feet. Reply 1 to continue", 1, "1;STE15-6S1S1A1M20", "");
+	MessageController:createMessage("STE15-6S1A1M20", "Your advice?1:Swelling is normal but he should take her to the clinic,2:Swelling is normal, he shouldn’t worry even if it persists.Reply 1/2 to answer", 2, "1;STE15-6S1S1A1M21;2;STE15-6S1S1A1M22", "");
+	MessageController:createMessage("STE15-6S1A1M21", "Correct. Little swelling is normal in pregnancy but he should take her to the clinic if it increases and persists.Reply 1 to continue", 1, "1;STE15-6S1S1A1M23;", "");
+	MessageController:createMessage("STE15-6S1A1M22", "Not quite. Little swelling is normal in pregnancy but he should take her to the clinic if it increases and persists.Reply 1 to continue", 1, "1;STE15-6S1S1A1M23;", "");
+	MessageController:createMessage("STE15-6S1A1M23", "The wife of Ole Masai’s neighbor, Tum, is 5 months pregnant. Tum has gladly shared the experience of baby kicks.Reply 1 to continue", 1, "1;STE15-6S1S1A1M24", "");
+	MessageController:createMessage("STE15-6S1A1M24", "Ole Masai is worried and wonders why he hasn’t felt his baby kick yet.Reply 1 to continue", 1, "1;STE15-6S1S1A1M25", "");
+	MessageController:createMessage("STE15-6S1A1M25", "Your Advice?1:Give wife gifts to make her happy,2:Pregnancy is ok.Baby will kick after the 4th month 3:Wife must tell him when baby kicks,Reply 1/2/3 to answer", 3, "1;STE15-6S1S1A1M26;2;STE15-6S1S1A1M27;3;STE15-6S1S1A1M28", "");
+	MessageController:createMessage("STE15-6S1A1M26", "Not quite. Assure him that the pregnancy is ok. He would start feeling the baby kicks after the 4th month of pregnancy,Reply 1 to continue", 1, "1;STE15-6S1S1A1M29", "");
+	MessageController:createMessage("STE15-6S1A1M27", "Exactly. Assure him that the pregnancy is ok. He would start feeling the baby kicks after the 4th month of pregnancy,Reply 1 to continue", 1, "1;STE15-6S1S1A1M29", "");
+	MessageController:createMessage("STE15-6S1A1M28", "Not quite. Assure him that the pregnancy is ok. He would start feeling the baby kicks after the 4th month of pregnancy,Reply 1 to continue", 1, "1;STE15-6S1S1A1M29", "");
+	MessageController:createMessage("STE15-6S1A1M29", "Ole Masai’s neighbor, Tum, rushes in gasping and tells you that his wife has had some watery discharge since morning. Reply 1 to continue", 1, "1;STE15-6S1S1A1M30", "");
+	MessageController:createMessage("STE15-6S1A1M30", "Your react?1:He must explain how she is feeling,2:Rush her to the clinic,3:Watery discharge is normal in pregnancy so he should be at ease.Reply 1/2/3 to answer", 3, "1;STE15-6S1S1A1M31;2;STE15-6S1S1A1M32;3;STE15-6S1S1A1M33", "");
+	MessageController:createMessage("STE15-6S1A1M31", "Not quite. Quickly walk out, head to their home and rush her to the clinic for medical attention,Reply 1 to continue", 1, "1;STE15-6S1S1A1M34", "");
+	MessageController:createMessage("STE15-6S1A1M32", "Exactly. Quickly walk out, head to their home and rush her to the clinic for medical attention,Reply 1 to continue", 1, "1;STE15-6S1S1A1M34", "");
+	MessageController:createMessage("STE15-6S1A1M33", "Not quite. Quickly walk out, head to their home and rush her to the clinic for medical attention,Reply 1 to continue", 1, "1;STE15-6S1S1A1M34", "");
+	MessageController:createMessage("STE15-6S1A1M34", "After careful examination, the nurse confirms both mother and baby are ok. Reply 1 to continue", 1, "1;STE15-6S1S1A1M35", "");
+	MessageController:createMessage("STE15-6S1A1M35", "She congratulates you for the swift action as it could have been a very dangerous sign.She asks them to go back after a week,Reply 1 to continue", 1, "1;STE15-6S1S1A1M36", "");
+	MessageController:createMessage("STE15-6S1A1M36", "What danger sign might this have been?1:Normal vaginal discharge,2:Leaking of the amniotic fluid,3:Vaginal bleeding,Reply 1/2/3 to answer", 3, "1;STE15-6S1S1A1M37;2;STE15-6S1S1A1M38;3;STE15-6S1S1A1M39", "");
+	MessageController:createMessage("STE15-6S1A1M37", "Not quite. It could have indicated leaking of the amniotic fluid.Reply 1 to continue", 1, "1;STE15-6S1S1A1M40", "");
+	MessageController:createMessage("STE15-6S1A1M38", "Exactly. It could have indicated leaking of the amniotic fluid.Reply 1 to continue", 1, "1;STE15-6S1S1A1M40", "");
+	MessageController:createMessage("STE15-6S1A1M39", "Not quite. It could have indicated leaking of the amniotic fluid.Reply 1 to continue", 1, "1;STE15-6S1S1A1M40", "");
+	MessageController:createMessage("STE15-6S1A1M40", "Ole Masai and Tumo are very grateful for all your help, advice and hard work in their community.Reply 1 to continue", 1, "1;STE15-6S1S1A1M41", "");
+	MessageController:createMessage("STE15-6S1A1M41", "Your parting shot?1:Contact you in emergency or the clinic,2:Wait until health issues persist,3:Be on the lookout & handle health issues.Reply 1/2/3 to answer", 3, "1;STE15-6S1S1A1M42;2;STE15-6S1S1A1M43;STE15-6S1S1A1M44", "");
+	MessageController:createMessage("STE15-6S1A1M42", "Exactly. Ask them to contact you in case of anything or rush to the clinic for any medical attention.Reply 1 to continue", 1, "1;STE15-6S1S1A1M45", "");
+	MessageController:createMessage("STE15-6S1A1M43", "Not quite. Ask them to contact you in case of anything or rush to the clinic for any medical attention.Reply 1 to continue", 1, "1;STE15-6S1S1A1M45", "");
+	MessageController:createMessage("STE15-6S1A1M44", "Not quite. Ask them to contact you in case of anything or rush to the clinic for any medical attention,Reply 1 to continue", 1, "1;STE15-6S1S1A1M45", "");
+	MessageController:createMessage("STE15-6S1A1M45", "Ole Masai and Tumo  say they now understand the Danger signs in pregnancy and after delivery and thank you for the advice you gave them. Reply 1 to continue.", 1, "1;STE15-6S1S1A1M46", "");
+	MessageController:createMessage("STE15-6S1A1M46", "Congratulations! You have now come to the end of the game. To replay the game, please contact the Helpdesk.You will receive your score soon.Reply 1 to end. ", 1, "endactivity", "");
+		
+	MessageOrderController:createMessageOrder("STE15-1S1A1", "STE15-1S1A1M1", 1);
+	MessageOrderController:createMessageOrder("STE15-1S1A1", "STE15-1S1A1M2", 2);
+	MessageOrderController:createMessageOrder("STE15-1S1A1", "STE15-1S1A1M3", 3);
+	MessageOrderController:createMessageOrder("STE15-1S1A1", "STE15-1S1A1M4", 4);
+	MessageOrderController:createMessageOrder("STE15-1S1A3", "STE15-1S1A3M1", 1);
+	MessageOrderController:createMessageOrder("STE15-1S1A3", "STE15-1S1A3M2", 2);
+	MessageOrderController:createMessageOrder("STE15-1S1A4", "STE15-1S1A4M1", 1); //
+	MessageOrderController:createMessageOrder("STE15-1S1A4", "STE15-1S1A4M2", 2); //
+
+	MessageOrderController:createMessageOrder("STE15-2S2A3", "STE15-2S2A3M1", 1);
+	MessageOrderController:createMessageOrder("STE15-2S2A3", "STE15-2S2A3M2", 2);
+	MessageOrderController:createMessageOrder("STE15-2S2A3", "STE15-2S2A3M3", 3);
+
+	MessageOrderController:createMessageOrder("STE15-2S2A5", "STE15-2S2A5M1", 1);
+	MessageOrderController:createMessageOrder("STE15-2S2A5", "STE15-2S2A5M2", 2);
+
+	MessageOrderController:createMessageOrder("STE15-2S3A1", "STE15-2S3A1M1", 1);
+	MessageOrderController:createMessageOrder("STE15-2S3A2", "STE15-2S3A2M1", 1);
+	MessageOrderController:createMessageOrder("STE15-2S3A2", "STE15-2S3A2M2", 2);
+	MessageOrderController:createMessageOrder("STE15-2S3A2", "STE15-2S3A2M3", 3);
+	MessageOrderController:createMessageOrder("STE15-2S3A2", "STE15-2S3A2M4", 4);
+	MessageOrderController:createMessageOrder("STE15-2S3A2", "STE15-2S3A2M5", 5);
+	MessageOrderController:createMessageOrder("STE15-2S3A2", "STE15-2S3A2M6", 6);
+	MessageOrderController:createMessageOrder("STE15-2S3A3", "STE15-2S3A3M1", 1);
+
+	MessageOrderController:createMessageOrder("STE15-4S4A1", "STE15-4S4A1M1", 1);
+	MessageOrderController:createMessageOrder("STE15-4S4A1", "STE15-4S4A1M2", 2);
+	MessageOrderController:createMessageOrder("STE15-4S4A1", "STE15-4S4A1M3", 3);
+	MessageOrderController:createMessageOrder("STE15-4S4A1", "STE15-4S4A1M4", 4);
+	MessageOrderController:createMessageOrder("STE15-4S4A1", "STE15-4S4A1M5", 5);
+
+	MessageOrderController:createMessageOrder("STE15-5S5A1", "STE15-5S5A1M1", 1);
+	MessageOrderController:createMessageOrder("STE15-5S5A1", "STE15-5S5A1M2", 2);
+	MessageOrderController:createMessageOrder("STE15-5S5A1", "STE15-5S5A1M3", 3);
+	MessageOrderController:createMessageOrder("STE15-5S5A1", "STE15-5S5A1M4", 4);
+	MessageOrderController:createMessageOrder("STE15-5S5A1", "STE15-5S5A1M5", 5);
+
+	MessageOrderController:createMessageOrder("STE15-5S5A2", "STE15-5S5A2M1", 1);
+	MessageOrderController:createMessageOrder("STE15-5S5A2", "STE15-5S5A2M2", 2);
+	MessageOrderController:createMessageOrder("STE15-5S5A2", "STE15-5S5A2M3", 3);
+
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M1", 1);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M2", 2);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M3", 3);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M4", 4);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M5", 5);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M6", 6);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M7", 7);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M8", 8);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M9", 9);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M10", 10);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M11", 11);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M12", 12);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M13", 13);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M14", 14);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M15", 15);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M16", 16);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M17", 17);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M18", 18);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M19", 19);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M20", 20);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M21", 21);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M22", 22);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M23", 23);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M24", 24);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M25", 25);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M26", 26);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M27", 27);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M28", 28);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M29", 29);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M30", 30);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M31", 31);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M32", 32);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M33", 33);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M34", 34);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M35", 35);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M36", 36);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M37", 37);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M38", 38);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M39", 39);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M40", 40);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M41", 41);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M42", 42);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M43", 43);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M44", 44);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M45", 45);
+	MessageOrderController:createMessageOrder("STE15-6S1A1", "STE15-6S1A1M46", 46);
+	return null;
+}
+
+void create_subtopic_STE6_7(){
+
+	SubTopicController:createSubTopic(6, 1, "", "STE6", "Gamification", "", "", "You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21229 to see what's next", 5, 6, 7);
+
+	SubTopicController:createSubTopic(4, 1, "", "SVE1", "End of Topic Survey", "", "", "You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21899 to see what's next", 5, 6, 10);
+	SubTopicController:createSubTopic(4, 2, "", "SVSW1", "End of Topic Survey", "", "", "Una siku moja tu kuimaliza mada, usisahau kukamilisha shuguli zote kabla ya muda huo kuisha! Tuma ujumbe 'kuendelea' kwa nambari 21899 ili kujua yafuatayo", 5, 6, 20);
+
+	return null;
+}
+
+
+void create_sequence_STE6_7(){
+
+	SequenceController:createSequence("STE6S1", "STE6S1", "", "", "", 0);
+	SequenceOrderController:createSequenceOrder("STE6", "STE6S1", 1);
+
+	SequenceController:createSequence("SVE1S4", "SVE1S4", "", "", "", 0);
+	SequenceController:createSequence("SVSW1S4", "SVSW1S4", "", "", "", 0);
+	SequenceOrderController:createSequenceOrder("SVE1", "SVE1S4", 1);
+	SequenceOrderController:createSequenceOrder("SVSW1", "SVSW1S4", 1);
+
+	return null;
+}
+
+void create_pattern_STE6_7(){
+	ActivityController:createActivity("STE6S1A1", "", "", "", 0, 1, "");
+
+	ActivityController:createActivity("SVE1S4A1", "Thank you for completing the topic. We would like you to evaluate the mlearning training process to help us improve the mobile training. ", "", "", 0, 1,"SVE1S4A1");
+	ActivityController:createActivity("SVE1S4A2", "Please reply to the questions you'll receive using 1, 2, 3, or 4 where; 1=Strongly Disagree, 2=Disagree, 3=Agree, 4=Strongly Agree. ", "", "", 0, 1,"SVE1S4A2");
+	ActivityController:createActivity("SVE1S4A3", "Now you will receive few questions on SMS to respond to in your own words. This will help us evaluate the quality of the training.", "", "", 0, 1,"SVE1S4A3");
+
+	ActivityController:createActivity("SVSW1S4A1", "Asante kwa kumaliza mada. Tungependa upeane maoni yako kuhusu mafunzo ya simu tamba ili tuweze kuboresha mafunzo ya simu tamba.", "", "", 0, 1,"SVE1S4A1");
+	ActivityController:createActivity("SVSW1S4A2", "Tafadhali jibu maswali utakayopokea ukitumia 1, 2, 3 au 4 ambapo; 1=Kukataa kabisa, 2=Kukataa, 3=Kukubaliana, 4=Kukubaliana kabisa.", "", "", 0, 1,"SVE1S4A2");
+	ActivityController:createActivity("SVSW1S4A3", "Sasa utapokea maswali kadhaa kupitia jumbe fupi ili ujibu kwa maneno yako. Hii itatuwezesha kutathmini ubora wa mafunzo haya.", "", "", 0, 1,"SVE1S4A3");
+
+	return null;
+}
+
+void schedule_pattern_STE6_7(){
+
+	ActivityOrderController:createActivityOrder ("STE6S1", "STE6S1A1", 1, "11", 0);
+
+	ActivityOrderController:createActivityOrder ("SVE1S4", "SVE1S4A1", 1, "1", 0);
+	ActivityOrderController:createActivityOrder ("SVE1S4", "SVE1S4A2", 2, "2", 0);
+	ActivityOrderController:createActivityOrder ("SVE1S4", "SVE1S4A3", 3, "4", 0);
+	ActivityOrderController:createActivityOrder ("SVSW1S4", "SVSW1S4A1", 1, "1", 0);
+	ActivityOrderController:createActivityOrder ("SVSW1S4", "SVSW1S4A2", 2, "2", 0);
+	ActivityOrderController:createActivityOrder ("SVSW1S4", "SVSW1S4A3", 3, "4", 0);
+
+	return null;
+}
+
+void message_STE6_7(){
+
+	MessageController:createMessage("STE6S1A1M1", "Welcome dear learner to the HELP mLearning gamification. This first game will enhance your skill on the Family Planning topic.Reply 1 to continue ", 1, "", "");
+	MessageController:createMessage("STE6S1A1M2", "You will hear a story about a young girl called Subira, and you will be given the chance to advise her with her problems. Reply 1 to continue ", 1, "", "");
+	MessageController:createMessage("STE6S1A1M3", "Please select the best decision you would make when faced with different scenarios as you proceed. Enjoy! Reply 1 to continue", 1, "", "");
+	MessageController:createMessage("STE6S1A1M4", "You are a CHV in your CU. During a household visit, you meet a 16-year old girl, Subira, crying in front of their home. Reply 1 to continue", 1, "", "");
+	MessageController:createMessage("STE6S1A1M5", "What will you do? 1: call her mother,OR, 2: check around for any looming danger, OR, 3: I would ask her what the problem is. Reply 1/2/3 with your choice ", 3, "1;STE6S1A1M6;2;STE6S1A1M7;3;STE6S1A1M8", "");
+	MessageController:createMessage("STE6S1A1M6", "Not quite,You Should enquire from Subira what the problem could be. Reply 1 to continue ", 1, "1;STE6S1A1M9", "");
+	MessageController:createMessage("STE6S1A1M7", "Not quite, You should enquire from Subira what the problem could be. Reply 1 to continue ", 1, "1;STE6S1A1M9", "");
+	MessageController:createMessage("STE6S1A1M8", "Exactly, You should enquire from Subira what the problem could be. Reply 1 to continue ", 1, "1;STE6S1A1M9", "");
+	MessageController:createMessage("STE6S1A1M9", "Subira tells you that she has been in a relationship for one year. Her boyfriend has been pushing her to give in to sex. Reply 1 to continue", 1, "", "");
+	MessageController:createMessage("STE6S1A1M10", "But she is scared of the consequences. He has threatened to cut off the relationship. Reply 1 to continue", 1, "", "");
+	MessageController:createMessage("STE6S1A1M11", "She asks whether she qualifies for family planning. What would be your response?1:Yes she qualifies,OR,2:No, she doesn’t qualify.Reply 1/2 with your choice", 2, "1;STE6S1A1M12;2;STE6S1A1M13", "");
+	MessageController:createMessage("STE6S1A1M12", "Correct, Subira qualifies for Family Planning. Reply 1 to continue ", 1, "1;STE6S1A1M14", "");
+	MessageController:createMessage("STE6S1A1M13", "Incorrect, Subira qualifies for family Planning. Reply 1 to continue ", 1, "1;STE6S1A1M14", "");
+	MessageController:createMessage("STE6S1A1M14", "You advise her on various methods of family planning but she fears the cost attached to it.She would like to know more about it. Reply 1 to continue", 1, "", "");
+	MessageController:createMessage("STE6S1A1M15", "What would you say?1:To visit the clinic,OR, 2:Give her money for morning after pill,OR,3:Enquire from her peers who are sexually active.Reply 1/2/3 to answer", 3, "1;STE6S1A1M16;2;STE6S1A1M17;3;STE6S1A1M18", "");
+	MessageController:createMessage("STE6S1A1M16", "Exactly, advise her to visit the clinic for more information. Reply 1 to continue", 1, "STE6S1A1M19", "");
+	MessageController:createMessage("STE6S1A1M17", "Not quite, advise her to visit the clinic for more information. Reply 1 to continue", 1, "1;STE6S1A1M19", "");
+	MessageController:createMessage("STE6S1A1M18", "Not quite, advise her to visit the clinic for more information. Reply 1 to continue", 1, "1;STE6S1A1M19", "");
+	MessageController:createMessage("STE6S1A1M19", "She however believes that family planning clinics are for married couples. Reply 1 to continue", 1, "", "");
+	MessageController:createMessage("STE6S1A1M20", "What would you advise?1:Family planning is for everyone,OR,2: Is for women who want to stop getting children,OR,3:Is for health workers.Reply 1/2/3 to answer", 3, "1;STE6S1A1M21;2;STE6S1A1M22;3;STE6S1A1M23", "");
+	MessageController:createMessage("STE6S1A1M21", "Exactly, advise her that family planning is for anyone wishing to plan their family and their lives. Reply 1 to continue", 1, "1;STE6S1A1M24", "");
+	MessageController:createMessage("STE6S1A1M22", "Not quite, but advise her that family planning is for anyone wishing to plan their family and their lives. Reply 1 to continue", 1, "1;STE6S1A1M24", "");
+	MessageController:createMessage("STE6S1A1M23", "Not quite, but advise her that family planning is for anyone wishing to plan their family and their lives. Reply 1 to continue", 1, "1;STE6S1A1M24", "");
+	MessageController:createMessage("STE6S1A1M24", "Subira thinks that family planning has terrible side effects like headaches,irregular bleeding,mild abdominal pain and weight change.Reply 1 to continue", 1, "", "");
+	MessageController:createMessage("STE6S1A1M25", "What would you advice?1:Only affects young mothers,OR,2:Are manageable and often disappear,3:If they Persist,she should visit the clinic.Reply 1/2/3 to answer", 3, "1;STE6S1A1M26;2;STE6S1A1M27;3;STE6S1A1M28", "");
+	MessageController:createMessage("STE6S1A1M26", "Not quite, advice her to visit the health facility if the side effects persist. Reply 1 to continue", 1, "1;STE6S1A1M29", "");
+	MessageController:createMessage("STE6S1A1M27", "Not quite, but advice her to visit the health facility if the side effects persist. Reply 1 to continue", 1, "1;STE6S1A1M29", "");
+	MessageController:createMessage("STE6S1A1M28", "Correct, please visit the health facility if the side effects persist. Reply 1 to continue ", 1, "STE6S1A1M29", "");
+	MessageController:createMessage("STE6S1A1M29", "Subira's siblings are born 3 years apart. She believes her parents made a deliberate decision to space them. Reply 1 to continue ", 1, "", "");
+	MessageController:createMessage("STE6S1A1M30", "How best would you describe the spacing?1: This Spacing is known as Family Planning,OR, 2:This spacing is known as birth intervals.Reply 1/2/3 with your choice", 3, "1;STE6S1A1M31;2;STE6S1A1M32", "");
+	MessageController:createMessage("STE6S1A1M31", "Not quite, the spacing is known as birth intervals. Reply 1 to continue", 1, "STE6S1A1M33", "");
+	MessageController:createMessage("STE6S1A1M32", "Exactly, the spacing is known as birth intervals. Reply 1 to continue", 1, "1;STE6S1A1M33", "");
+	MessageController:createMessage("STE6S1A1M33", "Her 19-year old boyfriend enters the compound but wants to walk off the moment he sees you.Reply 1 to continue", 1, "", "");
+	MessageController:createMessage("STE6S1A1M34", "You convince him to stay and introduce family planning to him.You explain suitable family planning options for him. Reply 1 to continue", 1, "", "");
+	MessageController:createMessage("STE6S1A1M35", "What would you say?1:To undergo vasectomy,OR,2:To use a condom,OR,3:To consider use of natural family planning such as withdrawal.Reply 1/2/3 with your choice ", 3, "1;STE6S1A1M36;2;STE6S1A1M37;3;STE6S1A1M38", "");
+	MessageController:createMessage("STE6S1A1M36", "Not quite, advise him to consider use of a condom. Reply 1 to continue ", 1, "1;STE6S1A1M39", "");
+	MessageController:createMessage("STE6S1A1M37", "Exactly, advise him to consider use of a condom.Reply 1 to continue ", 1, "1;STE6S1A1M39", "");
+	MessageController:createMessage("STE6S1A1M38", "Not quite, advise him to consider use of a condom. Reply 1 to continue ", 1, "1;STE6S1A1M39", "");
+	MessageController:createMessage("STE6S1A1M39", "All in all you advise them that they have a whole future ahead of them and they should be wise before being sexually active.Reply 1 to continue", 1, "", "");
+	MessageController:createMessage("STE6S1A1M40", "What would you advise?1:To abstain as the safest way,OR,2:To engage in sex once every term,OR,3:Be tested for HIV before engaging in sex.Reply 1/2/3 to answer", 3, "1;STE6S1A1M41;2;STE6S1A1M42;3;STE6S1A1M43", "");
+	MessageController:createMessage("STE6S1A1M41", "Exactly, abstinence is the surest way to avoid unwanted and unforeseen consequences such as pregnancies, STIs, STDs and HIV. Reply 1 to continue", 1, "1;STE6S1A1M44", "");
+	MessageController:createMessage("STE6S1A1M42", "Not quite, abstinence is the surest way to avoid unwanted and unforeseen consequences such as pregnancies, STIs, STDs and HIV. Reply 1 to continue ", 1, "1;STE6S1A1M44", "");
+	MessageController:createMessage("STE6S1A1M43", "Not quite, abstinence is the surest way to avoid unwanted and unforeseen consequences such as pregnancies, STIs, STDs and HIV. Reply 1 to continue ", 1, "1;STE6S1A1M44", "");
+	MessageController:createMessage("STE6S1A1M44", "Subira and her boyfriend say they now understand the importance of family planning and thank you for the advice you gave them. Reply 1 to continue.", 1, "1;STE6S1A1M45", "");
+	MessageController:createMessage("STE6S1A1M45", "Congratulations! You have now come to the end of the game. To replay the game, please contact the Helpdesk.You will receive your score soon.", 1, "endtopic", "");
+
+	MessageController:createMessage("SVE1S4A2M1", "A. How well did you accomplish the learning objectives of this topic? 1=Strongly Disagree, 2=Disagree, 3=Agree, 4=Strongly Agree. Reply 1/2/3/4.", 4, "", "");
+	MessageController:createMessage("SVE1S4A2M2", "B. On a scale of 1 to 4, did you enjoy completing this topic? 1=Strongly Disagree, 2=Disagree, 3=Agree, 4=Strongly Agree. Reply 1/2/3/4.", 4, "", "");
+	MessageController:createMessage("SVE1S4A2M3", "C. Did this training increase your knowledge and skills. 1=Strongly Disagree, 2=Disagree, 3=Agree, 4=Strongly Agree. Reply 1/2/3/4.", 4, "", "");
+	MessageController:createMessage("SVE1S4A2M4", "D. Is the course content applicable in your role as a CHV? 1=Strongly Disagree, 2=Disagree, 3=Agree, 4=Strongly Agree. Reply 1/2/3/4.", 4, "", "");
+	MessageController:createMessage("SVE1S4A2M5", "E.I think IVR (voice audio) is an effective way of learning about this topic.1=Strongly Disagree, 2=Disagree, 3=Agree, 4=Strongly Agree.Reply 1/2/3/4.", 4, "", "");
+	MessageController:createMessage("SVE1S4A2M6", "F. I think SMS is an effective way of learning about this topic. 1=Strongly Disagree, 2=Disagree, 3=Agree, 4=Strongly Agree.Reply 1/2/3/4.", 4, "", "");
+	MessageController:createMessage("SVE1S4A3M1", "1/3 Do you have any comments or feedback for us? Please reply to this SMS now telling us what you enjoyed or did not enjoy during this topic?", 0, "", "");
+	MessageController:createMessage("SVE1S4A3M2", "2/3 Is there anything else in this topic that you wish to learn?", 0, "", "");
+	MessageController:createMessage("SVE1S4A3M3", "3/3 Thank you for your feedback! Well done, you've completed the topic! You will receive an SMS on the next training topic.", 0, "", "");
+
+	MessageController:createMessage("SVSW1S4A2M1", "A. Ulitimiza malengo ya mafunzo ya mada hii vizuri? 1=Kukataa kabisa, 2=Kukataa, 3=Kukubaliana, 4=Kukubaliana kabisa. Jibu 1/2/3/4.", 4, "", "");
+	MessageController:createMessage("SVSW1S4A2M2", "B. Kwa mizani ya 1 hadi 4, ulifurahia kukamilisha mada hii? 1=Kukataa kabisa, 2=Kukataa, 3=Kukubaliana, 4=Kukubaliana kabisa. Jibu 1/2/3/4.", 4, "", "");
+	MessageController:createMessage("SVSW1S4A2M3", "C. Je, mafunzo haya yaliongeza ufahamu na ujuzi wako? 1=Kukataa kabisa, 2=Kukataa, 3=Kukubaliana, 4=Kukubaliana kabisa. Jibu 1/2/3/4.", 4, "", "");
+	MessageController:createMessage("SVSW1S4A2M4", "D. Yaliyomo kwa mafunzo yatakusaidia kwa jukumu lako kama CHV? 1=Kukataa kabisa, 2=Kukataa, 3=Kukubaliana, 4=Kukubaliana kabisa. Jibu 1/2/3/4.", 4, "", "");
+	MessageController:createMessage("SVSW1S4A2M5", "E. Nafikiri sauti ni njia mwafaka ya kujifunza kuhusu mada hii. 1=Kukataa kabisa, 2=Kukataa, 3=Kukubaliana, 4=Kukubaliana kabisa. Jibu 1/2/3/4.", 4, "", "");
+	MessageController:createMessage("SVSW1S4A2M6", "F. Nafikiri jumbe fupi ni njia mwafaka ya kujifunza mada hii. 1=Kukataa kabisa, 2=Kukataa, 3=Kukubaliana, 4=Kukubaliana kabisa. Jibu 1/2/3/4.", 4, "", "");
+	MessageController:createMessage("SVSW1S4A3M1", "1/3 Una maoni yoyote au jambo lolote ungependa kutujulisha? Tafadhali jibu ujumbe huu ukitueleza uliyoyafurahia au usiyoyafurahia katika mada.", 0, "", "");
+	MessageController:createMessage("SVSW1S4A3M2", "2/3 Je, ungependa kujifunza jambo lingine lolote katika mada hii?", 0, "", "");
+	MessageController:createMessage("SVSW1S4A3M3", "3/3 Asante kwa maoni yako! Hongera, umekamilisha mada! Utapokea ujumbe mfupi wiki ijayo kuendelea na masomo.", 0, "", "");
+
+	return null;
+}
+
+void pattern_message_STE6_7(){
+
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M1", 1);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M2", 2);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M3", 3);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M4", 4);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M5", 5);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M6", 6);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M7", 7);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M8", 8);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M9", 9);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M10", 10);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M11", 11);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M12", 12);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M13", 13);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M14", 14);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M15", 15);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M16", 16);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M17", 17);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M18", 18);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M19", 19);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M20", 20);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M21", 21);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M22", 22);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M23", 23);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M24", 24);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M25", 25);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M26", 26);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M27", 27);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M28", 28);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M29", 29);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M30", 30);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M31", 31);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M32", 32);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M33", 33);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M34", 34);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M35", 35);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M36", 36);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M37", 37);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M38", 38);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M39", 39);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M40", 40);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M41", 41);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M42", 42);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M43", 43);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M44", 44);
+	MessageOrderController:createMessageOrder("STE6S1A1", "STE6S1A1M45", 45);
+
+
+	MessageOrderController:createMessageOrder("SVE1S4A2", "SVE1S4A2M1", 1);
+	MessageOrderController:createMessageOrder("SVE1S4A2", "SVE1S4A2M2", 2);
+	MessageOrderController:createMessageOrder("SVE1S4A2", "SVE1S4A2M3", 3);
+	MessageOrderController:createMessageOrder("SVE1S4A2", "SVE1S4A2M4", 4);
+	MessageOrderController:createMessageOrder("SVE1S4A2", "SVE1S4A2M5", 5);
+	MessageOrderController:createMessageOrder("SVE1S4A2", "SVE1S4A2M6", 6);
+	MessageOrderController:createMessageOrder("SVE1S4A3", "SVE1S4A3M1", 1);
+	MessageOrderController:createMessageOrder("SVE1S4A3", "SVE1S4A3M2", 2);
+	MessageOrderController:createMessageOrder("SVE1S4A3", "SVE1S4A3M3", 3);
+
+	MessageOrderController:createMessageOrder("SVSW1S4A2", "SVSW1S4A2M1", 1);
+	MessageOrderController:createMessageOrder("SVSW1S4A2", "SVSW1S4A2M2", 2);
+	MessageOrderController:createMessageOrder("SVSW1S4A2", "SVSW1S4A2M3", 3);
+	MessageOrderController:createMessageOrder("SVSW1S4A2", "SVSW1S4A2M4", 4);
+	MessageOrderController:createMessageOrder("SVSW1S4A2", "SVSW1S4A2M5", 5);
+	MessageOrderController:createMessageOrder("SVSW1S4A2", "SVSW1S4A2M6", 6);
+	MessageOrderController:createMessageOrder("SVSW1S4A3", "SVSW1S4A3M1", 1);
+	MessageOrderController:createMessageOrder("SVSW1S4A3", "SVSW1S4A3M2", 2);
+	MessageOrderController:createMessageOrder("SVSW1S4A3", "SVSW1S4A3M3", 3);
+
+	return null;
+}
+
+//27-1-2015 STSW13-6.xlsm
+void create_subtopic_STSW13_6(){
+	SubTopicController:createSubTopic(1, 2, "", "STSW13-6", "Mchezo wa mada ya Upangaji Uzazi", "", "", "Una siku moja tu kuimaliza mada, usisahau kukamilisha shuguli zote kabla ya muda huo kuisha! Tuma ujumbe 'kuendelea' kwa nambari 21899 ili kujua yafuatayo", 5, 6, 20);
+	
+	SequenceController:createSequence("STSW13-6S1", "STSW13-6S1", "", "", "", 0);
+
+	SequenceOrderController:createSequenceOrder("STSW13-6", "STSW13-6S1", 1);
+
+	ActivityController:createActivity("STSW13-6S1A1", "", "", "", 0, 1,"STSW13-6S1A1");
+	ActivityOrderController:createActivityOrder ("STSW13-6S1", "STSW13-6S1A1", 1, 11, 0);
+
+	MessageController:createMessage("STSW13-6S1A1M1", "Karibu mwanafunzi mpendwa kwa mchezo wa mafunzo ya simu (HELP). Mchezo huu wa kwanza utaboresha ujuzi wako wa mada ya upangaji uzazi. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M2", "");
+	MessageController:createMessage("STSW13-6S1A1M2", "Utapokea hadithi ya msichana wa umri mdogo aitwaye Subira, na utapewa nafasi ya kumshauri kutokana na shida zake. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M3", "");
+	MessageController:createMessage("STSW13-6S1A1M3", "Tafadhali chagua uamuzi bora zaidi utakaofanya unapokumbana na matukio tofauti tofauti. Furahia! Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M4", "");
+	MessageController:createMessage("STSW13-6S1A1M4", "Wewe ni CHV katika CU yako. Unapotembelea kaya yako, unakutana na Subira, msichana wa umri wa miaka 16, akilia mbele ya nyumba yao. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M5", "");
+	MessageController:createMessage("STSW13-6S1A1M5", "Utafanyaje? 1: Muite mama yake, AMA, 2: Angalia kama kuna hatari yeyote, AMA, 3: Nitamuuliza shida iko wapi. Jibu 1/2/3 na uamuzi wako", 3, "1;STSW13-6S1A1M6;2;STSW13-6S1A1M7;3;STSW13-6S1A1M8", "");
+	MessageController:createMessage("STSW13-6S1A1M6", "Sivyo, unapaswa kumuuliza Subira juu ya shida aliyonayo. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M9", "");
+	MessageController:createMessage("STSW13-6S1A1M7", "Sivyo, unapaswa kumuuliza Subira juu ya shida aliyonayo. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M9", "");
+	MessageController:createMessage("STSW13-6S1A1M8", "Sahihi, unapaswa kumuuliza Subira juu ya shida aliyonayo. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M9", "");
+	MessageController:createMessage("STSW13-6S1A1M9", "Subira anakuelezea kwamba amekuwa katika uhusiano kwa mwaka mmoja na nusu. Mpenziwe amekuwa akimsukuma wafanye mapenzi. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M10", "");
+	MessageController:createMessage("STSW13-6S1A1M10", "Lakini anaogopa matokeo yake. Mpenziwe ametishia kukatiza uhusiano. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M11", "");
+	MessageController:createMessage("STSW13-6S1A1M11", "Subira auliza kama amehitimu kupanga uzazi. Utamshauri namna gani? 1:Ndio amehitimu, AMA, 2:La, hajahitimu. Jibu 1/2 na uamuzi wako", 2, "1;STSW13-6S1A1M12;2;STSW13-6S1A1M13", "");
+	MessageController:createMessage("STSW13-6S1A1M12", "Sahihi, Subira amehitimu kupanga uzazi. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M14", "");
+	MessageController:createMessage("STSW13-6S1A1M13", "Si sahihi, Subira amehitimu kupanga uzazi. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M14", "");
+	MessageController:createMessage("STSW13-6S1A1M14", "Unamshauri juu ya njia tofauti tofauti za upangaji uzazi lakini anahofia gharama yake. Angependa kujua zaidi. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M15 ", "");
+	MessageController:createMessage("STSW13-6S1A1M15", "Utamwambiaje? 1:Atembelee kliniki, AMA, 2:Mpe pesa za dawa ya kupanga uzazi, AMA, 3:Ashauriane na marafiki zake wanaofanya mapenzi. Jibu 1/2/3", 3, " 1;STSW13-6S1A1M16;2;STSW13-6S1A1M17;3;STSW13-6S1A1M18 ", "");
+	MessageController:createMessage("STSW13-6S1A1M16", "Sahihi, mshauri atembelee kliniki ili apate maelezo zaidi. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M19", "");
+	MessageController:createMessage("STSW13-6S1A1M17", "Sivyo, mshauri atembelee kliniki ili apate maelezo zaidi. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M19", "");
+	MessageController:createMessage("STSW13-6S1A1M18", "Sivyo, mshauri atembelee kliniki ili apate maelezo zaidi. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M19", "");
+	MessageController:createMessage("STSW13-6S1A1M19", "Lakini anaamini kwamba kliniki za upangaji uzazi ni za watu walio katika ndoa. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M20", "");
+	MessageController:createMessage("STSW13-6S1A1M20", "Utamshauri namna gani? 1:Upangaji uzazi ni ya kila mtu,AMA,2:Ni ya akina mama wanaotaka kuacha kupata watoto,AMA,3:Ni ya wahudumu wa afya. Jibu 1/2/3", 3, "1;STSW13-6S1A1M21;2;STSW13-6S1A1M22;3;STSW13-6S1A1M23", "");
+	MessageController:createMessage("STSW13-6S1A1M21", "Sahihi, mshauri kwamba upangaji uzazi ni ya mtu yeyote ambaye angependa kupanga familia yake na maisha yake. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M24", "");
+	MessageController:createMessage("STSW13-6S1A1M22", "Sivyo, mshauri kwamba upangaji uzazi ni ya mtu yeyote ambaye angependa kupanga familia yake na maisha yake. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M24", "");
+	MessageController:createMessage("STSW13-6S1A1M23", "Sivyo, mshauri kwamba upangaji uzazi ni ya mtu yeyote ambaye angependa kupanga familia yake na maisha yake. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M24", "");
+	MessageController:createMessage("STSW13-6S1A1M24", "Anadhani kuwa upangaji uzazi una athari mbaya kama kuumwa kichwa,utokwaji damu usio kawaida,maumivu kidogo tumboni na kubadilika uzani wa mwili.Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M25", "");
+	MessageController:createMessage("STSW13-6S1A1M25", "Utampa ushauri upi? 1:Zinaathiri wamama wa umri mdogo,AMA,2:Zinaweza kushugulikiwa na mara nyingi hutoweka,AMA,3:Kama zitazidi, atembelee kliniki. Jibu 1/2/3", 3, "1;STSW13-6S1A1M26;2;STSW13-6S1A1M27;3;STSW13-6S1A1M28", "");
+	MessageController:createMessage("STSW13-6S1A1M26", "Sivyo, mshauri atembelee kliniki kama athari hizo zitazidi. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M29", "");
+	MessageController:createMessage("STSW13-6S1A1M27", "Sivyo, mshauri atembelee kliniki kama athari hizo zitazidi. Jibu 1 kuendelea", 0, "1;STSW13-6S1A1M29", "");
+	MessageController:createMessage("STSW13-6S1A1M28", "Sahihi, tembelea kliniki kama athari hizo zitazidi. Jibu 1 kuendelea", 0, "1;STSW13-6S1A1M29", "");
+	MessageController:createMessage("STSW13-6S1A1M29", "Nduguze Subira wamepishana na miaka 3. Anaamini kwamba wazazi wake walifanya uamuzi wa kimakusudi wa uzazi wa majira (kuacha miaka kati yao). Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M30", "");
+	MessageController:createMessage("STSW13-6S1A1M30", "Utaelezaje vema zaidi uzazi huu wa majira? 1: Uzazi huu unajulikana kama upangaji uzazi, AMA, 2:Uzazi huu unajulikana kama muda kati ya watoto. Jibu 1/2/3", 2, "1;STSW13-6S1A1M31;2;STSW13-6S1A1M32", "");
+	MessageController:createMessage("STSW13-6S1A1M31", "Sivyo, uzazi huu wa majira unajulikana kama muda kati ya watoto. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M33", "");
+	MessageController:createMessage("STSW13-6S1A1M32", "Sahihi, uzazi huu wa majira unajulikana kama muda kati ya watoto. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M33", "");
+	MessageController:createMessage("STSW13-6S1A1M33", "Mpenzi wake aliye miaka 19 awasili kwao lakini anataka kuondoka punde tu anapokuona. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M34", "");
+	MessageController:createMessage("STSW13-6S1A1M34", "Unamshawishi kubaki na kumjulisha kuhusu upangaji uzazi. Unamwelezea njia zitakazomfaa. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M35", "");
+	MessageController:createMessage("STSW13-6S1A1M35", "Utamwambiaje? 1:Kufanyiwa vasektomi, AMA, 2:Kutumia kondomu, AMA, 3:Kuangazia mbinu za uzuiaji asilia za kupanga uzazi kama 'withdrawal'. Jibu 1/2/3", 3, "1;STSW13-6S1A1M36;2;STSW13-6S1A1M37;3;STSW13-6S1A1M38", "");
+	MessageController:createMessage("STSW13-6S1A1M36", "Sivyo, mshauri kuangazia kutumia kondomu. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M39", "");
+	MessageController:createMessage("STSW13-6S1A1M37", "Sahihi, mshauri kuangazia kutumia kondomu. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M39", "");
+	MessageController:createMessage("STSW13-6S1A1M38", "Sivyo, mshauri kuangazia kutumia kondomu. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M39", "");
+	MessageController:createMessage("STSW13-6S1A1M39", "Kwa ujumla unawashauri kwamba wana maisha marefu yajao mbeleni na wanapaswa wawe na hekima kabla ya kushiriki katika ngono. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M40", "");
+	MessageController:createMessage("STSW13-6S1A1M40", "Utawashauri aje?1:Kutoshiriki ngono kama njia salama kabisa,AMA,2:Kushiriki ngono mara moja kwa muhula,AMA,3:Kupimwa HIV kabla ya kushiriki ngono. Jibu 1/2/3", 3, "1;STSW13-6S1A1M41;2;STSW13-6S1A1M42;3;STSW13-6S1A1M43", "");
+	MessageController:createMessage("STSW13-6S1A1M41", "Sahihi, kutoshiriki ngono ndiyo njia mwafaka ya kuepuka matokeo yasiyohitajika wala kutarajiwa kama STI, STD na HIV. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M44", "");
+	MessageController:createMessage("STSW13-6S1A1M42", "Si sahihi, kutoshiriki ngono ndiyo njia mwafaka ya kuepuka matokeo yasiyohitajika wala kutarajiwa kama STI, STD na virusi vya ukimwi. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M44", "");
+	MessageController:createMessage("STSW13-6S1A1M43", "Si sahihi, kutoshiriki ngono ndiyo njia mwafaka ya kuepuka matokeo yasiyohitajika wala kutarajiwa kama STI, STD na virusi vya ukimwi. Jibu 1 kuendelea", 1, "1;STSW13-6S1A1M44", "");
+	MessageController:createMessage("STSW13-6S1A1M44", "Subira na mpenziwe wanasema kwamba wameelewa umuhimu wa upangaji uzazi nao wanakushukuru kwa ushauri uliowapa. Jibu 1 kuendelea", 1, "STSW13-6S1A1M45", "");
+	MessageController:createMessage("STSW13-6S1A1M45", "Hongera! Umefikia mwisho wa mchezo huu. Kurudia mchezo huu, tafadhali wasiliana na 'Helpdesk'. Utapokea alama zako hivi karibuni. Jibu 1 kumaliza.", 1, "endactivity", "");
+	
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M1", 1);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M2", 2);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M3", 3);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M4", 4);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M5", 5);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M6", 6);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M7", 7);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M8", 8);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M9", 9);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M10", 10);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M11", 11);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M12", 12);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M13", 13);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M14", 14);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M15", 15);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M16", 16);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M17", 17);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M18", 18);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M19", 19);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M20", 20);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M21", 21);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M22", 22);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M23", 23);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M24", 24);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M25", 25);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M26", 26);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M27", 27);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M28", 28);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M29", 29);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M30", 30);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M31", 31);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M32", 32);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M33", 33);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M34", 34);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M35", 35);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M36", 36);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M37", 37);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M38", 38);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M39", 39);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M40", 40);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M41", 41);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M42", 42);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M43", 43);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M44", 44);
+	MessageOrderController:createMessageOrder("STSW13-6S1A1", "STSW13-6S1A1M45", 45);
+
+	return null;
+}
+
+//Astra Zeneca Survey_26.1.15
+void create_subtopic_sve2(){
+
+	SubTopicController:createSubTopic(1, 1, "", "SVE2", "Astra Zeneca Survey", "", "", " You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21899 to see what's next", 5, 6, 10);
+
+	SequenceController:createSequence("SVE2S1", "SVE2S1", "", "", "", 0);
+	SequenceOrderController:createSequenceOrder("SVE2", "SVE2S1", 1);
+
+	ActivityController:createActivity("SVE2S1A1", "", "", "", 0, 1,"SVE2S1A1");
+
+	ActivityOrderController:createActivityOrder ("SVE2S1", "SVE2S1A1", 1, 4, 0);
+
+	MessageController:createMessage("SVE2S1A1M1", "Welcome to the Astra Zeneca Survey, Please take your time to go through the following questions. Press 1 to continue.", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M2", "The information that is been collected will be kept confidential. Press 1 to continue.", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M3", "What is the clients name?", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M4", "What is the clients age?", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M5", "What is the gender of the client?", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M6", "Where does the client live?", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M7", "Is the client a known hypertensive patient?", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M8", "What is the blood pressure of the patient, is it systolic or diastolic?", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M9", "What is the mobile number of the patient?", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M10", "Does the patient have alcohol as a risk factor? Reply with 1 for Yes, 2 for No", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M11", "Does the patient smoke? Reply with 1 for Yes, 2 for No", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M12", "Is the patient Obese or Overweight? Reply with 1 for Yes, 2 for No", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M13", "Is the patient physically inactive? Reply with 1 for Yes, 2 for No", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M14", "Does the patient ingest an unhealthy diet? Reply with 1 for Yes, 2 for No", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M15", "What action was taken after seeing the patient? Reply with 1/2/3 for the options give 1Referred to a Hospital Facility, 2Health Education, 3Scheduled Follow up visit. ", 0, "", "");
+	MessageController:createMessage("SVE2S1A1M16", "Thank you for taking the Astra Zenceca Survey", 0, "", "");
+
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M1", 1);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M2", 2);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M3", 3);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M4", 4);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M5", 5);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M6", 6);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M7", 7);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M8", 8);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M9", 9);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M10", 10);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M11", 11);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M12", 12);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M13", 13);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M14", 14);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M15", 15);
+	MessageOrderController:createMessageOrder("SVE2S1A1", "SVE2S1A1M16", 16);
+	return null;
+}
+
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+
+void create_subtopic(){
+	SubTopicController:createSubTopic(1, 2, "", "STSW1", "Utangulizi wa Mada", "", "", "Una siku moja tu kuimaliza mada, usisahau kukamilisha shuguli zote kabla ya muda huo kuisha! Tuma ujumbe 'kuendelea' kwa nambari 21229 ili kujua yafuatayo", 5, 6, 20);
+	SubTopicController:createSubTopic(2, 2, "", "STSW2", "Umuhimu na Aina za Upangaji Uzazi", "", "", "Una siku moja tu kuimaliza mada, usisahau kukamilisha shuguli zote kabla ya muda huo kuisha! Tuma ujumbe 'kuendelea' kwa nambari 21229 ili kujua yafuatayo", 5, 6, 20);
+	SubTopicController:createSubTopic(3, 2, "", "STSW3", "Uwongo na Uelewa Mbaya wa Upangaji Uzazi", "", "", "Una siku moja tu kuimaliza mada, usisahau kukamilisha shuguli zote kabla ya muda huo kuisha! Tuma ujumbe 'kuendelea' kwa nambari 21229 ili kujua yafuatayo", 5, 6, 20);
+	SubTopicController:createSubTopic(5, 2, "", "STSW4", "Muhtasari wa Mada", "", "", "Una siku moja tu kuimaliza mada, usisahau kukamilisha shuguli zote kabla ya muda huo kuisha! Tuma ujumbe 'kuendelea' kwa nambari 21229 ili kujua yafuatayo", 5, 6, 20);
+	return null;
+}
+
+void create_sequence(){
+	SequenceController:createSequence("STSW1S1", "STSW1S1", "", "", "", 0);
+
+	SequenceController:createSequence("STSW2S1", "STSW2S1", "", "", "", 0);
+	SequenceController:createSequence("STSW2S2", "STSW2S2", "", "", "", 0);
+	SequenceController:createSequence("STSW2S3", "STSW2S3", "", "", "", 0);
+	SequenceController:createSequence("STSW2S4", "STSW2S4", "", "", "", 0);
+
+	SequenceController:createSequence("STSW3S1", "STSW3S1", "", "", "", 0);
+	SequenceController:createSequence("STSW3S2", "STSW3S2", "", "", "", 0);
+	SequenceController:createSequence("STSW3S3", "STSW3S3", "", "", "", 0);
+	SequenceController:createSequence("STSW3S4", "STSW3S4", "", "", "", 0);
+
+	SequenceController:createSequence("STSW4S4", "STSW4S4", "", "", "", 0);
+
+	SequenceOrderController:createSequenceOrder("STSW1", "STSW1S1", 1);
+
+	SequenceOrderController:createSequenceOrder("STSW2", "STSW2S1", 1);
+	SequenceOrderController:createSequenceOrder("STSW2", "STSW2S2", 2);
+	SequenceOrderController:createSequenceOrder("STSW2", "STSW2S3", 3);
+	SequenceOrderController:createSequenceOrder("STSW2", "STSW2S4", 4);
+
+	SequenceOrderController:createSequenceOrder("STSW3", "STSW3S1", 1);
+	SequenceOrderController:createSequenceOrder("STSW3", "STSW3S2", 2);
+	SequenceOrderController:createSequenceOrder("STSW3", "STSW3S3", 3);
+	SequenceOrderController:createSequenceOrder("STSW3", "STSW3S4", 4);
+
+	SequenceOrderController:createSequenceOrder("STSW4", "STSW4S4", 1);
+
+	return null;
+}
+
+void create_pattern(){
+
+	ActivityController:createActivity("STSW1S1A1", "1/5 Hujambo na karibu kwenye mafunzo ya wahudumu wa kujitolea wa afya ya jamii. Mada hii ni ya upangaji uzazi. Imegawanywa kwa sehemu mbili.", "", "", 0, 1,"STE1S1A1");
+	ActivityController:createActivity("STSW1S1A2", "5/5 Ili kuanza shughuli ya kwanza piga nambari 0800 722 689.", "", "", 0, 3,"STE1S1A2");
+	ActivityController:createActivity("STSW1S1A3", "", "", "", 0, 1,"STE1S1A3");
+	ActivityController:createActivity("STSW1S1A4", "", "", "", 0, 1,"STE1S1A4");
+
+	ActivityController:createActivity("STSW2S1A1", "1/4 Hujambo mwanafunzi mpendwa na karibu katika mada hii ndogo. Katika mada hii ndogo, utajifunza kuhusu Umuhimu na aina za upangaji uzazi", "", "", 0, 1,"STE2S1A1");
+	ActivityController:createActivity("STSW2S1A2", "4/4 Ili kuanza shughuli ya kwanza piga nambari 0800 722 689.", "", "", 0, 3,"STE2S1A2");
+	ActivityController:createActivity("STSW2S2A1", "Tafadhali piga simu kwa nambari 0800 722 689 ili kuendelea.", "", "", 0, 3,"STE2S2A1");
+	ActivityController:createActivity("STSW2S2A2", "1/5 Karibu kwa sehemu ya pili ya mada. Utasoma kuhusu umuhimu na aina za upangaji uzazi.", "", "", 0, 1,"STE2S2A2");
+	ActivityController:createActivity("STSW2S2A3", "5/5 Unafikiri umuhimu wa upangaji uzazi ni upi? Tafadhali jibu swali kwa maneno yako binafsi kama jibu kwa huu ujumbe mfupi.", "", "", 0, 1,"STE2S2A3");
+	ActivityController:createActivity("STSW2S2A4", " Asante kwa jibu lako. Upangaji uzazi husaidia kuongeza ubora wa maisha kwako wewe, familia yako na jamii. Tafadhali piga nambari 0800 722 689 ili kusikiliza funzo kuhusu umuhimu wa upangaji uzazi.", "", "", 0, 3,"STE2S2A4");
+	ActivityController:createActivity("STSW2S2A5", "Hujambo, sasa unaelewa umuhimu wa upangaji uzazi. Sasa utajifunza mbinu mbalimbali za kupanga uzazi. Jaribu kujibu swali lifuatalo", "", "", 0, 1,"STE2S2A5");
+	ActivityController:createActivity("STSW2S2A6", "Asante kwa jibu lako. Tafadhali piga 0800722689 ili uendelee kwa zoezi linalofuatia", "", "", 0, 3,"STE2S2A6");
+	ActivityController:createActivity("STSW2S2A8", "Tafadhali piga simu kwa nambari 0800 722 689 ili kuendelea.", "", "", 0, 3,"STE2S2A8");
+	ActivityController:createActivity("STSW2S3A1", "Tafadhali piga simu kwa nambari 0800 722 689 ili kuendelea.", "", "", 0, 3,"STE2S3A1");
+	ActivityController:createActivity("STSW2S3A2", "Umesikiliza tukio lililotangulia. Ni njia gani ya upangaji uzazi ainafaa? SMS majibu yako.", "", "", 0, 1,"STE2S3A2");
+	ActivityController:createActivity("STSW2S3A4", "Tafadhali piga simu kwa nambari 0800 722 689 ili kuendelea.", "", "", 0, 3,"STE2S3A4");
+	ActivityController:createActivity("STSW2S3A5", "Umesikiliza tukio lililotangulia. Ni njia gani ya upangaji uzazi ainafaa? SMS majibu yako.", "", "", 0, 1,"STE2S3A5");
+	ActivityController:createActivity("STSW2S3A6", "Tafadhali piga simu kwa nambari 0800 722 689 ili kuendelea.", "", "", 0, 3,"STE2S3A6");
+	ActivityController:createActivity("STSW2S3A7", "Umesikiliza tukio lililotangulia. Ni njia gani ya upangaji uzazi ainafaa? SMS majibu yako.", "", "", 0, 1,"STE2S3A7");
+	ActivityController:createActivity("STSW2S3A9", "Tafadhali piga simu kwa nambari 0800 722 689 ili kuendelea.", "", "", 0, 3,"STE2S3A9");
+	ActivityController:createActivity("STSW2S3A10", "Umesikiliza tukio lililotangulia. Ni njia gani ya upangaji uzazi ainafaa? SMS majibu yako.", "", "", 0, 1,"STE2S3A10");
+	ActivityController:createActivity("STSW2S3A12", "Tafadhali piga simu kwa nambari 0800 722 689 ili kuendelea.", "", "", 0, 3,"STE2S3A12");
+	ActivityController:createActivity("STSW2S3A13", "Umesikiliza tukio lililotangulia. Ni njia gani ya upangaji uzazi ainafaa? SMS majibu yako.", "", "", 0, 1,"STE2S3A13");
+	ActivityController:createActivity("STSW2S3A15", "Tafadhali piga simu kwa nambari 0800 722 689 ili kuendelea.", "", "", 0, 3,"STE2S3A15");
+	ActivityController:createActivity("STSW2S3A16", "Umesikiliza tukio lililotangulia. Ni njia gani ya upangaji uzazi ainafaa? SMS majibu yako.", "", "", 0, 1,"STE2S3A16");
+	ActivityController:createActivity("STSW2S4A1", "1/6 Hujambo, huu ni muhtasari wa mbinu kuu za upangaji uzazi. Utapokea jumbe fupi chache za simu ili utoe muhtasari wa hoja kuu.", "", "", 0, 1,"STE2S4A1");
+	ActivityController:createActivity("STSW2S4A2", "", "", "", 0, 1,"STE2S4A2");
+
+	ActivityController:createActivity("STSW3S1A1", "1/4 Hujambo mwanafunzi na karibu katika mada hii ndogo. Katika mada hii ndogo, utajifunza kuhusu uelewa mbaya na ung kuhusu upangaji uzazi", "", "", 0, 1,"STE3S1A1");
+	ActivityController:createActivity("STSW3S1A2", "4/4 Ili kuanza shughuli ya kwanza piga nambari 0800 722 689.", "", "", 0, 3,"STE3S1A2");
+	ActivityController:createActivity("STSW3S2A1", "Tafadhali piga nambari 0800 722 689ili kuendelea na shughuli inayofuatia", "", "", 0, 3,"STE3S2A1");
+	ActivityController:createActivity("STSW3S2A3", "Tafadhali piga nambari 0800 722 689ili kuendelea na shughuli inayofuatia", "", "", 0, 3,"STE3S2A3");
+	ActivityController:createActivity("STSW3S2A4", "", "", "", 0, 1,"STE3S2A4");
+	ActivityController:createActivity("STSW3S2A5", "2/2 Tungependa ukamilishe zoezi ili utumie ujuzi uliopata katika mada hii.Tafadhali piga nambari 0800 722 689 ili kuendelea na shughuli inayofuatia.", "", "", 0, 3,"STE3S2A5");
+	ActivityController:createActivity("STSW3S3A1", "1/2 Kumbusho la zoezi. Tembelea jamii tatu zilizo na wanawake wa umri wa kuzaa. Jadiliana nao kuhusu uvumi na imani potofu na uzisahihishe. Kuwa tayari kuripoti", "", "", 0, 1,"STE3S3A1");
+	ActivityController:createActivity("STSW3S3A2", "Hongera kwa kuhitimisha zoezi! Tafadhali jibu maswali yafuatayo kwa ujumbe mfupi wa simu. Umejadili uwongo na uelewa upi mbaya kuhusu upangaji uzazi?", "", "", 0, 1,"STE3S3A2");
+	ActivityController:createActivity("STSW3S4A1", "Hujambo, tafadhali soma swali lifuatalo kisha uchague jibu sahihi. Toa jibu kwa ujumbe mfupi wa simu kwa 1/2/3", "", "", 0, 1,"STE3S4A1");
+	ActivityController:createActivity("STSW3S4A2", "1/5 Jambo, sasa utapokea jumbe fupi kukukumbusha mambo muhimu na uongo na uelewa mbaya kuhusu njia za upangaji uzazi.", "", "", 0, 1,"STE3S4A2");
+	ActivityController:createActivity("STSW3S4A3", "", "", "", 0, 1,"STE3S4A3");
+
+	ActivityController:createActivity("STSW4S4A1", "Ili kuanza sehemu ya muhtasari wa mada ya upangaji uzazi, tafadhali piga nambari 0800 722 689.", "", "", 0, 3,"STE4S4A1");
+	ActivityController:createActivity("STSW4S4A2", "Utapokea maswali matano ili kujaribu ulichojifunza. Alama ya kupita ni 80%. Una nafasi mbili za kujaribu mtihani. Jibu Inayofuatia ili kuendelea", "", "", 0, 1,"STE4S4A2");
+	ActivityController:createActivity("STSW4S4A3", "1/4 Hujambo, sasa utapokea SMS ili kukukumbusha mambo muhimu kuhusu upangaji uzazi. ", "", "", 0, 1,"STE4S4A3");
+	ActivityController:createActivity("STSW4S4A4", "", "", "", 0, 1,"STE4S4A4");
+
+	return null;
+}
+
+void schedule_pattern(){
+
+	ActivityOrderController:createActivityOrder ("STSW1S1", "STSW1S1A1", 1, 1, 0);
+	ActivityOrderController:createActivityOrder ("STSW1S1", "STSW1S1A2", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW1S1", "STSW1S1A3", 3, 1, 0);
+	ActivityOrderController:createActivityOrder ("STSW1S1", "STSW1S1A4", 4, 1, 0);
+
+	ActivityOrderController:createActivityOrder ("STSW2S1", "STSW2S1A1", 1, 1, 0);
+	ActivityOrderController:createActivityOrder ("STSW2S1", "STSW2S1A2", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW2S2", "STSW2S2A1", 1, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW2S2", "STSW2S2A2", 2, 1, 0);
+	ActivityOrderController:createActivityOrder ("STSW2S2", "STSW2S2A3", 3, 4, 0);
+	ActivityOrderController:createActivityOrder ("STSW2S2", "STSW2S2A4", 4, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW2S2", "STSW2S2A5", 5, 5, 0);
+	ActivityOrderController:createActivityOrder ("STSW2S2", "STSW2S2A6", 6, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW2S2", "STSW2S2A8", 7, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW2S3", "STSW2S3A1", 1, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW2S3", "STSW2S3A2", 2, 4, 0);
+	ActivityOrderController:createActivityOrder ("STSW2S3", "STSW2S3A4", 3, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW2S3", "STSW2S3A5", 4, 4, 0);
+	ActivityOrderController:createActivityOrder ("STSW2S3", "STSW2S3A6", 5, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW2S3", "STSW2S3A7", 6, 4, 0);
+	ActivityOrderController:createActivityOrder ("STSW2S3", "STSW2S3A9", 7, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW2S3", "STSW2S3A10", 8, 4, 0);
+	ActivityOrderController:createActivityOrder ("STSW2S3", "STSW2S3A12", 9, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW2S3", "STSW2S3A13", 10, 4, 0);
+	ActivityOrderController:createActivityOrder ("STSW2S3", "STSW2S3A15", 11, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW2S3", "STSW2S3A16", 12, 4, 0);
+	ActivityOrderController:createActivityOrder ("STSW2S4", "STSW2S4A1", 1, 1, 0);
+	ActivityOrderController:createActivityOrder ("STSW2S4", "STSW2S4A2", 2, 1, 0);
+	ActivityOrderController:createActivityOrder ("STSW3S1", "STSW3S1A1", 1, 1, 0);
+	ActivityOrderController:createActivityOrder ("STSW3S1", "STSW3S1A2", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW3S2", "STSW3S2A1", 1, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW3S2", "STSW3S2A3", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW3S2", "STSW3S2A4", 3, 1, 0);
+	ActivityOrderController:createActivityOrder ("STSW3S2", "STSW3S2A5", 4, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW3S3", "STSW3S3A1", 1, 4, 0);
+	ActivityOrderController:createActivityOrder ("STSW3S3", "STSW3S3A2", 2, 4, 0);
+	ActivityOrderController:createActivityOrder ("STSW3S4", "STSW3S4A1", 1, 5, 0);
+	ActivityOrderController:createActivityOrder ("STSW3S4", "STSW3S4A2", 2, 1, 0);
+	ActivityOrderController:createActivityOrder ("STSW3S4", "STSW3S4A3", 3, 1, 0);
+
+	ActivityOrderController:createActivityOrder ("STSW4S4", "STSW4S4A1", 1, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STSW4S4", "STSW4S4A2", 2, 5, 0);
+	ActivityOrderController:createActivityOrder ("STSW4S4", "STSW4S4A3", 3, 1, 0);
+	ActivityOrderController:createActivityOrder ("STSW4S4", "STSW4S4A4", 4, 1, 0);
+
+	return null;
+}
+
+void message(){
+
+	MessageController:createMessage("STSW1S1A1M1", "2/5 Sehemu ya kwanza inahusu umuhimu na aina za upangaji uzazi. Sehemu ya pili inahusu uongo na ufahamu mbaya kuhusu upangaji uzazi", 0, "", "");
+	MessageController:createMessage("STSW1S1A1M2", "3/5 Katika wiki hii utapokea jumbe fupi za simu, utasikiliza visa vilivyorekodiwa katika simu na kufunzwa yote yanayohusu upangaji uzazi.", 0, "", "");
+	MessageController:createMessage("STSW1S1A1M3", "4/5 Tafadhali fuata maagizo ya jinsi ya kupitia shughuli zote. Wasiliana na mhudumu wako wa afya wa nje akueleze vile utakavyotumia simu ya mkono.", 0, "", "");
+	MessageController:createMessage("STSW1S1A3M1", "1/2 Kufikia mwisho wa mada hii utaweza kueleza umuhimu na aina mbalimbali za upangaji uzazi. ", 0, "", "");
+	MessageController:createMessage("STSW1S1A3M2", "2/2 Kufikia mwisho wa mada, utaweza pia kutambua uwongo na uelewa mbaya kuhusu upangaji uzazi na kutambua pia ukweli kuhusu upangaji uzazi.", 0, "", "");
+	MessageController:createMessage("STSW1S1A4M1", "1/2 Asante kwa kukamilisha sehemu hii ya mada ya upangaji uzazi. ", 0, "", "");
+	MessageController:createMessage("STSW1S1A4M2", "2/2 Sasa utapokea SMS iliyo na maelezo jinsi utakavyoendelea kwa sehemu ya kwanza. ", 0, "", "");
+	MessageController:createMessage("STSW2S1A1M1", "2/4 Katika wiki hii utapokea jumbe fupi za simu, utasikiliza visa vilivyorekodiwa katika simu na kufunzwa yote yanayohusu upangaji uzazi.", 0, "", "");
+	MessageController:createMessage("STSW2S1A1M2", "3/4 Tafadhali fuata maagizo ya jinsi ya kupitia shughuli zote. Wasiliana na mhudumu wako wa afya wa nje akueleze vile utakavyotumia simu ya mkono.", 0, "", "");
+	MessageController:createMessage("STSW2S2A2M1", "2/5 Kufuatia, utasikiliza sauti kadhaa na utasoma SMS zilizo na habari kuhusu hii mada.", 0, "", "");
+	MessageController:createMessage("STSW2S2A2M2", "3/5 Mwishoni utahitajiwa kufanya zoezi na kujibu baadhi ya maswali ili kupima mambo uliyojifunza. Karibu na uwe na ujifunzaji wenye furaha!", 0, "", "");
+	MessageController:createMessage("STSW2S2A2M3", "4/5 Tunapojitayarisha kujadili umuhimu wa upangaji uzazi, tungependa kujua mawazo yako binafsi kuhusu upangaji uzazi.", 0, "", "");
+	MessageController:createMessage("STSW2S2A5M1", "Ni ipi mbinu ya upangaji uzazi? 1/2/3 1. Tembe za kuzuia mimba 2. Kushiriki ngono ukiwa umesimama 3. Kunywa sharubati iliyokolea baada ya kushiriki ngono", 3, 1, " Contraceptive pills are a family planning method. They release hormones in the body to regulate the menstrual cycle. Please wait for the next SMS");
+	MessageController:createMessage("STSW2S3A2M1", "Mbinu zitakazofaa zitakuwa vipandikizi, na kondomu za kike au kiume kwa kinga mara mbili. Mbinu nyingine zitakazofaa ni utumiaji wa sindano na tembe za kuzuia mimba (miezi sita baada ya kujifungua)", 0, "", "");
+	MessageController:createMessage("STSW2S3A5M1", "Mbinu zitakazofaa: Tembe za dharura za kuzuia mimba na mbinu ya utumiaji tembe. Mbinu nyingine zinazowezekana ni vipandikizi, koili au sindano.", 0, "", "");
+	MessageController:createMessage("STSW2S3A7M1", "Mbinu zitakazofaa: Kondomu za kike kwa kinga mara mbili. Mbinu nyingine zitakazofaa zitakuwa, vipandikizi, sindano, au tembe za kuzuia mimba.", 0, "", "");
+	MessageController:createMessage("STSW2S3A10M1", "Mbinu zitakazofaa: koili au kipandikizi, na kondomu ya kiume au kike kwa kinga mara mbili. Mbinu nyingine itakayofaa itakuwa kufunga mirija ya falopio", 0, "", "");
+	MessageController:createMessage("STSW2S3A13M1", "Mbinu zitakazofaa: Kondomu ya kiume kwa kinga mara mbili, mhudumu amhimize mpenzi wako kuhusika.", 0, "", "");
+	MessageController:createMessage("STSW2S3A16M1", "Mbinu inayofaa: Mchanganyiko wa tembe za kuzuia mimba.", 0, "", "");
+	MessageController:createMessage("STSW2S4A1M1", "2/6 Mbinu za kudumu za upangaji uzazi zinajumlisha Vasektomi ya kiume na ufungaji wa mirija falopio ya kike. Haziwezi kubatilishwa.", 0, "", "");
+	MessageController:createMessage("STSW2S4A1M2", "3/6 Mbinu za kihomoni za upangaji uzazi ni kama mchanganyiko wa tembe za uzuiaji mimba, sindano na vipandikizi. Zinafanya kazi kwa kuachilia homoni mwilini.", 0, "", "");
+	MessageController:createMessage("STSW2S4A1M3", "4/6 Vifaa vya ndani ya fuko la uzazi vijulikanavyo pia kama lupu au kitanzi. Vinazuia manii kuungana na yai au kuzuia yai lililopevu kukua katika fuko la uzazi.", 0, "", "");
+	MessageController:createMessage("STSW2S4A1M4", "5/6 Tunazo pia mbinu za upangaji uzazi za kizuizi. Zinajumlisha kondomu na viuamanii. Kondomu zaweza kuwa za kiume au kike.", 0, "", "");
+	MessageController:createMessage("STSW2S4A1M5", "6/6 Mbinu asilia za upangaji uzazi ni kujinyima ngono, ukosefu wa hedhi na kunyonyesha, ufahamu wa siku za kutunga mimba na kuzuia umwagaji.", 0, "", "");
+	MessageController:createMessage("STSW2S4A2M1", "Umefanya vizuri, umekamilisha mada ndogo kuhusu umuhimu na aina za upangaji uzazi! Utapokea arafa kuhusu mada inayofuatia.", 0, "", "");
+	MessageController:createMessage("STSW3S1A1M1", "2/4 Utapokea SMS na utasikiliza hadithi zilizo rekodiwa, zote zikiongea juu ya uongo na uelewa mbaya kuhusu upangaji uzazi.", 0, "", "");
+	MessageController:createMessage("STSW3S1A1M2", "3/4 Tafadhali fuata maagizo ya jinsi ya kupitia shughuli zote. Wasiliana na mhudumu wako wa afya wa nje akueleze vile utakavyotumia simu ya mkono.", 0, "", "");
+	MessageController:createMessage("STSW3S2A4M1", "1/2 Hongera kwa kukamilisha sehemu ya pili ya mada ya upangaji uzazi. Ukitaka kujua mengi zaidi, wasiliana na mhudumu wako wa afya wa nje.", 0, "", "");
+	MessageController:createMessage("STSW3S3A1M1", "2/2 Hujambo, umepokea maagizo kuhusu zoezi la upangaji uzazi. Tafadhali tuma ujumbe mfupi ''Tayari'' ukishafanya zoezi na ukiwa tayari kuripoti matokeo.", 0, "", "");
+	MessageController:createMessage("STSW3S3A2M1", "Uliwapa ushauri gani ili kuwarekebisha? Tuma majibu yako katika SMS", 0, "", "");
+	MessageController:createMessage("STSW3S3A2M2", "Asante kwa kujibu. Hebu tujaribu ulichojifunza kwa mtihani ambao utapokea hivi punde.", 0, "", "");
+	MessageController:createMessage("STSW3S4A1M1", "A. Ni maelezo yapi ya ukweli? 1. Tembe za kupanga uzazi hujikusanya tumboni 2. Vasektomi huondoa raha ya ngono 3. Tembe zina athari", 3, 3, "Mbinu nyingine za upangaji uzazi zina athari kidogo. Washauri wateja kupata habari kamili kuhusu mbinu yoyote katika kituo cha afya.");
+	MessageController:createMessage("STSW3S4A2M1", "2/5 Kumbuka kila mwanamke huathiriwa kwa njia tofauti na mbinu mbalimbali za upangaji uzazi.", 0, "", "");
+	MessageController:createMessage("STSW3S4A2M2", "3/5 Matumizi ya tembe za kuzuia mimba hayagandishi damu mwilini.", 0, "", "");
+	MessageController:createMessage("STSW3S4A2M3", "4/5 Tembe huzuia kansa ya ovari na kansa ya fuko la uzazi.", 0, "", "");
+	MessageController:createMessage("STSW3S4A2M4", "5/5 Tembe za kudhibiti uzazi hazidhuru mfumo wa uzazi wala kusababisha vidonda katika fuko la uzazi.", 0, "", "");
+	MessageController:createMessage("STSW3S4A3M1", "Vizuri, umekamilisha mada ndogo kuhusu uwongo na uelewa mbaya unaozunguka upangaji uzazi! Utapokea SMS kuhusu mada ndogo inayofuatia. ", 0, "", "");
+	MessageController:createMessage("STSW4S4A2M1", "A: Upangaji uzazi ni 1. Uamuzi wa kimakusudi wa majira ya uzazi 2. Mauaji ya watoto ambao hawajazaliwa 3. Zote mbili Jibu 1/2/3", 3, 1, " Upangaji uzazi ni uamuzi wa kimaksudi wa majira ya uzazi unaojulikana pia kama kuachana kwa watoto kiumri.");
+	MessageController:createMessage("STSW4S4A2M2", "B: Upangaji uzazi huhakikisha kwamba 1. Mama anapata nafuu kutokana na mimba iliyotangulia 2. Hupunguza mfadhaiko ndani ya nyumba 3. Zote mbili Jibu 1/2/3", 3, 3, "Upangaji uzazi huhakikisha mwili wa mama hupona kutokana na mimba zilizotangulia na hupunguza mfadhaiko kwani kuna rasilmali za kutosha nyumbani");
+	MessageController:createMessage("STSW4S4A2M3", "C: Zifuatazo ni aina za mbinu za upangaji uzazi 1. Mbinu za kizuizi 2. Mbinu asilia 3. Zote mbili Jibu 1/2/3", 3, 3, "Mbinu za kizuizi na mbinu asilia zote ni aina za mbinu za upangaji uzazi.");
+	MessageController:createMessage("STSW4S4A2M4", "D: Zifuatazo ni aina za mbinu asilia za upangaji uzazi 1. Kujinyima ngono kwa kipindi fulani 2. Kufahamu siku unazoweza kushika mimba 3. Zote mbili Jibu 1/2/3", 3, 3, " Kujinyima ngono kwa kipindi fulani na kufahamu siku unazoweza kushika mimba zote ni aina za mbinu za upangaji uzazi.");
+	MessageController:createMessage("STSW4S4A2M5", "E: Mbinu za kihomoni za upangaji uzazi zinajumlisha: 1. Tembe na sindano 2. Kondomu za kike na kiume 3. Kutoona hedhi unaponyonyesha mtoto baada ya kujifungua Jibu 1/2/3", 3, 1, "Tembe na sindano zote ni mbinu za kihomoni za upangaji uzazi.");
+	MessageController:createMessage("STSW4S4A3M1", "2/4 Kuna mbinu za kudumu, kihomoni, kizuizi na za asilia za upangaji uzazi. Vifaa vya ndani ya fuko la uzazi vijulikanavyo pia kama lupu au kitanzi vinaweza kutumiwa.", 0, "", "");
+	MessageController:createMessage("STSW4S4A3M2", "3/4 Wape rufaa ya kwenda kwenye kituo cha afya wanajamii wenye umri wa uzazi ili wakapewe habari zaidi kuhusu upangaji uzazi. ", 0, "", "");
+	MessageController:createMessage("STSW4S4A3M3", "4/4 Kumbuka kwamba mbinu za upangaji uzazi zinaweza kutumiwa na wanawake pamoja na wanaume wote.", 0, "", "");
+	MessageController:createMessage("STSW4S4A4M1", "1/3 Hongera! Umekamilisha mada ndogo ya mwisho ya upangaji uzazi.", 0, "", "");
+	MessageController:createMessage("STSW4S4A4M2", "2/3 Sasa utapokea swali ili ulijibu kwa kutumia maarifa uliyo nayo kuhusu upangaji uzazi. Majibu yako yatasahihishwa.", 0, "", "");
+	MessageController:createMessage("STSW4S4A4M3", "3/3 3/3 Alama zako katika swali zitahesabiwa chini ya alama zote katika mada. Jibu Ifuatayo ukiwa tayari kujibu swali.", 0, "", "");
+
+return null;
+
+}
+
+void pattern_message(){
+
+	MessageOrderController:createMessageOrder("STSW1S1A1", "STSW1S1A1M1", 1);
+	MessageOrderController:createMessageOrder("STSW1S1A1", "STSW1S1A1M2", 2);
+	MessageOrderController:createMessageOrder("STSW1S1A1", "STSW1S1A1M3", 3);
+	MessageOrderController:createMessageOrder("STSW1S1A3", "STSW1S1A3M1", 1);
+	MessageOrderController:createMessageOrder("STSW1S1A3", "STSW1S1A3M2", 2);
+	MessageOrderController:createMessageOrder("STSW1S1A4", "STSW1S1A4M1", 1);
+	MessageOrderController:createMessageOrder("STSW1S1A4", "STSW1S1A4M2", 2);
+	MessageOrderController:createMessageOrder("STSW2S1A1", "STSW2S1A1M1", 1);
+	MessageOrderController:createMessageOrder("STSW2S1A1", "STSW2S1A1M2", 2);
+	MessageOrderController:createMessageOrder("STSW2S2A2", "STSW2S2A2M1", 1);
+	MessageOrderController:createMessageOrder("STSW2S2A2", "STSW2S2A2M2", 2);
+	MessageOrderController:createMessageOrder("STSW2S2A2", "STSW2S2A2M3", 3);
+	MessageOrderController:createMessageOrder("STSW2S2A5", "STSW2S2A5M1", 1);
+	MessageOrderController:createMessageOrder("STSW2S3A2", "STSW2S3A2M1", 1);
+	MessageOrderController:createMessageOrder("STSW2S3A5", "STSW2S3A5M1", 1);
+	MessageOrderController:createMessageOrder("STSW2S3A7", "STSW2S3A7M1", 1);
+	MessageOrderController:createMessageOrder("STSW2S3A10", "STSW2S3A10M1", 1);
+	MessageOrderController:createMessageOrder("STSW2S3A13", "STSW2S3A13M1", 1);
+	MessageOrderController:createMessageOrder("STSW2S3A16", "STSW2S3A16M1", 1);
+	MessageOrderController:createMessageOrder("STSW2S4A1", "STSW2S4A1M1", 1);
+	MessageOrderController:createMessageOrder("STSW2S4A1", "STSW2S4A1M2", 2);
+	MessageOrderController:createMessageOrder("STSW2S4A1", "STSW2S4A1M3", 3);
+	MessageOrderController:createMessageOrder("STSW2S4A1", "STSW2S4A1M4", 4);
+	MessageOrderController:createMessageOrder("STSW2S4A1", "STSW2S4A1M5", 5);
+	MessageOrderController:createMessageOrder("STSW2S4A2", "STSW2S4A2M1", 1);
+	MessageOrderController:createMessageOrder("STSW3S1A1", "STSW3S1A1M1", 1);
+	MessageOrderController:createMessageOrder("STSW3S1A1", "STSW3S1A1M2", 2);
+	MessageOrderController:createMessageOrder("STSW3S2A4", "STSW3S2A4M1", 1);
+	MessageOrderController:createMessageOrder("STSW3S3A1", "STSW3S3A1M1", 1);
+	MessageOrderController:createMessageOrder("STSW3S3A2", "STSW3S3A2M1", 1);
+	MessageOrderController:createMessageOrder("STSW3S3A2", "STSW3S3A2M2", 2);
+	MessageOrderController:createMessageOrder("STSW3S4A1", "STSW3S4A1M1", 1);
+	MessageOrderController:createMessageOrder("STSW3S4A2", "STSW3S4A2M1", 1);
+	MessageOrderController:createMessageOrder("STSW3S4A2", "STSW3S4A2M2", 2);
+	MessageOrderController:createMessageOrder("STSW3S4A2", "STSW3S4A2M3", 3);
+	MessageOrderController:createMessageOrder("STSW3S4A2", "STSW3S4A2M4", 4);
+	MessageOrderController:createMessageOrder("STSW3S4A3", "STSW3S4A3M1", 1);
+	MessageOrderController:createMessageOrder("STSW4S4A2", "STSW4S4A2M1", 1);
+	MessageOrderController:createMessageOrder("STSW4S4A2", "STSW4S4A2M2", 2);
+	MessageOrderController:createMessageOrder("STSW4S4A2", "STSW4S4A2M3", 3);
+	MessageOrderController:createMessageOrder("STSW4S4A2", "STSW4S4A2M4", 4);
+	MessageOrderController:createMessageOrder("STSW4S4A2", "STSW4S4A2M5", 5);
+	MessageOrderController:createMessageOrder("STSW4S4A3", "STSW4S4A3M1", 1);
+	MessageOrderController:createMessageOrder("STSW4S4A3", "STSW4S4A3M2", 2);
+	MessageOrderController:createMessageOrder("STSW4S4A3", "STSW4S4A3M3", 3);
+	MessageOrderController:createMessageOrder("STSW4S4A4", "STSW4S4A4M1", 1);
+	MessageOrderController:createMessageOrder("STSW4S4A4", "STSW4S4A4M2", 2);
+	MessageOrderController:createMessageOrder("STSW4S4A4", "STSW4S4A4M3", 3);
+
+	return null;
+}
+
+void create_subtopic_ST21(){
+
+	SubTopicController:createSubTopic(1, 1, "", "ST21", "Topic Introduction", "", "", "You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21229 to see what's next", 5, 6, 7);
+	SubTopicController:createSubTopic(2, 1, "", "ST22", "Health & Development", "", "", "You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21229 to see what's next", 5, 6, 7);
+	SubTopicController:createSubTopic(3, 1, "", "ST23", "Partnerships for Health", "", "", "You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21229 to see what's next", 5, 6, 7);
+	SubTopicController:createSubTopic(5, 1, "", "ST24", "Topic Summary & Quiz", "", "", "You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21229 to see what's next", 5, 6, 7);
+
+	SubTopicController:createSubTopic(1, 1, "", "STE1", "Topic Introduction", "", "", " You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21229 to see what's next", 5, 6, 7);
+	SubTopicController:createSubTopic(2, 1, "", "STE2", "Importance & Types of Family Planning", "", "", " You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21229 to see what's next", 5, 6, 7);
+	SubTopicController:createSubTopic(3, 1, "", "STE3", "Myths and Misconception on Family Planning", "", "", " You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21229 to see what's next", 5, 6, 7);
+	SubTopicController:createSubTopic(5, 1, "", "STE4", "Topic Summary", "", "", " You only have 1 day left to finish this subtopic, don't forget to complete all your activities by then! Text 'progress' to 21229 to see what's next", 5, 6, 7);
+
+	SequenceController:createSequence("ST21S1", "ST21S1", "", "", "", 0);	
+	SequenceController:createSequence("ST22S1", "ST22S1", "", "", "", 0);
+	SequenceController:createSequence("ST22S2", "ST22S2", "", "", "", 0);
+	SequenceController:createSequence("ST22S3", "ST22S3", "", "", "", 0);
+	SequenceController:createSequence("ST22S4", "ST22S4", "", "", "", 0);	
+	SequenceController:createSequence("ST23S1", "ST23S1", "", "", "", 0);
+	SequenceController:createSequence("ST23S2", "ST23S2", "", "", "", 0);
+	SequenceController:createSequence("ST23S3", "ST23S3", "", "", "", 0);
+	SequenceController:createSequence("ST23S4", "ST23S4", "", "", "", 0);	
+	SequenceController:createSequence("ST24S4", "ST24S4", "", "", "", 0);
+
+	SequenceOrderController:createSequenceOrder("ST21", "ST21S1", 1);
+	SequenceOrderController:createSequenceOrder("ST22", "ST22S1", 1);
+	SequenceOrderController:createSequenceOrder("ST22", "ST22S2", 2);
+	SequenceOrderController:createSequenceOrder("ST22", "ST22S3", 3);
+	SequenceOrderController:createSequenceOrder("ST22", "ST22S4", 4);	
+	SequenceOrderController:createSequenceOrder("ST23", "ST23S1", 1);
+	SequenceOrderController:createSequenceOrder("ST23", "ST23S2", 2);
+	SequenceOrderController:createSequenceOrder("ST23", "ST23S3", 3);
+	SequenceOrderController:createSequenceOrder("ST23", "ST23S4", 4);	
+	SequenceOrderController:createSequenceOrder("ST24", "ST24S4", 1);
+
+	SequenceController:createSequence("STE1S1", "STE1S1", "", "", "", 0);
+	SequenceController:createSequence("STE2S1", "STE2S1", "", "", "", 0);
+	SequenceController:createSequence("STE2S2", "STE2S2", "", "", "", 0);
+	SequenceController:createSequence("STE2S3", "STE2S3", "", "", "", 0);
+	SequenceController:createSequence("STE2S4", "STE2S4", "", "", "", 0);
+	SequenceController:createSequence("STE3S1", "STE3S1", "", "", "", 0);
+	SequenceController:createSequence("STE3S2", "STE3S2", "", "", "", 0);
+	SequenceController:createSequence("STE3S3", "STE3S3", "", "", "", 0);
+	SequenceController:createSequence("STE3S4", "STE3S4", "", "", "", 0);
+	SequenceController:createSequence("STE4S4", "STE4S4", "", "", "", 0);
+
+	SequenceOrderController:createSequenceOrder("STE1", "STE1S1", 1);
+	SequenceOrderController:createSequenceOrder("STE2", "STE2S1", 1);
+	SequenceOrderController:createSequenceOrder("STE2", "STE2S2", 2);
+	SequenceOrderController:createSequenceOrder("STE2", "STE2S3", 3);
+	SequenceOrderController:createSequenceOrder("STE2", "STE2S4", 4);
+	SequenceOrderController:createSequenceOrder("STE3", "STE3S1", 1);
+	SequenceOrderController:createSequenceOrder("STE3", "STE3S2", 2);
+	SequenceOrderController:createSequenceOrder("STE3", "STE3S3", 3);
+	SequenceOrderController:createSequenceOrder("STE3", "STE3S4", 4);
+	SequenceOrderController:createSequenceOrder("STE4", "STE4S4", 1);
+
+	ActivityController:createActivity("ST21S1A1", "", "", "", 0, 1, "ST21S1A1");
+	ActivityController:createActivity("ST21S1A2", "4/4 To start the first activity, please dial 0800 722 689.", "", "", 0, 3, "ST21S1A2");
+	ActivityController:createActivity("ST21S1A3", "", "", "", 0, 1, "ST21S1A3");
+	
+	ActivityController:createActivity("ST22S1A1", "", "", "", 0, 1, "ST22S1A1");
+	ActivityController:createActivity("ST22S1A2", "4/4 To start the first activity, please dial 0800 722 689.", "", "", 0, 3, "ST22S1A2");
+	ActivityController:createActivity("ST22S2A1", "1/5 Hello dear learner. You will now receive SMSs defining the terms health and development.", "", "", 0, 1, "ST22S2A1");
+	ActivityController:createActivity("ST22S2A2", "5/5 To start the next activity, please dial 0800 722 689.", "", "", 0, 3, "ST22S2A2");
+	ActivityController:createActivity("ST22S3A1", "To continue press 1, to repeat press 2", "", "", 0, 3, "ST22S3A1");
+	ActivityController:createActivity("ST22S4A1", "Congratulations for completing the section on Health & Development. It's now time to test what you have learned with a quiz.", "", "", 0, 1, "ST22S4A1");
+	ActivityController:createActivity("ST22S4A2", "1/4 Hello dear learner, you will receive SMSs to remind you key points on human right to health & the relationship between health & development", "", "", 0, 1, "ST22S4A2");
+	
+	ActivityController:createActivity("ST23S1A1", "", "", "", 0, 1, "ST23S1A1");
+	ActivityController:createActivity("ST23S1A2", "4/4 To start the first activity, please dial 0800 722 689.", "", "", 0, 3, "ST23S1A2");
+	ActivityController:createActivity("ST23S2A1", "To start the first activity, please dial 0800 722 689.", "", "", 0, 3, "ST23S2A1");
+	ActivityController:createActivity("ST23S3A1", "To start the first activity, please dial 0800 722 689.", "", "", 0, 3, "ST23S3A1");
+	ActivityController:createActivity("ST23S3A2", "From the case study, identify how partnership has contributed to health and development in your community? Share your response in the group chat.", "", "", 0, 3, "ST23S3A2");
+	ActivityController:createActivity("ST23S4A1", "Congratulations for completing the section on Health & Development. It's now time to test what you have learned with a quiz.", "", "", 0, 1, "ST23S4A1");
+	ActivityController:createActivity("ST23S4A2", "", "", "", 0, 1, "ST23S4A2");
+	
+	ActivityController:createActivity("ST24S4A1", "To begin the summary section of the Promotion of Healthy lifestyle topic, please dial 0800 722 689.", "", "", 0, 3, "ST24S4A1");
+	ActivityController:createActivity("ST24S4A2", "You will now receive 5 questions to test what you have learnt. Pass mark is 80%. You have 2 chances only to try the quiz. Reply Next to continue.", "", "", 0, 1, "ST24S4A2");
+	ActivityController:createActivity("ST24S4A3", "1/4 Hello, you will now receive SMSs to remind you key points on the human right to health & the relationship between health and development", "", "", 0, 1, "ST24S4A3");
+	ActivityController:createActivity("ST24S4A4", "Well done, you've completed the topic! You will receive an SMS next week when the training continues.", "", "", 0, 1, "ST24S4A4");
+
+	ActivityController:createActivity("STE1S1A1", "1/5 Hello dear learner & welcome to the Community Health Volunteer training. This topic is on Family planning. It has 2 sub-topics. ", "", "", 0, 1, "STE1S1A1");
+	ActivityController:createActivity("STE1S1A2", "5/5 To start the first activity, please dial 0800 722 689.", "", "", 0, 3, "STE1S1A2");
+	ActivityController:createActivity("STE1S1A3", "", "", "", 0, 1, "STE1S1A3");
+	ActivityController:createActivity("STE1S1A4", "", "", "", 0, 1, "STE1S1A4");
+
+	ActivityController:createActivity("STE2S1A1", "1/4 Hello dear learner and welcome to this sub-topic. In this sub-topic, you will learn about importance and type of family planning methods.", "", "", 0, 1, "STE2S1A1");
+	ActivityController:createActivity("STE2S1A2", "4/4 To start the first activity, please dial 0800 722 689.", "", "", 0, 3, "STE2S1A2");
+	ActivityController:createActivity("STE2S2A1", "To start the activity, please dial 0800 722 689.", "", "", 0, 3, "STE2S2A1");
+	ActivityController:createActivity("STE2S2A2", "1/5 Welcome to the second part of the topic. You will will learn about the importance and types on family planning.", "", "", 0, 1, "STE2S2A2");
+	ActivityController:createActivity("STE2S2A3", "5/5 What do you think is the importance of family planning? Please answer the question with your own words as a reply to this SMS.", "", "", 0, 1, "STE2S2A3");
+	ActivityController:createActivity("STE2S2A4", "Thank you. Family planning helps improve the quality of life for you, your household, and community. Please dial 0800 722 689 to hear a lecture on the importance of family planning.", "", "", 0, 3, "STE2S2A4");
+	ActivityController:createActivity("STE2S2A5", "Hello, you now understand the importance of family planning. You will now learn the types of family planning methods but first, answer the quiz you will receive next.", "", "", 0, 1, "STE2S2A5");
+	ActivityController:createActivity("STE2S2A6", "Please call 0800 722 689 to continue to the next activity.", "", "", 0, 3, "STE2S2A6");
+	ActivityController:createActivity("STE2S2A8", "Please call 0800 722 689 to continue to the next activity.", "", "", 0, 3, "STE2S2A8");
+	ActivityController:createActivity("STE2S3A1", "Please call 0800 722 689 to continue to the next activity.", "", "", 0, 3, "STE2S3A1");
+	ActivityController:createActivity("STE2S3A2", "You've listened to a scenario. Which family planning method is appropriate for you? SMS your response.", "", "", 0, 1, "STE2S3A2");
+	ActivityController:createActivity("STE2S3A4", "Please dial 0800 722 689 to continue.", "", "", 0, 3, "STE2S3A4");
+	ActivityController:createActivity("STE2S3A5", "You've listened to a scenario. Which family planning method is appropriate for you? SMS your response.", "", "", 0, 1, "STE2S3A5");
+	ActivityController:createActivity("STE2S3A6", "Please dial 0800 722 689 to continue.", "", "", 0, 3, "STE2S3A6");
+	ActivityController:createActivity("STE2S3A7", "You've listened to a scenario. Which family planning method is appropriate for you? SMS your response.", "", "", 0, 1, "STE2S3A7");
+	ActivityController:createActivity("STE2S3A9", "Please dial 0800 722 689 to continue.", "", "", 0, 3, "STE2S3A9");
+	ActivityController:createActivity("STE2S3A10", "You've listened to a scenario. Which family planning method is appropriate for you? SMS your response.", "", "", 0, 1, "STE2S3A10");
+	ActivityController:createActivity("STE2S3A12", "Please dial 0800 722 689 to continue.", "", "", 0, 3, "STE2S3A12");
+	ActivityController:createActivity("STE2S3A13", "You've listened to a scenario. Which family planning method is appropriate for you? SMS your response.", "", "", 0, 1, "STE2S3A13");
+	ActivityController:createActivity("STE2S3A15", "Please dial 0800 722 689 to continue.", "", "", 0, 3, "STE2S3A15");
+	ActivityController:createActivity("STE2S3A16", "You've listened to a scenario. Which family planning method is appropriate for you? SMS your response.", "", "", 0, 1, "STE2S3A16");
+	ActivityController:createActivity("STE2S4A1", "1/6 Hello, this is the Summary on the main methods of family planning. You will now receive a few SMSs to summarize the key points.", "", "", 0, 1, "STE2S4A1");
+	ActivityController:createActivity("STE2S4A2", "", "", "", 0, 1, "STE2S4A2");
+
+	ActivityController:createActivity("STE3S1A1", "1/4 Hello dear learner and welcome to this sub- topic. In this sub-topic, you will learn about myths and misconceptions around family planning.", "", "", 0, 1, "STE3S1A1");
+	ActivityController:createActivity("STE3S1A2", "4/4 To start the first activity, please dial 0800 722 689.", "", "", 0, 3, "STE3S1A2");
+	ActivityController:createActivity("STE3S2A1", "To start the next activity, please dial 0800 722 689.", "", "", 0, 3, "STE3S2A1");
+	ActivityController:createActivity("STE3S2A3", "Please call 0800 722 689 to continue to the next activity.", "", "", 0, 3, "STE3S2A3");
+	ActivityController:createActivity("STE3S2A4", "", "", "", 0, 1, "STE3S2A4");
+	ActivityController:createActivity("STE3S2A5", "2/2 We would like you to complete an assignment to put into practice what you learnt in this topic.Call 0800 722 689 to continue to the next activity.", "", "", 0, 3, "STE3S2A5");
+	ActivityController:createActivity("STE3S3A1", "1/2 Assignment reminder: Visit 3 households with women of child bearing age, discuss common myths and misconceptions, and help correct them. Be prepared to report.", "", "", 0, 1, "STE3S3A1");
+	ActivityController:createActivity("STE3S3A2", "1/2Congratulations on completing the assignment! Please answer the following questions by reply SMS. What family planning myths and misconceptions did you discuss?", "", "", 0, 1, "STE3S3A2");
+	ActivityController:createActivity("STE3S4A1", "Hello, Please read the SMS question you will receive next and select the right answer. Answer by replying to the SMS with 1 / 2 / 3", "", "", 0, 1, "STE3S4A1");
+	ActivityController:createActivity("STE3S4A2", "1/5 Hello, you will now receive SMSs to remind you the key points on myths and misconceptions around family planning.", "", "", 0, 1, "STE3S4A2");
+	ActivityController:createActivity("STE3S4A3", "", "", "", 0, 1, "STE3S4A3");
+
+	ActivityController:createActivity("STE4S4A1", "To begin the summary section of the Family Planning topic, please dial 0800 722 689.", "", "", 0, 3, "STE4S4A1");
+	ActivityController:createActivity("STE4S4A2", "You will now receive 5 questions to test what you have learnt. Pass mark is 80%. You have 2 chances only to try the quiz. Reply Next to continue.", "", "", 0, 1, "STE4S4A2");
+	ActivityController:createActivity("STE4S4A3", "1/4 Hello, you will now receive SMSs to remind you key points on Family Planning", "", "", 0, 1, "STE4S4A3");
+	ActivityController:createActivity("STE4S4A4", "", "", "", 0, 1, "STE4S4A4");
+
+	ActivityOrderController:createActivityOrder ("ST21S1", "ST21S1A1", 1, "1", 0);
+	ActivityOrderController:createActivityOrder ("ST21S1", "ST21S1A2", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("ST21S1", "ST21S1A3", 3, "1", 0);
+	
+	ActivityOrderController:createActivityOrder ("ST22S1", "ST22S1A1", 1, "1", 0);
+	ActivityOrderController:createActivityOrder ("ST22S1", "ST22S1A2", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("ST22S2", "ST22S2A1", 1, "1", 0);
+	ActivityOrderController:createActivityOrder ("ST22S2", "ST22S2A2", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("ST22S3", "ST22S3A1", 1, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("ST22S4", "ST22S4A1", 1, "5", 0);
+	ActivityOrderController:createActivityOrder ("ST22S4", "ST22S4A2", 2, "1", 0);
+	
+	ActivityOrderController:createActivityOrder ("ST23S1", "ST23S1A1", 1, "1", 0);
+	ActivityOrderController:createActivityOrder ("ST23S1", "ST23S1A2", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("ST23S2", "ST23S2A1", 1, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("ST23S3", "ST23S3A1", 1, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("ST23S3", "ST23S3A2", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("ST23S4", "ST23S4A1", 1, "5", 0);
+	ActivityOrderController:createActivityOrder ("ST23S4", "ST23S4A2", 2, "1", 0);
+	
+	ActivityOrderController:createActivityOrder ("ST24S4", "ST24S4A1", 1, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("ST24S4", "ST24S4A2", 2, "5", 0);
+	ActivityOrderController:createActivityOrder ("ST24S4", "ST24S4A3", 3, "1", 0);
+	ActivityOrderController:createActivityOrder ("ST24S4", "ST24S4A4", 4, "1", 0);
+
+	ActivityOrderController:createActivityOrder ("STE1S1", "STE1S1A1", 1, "1", 0);
+	ActivityOrderController:createActivityOrder ("STE1S1", "STE1S1A2", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE1S1", "STE1S1A3", 3, "1", 0);
+	ActivityOrderController:createActivityOrder ("STE1S1", "STE1S1A4", 4, "1", 0);
+	ActivityOrderController:createActivityOrder ("STE2S1", "STE2S1A1", 1, "1", 0);
+	ActivityOrderController:createActivityOrder ("STE2S2", "STE2S2A2", 2, "1", 0);
+	ActivityOrderController:createActivityOrder ("STE2S2", "STE2S2A3", 3, "4", 0);
+	ActivityOrderController:createActivityOrder ("STE2S2", "STE2S2A5", 5, "5", 0);
+	ActivityOrderController:createActivityOrder ("STE2S3", "STE2S3A2", 2, "4", 0);
+	ActivityOrderController:createActivityOrder ("STE2S3", "STE2S3A5", 4, "4", 0);
+	ActivityOrderController:createActivityOrder ("STE2S3", "STE2S3A7", 6, "4", 0);
+	ActivityOrderController:createActivityOrder ("STE2S3", "STE2S3A10", 8, "4", 0);
+	ActivityOrderController:createActivityOrder ("STE2S3", "STE2S3A13", 10, "4", 0);
+	ActivityOrderController:createActivityOrder ("STE2S3", "STE2S3A16", 12, "4", 0);
+	ActivityOrderController:createActivityOrder ("STE2S4", "STE2S4A1", 1, "1", 0);
+	ActivityOrderController:createActivityOrder ("STE2S4", "STE2S4A2", 2, "1", 0);
+	ActivityOrderController:createActivityOrder ("STE3S1", "STE3S1A1", 1, "1", 0);
+	ActivityOrderController:createActivityOrder ("STE3S2", "STE3S2A4", 3, "1", 0);
+	ActivityOrderController:createActivityOrder ("STE3S3", "STE3S3A1", 1, "5", 0);
+	ActivityOrderController:createActivityOrder ("STE3S3", "STE3S3A2", 2, "4", 0);
+	ActivityOrderController:createActivityOrder ("STE3S4", "STE3S4A1", 1, "5", 0);
+	ActivityOrderController:createActivityOrder ("STE3S4", "STE3S4A2", 2, "1", 0);
+	ActivityOrderController:createActivityOrder ("STE3S4", "STE3S4A3", 3, "1", 0);
+	ActivityOrderController:createActivityOrder ("STE4S4", "STE4S4A2", 2, "5", 0);
+	ActivityOrderController:createActivityOrder ("STE4S4", "STE4S4A3", 3, "1", 0);
+	ActivityOrderController:createActivityOrder ("STE4S4", "STE4S4A4", 4, "1", 0);
+
+	ActivityOrderController:createActivityOrder ("STE2S1", "STE2S1A2", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE2S2", "STE2S2A1", 1, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE2S2", "STE2S2A4", 4, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE2S2", "STE2S2A6", 6, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE2S2", "STE2S2A8", 7, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE2S3", "STE2S3A1", 1, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE2S3", "STE2S3A4", 3, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE2S3", "STE2S3A6", 5, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE2S3", "STE2S3A9", 7, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE2S3", "STE2S3A12", 9, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE2S3", "STE2S3A15", 11, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE3S1", "STE3S1A2", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE3S2", "STE3S2A1", 1, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE3S2", "STE3S2A3", 2, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE3S2", "STE3S2A5", 4, "IVR", 0);
+	ActivityOrderController:createActivityOrder ("STE4S4", "STE4S4A1", 1, "IVR", 0);
+	
+
+	MessageController:createMessage("ST21S1A1M1", "1/4 Hello dear learner & welcome to the CHV training. In this topic, you will learn about community health & development", 0, "", "");
+	MessageController:createMessage("ST21S1A1M2", "2/4 During the week you will receive SMSs & listen to recorded phone stories & lectures, all related to health & development in the community", 0, "", "");
+	MessageController:createMessage("ST21S1A1M3", "3/4 Please follow the instructions to go through all the activities. You can contact your CHEW for technical help on using the mobile phone.", 0, "", "");
+	MessageController:createMessage("ST21S1A3M1", "1/2 At the end of the Helath & Development in the community topic, you should be able to: -Describe the relationship between health & development", 0, "", "");
+	MessageController:createMessage("ST21S1A3M2", "2/2 -Describe health as a human right -Describe importance of partnership in community health & development. ", 0, "", "");
+	MessageController:createMessage("ST21S1A3M3", "You will now receive instructions to start the next activity.", 0, "", "");
+	
+	MessageController:createMessage("ST22S1A1M1", "1/4 Hello dear learner and welcome to this sub- topic. In this sub-topic, you will learn about community health & development", 0, "", "");
+	MessageController:createMessage("ST22S1A1M2", "2/4 During the week you will receive SMSs & listen to recorded phone stories & lectures, all related to health & development in the community", 0, "", "");
+	MessageController:createMessage("ST22S1A1M3", "3/4 Please follow the instructions to go through all the activities. You can contact your CHEW for technical help on using the mobile phone.", 0, "", "");
+	MessageController:createMessage("ST22S2A1M1", "1/5 Hello dear learner. You will now receive SMSs defining the terms health and development.", 0, "", "");
+	MessageController:createMessage("ST22S2A1M2", "2/5 Health is a state of complete physical, mental and social well-being. It is a good overall state of well-being ", 0, "", "");
+	MessageController:createMessage("ST22S2A1M3", "3/5 State of well-being includes mental, physical, emotional and spiritual health. Development is the growth of life in a community.", 0, "", "");
+	MessageController:createMessage("ST22S2A1M4", "4/5 It includes economic growth & human development which provides for health, nutrition, education & a clean environment.", 0, "", "");
+	MessageController:createMessage("ST22S4A1M1", "A.The human right to health is provided for in? 1) The Public Health Act 2) Hotels and Restaurants Act 3) The Constitution Reply 1/2/3", 3, 3, "The human right to health is provided for in the Constitution under article 43");
+	MessageController:createMessage("ST22S4A1M2", "B. Which one promotes health & development? 1)Lack of resources in the community 2)Diseases 3)Community participation in development projects Reply 1/2/3", 3, 3, "Community participation in development projects promote health and development in the community ");
+	MessageController:createMessage("ST22S4A2M1", "1/4 Hello dear learner, you will receive SMSs to remind you key points on human right to health & the relationship between health & development", 0, "", "");
+	MessageController:createMessage("ST22S4A2M2", "2/4 The human right to health means that everyone has the right to the have the best quality of physical and mental health", 0, "", "");
+	MessageController:createMessage("ST22S4A2M3", "3/4 A healthy community supports healthy life choices and a high quality of life", 0, "", "");
+	MessageController:createMessage("ST22S4A2M4", "4/4 Good health promotes community development & community development promotes good health of the people", 0, "", "");
+	MessageController:createMessage("ST22S4A2M5", "Well done, you've completed the sub-topic on Health and Development! You will receive an SMS on the next sub-topic.", 0, "", "");
+	
+	MessageController:createMessage("ST23S1A1M1", "1/4 Hello dear learner and welcome to this sub- topic. In this sub-topic, you will learn about Partnerships for health.", 0, "", "");
+	MessageController:createMessage("ST23S1A1M2", "2/4 During the week you will receive SMSs & listen to recorded phone stories & lectures, all related to partnerships for health.", 0, "", "");
+	MessageController:createMessage("ST23S1A1M3", "3/4 Please follow the instructions to go through all the activities. You can contact your CHEW for technical help on using the mobile phone.", 0, "", "");
+	MessageController:createMessage("ST23S4A1M1", "A. Which among these is a key principle in building partnerships? 1) Unclear goals 2) Trust 3) Dishonesty Reply 1/2/3", 3, 2, "Trust is a key principle in building partnerships not unclear goals or dishonesty.");
+	MessageController:createMessage("ST23S4A1M2", "B. Which of these is a benefit of partnerships? 1) Duplication of efforts 2) Increased cost of health 3) Improved quality of life Reply 1/2/3", 3, 3, "Improved quality of life is a benefit derived from partnerships. It does not duplicate efforts nor increase cost of living.");
+	MessageController:createMessage("ST23S4A2M1", "1/5 Hello, you will now receive SMSs to remind you the key points on Partnerships in community health and development.", 0, "", "");
+	MessageController:createMessage("ST23S4A2M2", "2/5 Partnership involves individuals or institutions working together to share resources, ideas and experiences to achieve a common goal.", 0, "", "");
+	MessageController:createMessage("ST23S4A2M3", "3/5 Partnerships are built based on trust & honesty, openness, equity, mutual understanding and agreed shared goals & values.", 0, "", "");
+	MessageController:createMessage("ST23S4A2M4", "4/5 Successful partnerships in community health and development produce positive results to the community.", 0, "", "");
+	MessageController:createMessage("ST23S4A2M5", "5/5 Well done, you've completed the sub-topic on Partnerships for health! You will receive an SMS on the next sub-topic.", 0, "", "");
+	
+	MessageController:createMessage("ST24S4A2M1", "A. Which one is a factor that promotes health and development in the community? 1. Good governance 2. Corruption 3. Bad roads Reply 1/2/3", 3, 1, "Good governance promotes health and development in the community ");
+	MessageController:createMessage("ST24S4A2M2", "B. The human right to health provides for? 1. Education 2. Employment 3. High quality health care Reply 1/2/3", 3, 3, "The human right provides for high quality health care. As a result, employment and education are enhanced");
+	MessageController:createMessage("ST24S4A2M3", "C. Which of these does NOT promote successful partnerships? 1. Trust 2. Lack of communication 3. Mutual understanding Reply 1/2/3", 3, 2, "Lack of communication does not support successful partnerships. Trust and mutual understanding support it");
+	MessageController:createMessage("ST24S4A2M4", "D. Which of these is NOT a benefit of partnerships in the community? 1.Improved health care 2. Poverty 3. Employment creation Reply 1/2/3", 3, 2, "Partnerships do not result in poverty. They improve healthcare and help to create employment");
+	MessageController:createMessage("ST24S4A2M5", "E. Which of these is NOT a benefit of partnerships? 1. Efficiency in use of resources 2. Wastes time 3. Improved quality of life Reply 1/2/3", 3, 2, "Partnerships are not a time wasting activity");
+	MessageController:createMessage("ST24S4A3M1", "1/7 The human right to health means that everyone has the right to the highest attainable standard of physical and mental health", 0, "", "");
+	MessageController:createMessage("ST24S4A3M2", "2/7 A healthy community supports healthy life choices and a high quality of life", 0, "", "");
+	MessageController:createMessage("ST24S4A3M3", "3/7 Good health promotes community development & community development promotes good health of the people", 0, "", "");
+	MessageController:createMessage("ST24S4A3M4", "4/7 Poor development in the community contributes to increased health problems such as diseases and poor access to health services", 0, "", "");
+	MessageController:createMessage("ST24S4A3M5", "5/7 Partnership involves individuals or institutions working together to share resources, ideas and experiences to achieve a common goal", 0, "", "");
+	MessageController:createMessage("ST24S4A3M6", "6/7 Partnerships are built based on trust & honesty, opennes, equity, mutual understanding and agreed shared goals & values", 0, "", "");
+	MessageController:createMessage("ST24S4A3M7", "7/7 Successful partnerships in community health and development produce positive results to the community", 0, "", "");
+	MessageController:createMessage("ST24S4A4M1", "1/3 Congratulations! You've completed the final sub-topic of the Health and Development in the community topic. ", 0, "", "");
+	MessageController:createMessage("ST24S4A4M2", "2/3 You will now receive a health and development problem to solve. Your responses will be marked. ", 0, "", "");
+	MessageController:createMessage("ST24S4A4M3", "3/3: Your score in this problem will be counted towards your overall score in the topic. Reply Next when you are ready to solve the problem.", 0, "", "");	
+
+	MessageController:createMessage("STE1S1A1M1", "2/5 The first sub-topic is Importance & types of family planning methods. The second sub-topic is myths and misconceptions around family planning. ", 0, "", "");
+	MessageController:createMessage("STE1S1A1M2", "3/5 During the week you will receive SMS messages and listen to recorded phone stories and lectures all related to Family planning.", 0, "", "");
+	MessageController:createMessage("STE1S1A1M3", "4/5 Please follow the instructions to go through all the activities. You can contact your CHEW for technical help on using the mobile phone.", 0, "", "");
+	MessageController:createMessage("STE1S1A3M1", "1/2: Learning Objective: At the end of this topic, you will be able to: A. Explain the importance of family planning and types of family planning ", 0, "", "");
+	MessageController:createMessage("STE1S1A3M2", "2/2 B. Describe the types of family planning C. Identify the common myths and misconceptions surrounding family planning", 0, "", "");
+	MessageController:createMessage("STE1S1A4M1", "1/2 Thank you dear learner for completing the introductory session of the topic on family planning. ", 0, "", "");
+	MessageController:createMessage("STE1S1A4M2", "2/2 You will now receive an SMS with instructions on how to proceed to the first sub topic.", 0, "", "");
+	MessageController:createMessage("STE2S1A1M1", "2/4 During the week you will receive SMS messages and listen to recorded phone stories and lectures all related to Family planning.", 0, "", "");
+	MessageController:createMessage("STE2S1A1M2", "3/4 Please follow the instructions to go through all the activities. You can contact your CHEW for technical help on using the mobile phone.", 0, "", "");
+	MessageController:createMessage("STE2S2A2M1", "2/5 Next you will be listening to several voice recordings and reading SMSs that contain information on this.", 0, "", "");
+	MessageController:createMessage("STE2S2A2M2", "3/5 At the end you will be required to conduct an assignment and answer some questions to check what you have learned. Welcome and happy learning!", 0, "", "");
+	MessageController:createMessage("STE2S2A2M3", "4/5 As we prepare to discuss the importance of family planning, we would like to know your personal thoughts about it.", 0, "", "");
+	MessageController:createMessage("STE2S2A5M1", "Which of the following is a family planning method? Please reply 1/2/3. 1. Contraceptive pills 2. Having sex while standing 3. Drinking juice after sex", 3, 1, " Contraceptive pills are a family planning method. They release hormones in the body to regulate the menstrual cycle. Please wait for the next SMS");
+	MessageController:createMessage("STE2S3A2M1", "Appropriate methods would be Implants, with male or female condoms for dual protection. Or injectables & Contraceptives (6 months after giving birth).", 0, "", "");
+	MessageController:createMessage("STE2S3A5M1", "Appropriate methods: Emergency contraceptive pills & Contraceptive pills as an on-going method. Others include implants, IUCD, or injectables.", 0, "", "");
+	MessageController:createMessage("STE2S3A7M1", "Appropriate methods: Female condoms for dual protection. Other possible methods would be implants, injectables, or Contraceptive pills.", 0, "", "");
+	MessageController:createMessage("STE2S3A10M1", "Appropriate methods: IUCD or implant, with male or female condoms for dual protection. Another possible method would be female sterilization", 0, "", "");
+	MessageController:createMessage("STE2S3A13M1", "Appropriate methods: Male condom for dual protection, and the provider should encourage the girlfriend to come in.", 0, "", "");
+	MessageController:createMessage("STE2S3A16M1", "Appropriate method: Combined oral contraceptives.", 0, "", "");
+	MessageController:createMessage("STE2S4A1M1", "2/6 Permanent methods of family planning include male Vasectomy and female Tubal Ligation. They are not reversible.", 0, "", "");
+	MessageController:createMessage("STE2S4A1M2", "3/6 Hormonal methods of FP include Combined Oral Contraceptives, Injectables, and Implants. They act by releasing hormones in the body.", 0, "", "");
+	MessageController:createMessage("STE2S4A1M3", "4/6 Intrauterine devices also known as IUDs or coil. They stop the sperm from joining the egg or stops fertilised egg from growing in the womb.", 0, "", "");
+	MessageController:createMessage("STE2S4A1M4", "5/6 We also have barrier methods of family planning. They include condoms and spermicides. Condoms can be male or female condoms.", 0, "", "");
+	MessageController:createMessage("STE2S4A1M5", "6/6 Natural methods of FP include Periodic abstinence, Lactational Amenorrhoea (LAM), Fertility awareness methods and withdrawal.", 0, "", "");
+	MessageController:createMessage("STE2S4A2M1", "Well done, you've completed the sub-topic on Importance and methods of family planning! You will receive an SMS on the next sub-topic.", 0, "", "");
+	MessageController:createMessage("STE3S1A1M1", "2/4 You will receive SMSs & listen to recorded phone stories & lectures, all related to myths and misconceptions around family planning.", 0, "", "");
+	MessageController:createMessage("STE3S1A1M2", "3/4 Please follow the instructions to go through all the activities. You can contact your CHEW for technical help on using the mobile phone.", 0, "", "");
+	MessageController:createMessage("STE3S2A4M1", "1/2 Congratulations, you have completed the second part of the Family Planning topic. If you want to know more, contact your CHEW.", 0, "", "");
+	MessageController:createMessage("STE3S3A1M1", "2/2 Hello, You just received instructions for the assignment on Family Planning. Please SMS 'Ready' when you have done it and are ready to report the results.", 0, "", "");
+	MessageController:createMessage("STE3S3A2M1", "What advice did you give to correct them? Send your responses through SMS.", 0, "", "");
+	MessageController:createMessage("STE3S3A2M2", "Thank you for answering. Let's quickly test what you have learnt with a quiz you will receive soon.", 0, "", "");
+	MessageController:createMessage("STE3S4A1M1", "A. Which of the following statements is true? 1. FP pills accumulate in the stomach 2. Vasectomy kills the joy in sex 3. Pills have side effects", 3, 3, "Some family planning methods have minor side effects. Advise clients to get full information on an FP method at the health facility. The next SMS will come soon");
+	MessageController:createMessage("STE3S4A2M1", "2/5 Remember every woman reacts differently to the various family planning methods. ", 0, "", "");
+	MessageController:createMessage("STE3S4A2M2", "3/5 Use of contraceptive pills does not cause blood to be clogged in the body. ", 0, "", "");
+	MessageController:createMessage("STE3S4A2M3", "4/5 Pills provide a protective effect from cancer of the ovaries and cancer of the lining of the uterus. ", 0, "", "");
+	MessageController:createMessage("STE3S4A2M4", "5/5 Birth control pills do not cause harm to the reproductive system and in no way cause wounds in the uterus.", 0, "", "");
+	MessageController:createMessage("STE3S4A3M1", "Well done, you've completed the sub-topic on myths and misconceptions around family planning! You will receive an SMS on the next sub-topic.", 0, "", "");
+	MessageController:createMessage("STE4S4A2M1", "A: Family Planning is 1. Deliberate spacing of children in a family 2. Killing unborn children 3. Both 1 and 2 Reply 1/2/3", 3, 1, "Family planning is the deliberate spacing of children in a family also known as birth spacing");
+	MessageController:createMessage("STE4S4A2M2", "B: Family Planning ensures that 1. A mother recovers from previous pregnancies 2. Reduces stress in the household 3. Both 1 and 2 Reply 1/2/3", 3, 3, "Family planning ensures that a mothers body recovers from previous pregnancies and reduces stress because resources are enough in the home");
+	MessageController:createMessage("STE4S4A2M3", "C: The following are types of family planning methods 1. Barrier methods 2. Natural methods 3. Both 1 and 2 Reply 1/2/3", 3, 3, "Barrier methods and natural methods are both types of family planning methods");
+	MessageController:createMessage("STE4S4A2M4", "D: The following are types of natural methods of family planning 1. Periodic abstinence 2. Fertility Awareness method 3. Both 1 and 2 Reply 1/2/3", 3, 3, "Periodic abstinence and fertility awareness method are both types of natural methods of family planning");
+	MessageController:createMessage("STE4S4A2M5", "E: Hormonal methods of family planning include: 1. Contraceptive pills and injectables 2. Female and male condoms 3. Lactational Amenorrhoea Reply 1/2/3", 3, 1, "Contraceptive pills and injectables are both hormonal methods of family planning");
+	MessageController:createMessage("STE4S4A3M1", "2/4 There are permanent, hormonal, barrier and natural methods of family planning. Intrauterine devices also known as IUDs or coil can also be used.", 0, "", "");
+	MessageController:createMessage("STE4S4A3M2", "3/4 Always refer the community members of reproductive age who require more information on family planning to the health facility. ", 0, "", "");
+	MessageController:createMessage("STE4S4A3M3", "4/4 Remember that family planning methods can be used by both men and women", 0, "", "");
+	MessageController:createMessage("STE4S4A4M1", "1/3 Congratulations! You've completed the final sub-topic of the family planning topic. ", 0, "", "");
+	MessageController:createMessage("STE4S4A4M2", "2/3 You will now receive a problem to solve using your knowledge of family planning. Your responses will be marked. ", 0, "", "");
+	MessageController:createMessage("STE4S4A4M3", "3/3: Your score in this problem will be counted towards your overall score in the topic. Reply Next when you are ready to solve the problem.", 0, "", "");
+
+	MessageOrderController:createMessageOrder("ST21S1A1", "ST21S1A1M1", 1);
+	MessageOrderController:createMessageOrder("ST21S1A1", "ST21S1A1M2", 2);
+	MessageOrderController:createMessageOrder("ST21S1A1", "ST21S1A1M3", 3);
+	MessageOrderController:createMessageOrder("ST21S1A3", "ST21S1A3M1", 1);
+	MessageOrderController:createMessageOrder("ST21S1A3", "ST21S1A3M2", 2);
+	MessageOrderController:createMessageOrder("ST21S1A3", "ST21S1A3M3", 3);
+	
+	MessageOrderController:createMessageOrder("ST22S1A1", "ST22S1A1M1", 1);
+	MessageOrderController:createMessageOrder("ST22S1A1", "ST22S1A1M2", 2);
+	MessageOrderController:createMessageOrder("ST22S1A1", "ST22S1A1M3", 3);
+	MessageOrderController:createMessageOrder("ST22S2A1", "ST22S2A1M1", 1);
+	MessageOrderController:createMessageOrder("ST22S2A1", "ST22S2A1M2", 2);
+	MessageOrderController:createMessageOrder("ST22S2A1", "ST22S2A1M3", 3);
+	MessageOrderController:createMessageOrder("ST22S2A1", "ST22S2A1M4", 4);
+	MessageOrderController:createMessageOrder("ST22S4A1", "ST22S4A1M1", 1);
+	MessageOrderController:createMessageOrder("ST22S4A1", "ST22S4A1M2", 2);
+	MessageOrderController:createMessageOrder("ST22S4A2", "ST22S4A2M1", 1);
+	MessageOrderController:createMessageOrder("ST22S4A2", "ST22S4A2M2", 2);
+	MessageOrderController:createMessageOrder("ST22S4A2", "ST22S4A2M3", 3);
+	MessageOrderController:createMessageOrder("ST22S4A2", "ST22S4A2M4", 4);
+	MessageOrderController:createMessageOrder("ST22S4A2", "ST22S4A2M5", 5);
+	
+	MessageOrderController:createMessageOrder("ST23S1A1", "ST23S1A1M1", 1);
+	MessageOrderController:createMessageOrder("ST23S1A1", "ST23S1A1M2", 2);
+	MessageOrderController:createMessageOrder("ST23S1A1", "ST23S1A1M3", 3);
+	MessageOrderController:createMessageOrder("ST23S4A1", "ST23S4A1M1", 1);
+	MessageOrderController:createMessageOrder("ST23S4A1", "ST23S4A1M2", 2);
+	MessageOrderController:createMessageOrder("ST23S4A2", "ST23S4A2M1", 1);
+	MessageOrderController:createMessageOrder("ST23S4A2", "ST23S4A2M2", 2);
+	MessageOrderController:createMessageOrder("ST23S4A2", "ST23S4A2M3", 3);
+	MessageOrderController:createMessageOrder("ST23S4A2", "ST23S4A2M4", 4);
+	MessageOrderController:createMessageOrder("ST23S4A2", "ST23S4A2M5", 5);
+	
+	MessageOrderController:createMessageOrder("ST24S4A2", "ST24S4A2M1", 1);
+	MessageOrderController:createMessageOrder("ST24S4A2", "ST24S4A2M2", 2);
+	MessageOrderController:createMessageOrder("ST24S4A2", "ST24S4A2M3", 3);
+	MessageOrderController:createMessageOrder("ST24S4A2", "ST24S4A2M4", 4);
+	MessageOrderController:createMessageOrder("ST24S4A2", "ST24S4A2M5", 5);
+	MessageOrderController:createMessageOrder("ST24S4A3", "ST24S4A3M1", 1);
+	MessageOrderController:createMessageOrder("ST24S4A3", "ST24S4A3M2", 2);
+	MessageOrderController:createMessageOrder("ST24S4A3", "ST24S4A3M3", 3);
+	MessageOrderController:createMessageOrder("ST24S4A3", "ST24S4A3M4", 4);
+	MessageOrderController:createMessageOrder("ST24S4A3", "ST24S4A3M5", 5);
+	MessageOrderController:createMessageOrder("ST24S4A3", "ST24S4A3M6", 6);
+	MessageOrderController:createMessageOrder("ST24S4A3", "ST24S4A3M7", 7);
+	MessageOrderController:createMessageOrder("ST24S4A4", "ST24S4A4M1", 1);
+	MessageOrderController:createMessageOrder("ST24S4A4", "ST24S4A4M2", 2);
+	MessageOrderController:createMessageOrder("ST24S4A4", "ST24S4A4M3", 3);
+
+	MessageOrderController:createMessageOrder("STE1S1A1", "STE1S1A1M1", 1);
+	MessageOrderController:createMessageOrder("STE1S1A1", "STE1S1A1M2", 2);
+	MessageOrderController:createMessageOrder("STE1S1A1", "STE1S1A1M3", 3);
+	MessageOrderController:createMessageOrder("STE1S1A3", "STE1S1A3M1", 1);
+	MessageOrderController:createMessageOrder("STE1S1A3", "STE1S1A3M2", 2);
+	MessageOrderController:createMessageOrder("STE1S1A4", "STE1S1A4M1", 1);
+	MessageOrderController:createMessageOrder("STE1S1A4", "STE1S1A4M2", 2);
+	MessageOrderController:createMessageOrder("STE2S1A1", "STE2S1A1M1", 1);
+	MessageOrderController:createMessageOrder("STE2S1A1", "STE2S1A1M2", 2);
+	MessageOrderController:createMessageOrder("STE2S2A2", "STE2S2A2M1", 1);
+	MessageOrderController:createMessageOrder("STE2S2A2", "STE2S2A2M2", 2);
+	MessageOrderController:createMessageOrder("STE2S2A2", "STE2S2A2M3", 3);
+	MessageOrderController:createMessageOrder("STE2S2A5", "STE2S2A5M1", 1);
+	MessageOrderController:createMessageOrder("STE2S3A2", "STE2S3A2M1", 1);
+	MessageOrderController:createMessageOrder("STE2S3A5", "STE2S3A5M1", 1);
+	MessageOrderController:createMessageOrder("STE2S3A7", "STE2S3A7M1", 1);
+	MessageOrderController:createMessageOrder("STE2S3A10", "STE2S3A10M1", 1);
+	MessageOrderController:createMessageOrder("STE2S3A13", "STE2S3A13M1", 1);
+	MessageOrderController:createMessageOrder("STE2S3A16", "STE2S3A16M1", 1);
+	MessageOrderController:createMessageOrder("STE2S4A1", "STE2S4A1M1", 1);
+	MessageOrderController:createMessageOrder("STE2S4A1", "STE2S4A1M2", 2);
+	MessageOrderController:createMessageOrder("STE2S4A1", "STE2S4A1M3", 3);
+	MessageOrderController:createMessageOrder("STE2S4A1", "STE2S4A1M4", 4);
+	MessageOrderController:createMessageOrder("STE2S4A1", "STE2S4A1M5", 5);
+	MessageOrderController:createMessageOrder("STE2S4A2", "STE2S4A2M1", 1);
+	MessageOrderController:createMessageOrder("STE3S1A1", "STE3S1A1M1", 1);
+	MessageOrderController:createMessageOrder("STE3S1A1", "STE3S1A1M2", 2);
+	MessageOrderController:createMessageOrder("STE3S2A4", "STE3S2A4M1", 1);
+	MessageOrderController:createMessageOrder("STE3S3A1", "STE3S3A1M1", 1);
+	MessageOrderController:createMessageOrder("STE3S3A2", "STE3S3A2M1", 1);
+	MessageOrderController:createMessageOrder("STE3S3A2", "STE3S3A2M2", 2);
+	MessageOrderController:createMessageOrder("STE3S4A1", "STE3S4A1M1", 1);
+	MessageOrderController:createMessageOrder("STE3S4A2", "STE3S4A2M1", 1);
+	MessageOrderController:createMessageOrder("STE3S4A2", "STE3S4A2M2", 2);
+	MessageOrderController:createMessageOrder("STE3S4A2", "STE3S4A2M3", 3);
+	MessageOrderController:createMessageOrder("STE3S4A2", "STE3S4A2M4", 4);
+	MessageOrderController:createMessageOrder("STE3S4A3", "STE3S4A3M1", 1);
+	MessageOrderController:createMessageOrder("STE4S4A2", "STE4S4A2M1", 1);
+	MessageOrderController:createMessageOrder("STE4S4A2", "STE4S4A2M2", 2);
+	MessageOrderController:createMessageOrder("STE4S4A2", "STE4S4A2M3", 3);
+	MessageOrderController:createMessageOrder("STE4S4A2", "STE4S4A2M4", 4);
+	MessageOrderController:createMessageOrder("STE4S4A2", "STE4S4A2M5", 5);
+	MessageOrderController:createMessageOrder("STE4S4A3", "STE4S4A3M1", 1);
+	MessageOrderController:createMessageOrder("STE4S4A3", "STE4S4A3M2", 2);
+	MessageOrderController:createMessageOrder("STE4S4A3", "STE4S4A3M3", 3);
+	MessageOrderController:createMessageOrder("STE4S4A4", "STE4S4A4M1", 1);
+	MessageOrderController:createMessageOrder("STE4S4A4", "STE4S4A4M2", 2);
+	MessageOrderController:createMessageOrder("STE4S4A4", "STE4S4A4M3", 3);
+
+}
+
+/* **************************************************************************************** */
+/* **************************************************************************************** */
+

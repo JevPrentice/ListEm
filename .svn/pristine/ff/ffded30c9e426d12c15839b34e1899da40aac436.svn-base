@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="overall_cu_perfomance.title" unit="OverallCUPerformanceFilter" init="init" >
+
+        <navigation outcome="navCUPerformance" target="CUPerformance" />
+        <navigation outcome="navOverallCUPerformanceResults" target="OverallCUPerformanceResults" />
+
+        <action label="back" action="back"/>
+
+        <select label="topic.topicID">
+            <binding variable="selectedTopic"/>
+            <collectionSource variable="topics">
+                <displayAttribute name="umbrellaID" />
+            </collectionSource>
+        </select>
+
+        <datefield label="from">
+           <binding variable="dStart" />
+        </datefield>
+
+        <datefield label="to">
+           <binding variable="dEnd" />
+        </datefield>
+
+        <submit label="view" action="viewResults"/>
+        
+    </view>
+</ui>

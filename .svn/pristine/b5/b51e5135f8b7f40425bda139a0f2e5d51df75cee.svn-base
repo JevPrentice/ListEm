@@ -1,0 +1,15 @@
+object ClientCSV{
+	
+	// string client_id; --JP not used
+	string first_name;
+	string surname;
+    string nickname;
+	string mobile_number;
+	datetime registered;
+	string language;
+	string gender;
+	int role_id;
+	int clients_escalation_user_id;
+    int chat_count;
+
+}

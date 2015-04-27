@@ -1,0 +1,577 @@
+unit TopicList;
+
+LanguageKeyObject languageKey;
+Topic viewtopic;
+Topic deleteTopic;
+TopicUserSetup topicUserSetup;
+
+string message;
+
+void init() {
+	viewtopic = Topic:new();
+    languageKey = null;
+}
+
+string editTopic() {
+    languageKey = viewtopic.topic_LanguageKey;
+	return null;
+}
+
+string saveTopic() {
+    if(languageKey != null){
+        viewtopic.topic_LanguageKey = languageKey;
+        viewtopic.save();
+        init();
+    } else {
+        message = "Please select a language for the Sub-Topic.";
+        Alerter:alert(message);
+    }
+    return null;
+}
+
+string deleteTopic() {
+	Topic:delete(deleteTopic);
+	return null;
+}
+
+Topic[] getAllTopics() {
+	return Topic:all();
+}
+
+Topic[] getAllTopicsFiltered() {
+    Topic[] tS = Topic:all(); Topic[] tRs = null; Topic t; string s; bool b;
+
+    tS.sortAsc("topicID");
+
+    for(int i=0; i<tS.length(); i++){
+        t = tS.get(i);
+        s = ""; if(t.topicFlags!=null){ s = t.topicFlags; }
+        if(s!=""){
+            b = BLUnits:fStringContains(s, "nr", 0); 
+            if(b==false){
+                tRs.append(t);
+            }
+        }
+    }
+
+    return tRs;
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+/* JV : Topic language addition by JV - December 2014 */
+
+int fGuessTopicLanguageID (Topic t){
+
+    string s = t.topicID; string s2 = "";
+    int rr = 1;                                                 string method = "before topic!=null check";
+
+    if(t != null){
+
+        LanguageKeyObject lko = t.topic_LanguageKey;
+        rr = 1;                                                  method = "default";
+
+        if(lko != null){
+            rr = lko.languageID;                                 method = "languageID";
+            
+        } else {
+                                                                method = "phase1";
+            if(String:length(s)>3){
+                s2 = String:upper(String:substring(s,0,2));
+                if(s2=="T10"){ rr = 2; }
+            }
+        }
+
+        //s = String:concat("Language selection for topic : ", t.topicID, " = ", rr, " via ", method); Mez:log(s);
+
+    }
+
+    return rr;
+
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+TopicUserSetup fGetLatestTopicUserSetupByCode(Client c, Topic t, int i){
+
+    if (c == null || t == null) { return null; } 
+    TopicUserSetup[] tus = TopicUserSetup:and(relationshipIn(client_topicUserSetup, c),relationshipIn(topic_topicUserSetup, t), equals(active,i));
+    if(tus.length()>0){
+        tus.sortDesc("topicMinStartDate");
+        return tus.get(0);
+    }
+    return null;
+
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+void fUpdateTopicUserSetup(TopicUserSetup tU, Client c, Topic t, int iEndCode, int iOldCode){
+
+    if(tU==null){ tU = fGetLatestTopicUserSetupByCode(c, t, iOldCode); }
+
+    if(tU!=null){
+        if(iEndCode==1){ tU.topicMinStartDate = Mez:now(); } 
+        tU.active = iEndCode; tU.save(); 
+    }
+
+    return null;
+    
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+void startTopic(TopicUserSetup tUS, int forceStart) {	
+
+    if(tUS==null){ return null; }
+
+    Client c = tUS.client_topicUserSetup;  
+    Topic t = tUS.topic_topicUserSetup;    
+    int lrt = tUS.runType;
+    Umbrella u = tUS.umbrella_topicUserSetup;
+    Topic currenttopic = uGetCurrentSchedule:fGetCurrentTopic(c);
+    TopicUserSetup currentTopicUserSetup = uGetCurrentSchedule:fGetCurrentTopicUserSetup(c,t);
+
+    if(c==null||t==null){ return null; }
+
+    // Add logging every time this function is called to trace user progress
+    string slog = ""; if (t == null){ slog = "null"; } else { slog = t.topicID; } 
+    slog = String:concat("TopicList:startTopic with code ", forceStart, " and topic ", slog, " for client ", c.mobileNumber, " and runtype ", lrt); Mez:log(slog);
+
+	datetime minstartDate = tUS.topicMinStartDate; datetime todayDate = Mez:now();
+		
+		if ( ((todayDate>=minstartDate)||(forceStart==1)) && (currenttopic==null) && (currentTopicUserSetup==null) ) {
+            
+            //Clears out everything for client and topic;
+            uResetUsers:fReactivateClientSpecificTopic (c, u, t, lrt);
+
+            // Activate TopicUserSetup = set status to 1
+            fUpdateTopicUserSetup(tUS, c, t, 1, 0);
+
+            // send start SMS to client to initialise topic
+			BLUnits:SendSMSToClient(c, t.topicStartSMS);
+
+            // create Current Topic Table with link between client and topic
+			createCurrentTopicTable(c, t);
+
+            // Create Topic History Table with instance of client and topic and relevant times
+			createTopicHistory(c, u, t, lrt);
+
+            // Ensure that the Topic Umbrella PPE is active... in case it has been deactivated before
+            if(u!=null&&lrt==1){ uCalculatePPE:fReactivateClientUmbrellaPPE(c, u); }
+            
+            if(lrt!=40){
+
+                // Create Topic reminder table 
+                TSPReminder:fCreateTopicReminder(c, t);
+                
+                // Create Topic escalation table 
+                TSPReminder:fCreateTopicEscalator(c, u, t);
+            
+            }
+
+            /* Create force topic end reminder table, which will end a topic given that the topic max duration has been reached */
+            TSPReminder:fCreateForcedTopicEnd(c, u, t, lrt);
+
+            // Get next sequence for client and topic
+            SequenceList:fStartNextSequence(c);            
+
+		} 
+
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+bool fForceEndCodes (int iCode){
+    bool r = false;
+    if(iCode>=80&&iCode<=89){
+        r = true;
+    }
+    return r;
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+void fForceEndTopic(TopicUserSetup tU, int iCode) {
+    
+    int rreturn; int ir = 0; int iEndCode = iCode;
+
+    // Initialize variables and end function if topic or client is null
+    Client c = tU.client_topicUserSetup;
+    Topic t = tU.topic_topicUserSetup;
+    Umbrella u = tU.umbrella_topicUserSetup;
+
+    // Add logging every time this function is called to trace user progress
+    string slog = ""; string st = "null"; if(iCode!=null){ st = iCode; }
+    slog = String:concat("TopicList:fForceEndTopic with code ", st, " and topic ", t.topicID, " for client ", c.mobileNumber); Mez:log(slog);
+
+    // Clear out historically loaded Search Topics if expiring a Topic which is NOT a Search Topic
+    if(tU.runType!=40){
+        uCalculatePPE:fUpdateCurrentUmbrellaPPEStatus(c, "forcedend", iCode); 
+        ir = NewFlowControllers:fPurgeSearchTopics(c); 
+    } 
+
+    //send topic unavailable fixed SMS (if exists)
+    if((tU.active == 1) && (BLUnits:fGetConfigSettingInt("SendExpiryNotice")==1)) {
+        if(iCode==88){
+            uPPESMSUnit:fSendTopicEndedMessage(c, u, "TopicExpiry");
+        } else {
+            uPPESMSUnit:fSendTopicEndedMessage(c, u, "TopicManuallyEnded");
+        }
+    }
+    
+    //force end sequence if exist
+    SequenceList:fForceEndSequence(c, iCode);
+        
+    //clear current topic table
+    fClearCurrentTopicTable(c);
+
+    //cancel any remaining IVR activities on force end to Topic / Sub-Topic
+    uIVRIntegration:fScheduleForceEndURL(c);
+    
+    //update user topic history setup to status ended
+    fUpdateTopicHistory(c, u, t, iCode);
+
+    //change to active=3 when expires, to allow searching and restart
+    if(iCode==88){ iEndCode=3; }
+    
+    //updating user topic setup
+    fUpdateTopicUserSetup(tU, c, t, iEndCode, 0);                               // TopicUserSetup is known because of the flow
+    
+    //Clear topic reminder table 
+    TSPReminder:fClearTopicReminder(c, t);
+    
+    //Clear topic esc table 
+    TSPReminder:fClearTopicEscalator(c, t);
+    
+    //Create force topic end reminder table, which will end a topic given that the topic max duration has been reached
+    TSPReminder:fClearForceTopicEnd(c, t);
+
+    //Check if runType=40... then start next immediately or unpause 
+    rreturn = fCheckRunType(c, t, iCode);
+
+    return null;
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+void endTopic(Client c, Topic t, int iCode) {
+
+    string st = "null"; if(iCode!=null){ st = iCode; }
+    string slog = String:concat("TopicList:endTopic - ", c.mobileNumber, " for topic ", t.topicID, " with code ", st); Mez:log(slog);
+
+    int rreturn = 0; TopicUserSetup tU;
+        
+    Umbrella u = uGetCurrentSchedule:fGetLastUmbrella(c, t);
+
+    // Clear current topic table
+    fClearCurrentTopicTable(c);
+    
+    // Update user topic history setup to status ended
+    fUpdateTopicHistory(c, u, t, iCode);
+    
+    // Updating user topic setup
+    fUpdateTopicUserSetup(null, c, t, 0, 1);                              // TopicUserSetup is NOT known because of the natural flow
+
+    // Send topic end SMS (if exist)
+    BLUnits:SendSMSToClient(c,t.topicEndSMS);
+    
+    // Clear topic reminder table 
+    TSPReminder:fClearTopicReminder(c, t);
+    
+    // Clear topic escalation table
+    TSPReminder:fClearTopicEscalator(c, t);
+    
+    // Create force topic end reminder table, which will end a topic given that the topic max duration has been reached
+    TSPReminder:fClearForceTopicEnd(c, t);
+
+    // Check if runType=40... then start next immediately or unpause && And check for topicType == 5 (Quiz) to do Pass / Fail scheduling
+    rreturn = fCheckRunType(c, t, iCode);
+    
+    // Check if the next set of topics should be run immediately 
+    if(rreturn == 1){
+        tU = TSPReminder:fManualTopicStart(c, 1);
+    }
+
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+int fCheckRunType(Client c, Topic t, int i){
+
+    string slog; int r = 0; int rreturn = 0; int tt = t.topicType; if(tt==null) { tt = 0; }
+
+    if((fForceEndCodes(i)==false)){                                                // Do not create loop if already busying closing out search
+
+        int rt; TopicUserSetup tU; Topic tStarted;
+        TopicHistory tH = getLastTopicHistory(c, t, 1);
+        
+        if(tH!=null){
+            rt = tH.runType;                                                       // Only check for next search topics if busy with search topic
+            if(rt==40){
+                
+                tU = TSPReminder:fManualTopicStart(c, rt);
+
+                if(tU!=null){
+                    tStarted = tU.topic_topicUserSetup; slog = String:concat("fCheckRunType after fManualTopicStart ",tStarted.topicID, " runtype : ", rt); Mez:log(slog);
+                } else {
+                    FixMessageList:sendFixedMessage(c, "20", "");
+                    r = NewFlowControllers:fPauseCurrentOrResumeLastTopic(c, 2);    // If no more search topics can be found, resume previous main topic
+                }
+
+            } else if(tt==5){                                                       // If topicType==5 (ie Quiz) then check for pass / fail
+
+                rreturn = uCalculatePPE:fConsiderPassFail(c, t);
+
+            } else {
+
+                rreturn = 1;
+
+            }
+        }   
+    }
+
+    return rreturn;
+
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+void fClearCurrentTopicTable(Client client){
+
+    CurrentTopic currentTopic = client.client_currentTopic;
+	if(currentTopic !=null ) {
+		CurrentTopic:delete(currentTopic);
+	}
+    
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+void createCurrentTopicTable(Client client, Topic topic) {
+	
+    fClearCurrentTopicTable (client);
+    
+    CurrentTopic currentTopic = CurrentTopic:new();
+	currentTopic.client_currentTopic = client;
+	currentTopic.topic_currentTopic = topic;
+    currentTopic.save();
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+void fReactivateTopicHistory(Client c, Umbrella u, Topic t, int i){
+    TopicHistory tH = getLastTopicHistory(c, t, 1);
+
+    if(tH != null) {
+        tH.statusID = i;
+        tH.actualEndDate = null;
+        tH.save();
+
+        fCreateTopicHistoryLog(c, u, t, i, null, 0, null);
+
+    }
+
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+void fUpdateTopicHistory(Client c, Umbrella u, Topic t, int i){
+
+    TopicHistory tH = getLastTopicHistory(c, t, 0);
+    if(tH != null) {
+
+        tH.statusID = i;
+        tH.actualEndDate = Mez:now();
+        tH.save();
+
+        fCreateTopicHistoryLog(c, u, t, i, null, 0, null);
+
+    }
+
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+void createTopicHistory(Client c, Umbrella u, Topic t, int rt) {
+    
+    TopicHistory tH = TopicHistory:new();
+
+    tH.statusID = 1;
+    tH.escalationID = 0;
+    tH.topic_topicHistory = t;
+    tH.client_topicHistory = c;
+    tH.runType = rt;
+
+    datetime startDate = Mez:now();
+    tH.startDate = startDate;
+    tH.maxEndDate = Date:addDays(startDate, t.topicMaxDuration);
+    tH.reminderTime = Date:addDays(startDate, t.topicReminderTime);
+    tH.escalationTime = Date:addDays(startDate, t.topicEscalationTime);
+        
+    tH.save();
+
+    /* Create permanent log of activity on Topic History */
+    fCreateTopicHistoryLog(c, u, t, 1, rt, 1, null);
+
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+int fCanClientSearchForTopic(Client c, Topic t){
+    
+    if(t==null||c==null){ return 0; }
+
+    if(BLUnits:fGetConfigSettingInt("FilterSearch")==0){ return 1; }
+
+    TopicUserSetup tU; int rreturn = 0; int rtemp = 0; 
+    int tt = 0; if(t.topicType!=null){ tt = t.topicType; }
+
+    if (tt==40){
+        rreturn = 1;
+    } else {
+        rtemp = fGetLastTopicHistoryLogAttempt(c, null, t);
+        if(rtemp>0) { 
+            rreturn = 1; 
+        } else {
+            tU = fGetLatestTopicUserSetupByCode(c, t, 3);
+            if(tU!=null){ 
+                rreturn = 1; 
+            }
+        }
+    }
+
+   return rreturn;
+
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+int fGetLastTopicHistoryLogAttempt(Client c, Umbrella u, Topic t){
+    TopicHistoryLog tHl = fGetLastTopicHistoryLog(c, u, t);
+    if(tHl==null) { return 0; }
+    if(tHl.topicAttempt==null) { return 0; }
+    return tHl.topicAttempt;
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+TopicHistoryLog[] fGetCollectionTopicHistoryLog(Client c, Umbrella u, Topic t){
+    TopicHistoryLog[] thls;
+        if (t==null){
+            thls = TopicHistoryLog:relationshipIn(client_topicHistoryLog, c);
+        } else if(u==null){
+            thls = TopicHistoryLog:and(relationshipIn(client_topicHistoryLog, c),relationshipIn(topic_topicHistoryLog, t));
+        } else {
+            thls = TopicHistoryLog:and(relationshipIn(client_topicHistoryLog, c),relationshipIn(topic_topicHistoryLog, t), relationshipIn(umbrella_topicHistoryLog, u));
+        }
+    return thls;
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+TopicHistoryLog fGetLastTopicHistoryLog(Client c, Umbrella u, Topic t){
+
+    TopicHistoryLog[] tHls = fGetCollectionTopicHistoryLog(c, u, t);
+    TopicHistoryLog tHl=null; 
+
+    if(tHls.length()>0){
+        tHls.sortDesc("dateTimeStamp"); tHl = tHls.get(0);
+    }
+
+    return tHl;
+
+}
+
+
+/* ***************************************** */
+/* ***************************************** */
+
+int fGetTopicHistoryLogaddAttempt(Client c, Umbrella u, Topic t, int rt, int aA_in){
+    
+    if(c==null||t==null){ return 0; }
+
+    TopicHistoryLog tHl = fGetLastTopicHistoryLog(c, u, t);
+
+    if(tHl==null){ return 0; }
+
+    int paA = 0; int pS = 0;
+    if(tHl.topicAttempt!=null) { paA = tHl.topicAttempt; pS = tHl.statusID; }
+
+    if((aA_in==1)&&(rt!=40)&&(pS==99)){
+        paA = paA + 1;
+    }
+
+    return paA;
+}
+
+/* ***************************************** */
+/* ***************************************** */
+
+void fCreateTopicHistoryLog(Client c, Umbrella u, Topic t, int st, int rt, int addAttempt, int userScore){
+
+    int aA = fGetTopicHistoryLogaddAttempt(c, u, t, rt, addAttempt); if(aA==0) { aA = 1; }
+
+    TopicHistoryLog tHl = TopicHistoryLog:new();
+    tHl.dateTimeStamp = Mez:now();
+    tHl.statusID = st;
+    tHl.runType=rt;
+    tHl.client_topicHistoryLog=c;
+    tHl.topic_topicHistoryLog=t;
+    tHl.umbrella_topicHistoryLog=u;
+    tHl.topicAttempt = aA;
+    tHl.userScore = userScore;
+    tHl.save();
+    return null;
+}
+
+/* ************************************************* */
+/* ************************************************* */
+
+TopicHistory getLastTopicHistory(Client client, Topic topic, int forcei) {
+
+    TopicHistory[] tss;
+
+    if(forcei==0){
+        tss = TopicHistory:and(relationshipIn(client_topicHistory, client), relationshipIn(topic_topicHistory, topic), equals(statusID,1));
+    } else if(forcei==1){
+        tss = TopicHistory:and(relationshipIn(client_topicHistory, client), relationshipIn(topic_topicHistory, topic));
+    }
+    
+    if(tss.length() > 0) {
+        tss.sortDesc("startDate"); return tss.first();
+    }else {
+        return null;
+    }
+
+}
+
+/* ************************************************* */
+/* ************************************************* */
+
+TopicHistory getLastTopicHistoryPPE(Client client, Topic topic) {
+    TopicHistory[] tss = TopicHistory:and(relationshipIn(client_topicHistory, client), relationshipIn(topic_topicHistory, topic));
+    if(tss.length() > 0) {
+        tss.sortDesc("startDate");
+        return tss.first();
+    }else {
+        return null;
+    }
+}

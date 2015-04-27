@@ -1,0 +1,186 @@
+unit ActivityOrderController;
+
+string msg;
+
+PatternOrder createActivityOrder(string sequenceID, string activityID, int o, string ptS, int rpm){
+    Sequence[] sArr = Sequence:equals(sequenceID, sequenceID);
+    Pattern[] aArr = Pattern:equals(patternID, activityID);
+
+    if (sArr.length() != 1){
+
+    	if (sArr.length() > 1){
+    		msg = String:concat("There is duplication for the Sequence:", sequenceID);
+    		Logger:log(msg);
+    		Alerter:alert(msg);
+    	} else {
+    		msg = String:concat("There was no Sequence found for SequenceID: ", sequenceID);
+    		Logger:log(msg);
+    		Alerter:alert(msg);
+    		return null;
+    	}
+    }
+
+    if (aArr.length() != 1){
+
+    	if (aArr.length() > 1){
+    		msg = String:concat("There is duplication for the Activity:", activityID);
+    		Logger:log(msg);
+    		Alerter:alert(msg);
+    	} else {
+    		msg = String:concat("There was no Activity found for ActivityID: ", activityID);
+    		Logger:log(msg);
+    		Alerter:alert(msg);
+    		return null;
+    	}
+    }
+
+    /* ************ */
+    Sequence s = sArr.get(0);
+    Pattern a = aArr.get(0);
+    PatternOrder[] check = PatternOrder:and(relationshipIn(sequence_patternOrder, s),relationshipIn(pattern_patternOrder, a)); 
+    if(check.length()>0) { 
+        msg = String:concat("ActivityOrder not saved the Sequence:", s.sequenceID, " and the Activity: ", a.patternID, " are already associated");
+        Logger:log(msg);
+        Alerter:alert(msg);
+        return null;
+    }
+    /* ************ */
+
+    PatternOrder po = PatternOrder:new();
+    po.sequence_patternOrder = s;
+    po.pattern_patternOrder = a;
+    po.patternOrder = o;
+    po.save();
+    
+    if(ptS != "0" && ptS !="IVR"){
+        ActivityTypeTableController:linkActivityActivityType(activityID, ptS, rpm);
+    }
+
+    msg = String:concat("ActivityOrder saved with Sequence:", s.sequenceID, " and Activity: ", a.patternID);
+    Logger:log(msg);
+    Alerter:alert(msg);
+
+    return po;
+}
+
+
+PatternOrder[] getAllActivityOrders() {
+  	return PatternOrder:all();
+}
+
+PatternOrder getActivityOrderFromActivityOrderTemp(ActivityOrderTemp activityOrderTemp){
+	PatternOrder[] arr;
+
+	if (activityOrderTemp == null){
+		return null;
+	}
+
+	Pattern p = ActivityController:getActivityFromActivityID(activityOrderTemp.activity_id);
+    Sequence s = SequenceController:getSequencesForSequenceID(activityOrderTemp.sequence_id);
+	// int activityOrder = Integer:fromString(activityOrderTemp.activity_order);
+
+	/*arr = PatternOrder:and(
+		relationshipIn(pattern_patternOrder, p), 
+		equals(patternOrder, activityOrder)
+	);*/
+
+    arr = PatternOrder:and(
+        relationshipIn(pattern_patternOrder, p), 
+        relationshipIn(sequence_patternOrder, s)
+    );
+
+	if (arr.length() < 1){
+        string msg = String:concat("WARNING: There is a no Activity with ActivityID=", activityOrderTemp.activity_id);
+        Logger:log(msg);
+        Alerter:alert(msg);
+		return null;
+	}
+
+    if (arr.length() > 1){
+        string msg = String:concat("WARNING: There is a duplication with for ActivityID=", activityOrderTemp.activity_id);
+        Logger:log(msg);
+        Alerter:alert(msg);
+        return null;
+    }
+
+	return arr.get(0);
+
+}
+
+PatternOrder[] getActivityOrdersForActivity(Pattern p) {
+	PatternOrder[] arr;
+	if (p == null){
+		arr = getAllActivityOrders();
+	} else {
+		arr = PatternOrder:relationshipIn(pattern_patternOrder, p);
+	}
+  	return arr;
+}
+
+PatternOrder[] getActivityOrdersForSequence(Sequence s) {
+	PatternOrder[] arr;
+	if (s == null){
+		arr = getAllActivityOrders();
+	} else {
+		arr = PatternOrder:relationshipIn(sequence_patternOrder, s);
+	}
+  	return arr;
+}
+
+int getActivityOrderNumberForActivitySequence(Pattern a, Sequence s){
+	
+	PatternOrder[] arr;
+	PatternOrder activityOrder;
+
+	if (a == null || s == null){
+		return 0;
+	}
+
+	arr = PatternOrder:and(
+		relationshipIn(pattern_patternOrder, a),
+		relationshipIn(sequence_patternOrder, s)
+	);
+
+	if (arr == null){
+		return 0;
+	}
+
+	if (arr.length() < 1){
+		return 0;
+	}
+
+    if (arr.length() > 1){
+        string msg = String:concat("WARNING: There is a duplication with for ActivityID=", a.patternID, " Sequence=", s.sequenceID);
+        Logger:log(msg);
+        Alerter:alert(msg);
+    }
+
+	activityOrder = arr.get(0);
+
+	if (activityOrder == null){
+		return 0;
+	}
+
+	return activityOrder.patternOrder;
+
+}
+
+bool isActivityOrderAssignedToSequence(Sequence s, int orderNumber){
+    PatternOrder[] arr;
+
+    if (s == null || orderNumber == null){
+        return false;
+    }
+
+    arr = PatternOrder:and(
+        relationshipIn(sequence_patternOrder, s),
+        equals(patternOrder, orderNumber)
+    );
+
+    if (arr.length() <= 0){
+        return false;
+    }
+
+    return true;
+}
+

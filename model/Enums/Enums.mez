@@ -1,0 +1,9 @@
+enum GENDER {
+	Male,
+	Female
+}
+
+enum LINKORNEW {
+	Link,
+	New
+}

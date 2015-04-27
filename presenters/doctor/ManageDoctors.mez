@@ -1,0 +1,32 @@
+unit ManageDoctors;
+
+Doctor[] allDoctors;
+Doctor selectedDoctor;
+
+void init(){
+	allDoctors = DoctorController:getAllDoctors();
+}
+
+string navigate(string location){
+	return location;
+}
+string back(){
+	return navigate("navManageAdmins");
+}
+
+string inviteDoctor(){
+	EditDoctor:doctor = null;
+	return navigate("navEditDoctor");
+}
+
+string editDoctor(){
+	EditDoctor:doctor = selectedDoctor;
+	return navigate("navEditDoctor");
+}
+
+void uninviteDoctor(){
+
+	Doctor:delete(selectedDoctor);
+	init();
+
+}

@@ -1,0 +1,13 @@
+/**
+ * These are some helper objects.
+ */
+@Restrict("SmartChew", all())
+persistent object ConfigurableItem{
+    /* attributes */
+    int count;
+	int indexvalue;
+    int functionindexvalue;
+	string description;
+    string resultreturn;
+	string tableInfo;
+}

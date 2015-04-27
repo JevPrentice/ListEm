@@ -1,0 +1,109 @@
+unit EditAdmin;
+
+Admin admin;
+
+Person[] allPeople;
+Person person;
+
+string firstNames;
+string surname;
+string mobileNumber;
+string idNumber;
+GENDER gender;
+
+bool isEdit;
+string isEditDesc;
+
+void init(){
+
+	allPeople = PersonController:getAllPeople();
+
+	if (admin != null){
+		person = admin.person;
+	}
+
+	if (admin == null && person == null){
+		isEdit = false;
+		isEditDesc = "Invite New Admin";
+
+		admin = Admin:new();
+		person = Person:new();
+
+		resetVars();
+	} /*else if (admin != null && person == null){
+		
+	} else if (admin == null && person != null){
+		
+	} */else if (admin != null && person != null){
+		isEdit = true;
+		isEditDesc = "Edit Existing Admin";
+
+		mobileNumber = person.mobileNumber;
+		firstNames = person.firstNames;
+		surname = person.surname;
+		idNumber = person.idNumber;
+		gender = person.gender;
+
+	}
+
+}
+
+void resetVars(){
+	mobileNumber = null;
+	firstNames = null;
+	surname = null;
+	idNumber = null;
+	gender = null;
+}
+
+string navigate(string location){
+	resetVars();
+	return location;
+}
+string back(){
+	return navigate("navManageAdmins");
+}
+
+string saveAdmin(){
+
+	Person p = PersonController:createOrUpdatePerson(firstNames, surname, mobileNumber, idNumber, gender);
+    Admin a = AdminController:createOrEditAdmin(p);
+
+	return navigate("navManageAdmins");
+}
+
+// string saveAdmin(){
+
+// 	Person person = PersonController:createOrUpdatePerson(firstNames, surname, mobileNumber, idNumber, gender);
+
+// 	/* New */
+// 	if (isEdit == false){ 
+		
+// 		// if (mobileNumber == null || String:length(mobileNumber) <= 0){
+// 		// 	Alert:alert("Please enter a Mobile Number");
+//   // 			return null;
+// 		// }
+
+// 		// Person[] flag = PersonController:getPeopleForMobileNumber(mobileNumber);
+// 	 //  	if (flag.length() > 0) {
+// 		// 	Alert:alert("There is already an Admin with that mobile number");
+// 	 //  		return null;
+// 	 //  	}
+
+// 	  	admin.dateRegistered = Mez:now();
+// 	  	admin.invite(mobileNumber);
+
+// 	}
+
+// 	/* Edit MobileNumber warning */
+// 	if (isEdit == true && ( mobileNumber != null || String:length(mobileNumber) > 0 )){
+// 		Alert:alert("Please note that the MobileNumber field cannot be updated");	
+// 	}
+	
+
+// 	/* save admin */
+// 	admin.person = person;
+// 	admin.save();
+
+// 	return navigate("navManageAdmins");
+// }

@@ -1,0 +1,12 @@
+unit ClientSMSQueueController;
+
+ClientSMSQueue[] getAllSmsQueueForClient(Client u){
+    ClientSMSQueue[] sqs;
+    sqs = null;
+
+    if(u != null){
+        sqs = ClientSMSQueue:relationshipIn(c_clientsmsqueue, u); 
+    }
+
+    return sqs;
+}

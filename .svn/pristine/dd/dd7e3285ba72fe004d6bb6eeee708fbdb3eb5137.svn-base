@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="EditSubCounty.title" unit="EditSubCounty" init="init">
+        
+        <navigation outcome="navManageSubCounties" target="ManageSubCounties"/>
+
+        <action label="back" action="back"/>
+
+        <select label="County">
+            <binding variable="county"/>
+            <collectionSource function="CountyController:getAllCounties">
+                <displayAttribute name="countyName"/>
+            </collectionSource>
+        </select>
+
+        <textfield label="SubCounty.subCountyName">
+            <binding variable="subCountyName" />
+        </textfield>
+
+        <submit label="create" action="createSubCounty"/>
+
+    </view>
+</ui>

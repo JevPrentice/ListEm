@@ -1,0 +1,16 @@
+@Restrict("SmartChew", all())
+persistent object SequenceReminder{
+	string mobileNumber;
+	string seq_id;
+	datetime reminderDate;
+	string reminderMessage;
+	int esc_id;
+	int reminderTime;
+	
+	@ManyToOne
+	Client client_sequenceReminder via reminders;
+	
+	@ManyToOne
+	Sequence sequence_sequenceReminder via sequences;
+	
+}

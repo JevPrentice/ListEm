@@ -1,0 +1,40 @@
+--set search_path to sandboxed_help_003;
+set search_path to help20150203_001;
+--set search_path to help_002;
+
+CREATE TABLE smartchew
+(
+  _id_ uuid NOT NULL,
+  _tstamp_ timestamp without time zone NOT NULL,
+  registered timestamp without time zone,
+  _firstnames text,
+  _nickname text,
+  _surname text,
+  _locale text,
+  _timezone text,
+  reportreminder timestamp without time zone,
+  CONSTRAINT smartchew_pkey PRIMARY KEY (_id_)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE smartchew
+  OWNER TO helium;
+GRANT ALL ON TABLE smartchew TO helium;
+--GRANT SELECT ON TABLE smartchew TO reporter_sandboxed_help_001;
+GRANT SELECT ON TABLE smartchew TO reporter_help20150203_001;
+--GRANT SELECT ON TABLE smartchew TO reporter_help_002;
+
+begin;
+ALTER TABLE admin ADD COLUMN registered timestamp;
+end;
+
+begin;
+	ALTER TABLE client ADD COLUMN client_smart_chew_fk uuid REFERENCES smartchew (_id_);
+	--ALTER TABLE client ADD CONSTRAINT client_client_smart_chew_fk_fkey FOREIGN KEY (client_smart_chew_fk);
+	ALTER TABLE client ADD CONSTRAINT client_client_smart_chew_fk_key UNIQUE (client_smart_chew_fk);
+
+end;
+
+
+

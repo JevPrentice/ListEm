@@ -1,0 +1,26 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all()) /*NY: added 2014/08/11 */
+persistent object CurrentSMSPattern {
+	
+	string _MTID;
+	string messageText;
+	string validFirstLetter;
+	string maxMultipleChoice;
+	string correctAnswer;
+	string informCorrectText;
+	string messageUUID;
+	string active;
+
+	@OneToOne
+	Client currentSMSPattern_clientID;
+	
+	@ManyToOne
+	Pattern currentSMSPattern_PatternID;
+	
+	@ManyToOne
+	OutgoingSMS currentSMSPattern_Outgoing;
+	
+	@ManyToOne
+	Message currentSMSPattern_MessageSetup;
+
+}

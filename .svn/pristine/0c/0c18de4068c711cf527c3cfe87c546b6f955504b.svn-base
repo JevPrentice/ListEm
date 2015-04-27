@@ -1,0 +1,42 @@
+unit MessageOrderTempController;
+
+MessageOrderTemp[] getMessageOrdersTempForMessageOrderArr(PatternMessageText[] messageOrders){
+
+	MessageOrderTemp[] messageOrdersTemp;
+	MessageOrderTemp messageOrderTemp;
+
+	if (messageOrders == null){
+		return null;
+	}
+
+	for(int i = 0; i < messageOrders.length(); i++){
+		PatternMessageText messageOrder = messageOrders.get(i);
+
+		if (messageOrder != null){
+
+			messageOrderTemp = MessageOrderTemp:new();
+
+			messageOrderTemp.message_order = messageOrder._MTID_order;
+
+			Message o_message = messageOrder.patternMessageText_Message;
+			if (o_message != null){
+				messageOrderTemp.message_id = o_message._MTID;
+				messageOrderTemp.message_text = o_message._MT_text;
+			} else {
+				messageOrderTemp.message_id = "";
+				messageOrderTemp.message_text = "";
+			}
+
+			Pattern activity = messageOrder.patternMessageTextID_pattern;
+			if (activity != null){
+				messageOrderTemp.activity_id = activity.patternID;
+			}
+
+			messageOrdersTemp.append(messageOrderTemp);
+			messageOrderTemp = null;
+		}
+
+		
+	}
+	return messageOrdersTemp;
+}

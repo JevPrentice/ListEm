@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+
+    <view label="edit.programManager" unit="RoleManagement">
+
+        <navigation outcome="goBack"    target="ManageProgramManagers"/>
+        <action label="back" outcome="goBack"/>
+
+        <textfield label="firstNames">
+            <binding variable="pm">
+                <attribute name="firstNames"/>
+            </binding>
+        </textfield>
+
+        <textfield label="surname">
+            <binding variable="pm">
+                <attribute name="surname"/>
+            </binding>
+        </textfield>
+
+        <info label="mobileNumber">
+            <binding variable="pm">
+                <attribute name="mobileNumber"/>
+            </binding>
+        </info>
+
+        <submit label="save" action="savePM"/>
+
+    </view>
+</ui>
+

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="activity_order.title" unit="ActivityOrderManagement" init="init">
+
+        <navigation outcome="nav_manage_sequences" target="SequenceManagement" />
+        <navigation outcome="nav_manage_activities" target="ActivityManagement" />
+        <navigation outcome="nav_activity_order_edit" target="ActivityOrderEdit" />
+        <navigation outcome="nav_activity_edit" target="ActivityEdit" />
+        <navigation outcome="nav_sequence_order_management" target="SequenceOrderManagement" />
+        <navigation outcome="nav_message_order_management" target="MessageOrderManagement" />
+        <navigation outcome="nav_message_edit" target="MessageEdit" />
+
+        <menuitem label="activity_order.title" icon="ActivityOrder" order="13">
+            <userRole>ProgramManager</userRole>
+        </menuitem>
+        
+        <action label="activity_order.nav_manage_sequences" action="nav_manage_sequences"/>
+        <action label="activity_order.nav_manage_activities" action="nav_manage_activities"/>
+        <action label="activity_order.create_activity_order" action="nav_activity_order_create"/>
+
+        <info label="activity_order.sequence_filter">
+            <binding variable="sequenceFilter">
+                <attribute name="sequenceID"/>
+            </binding>
+        </info>
+        
+        <info label="activity_order.activity_filter">
+            <binding variable="activityFilter">
+                <attribute name="patternID"/>
+            </binding>
+        </info>
+
+        <table title="activity_order.table">
+            <collectionSource variable="activityOrdersTemp"/>
+            <column heading="activity.activityID">
+                <attributeName>activity_id</attributeName>
+            </column>
+            <column heading="sequence.sequenceID">
+                <attributeName>sequence_id</attributeName>
+            </column>
+            <column heading="activityOrder">
+                <attributeName>activity_order</attributeName>
+            </column>
+            <column heading="activity.activityChannel">
+                <attributeName>activity_channel</attributeName>
+            </column>
+            <column heading="activity.activityType">
+                <attributeName>activity_type</attributeName>
+            </column>
+            <rowAction label="activity_order.view_sequence_orders" action="viewSequenceOrders">
+                <binding variable="activityOrderTemp"/>
+            </rowAction>
+            <rowAction label="activity_order.edit_activity" action="editActivity">
+                <binding variable="activityOrderTemp"/>
+            </rowAction>
+            <rowAction label="activity_order.edit_activity_order" action="editActivityOrder">
+                <binding variable="activityOrderTemp"/>
+            </rowAction>
+            <rowAction label="delete" action="deletePatternOrder">
+                <binding variable="activityOrderTemp"/>
+                 <confirm subject="activity_order.table.delete.confirm.subject" body="activity_order.table.delete.confirm.body"/>
+            </rowAction>
+            <rowAction label="activity_order.create_message" action="createMessage">
+                <binding variable="activityOrderTemp"/>
+            </rowAction>
+            <rowAction label="activity_order.view_message_orders" action="viewMessageOrders">
+                <binding variable="activityOrderTemp"/>
+            </rowAction>
+        </table>
+
+        <submit label="remove_filter" action="removeFiltersButton"/>
+
+    </view>
+</ui>

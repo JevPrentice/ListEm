@@ -1,0 +1,38 @@
+unit PatternMassageTextController;
+
+PatternMessageText  patternMassageText;
+PatternMessageText  deletePatternMassageText;
+
+Pattern pattern;
+Message o_message;
+
+string message;
+
+void init() {
+	 patternMassageText = PatternMessageText:new();
+}
+
+PatternMessageText[]  getAllPatternMassageTexts() {
+ 	return  PatternMessageText:all();
+ }
+ 
+ string editPatternMassageText() {
+	pattern = patternMassageText.patternMessageTextID_pattern;
+    o_message = patternMassageText.patternMessageText_Message;
+ 	return null;
+ }
+ 
+ string removePatternMassageText() {
+ 	PatternMessageText:delete(deletePatternMassageText);
+ 	return null;
+ }
+ 
+ string savePatternMassageText() {
+ 	patternMassageText.patternMessageTextID_pattern = pattern;
+ 	patternMassageText.patternMessageText_Message = o_message;
+ 	patternMassageText.save();
+ 	message = "Data has been saved";
+    Alerter:alert(message);
+ 	init();
+ 	return null;
+ }

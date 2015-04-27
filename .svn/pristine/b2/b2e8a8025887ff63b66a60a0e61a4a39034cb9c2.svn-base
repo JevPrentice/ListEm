@@ -1,0 +1,1569 @@
+alerts.common.generic={message}
+
+infolabel = Note
+
+firstNames = First Names
+nickName = Nic Name
+surname = Surname
+registered = Registered
+mobileNumber = Mobile Number
+roleID = Role ID
+submit = Submit
+select = Select
+edit = Edit
+delete = Delete
+remove = Remove
+back = Back
+exit = Exit
+stop = Stop
+run = Run
+next = Next
+view = View
+start = Start
+save = Save
+remove_filter = Remove Filter
+remove_filters = Remove Filters
+refresh = Refresh
+send_sms = Send SMS
+end = End
+start = Start
+create = Create
+pause = Pause
+resume = Resume
+filter = Filter
+invite = Invite
+uninvite = Uninvite
+remove = Remove
+reset = Reset
+update = Update
+test = Test
+downtime = Downtime
+
+language = Language
+
+first.registered = First Registered
+
+system_overview.title =  System Overview
+system_overview.table = Sub-Topic | Sequence | Activity configurable items
+system_overview.table.index = Index
+system_overview.table.desc = Description
+system_overview.table.count = Count
+
+system_settings.title = System Settings
+system_settings.ivrScheduleWatch = IVR ScheduleURL Notify
+
+#TSP Reminder
+TSPReminder.title = Scheduled Events
+TSPReminder.menu = Schedule
+button.TopicReminderLogic = Force Sub-Topic Reminder Event
+button.SequenceReminderLogic = Force Sequence Reminder Event
+button.doTopicEscalation = Force Sub-Topic Escalation Event
+button.fAutoTopicToStart = Force Sub-Topic Start Event
+button.fForceTopicToEnd = Force Sub-Topic End Event
+confirm_subject.ForceTopicUserEnd = Confirm Sub-Topic cancelation
+confirm_body.ForceTopicUserEnd = Are you sure that you want to cancel this Sub-Topic ?
+confirm_subject.fStartTopicUserSetup = Confirm Sub-Topic to start
+confirm_body.fStartTopicUserSetup = Are you sure that you want to start this Sub-Topic ?
+confirm_subject.deleteTopicUserSetup = Confirm to delete Sub-Topic
+confirm_body.deleteTopicUserSetup = Are you sure that you want to delete this Sub-Topic ?
+TSPReminder.allScheduledTopicUsers =  List of all scheduled Sub-Topics
+TSPReminder.allForceTopicEnd = List of all possible Sub-Topics to end
+
+topicUser.active = Active
+topicUser.topicOrder = Order
+topicUser.forceEndDateTime = Aproximated cancelation datetime
+topicUser.topicName = Sub-Topic Name
+
+TSPReminder.doTopicEscalationList = List of possible Sub-Topics to be escalated
+topicUser.escalationTime = Aproximated escalation datetime
+
+TSPReminder.getAllTopicReminderList = List of possible Sub-Topic reminders
+topicUser.reminderMessage = SMS Text
+
+TSPReminder.getAllSequenceReminderList = List of possible sequence reminders
+topicUser.reminderDate = Aproximated reminder datetime
+
+TSPReminder.getAllPatternReminderList = List of possible Activity reminders
+button.PatternReminderLogic = Force Activity Reminder
+#
+
+client_group._id = Group ID
+client_group.name = Group Name
+
+clientGroupList.chew = CHEW
+client_group.assing_chew = Assign CHEW
+client_group.info = User Group
+
+learning_manager_management.title = Learning Manager Management
+learning_manager_management.invite = Invite Learning Manager
+learning_manager_management.table = All Learning Managers
+
+currentSMSPattern.informCorrectText =  InformCorrectText
+currentSMS.active = Active
+
+learningManager.currentSMSPatternList.list.title = CurrentSMSActivity list
+
+cho.choList.submitInviteAlert = CHO saved
+chew.chewList.submitInviteAlert = CHEW saved
+chw.chwList.submitInviteAlert = CHW saved
+client.clientList.saveClientAlert = User Saved
+
+pmct.pmctList.submitInviteAlert = Pharmacist Saved
+pmct.pmctList.submitInviteAlerted = Pharmacist Invited
+pmct.careRList.list.title = Care Receivers
+
+pharmacist.confirm_subject.pharmacist.careRRemove = Confirm Pharmacist removal
+pharmacist.confirm_body.pharmacist.careRRemove = Are you sure that you want to remove this Pharmacist  ?
+
+confirm_subject.pharmacist.careRRemove = Confirm Care Receiver cancelation
+confirm_body.pharmacist.careRRemove = Are you sure that you want to cancel this Care receiver  ?
+careR.careRList.saveCareReceiverAlertInvalidNumber = Invalid Safaricom number
+
+careR.careRList.saveCareReceiverAlertFailed = Please check for duplication of the mobile number or nickname.
+
+careR.careRList.submitInviteAlert = Care Receiver Saved
+pmct.pmctList.removeAlert =  Care Receiver removed
+
+learningManager.clientTopicList.title = Start User Sub-Topic
+learningManager.clientTopicList.end = End User Sub-Topic
+
+learningManager.clientTopicList.start = Start User Sub-Topic
+learningManager.selectClient = Select User
+learningManager.selectPattern = Select Activity
+learningManager.selectTopic = Select Sub-Topic
+
+learningManager.incomingSMSList.menu = SMS Logs
+learningManager.incomingSMSList.title = SMS Logs
+learningManager.incomingSMSList.list.title = Incoming SMS
+incomingSMS.smsText = SMS Text
+incomingSMS.smsTextClean = SMS Text Clean
+incomingSMS.status = Status
+incomingSMS.dateTimeStamp = DateTimeStamp
+incomingSMS.clientNumber = User Mobile Number
+incomingSMS.ResendDate = DateTime
+incomingSMS.ResendDateButton = Resend all SMS messages after this date and timestamp
+incomingSMS.ResendDateWarning = Please click the send button again if you are sure you wish to resend messages.
+
+learningManager.outgoingSMSList.list.title = Outgoing SMS
+
+Pattern.PatternList.savePatternTypeAlert = Activity Type saved
+Pattern.PatternList.savePatternTypeAlertError = The Activity Type ID exists already.
+
+learningManager.clientList.list.title = Users in this Group
+
+learningManager.patternList.title = Activity Setup Table
+learningManager.patternList.menu = * Activity
+learningManager.patternList.submitInvite = Submit Activity
+learningManager.patternList.list.title = List of registered Activities
+
+patternTypeList.title = Activity SMS Types
+patternTypeList.menu = Activity Type setup
+patternTypeList.list.title = All SMS Activity Types
+
+patternType.patternTypeID = Activity Type ID
+patternType.randomPatternMax = Random Activity Max
+patternType.randomPattern = Random Activity
+patternType.MO_Multiple = MO Multiple
+patternType.informNext = Inform Correct next
+patternType.StopPatternOnCorrect = Stop Activity On Correct Answer
+patternType.redo = Inform Incorrect Redo
+patternType.Multiple_Choice_Range = Response Validation Multiple Choice Range
+patternType.Against_Message_Order = Response Validation Against Message Order
+patternType.Against_Stored_Value = Against Stored Value (response validation)
+patternType.redo = Redo (inform incorrect)
+
+patternTypeController.title = Activity Type setup controller
+patternTypeController.menu = * Activity - ActivityType 
+patternTypeController.table.delete.confirm.subject = Confirm deletion of Activity SMS Type
+patternTypeController.table.delete.confirm.body = Are you sure you want to delete this Activity SMS Type?
+
+patternType.selectPattern = Select Activity
+
+client.firstName = First Name
+client.surname = Surname
+client.mobileNumber = Mobile Number
+client.status = Active 
+client.gender = Gender
+client.language = Language
+client.role = User Role
+client.age = Age
+client.nickname = Nickname
+client.chatcount = ChatCount
+client.name = User Details
+client.currentactivity = Current Activity
+client.progressmessage = Progress Message
+client.isActive = Is User Active
+
+client.requireName = Name must be specified
+client.requireSurname = Surname must be specified
+client.requireInternationalNumber = The mobile number must be in international format. No leading + or zeros
+
+learningManager.clientList.clearGroupChat = Clear Group Chat Count
+
+learningManager.patternMessageTextList.title = Activity MessageText
+learningManager.patternMessageTextList.menu = * Activity - Message
+patternMessageTextList.list.title = Activity Message Text list
+
+learningManager.messageList.saveconfirmation = Message has been saved
+learningManager.messageList.savewarning = Please check all values, including a possible duplicate Message ID
+learningManager.messageList.title = Messages
+learningManager.messageList.menu = * Message
+learningManager.messageList.list.title = List of messages
+
+message.addfromstring = Add from string
+#message._MTID_order = MT ID Order
+#message.MTID = MT ID
+#message._MT_text = MT Text
+#message.maxMultipleChoice = Max Multiple Choice
+#message.correctAnswer = Correct Answer
+#message.informCorrectText = Inform Correct Text
+#message.dateTimeStamp = DateTimeStamp
+
+fixed_message_management.title = Fixed Message Management
+
+fixMessage.iConfigValue.tabletitle = Configuration settings (All times are GMT)
+fixMessage.statusids.tabletitle = Status IDs used throughout scheduling and user flow
+
+#fixMessage.menu = System Settings
+fixMessage.buildFixMessages = Build Static Keys
+fixMessage.list.title = List of fixed messages
+fixMessage.language = Language ID
+fixMessage.fixedMessageID = Message ID
+fixMessage.fixedMessageText = Fixed Message Text
+fixMessages.error_New = Fixed messages already exist. 
+
+fixMessage.statusDescription = Status Description
+fixMessage.statusID = Status ID
+
+fixMessage.iConfigValue = Config Value
+fixMessage.sConfigDescription = Config Description
+fixMessage.fUpdateConfig = Update
+
+client.selected = User selected.
+pattern.selected = Activity selected.
+
+sentMTIDTOUser.message = {MTText}
+sentSMSTOUser.message = {text}
+
+outgoingSMS.messageText = MessageText
+outgoingSMS.dateTimeStamp = DateTimeStamp
+outgoingSMS.status = Status
+outgoingSMS.maxMultipleChoice = MaxMultipleChoice
+outgoingSMS.correctAnswer = CorrectAnswer
+outgoingSMS.validFirstLetter = ValidFirstLetter
+outgoingSMS.responseText = ResponseText
+outgoingSMS.userScore = User Score
+
+#error messages
+patternType.RandomPattern.error_value = Random Activity is null, program could not proceed .
+error.required_field.first_name = First name is required
+error.required_field.last_name = Surname is required
+error.required_field.id_number = ID number is required.
+error.duplicate_npm_id = The specified id has already been used for a different National Program Manager. 
+
+#-- Error Messages --#
+error.task.assigned = This task has already been assigned to a SWAM.
+error.territory.already.linked = This territory is already linked.
+error.no_territory_selected = Please, select a territory.
+error.type.null = Please, specify the type.
+error.null_field = Please specify a value.
+error.invalid_line_number = Please, enter a valid line number
+error.invalid_cell_number = Please, enter a valid cell number
+error.invalid_email = Please, enter a valid email address
+pmct.pmctList.pharmacyerror = Please, please make sure that a pharmacy  is selected
+pmct.pmctList.pharmacyerror_linkto_pharmacy_exist = This Pharmacy has already been assigned to a Pharmacist. Please remove the Pharmacist liked to this Pharmacy 
+
+##PPEReporting
+learningManager.sequencePPEList.title = Sequence PPE Setup Table
+learningManager.sequencePPEList.menu = Sequence PPE
+#learningManager.topicPPEList.submitInvite = Submit SequencePPE
+sequencePPE.progress = Progress
+sequencePPE.performance = Performance
+sequencePPE.effort = Effort
+sequencePPE.clientID = User ID
+sequencePPE.SequenceID = Sequence ID
+learningManager.sequencePPEList.save = Save SequencePPE
+learningManager.sequencePPEList.list.remove = Remove
+learningManager.sequencePPEList.list.edit = Edit
+
+learningManager.topicPPEList.list.title = List of Sub-Topic PPE
+learningManager.topicPPEList.title = Sub-Topic PPE Setup Table
+learningManager.topicPPEList.menu = Sub-Topic PPE
+learningManager.topicPPEList.list = List of Sub-Topic PPE
+topicPPE.progress = Progress
+topicPPE.performance = Performance
+topicPPE.effort = Effort
+topicPPE.clientID = User ID
+topicPPE.topicPPEID = Sub-Topic PPE ID
+learningManager.topicPPEList.save = Save Sub-Topic PPE
+learningManager.topicPPEList.list.remove = Remove Sub-Topic PPE
+learningManager.topicPPEList.list.edit = Edit Sub-Topic PPE
+
+learningManager.patternOrderList.title = Activity Order Setup Table
+learningManager.patternOrderList.menu = * Activity Order
+learningManager.patternOrderList.list = List of ActivityOrder
+patternOrder.performance = Performance
+patternOrder.effort = Effort
+patternOrder.clientID = User ID
+patternOrder.topicPPEID = Sub-Topic PPE ID
+patternOrder.selectPattern = Select Activity
+
+learningManager.patternOrderList.save = Save 
+learningManager.patternOrderList.list.remove = Remove 
+learningManager.patternOrderList.list.edit = Edit 
+
+learningManager.sequenceList.title = Sequence table
+learningManager.sequenceList.menu = * Sequence
+learningManager.sequenceList.list = List of sequences
+sequence.sequenceID = Sequence ID
+sequence.sequenceName = Sequence Name
+sequence.sequenceStartSMS = SequenceStartSMS
+sequence.sequenceEndSMS = SequenceEndSMS
+sequence.sequenceReminderSMS = SequenceReminderSMS
+sequence.sequenceReminderTime = SequenceReminderTime
+
+learningManager.sequenceList.save = Save 
+learningManager.sequenceList.list.remove = Remove 
+learningManager.sequenceList.list.edit = Edit 
+
+learningManager.sequenceOrderList.title = Sequence Order table
+learningManager.sequenceOrderList.menu = * Sequence Order
+learningManager.sequenceOrderList.list = List of sequence orders
+sequenceOrder.progress = Progress
+sequenceOrder.performance = Performance
+sequenceOrder.effort = Effort
+sequenceOrder.clientID= User ID
+sequenceOrder.topicPPEID = Sub-Topic PPE ID
+sequenceOrder.sequenceOrder = Sequence Order
+learningManager.sequenceOrderList.save = Save 
+learningManager.sequenceOrderList.list.remove = Remove 
+learningManager.sequenceOrderList.list.edit = Edit
+
+learningManager.topicList.title = Sub-Topic table
+learningManager.topicList.menu = Sub-Topic 
+learningManager.topicList.list = List of Sub-Topics
+
+general.general.Sd = Saved
+
+topic.performance = Performance
+topic.clientID = User ID
+topic.topicPPEID = Sub-Topic PPE ID
+learningManager.topicList.save = Save 
+learningManager.topicList.list.remove = Remove 
+learningManager.topicList.list.edit = Edit
+learningManager.topicList.list.end = End
+
+learningManager.topicList.pause = Pause
+learningManager.topicList.pauseConfirm = Sub-Topic has been paused
+learningManager.topicList.resumeConfirm = Sub-Topic has been resumed
+learningManager.topicList.searchConfirm = Search Topic or Sub-Topic has been initiated after a Pause in the active Topic
+learningManager.topicList.searchAlert = No Topic or Sub-Topic was recognised
+learningManager.topicList.searchNotYet = Search Topic or Sub-Topic is not yet available for this User
+
+learningManager.topicUserList.title = Sub-Topic User Schedule
+
+learningManager.topicUserList.list = List of Users Scheduled for Sub-Topics
+topicUser.topicUserID = UserID
+topic.active = Active
+topicUser.topicOrder = Order
+topicUser.topicMinStartDate = MinStartDate
+topicUser.topicPPEID = Sub-Topic PPE ID
+learningManager.topicUserList.save = Save 
+learningManager.topicUserList.list.remove = Remove 
+learningManager.topicUserList.list.edit = EdiNumber
+AllSMSLogs.title = All SMS Logs
+
+PPEList.list.edit = Edit
+
+AllSMSLog.title = All SMS Messages
+AllSMSLog.dateTimeStamp = DateTimeStamp
+AllSMSLog.mobileNumber = Number
+AllSMSLog.messageText = Message
+AllSMSLog.direction = Direction
+
+AllSMSLog.sentconfirmationIN = Ad hoc SMS received IN
+AllSMSLog.sentconfirmationOUT = Ad hoc SMS sent OUT
+
+AllSMSLog.SMSqueue = SMS Queue
+AllSMSLog.ForceQueue = Force Queue
+
+learningManager.topicList.list.start = Start
+learningManager.TopicHistory.Menu = Sub-Topic History
+learningManager.TopicHistory.TopicTableTitle = Sub-Topic History
+learningManager.TopicHistory.SequenceTableTitle = Sequence History
+learningManager.TopicHistory.PatternTableTitle = Activity History
+
+learningManager.TopicHistory.TopicLogTableTitle = Sub-Topic History Log
+learningManager.TopicHistory.topicAttempt = Attempt
+
+learningManager.TopicHistory.Topic = Sub-Topic
+learningManager.TopicHistory.Sequence = Sequence
+learningManager.TopicHistory.Pattern = Activity
+
+learningManager.TopicHistory.Client = User
+learningManager.TopicHistory.startDate = Start
+learningManager.TopicHistory.maxEndDate = Max
+learningManager.TopicHistory.reminderTime = Remind
+learningManager.TopicHistory.escalationTime = Escalate
+learningManager.TopicHistory.actualEndDate = End
+learningManager.TopicHistory.statusID = Status
+learningManager.TopicHistory.escalationID = Esc_Status
+
+learningManager.TopicHistory.userScore = Score
+
+learningManager.TopicHistory.dateTimeStamp = Date
+
+learningManager.TopicHistory.reactivatebuttonClient = Delete User Activity History
+/*learningManager.TopicHistory.reactivatebutton = Reactivate All*/
+
+learningManager.TopicHistory.runType = RunType
+
+fixMessage.CreateData = Create Data
+fixMessage.CreateClientsRSA = Create Users RSA
+fixMessage.CreateClientsKY = Create Users KY
+
+ScheduleURL.fGetAllScheduleURL = URL Scheduler
+ScheduleURL.dateTimeStampInserted = dateTimeStampInserted
+ScheduleURL.url = URL
+ScheduleURL.dateTimeStampUsed = dateTimeStampUsed
+ScheduleURL.status = Status
+
+TopicStartAlert = Sub-Topic not started. There is already an active Sub-Topic for this User.
+TopicStartAlertOK = Sub-Topic started for this User.
+
+ClientSummaryView.title.ClientSummaryView = User Summary View
+ClientSummaryView.title.Summary = User Summary
+ClientSummaryView.title.Client = User
+ClientSummaryView.View = View
+ClientSummaryView.Progress = Progress SMS
+ClientSummaryView.Send = Send
+
+ClientSummaryView.RunScheduledReports = Run Scheduled Reports
+ClientSummaryView.SendOverallTopPerformers = Send Top Performers Reports
+ClientSummaryView.SendOverallTopPerformers.confirmation = Top Performers Reports have been sent
+ClientSummaryView.SendOverallTopPerformers.alert = Please select a Topic and a Group
+
+ClientSummaryView.SendSummaryReports = Send Individual Performance Reports
+ClientSummaryView.SendSummaryReports.confirmation = Individual Performance Reports have been sent
+ClientSummaryView.SendSummaryReports.alert = Please select a Topic and a Group
+
+ClientSummaryView.RecreateSummaries = Recreate Summaries In Collection
+ClientSummaryView.RecreateSummaries.confirmation = Performance Summaries have been recreated
+ClientSummaryView.RecreateSummaries.alert = Please select a Topic and a Group
+
+ivrmappingtable.pagetitle = IVR Mapping Table
+ivrmappingtable.pattern = Activity
+ivrmappingtable.ivractivityid = IVR Activity
+ivrmappingtable.channelkey = Channel
+ivrmappingtable.ivractivity = Save IVR Activity
+ivrmappingtable.ivractivitylist = IVR Activity List
+ivrmappingtable.build = Build Up IVR Mapping Table
+
+learningManager.monitoring.title = Monitoring
+learningManager.TopicHistory.PendingPatternTableTitle = Activities Pending More Than 15 Minutes
+AllSMSLog.PendingSMSqueue = SMS Messages Queued For More Than 5 Minutes
+AllSMSLog.Last10Incoming.title = Last 5 of each of messages : Outgoing, Incoming and IVR=*done*
+
+savetopicduplicationalert.text = Sub-Topic User Schedule was not saved due to duplication.
+
+learningManager.PPESummary.mainmenu = PPE Summary
+learningManager.PPESummary.menu = All PPE Summary
+learningManager.GroupPPESummary.menu = Group PPE Summary
+
+learningManager.PerformanceSummary.mainmenu = Performance Summary
+
+PPE.client = User
+PPE.topic = Sub-Topic
+PPE.sequence = Sequence
+PPE.pattern = Activity
+PPE.progress = Progress
+PPE.effort = Effort
+PPE.score = Score
+PPE.performance = Performance
+learningManager.PPE.topictitle = Sub-Topic PPE List
+learningManager.PPE.sequencetitle = Sequence PPE List
+learningManager.PPE.patterntitle = Activity PPE List
+PPE.groupmessagetable = Group Messages
+PPE.groupmessageID = ID
+PPE.groupmessagesend = Send Group Messages
+PPE.groupmessagedestination = Recipients
+PPE.groupmessagetext = Message
+
+clientsummary.reactivatewarning = Please click Reactivate User again if you are sure you want to reactivate the User.
+clientsummary.reactivateconfirm = User has been reactivated.
+ClientSummaryView.URL = Copy and Paste URL to browser
+client.clientList.saveClientAlertFailed = Please check for duplication of the mobile number or nickname.
+config.UpdateValue = Update Value
+fixMessage.fEditConfig = Edit
+
+action.Individual = Individual
+
+button.pauseGroup = Pause Active ST
+topicuserlist.pausegroupscheduleconfirm = Group has been Paused for the currently active Sub-Topic.
+topicuserlist.pausegroupschedulealert = Please click the Pause Group Active Sub-Topic button again to confirm.
+
+button.resumeGroup = Resume Paused ST
+topicuserlist.resumegroupscheduleconfirm = Group has been Resumed for the previously Paused Sub-Topic.
+topicuserlist.resumegroupschedulealert = Please click the Pause Group Active Sub-Topic button again to confirm.
+
+button.stopGroup = Stop Active ST
+topicuserlist.stopgroupscheduleconfirm = Group active Sub-Topic has been stopped.
+topicuserlist.stopgroupschedulealert = Please click the Stop Group Active Sub-Topics button again to confirm.
+
+button.clearGroup = Clear Group Schedule for all Sub-Topics
+topicuserlist.cleargroupscheduleconfirm = Group Sub-Topic schedule has been cleared.
+topicuserlist.cleargroupschedulealert = Please click the Clear Group Schedule button again to confirm.
+
+button.submitGroup = Schedule ST
+savetopicconfirmgroup.text = Sub-Topic has been scheduled for Group.
+
+topicuserlist.clearschedulealert = Please click the Clear User Sub-Topic History button again to confirm.
+
+topicuserlist.clearscheduleconfirm = User Sub-Topic history has been cleared.
+button.sendprogressmessagebulk = Send Progress Message to All
+
+release.version = Release Version
+savetopicconfirm.text = Sub-Topic has been scheduled for User.
+
+learningManager.clientList.viewClientSummary = View Summary
+learningManager.PPE.patterntitleGroup = Activity PPE List
+
+client.roleID = RoleID
+PPE.groupmessagesendCHEW = Send CHEW update
+PPE.groupmessagesendTop = Send Top Performer update
+PPE.groupmessagesendCHV = Send individual CHV update
+
+savetopicconfirmgroup.alertlanguage = The Sub-Topic is not a match to the selected Language.
+
+confirm_subject.clientRemove = Delete User
+confirm_body.clientRemove = Are you sure you want to delete this User?
+
+#Column
+column_heading.pharmacy = Pharmacy
+column_heading.pharmacist = Pharmacist
+table_heading.pharmacist = Pharmacists
+column_heading.name = Name
+
+npm.manage_pharmacists.title = Manage Pharmacists
+npm.manage_pharmacies.title = Manage Pharmacies
+npm.view_heading.activities = Activities
+column_heading.activity = Activity
+
+table_heading.pharmacies = List of Pharmacies
+
+#Addition work
+
+#-- Confirmation Messages --#
+deleted_confirmation.npm = National Program Manager {uNpm.fname} {uNpm.sname} has been successfully deleted.
+invited_confirmation.npm = National Program Manager {uNpm.fname} {uNpm.sname} has been successfully invited.
+edited_confirmation.npm = National Program Manager's details have been successfully edited.
+pharmacy.pmcyList.submitRemoveAlerted =  Pharmacist has been removed
+pharmacist.careRList.list.remove_pharmacist = Unlink Pharmacist
+
+configurableItem.info = Info
+
+mobileuser.List.submitInvite = Submit
+mobileuser.List.invite = Mobile number / E-mail (invite)
+mobileuser.List.list.title = Mobile user form
+mobileuser.List.title = Mobile User
+mobileuser.List.name = Name
+mobileuser.List.surname = Surname
+mobileuser.List.email = Email
+client.submit = Proceed
+ClientSummaryView.title.Summary = User Summary
+
+confirm_subject.clientRemove = Delete User
+confirm_body.clientRemove = Are you sure you want to delete this User?
+
+# Info
+user.question = Question
+user.answer = Answer
+
+# Table
+user.questions = Questions
+user.questions_content = Text
+user.questions_type = Type
+
+# Column
+client.roleID = Role
+client.option = Option
+client.status = Status
+client.options = Options
+client.options_choose = Select
+client.responses = Answers
+client.response = Answer
+
+# Row Action
+
+# Heading
+client.title.complete_task_question = Complete Task Questions
+
+# Menu
+umbrellaview.datewarning = invalid date
+
+umbrellaview.startdate = Start Date
+umbrellaview.previousdate = Scheduling start date (default to today)
+umbrellaview.fixeddate = Fixed start date (1st)
+umbrellaview.relativestartnum = Add relative days (2nd)
+umbrellaview.dowstartnum = Start on next day of the week (3rd)
+umbrellaview.ordernum = Sub-Topic Order
+
+umbrellaview.subtopics = Sub-Topics Linked to a Topic
+
+umbrellaview.ordernumC = Order
+umbrellaview.previousdateC = Previous
+umbrellaview.fixeddateC = Fixed
+umbrellaview.relativestartnumC = RelativeNum
+umbrellaview.dowstartnumC = DowStartNum
+
+umbrellaview.createumbrella = Create Topic
+umbrellaview.linkumbrella = Link Sub-Topic To Topic
+
+
+umbrellaview.noselection = Please select a User or a Group and a Topic
+umbrellaview.noselectionUserGroup = Please select a User or a Group
+umbrellaview.scheduledok = User has been scheduled for the Topic
+umbrellaview.schedulednotok-language = User was NOT scheduled for the Topic based on language preference
+umbrellaview.schedulecleared = Schedule based on this Topic has been cleared for the User or Group
+
+umbrellaview.info = Info
+umbrellaview.showallclients = Show All Users
+umbrellaview.groups = Group
+umbrellaview.clientnumber = User Number
+
+umbrellaview.forcestart = Run scheduled start for User or Group
+
+umbrellaview.deleteclientconfirmation = User schedule has now been cleared
+umbrellaview.deleteclient = Clear User schedule
+umbrellaview.deleteclientwarning = Please click the button again to confirm that the schedule must be cleared
+umbrellaview.deleteclientalert = Please select a User
+
+umbrellaview.filter_on_topic=Filter On Topic 
+
+
+
+GroupTopicScheduling.title = Group Topic Scheduling
+GroupTopicScheduling.showUsersForGroup = Show Users For Group
+
+GroupTopicScheduling.scheduleGroup = Schedule Group For Topic
+GroupTopicScheduling.clearGroupSchedule = Clear Group Schedule for Topic
+GroupTopicScheduling.runScheduledStartForGroup = Run Scheduled Start For Group
+
+UserTopicScheduling = User Topic Scheduling
+
+UserTopicScheduling.showAllUsers = Show All Users
+UserTopicScheduling.showUsersForGroup = Show Users for Group
+UserTopicScheduling.showUnscheduledUsers = Show Unscheduled Users
+
+UserTopicScheduling.currentUserFilter = Current User Filter
+
+UserTopicScheduling.scheduleUser = Schedule User
+UserTopicScheduling.clearUserSchedule = Clear User Schedule for Topic
+UserTopicScheduling.runScheduledStartForUser = Run Scheduled Start For User
+
+UserTopicScheduling.table.usersScheduledForSubTopics = Users Scheduled for Sub-Topics
+
+UserTopicScheduling.groupFilter = Group (For Filtering Only)
+GroupTopicScheduling.navReschedule = Reschedule Topic
+
+RescheduleTopic = Reschedule Topic
+RescheduleTopic.rescheduleForce = Force complete re-schedule
+RescheduleTopic.reschedulebutton = Reschedule Topic for Group
+
+#-- Added by NY for care-receiver view --#
+checkbox.carereciever.above18 = I am over 18 years old
+checkbox.carereciever.diabetes = I am a Diabetes patient
+alert_error_message.carereciever_registration = Thank you for your interest, but you are required to be older than 18 years and a Diabetes patient to participate.
+
+Careriever_disclaimer_acceptance_message = Thank you for accepting the disclaimer. On the next screen, you will be asked to sign with your finger on the screen of the phone to confirm that you accept the terms and conditions of this program.
+Careriever.disclaimerMessageText_accepted = 
+
+gpsLocation.Location = GPS Location
+
+row_action.pharmacy.Edit = Edit
+row_action.pharmacy.unlink = Unlink Pharmacy
+pharmacy.alert.edited = Pharmacy Saved
+
+pharmacy.confirm_subject.unlinking = Confirm Pharmacist removal
+pharmacy.confirm_body.unlinking = Are you sure that you want to remove the Pharmacist  ?
+
+pharmacist.confirm_subject.remove = Confirm Pharmacist removal
+pharmacist.confirm_body.remove = Are you sure that you want to remove Pharmacist  ?
+
+pharmacist.confirm_subject.pharmacist.careRRemove = Confirm Pharmacist removal
+pharmacist.confirm_body.pharmacist.careRRemove = Are you sure that you want to remove this Pharmacist  ?
+
+/* ******** */
+
+TopicScheduling.showAllTus = Show all Scheduled Users
+TopicScheduling.showTusForUser = Show Schedule For Selected User
+TopicScheduling.showTusForGroup = Show Schedule For Selected Group
+TopicScheduling.showTusForSubTopic = Show Schedule For Selected Sub-Topic
+TopicScheduling.tusFilterType = Filter Type
+TopicScheduling.tusFilterApplied = Filter Applied
+
+
+TopicScheduling = Topic Scheduling
+TopicScheduling.startdate = Start Date
+TopicScheduling.startNow = Ignore default time of day
+
+/* ******** */
+
+SubTopicScheduling = Sub-Topic Scheduling
+
+/* ******** */
+
+UserScheduleSummary = User Schedule Summary
+SubTopicUserScheduling = Sub-Topic User Scheduling
+SubTopicUserScheduling.showUsersForGroup = Show Users for Selected Group
+SubTopicUserScheduling.showSubTopicsForTopic = Show Sub-Topics for Topic
+SubTopicUserScheduling.tus = Users Scheduled for Sub-Topics
+SubTopicUserScheduling.clearUserSubTopicHistory = Clear User History for Sub-Topic
+SubTopicUserScheduling.navTusEdit = Schedule User for Sub-Topic
+
+/* ******** */
+
+SubTopicGroupScheduling = Sub-Topic Group Scheduling
+
+GroupScheduling = Group Scheduling
+
+/* ******** */
+
+SubTopicUserScheduleEdit = Create / Edit Sub-Topic User Schedule
+
+/* ******** */
+
+group_management.title=Group Management
+group_management.menu_item.title=Groups
+group_management.nav_group_filter = Group Filter
+group_management.addGroup=Add Group
+group_management.addMultipleGroups=Add Multiple Groups
+group_management.organization_name=Organization Name
+group_management.geographyType = Geography Type
+group_management.groupID=Group ID
+group_management.groupName=Group Name
+group_management.groupType=Group Type
+group_management.supervisor=Supervisor
+group_management.table.groups=All Groups
+group_management.table.manage_users=Manage
+group_management.table.remove_group=Remove Group
+group_management.table.remove_group.confirm.subject=Confirm Deletion of Group
+group_management.table.remove_group.confirm.body=Are you sure you want to remove this group ?
+
+/* ******** */
+
+group_edit.title=Group Add / Edit
+group_edit.action.add_new_user=Add New User
+group_edit.action.add_user_to_group=Add User To Group
+group_edit.info.client_group=User Group
+group_edit.table.role_name=Role
+group_edit.table.reg_date=Registration Date
+group_edit.table.group=Group
+group_edit.table.users=Users
+group_edit.table.remove_group.confirm.subject=Confirm Removal of User to Group
+group_edit.table.remove_group.confirm.body=Are you sure you want to remove this user from this group?
+group_edit.showSubCountiesForCounty = Show Sub-Counties for Selected County
+group_edit.countyFilter = County (Filter Only)
+
+/* ******** */
+
+group_users.title=Group Users
+group_users.group_performance=Group Performance
+group_users.group_name=Group Name
+group_users.table.unassociated_users = Users not in Groups
+group_users.table.associated_users = Users in this Group
+group_users.table.associate_user = Link User
+group_users.table.unassociate_user = UnLink User
+
+/* ******** */
+
+group_filter.title = Group Filter
+group_filter.userCount = User Count for Filters
+group_filter.group_filter = Group Filter
+group_filter.topic_filter = Topic Filter
+group_filter.sub_topic_filter = Sub-Topic Filter
+group_filter.activity_channel_filter = Channel Filter
+
+group_filter_results.title = Group Messaging
+group_filter_results.smsText = SMS Text
+group_filter_results.table.users = Selected Users For Action
+group_filter_results.pauseSelection = Pause Selection
+group_filter_results.resumeSelection = Resume Selection
+group_filter_results.rewindSelection = Rewind Selection
+
+group_filter_results.unselect = Unselect
+group_filter_results.unselect.subject = Unselect User
+group_filter_results.unselect.body = Are you sure you want to unselect this user? (Please note this will NOT delete the user)
+
+/* ******** */
+
+GroupPerformance.title = Group Performance
+
+/* ******** */
+
+user_management.title=User Management
+user_management.add_edit_user=Add / Edit User
+user_management.menu_item_title=Users
+user_management.action.add_new_user=Add New User
+user_management.action.add_multiple_users=Add Multiple Users
+user_management.group_name=Group Name
+user_management.role_name=Role Name
+user_management.button.saveUser=Save User
+
+user_management.training_mode=Training Mode
+user_management.type_of_phone=Type Of Phone
+user_management.platform_type=Platform Type
+user_management.mobile_service_provider=Mobile Service Provider
+user_management.education_level=Education Level
+user_management.years_at_chv=Years At CHV
+user_management.email_address=Email Address
+user_management.date_of_birth=Date Of Birth
+
+user_management.table.remove_user.confirm.subject=Confirm Removal of user
+user_management.table.remove_user.confirm.body=Are you sure you want to remove this user?
+
+user_management.table.users=All Users
+user_management.table.row.view_profile=View Profile
+user_management.table.row.view_activity=View Activity
+user_management.table.row.remove_user=Remove User
+user_management.topicUserList=User Sub-Topic Schedule
+
+/* ******** */
+
+user_profile.title=User Profile
+user_profile.send_progress_sms=Send Progress SMS
+user_profile.send_custom_sms_in=Send Custom SMS In
+user_profile.send_custom_sms_out=Send Custom SMS Out
+user_profile.table.performance_overview=Performance Overview
+user_profile.table.topic=Sub-Topic
+user_profile.table.status=Status
+user_profile.table.days_to_complete=Days To Complete
+user_profile.table.quiz_performance=Quiz Performance
+user_profile.table.game_performance=Game Performance
+user_profile.table.group_chat_participation=Group Chat Participation
+user_profile.button.forceQueue=Force Queue
+user_profile.table.sms_activity=SMS Activity
+user_profile.table.ivr_activity=IVR Activity
+user_profile.table.sms_ivr_activity.timestamp=Timestamp
+user_profile.table.sms_ivr_activity.direction=Direction
+user_profile.table.sms_ivr_activity.message=Message
+user_profile.table.sms_ivr_activity.status=Status
+user_profile.refresh_performance = Refresh Performance
+user_profile.activate_or_deactivate = Activate Or De-Activate User
+
+user_profile.nav_outgoing_sms = View User Performance
+user_profile.showalloutgoingsms = Show/Hide activity detail
+
+user_activity.title=User Activity
+user_activity.bShowHideDetailvar = Showing User Detail
+
+/* ******** */
+
+#system_performance.title=System Performance
+#system_performance.group_name=Group Name
+#system_performance.user=User
+#system_performance.send_sms=Send SMS
+#system_performance.pause_topic=Pause Topic
+#system_performance.resume_topic=Resume Topic
+#system_performance.reschedule_topic=Reschedule Topic
+#system_performance.force_queue=Force Queue
+#system_performance.table.sms_queue=SMS Queue
+#system_performance.table.ivr_queue=IVR Queue
+#system_performance.table.timestamp=Timestamp
+#system_performance.table.username=Username
+#system_performance.table.mobileNumber=Mobile Number
+#system_performance.table.direction=Direction
+#system_performance.table.message=Message
+#system_performance.table.status=Status
+
+/* ******** */
+
+send_custom_sms.title=Send Custom SMS
+send_custom_sms.messageDirection = Message Direction
+send_custom_sms.in_message_info=Send Incoming Message
+send_custom_sms.out_message_info=Send Outgoing Message
+send_custom_sms.message_text_in=Incoming Message Text
+send_custom_sms.message_text_out=Outgoing Message Text
+
+/* ******** */
+
+group_bulk_upload.title=Group Bulk Upload
+group_bulk_upload.select.chew=Select Group CHEW
+group_bulk_upload.fileupload=CSV Upload
+group_bulk_upload.csv_template_header=CSV Template Header
+group_bulk_upload.csv_template_content=CSV Template Content
+
+/* ******** */
+
+user_bulk_upload.title=User Bulk Upload
+user_bulk_upload.fileupload=CSV Upload
+user_bulk_upload.csv_template_header=CSV Template Header
+user_bulk_upload.csv_template_content=CSV Template Content
+
+/* ******** */
+
+user_activity.umbrellaPPE.title = User Topic PPE
+user_activity.umbrellaPPE.umbrellaStartDateTime = Start
+user_activity.umbrellaPPE.umbrellaEscalateDateTime = Escalate
+user_activity.umbrellaPPE.umbrellaEndDateTime = End
+user_activity.umbrellaPPE.status = Status
+user_activity.umbrellaPPE.duration = Duration (d)
+user_activity.umbrellaPPE.umbrella_umbrellaPPE = Topic
+user_activity.umbrellaPPE.progress = Progress
+user_activity.umbrellaPPE.client_umbrellaPPE = User
+user_activity.umbrellaPPE.durationhours = Duration (h)
+
+user_activity.umbrellaPPE.chatscore = Chat Count
+user_activity.umbrellaPPE.chatscoreadjusted = Chat Score
+
+user_activity.umbrellaPPE.quizpercentage = Quiz %
+user_activity.umbrellaPPE.quizscore = Quiz Score
+
+user_activity.umbrellaPPE.practicumtotalscoreachieved = Prac Marks
+user_activity.umbrellaPPE.practicumpercentage = Prac %
+user_activity.umbrellaPPE.practicumscore = Prac Score
+
+user_activity.umbrellaPPE.totalscore = Total Score
+
+
+user_activity.umbrellaPPE.delete = Delete
+user_activity.umbrellaPPE.confirmation = Are you sure you want to delete this Performance entry?
+user_activity.umbrellaPPE.confirmationsubject = Performance Delete Warning
+user_activity.umbrellaPPE.alertnoconfig = Please adjust the config setting before deleting this entry
+user_activity.umbrellaPPE.confirmationdelete = Performance entry has been deleted
+
+/* ******** */
+
+content_filter.title=Content Filter
+content_filter.button.view_results=View Results
+content_filter.button.filter_drop_downs=Filter
+content_filter.button.unfilter_drop_downs = Un-Filter
+
+/* ******** */
+
+content_viewer.title = Content Viewer
+content_viewer.edit_topic = Edit T
+content_viewer.edit_sub_topic_order = Edit ST Order
+content_viewer.subtopics.edit_subtopic = Edit ST
+
+content_viewer.subtopic_sequence_link = Sub-Topic / Sequence Links
+content_viewer.sequence = Sequences
+content_viewer.activities = Activities
+content_viewer.messages = Messages
+content_viewer.subtopics.edit_link = Edit Link
+
+content_viewer.sequence.edit_sequence = Edit S
+content_viewer.sequence.edit_sequence_order = Edit S Order
+content_viewer.activities.edit_activity = Edit A
+content_viewer.activities.edit_activity_type = Edit Activity Type
+content_viewer.activities.edit_activity_order = Edit A Order
+content_viewer.activity_filter = Activity Filter
+
+content_viewer.activity_type = SMS Activity Type
+content_viewer.first_sms = Start SMS
+
+content_viewer.messages.edit_message = Edit M
+content_viewer.messages.edit_message_order = Edit M Order
+
+content_viewer.topic_filter = Topic Filter
+content_viewer.subtopic_filter = Sub-Topic Filter
+content_viewer.sequence_filter = Sequence Filter
+content_viewer.activity_filter = Activity Filter
+content_viewer.message_filter = Message Filter
+
+/* ******** */
+
+configHelp.view = Helpful Hints
+
+/* JumpTo View */
+
+jumpto.page.title.all = Skip Logic Instructions : All
+jumpto.page.title.topics = Skip Logic Instructions : Topics
+jumpto.page.title.messages = Skip Logic Instructions : Messages
+jumpto.page.title.messagetext = Skip Logic Message Text
+jumpto.page.back = Back
+
+jumpto.menu.title = Skip Logic
+jumpto.table.title = Skip Logic Configurations
+jumpto.vJumpToTopics = Skip Logic Topics
+jumpto.vJumpToMessages = Skip Logic Messages
+jumpto.vJumpToAll = Skip Logic All
+
+jumpto.note = Note
+jumpto.alert = Please select a User Response and a Skip Logic Type
+jumpto.confirm = Skip Logic has been scheduled
+jumpto.confirmtopic = Skip Logic event between Topics has been scheduled
+jumpto.confirmmessage = Skip Logic event between Messages have been scheduled
+
+jumpto.saveConfig = SaveConfig
+jumpto.save = Save
+jumpto.edit = Edit
+jumpto.delete = Delete
+jumpto.saveduplicates = Skil Logic has NOT been saved due to duplication
+
+jumpto.userResponse = User response
+jumpto.scoreAdjustment = Allocated Score
+jumpto.jumpToType = Type
+jumpto.messageIn_JumpTo = Message In
+jumpto.umbrella_JumpTo = Skip To Topic
+jumpto.topic_JumpTo = Skip To Sub-Topic
+jumpto.sequence_JumpTo = Skip To Sequence
+jumpto.pattern_JumpTo = Skip To Activity
+jumpto.messageTo_JumpTo = Skip To Next Message
+jumpto.activityfilter_JumpTo = Filtered Activity
+jumpto.filter = Filter
+jumpto.ignorescore = Do not adjust scoring
+jumpto.endimmediately = End immediately after skip
+
+jumpto.viewJumpToMessageTextIn = Message text
+jumpto.viewJumpToMessageTextOut = Message text
+jumpto.viewJumpToMessageText = View
+
+/* ******** */
+
+
+PerformanceSummary = Performance Summary
+PerformanceSummary.OverviewSummary = Overview Performance Summary
+PerformanceSummary.navGroupPerformanceSummary = View Individual Group's Performance
+PerformanceSummary.summarylevel = Summary Level
+PerformanceSummary.groupFirstStartDate = Group First Start Date
+PerformanceSummary.groupLastStartDate = Group Last End Date
+PerformanceSummary.percentageactive = Percentage Active
+PerformanceSummary.percentagelate = Percentage Late
+PerformanceSummary.percentageexpired = Percentage Expired
+PerformanceSummary.percentagecompleted = Percentage Completed
+PerformanceSummary.averageduration = Average Duration (Days)
+PerformanceSummary.averageGroupProgress = Average Group Progress
+PerformanceSummary.averagequizscore = Average Quiz Score
+PerformanceSummary.averagequizpercent= Average Quiz Percentage
+PerformanceSummary.averagechatcount = Average Chat Count
+PerformanceSummary.averagechatscore = Average Chat Score
+PerformanceSummary.avreagepracticumscore = Average Practicum Score
+PerformanceSummary.averagepracticumpercent = Average Practicum Percentage
+PerformanceSummary.averagetotalscore = Average Total Score
+
+/* ******** */
+
+content_templates = Content Templates
+content_templates.creation_center = Content Template Creation Center
+
+content_templates.selectedTemplate = Selected Template
+#content_templates.selectedLanguage = Selected Language
+content_templates.baseSubTopic = Base for Sub-Topic(s)
+content_templates.configureTemplate = Configure Template
+content_templates.generateForAllLanguages = Generate for all Languages
+
+content_templates.createContent = Create Content
+
+/* ******** */
+
+GroupPerformanceSummary.title = Group Performance Summary
+
+/* ******** */
+
+program_manager_management.title = Program Manager Management
+program_manager_management.invite = Invite Program Manager
+program_manager.submitInvite = Invite Program Manager
+program_manager_management.table = All Program Managers
+program_manager.invite = Mobile number (including dialing code)
+
+program_manager_edit.title = Program Manager Create / Edit
+
+/* ******** */
+
+topic_management.title = Topic Management
+topic_management.action.create_topic = Create Topic
+topic_management.action.sub_topic_management = Manage Sub-Topics
+topic_management.action.sub_topic_order_management = Manage Sub-Topic Orders
+topic_management.create_sub_topic = Create Sub-Topic
+topic_management.create_sub_topic_order = Create Sub-Topic Order
+topic_management.view_sub_topic_orders = >
+topic_management.topic_filter = Topic Filter
+topic_management.table.remove_topic.confirm.subject = Confirm removal of Topic
+topic_management.table.remove_topic.confirm.body = Are you sure you want to remove this Topic?
+
+/* ******** */
+
+topic_edit.title = Create / Edit Topic
+topic_edit.umbrellaID = Topic ID *
+topic_edit.umbrellaName = Topic Name *
+topic_edit.umbrellaMaxDuration = Topic Max Duration *
+topic_edit.umbrellaFlags = Topic Flag
+
+/* ******** */
+
+sub_topic_management.title = Sub-Topics Management
+sub_topic_management.table.title = All Sub-Topics
+sub_topic_management.action.create_sub_topic = Create Sub-Topic
+sub_topic_management.topicType = Type
+sub_topic_management.topicLanguage = Language
+sub_topic_management.topicFlags = Flags
+sub_topic_management.topicStartSMS = Start SMS
+sub_topic_management.topicReminderSMS = Reminder SMS
+sub_topic_management.topicEndSMS = End SMS
+sub_topic_management.topicReminderTime = Reminder Time
+sub_topic_management.topicEscalationTime = Escalation Time
+sub_topic_management.topicMaxDuration = Max Duration
+sub_topic_management.save_create_order = Save and Create Sub-Topic Order
+sub_topic_management.sub_topic_filter = Sub-Topic Filter
+sub_topic_management.sub_topic_filter = Sub-Topic Filter
+sub_topic_management.subTopicDeleteWarningSubject = Delete Sub-Topic Warning
+sub_topic_management.subTopicDeleteWarningBody = Are you sure you want to delete this Sub-Topic?
+
+/* ******** */
+
+sub_topic_edit.title = Create / Edit Sub-Topic
+sub_topic_edit.set_default_reminder = Set Default Reminder Message for Language
+
+/* ******** */
+
+subtopic_order_management.title = Sub-Topic Order Management
+subtopic_order_management.table.title = All Sub-Topics Orders
+subtopic_order_management.table.fixeddate = Fixed start date (1st)
+subtopic_order_management.table.relativestartnum = Add relative days (2nd)
+subtopic_order_management.table.dowstartnum = Start on next day of the week (3rd)
+subtopic_order_management.view_sequence_orders = >
+subtopic_order_management.view_topics = <
+subtopic_order_management.create_associated_sequence = Create Sequence
+
+subtopic_order_management.create_link = Create Sub-Topic Order
+subtopic_order_management.nav_manage_topics = Manage Topics
+subtopic_order_management.nav_manage_subtopics = Manage Sub-Topics
+
+subtopic_order_management.edit_create.title = Create / Edit Sub-Topic Order
+subtopic_order_management.delete.subject = Confirm removal of Sub-Topic Order
+subtopic_order_management.delete.body = Are you sure you want to remove this Sub-Topic Order
+subtopic_order_management.edit_sub_topic = Edit Sub-Topic
+subtopic_order_management.edit_sub_topic_order = Edit Sub-Topic Order
+subtopic_order_management.delete_order = Delete Sub-Topic Order
+subtopic_order_management.topic_filter = Topic Filter
+subtopic_order_management.sub_topic_filter = Sub-Topic Filter
+
+/* ******** */
+
+sequence_management.title = Sequence Management
+sequence_management.create_sequence = Create Sequence
+sequence_management.table.title = All Sequences
+
+sequence_management.sequenceID = Sequence ID
+sequence_management.sequenceName = Sequence Name
+sequence_management.sequenceStartSMS = Sequence Start SMS
+sequence_management.sequenceEndSMS = Sequence End SMS
+sequence_management.sequenceReminderSMS = Sequence Reminder SMS
+sequence_management.sequenceReminderTime = Sequence Reminder Time
+
+sequence_management.table.delete.confirm.subject = Confirm removal of sequence
+sequence_management.table.delete.confirm.body = Are you sure you want to remove this sequence
+
+/* ******** */
+
+sequence_create_edit.title  = Create / Edit Sequence
+sequence_create_edit.save_nav_sequence_order = Save and Crate Sequence Order
+
+/* ******** */
+
+sequence_order.add_edit.title = Create / Edit a Sequence Order
+sequence_order.add_edit.topic = Sub-Topic
+sequence_order.add_edit.sequence = Sequence
+sequence_order.sequenceOrder = Sequence Order
+
+/* ******** */
+
+sequence_order_management.title = Sequence Order Management
+sequence_order_management.view_subtopic_orders = <
+sequence_order_management.view_activity_orders = >
+#sequence_order_management.title = Sub-Topic Link Sequence Management
+#sequence_order_management.menuItem = Sequence Order
+sequence_order_management.create_link = Create Sequence Order
+sequence_order_management.create_activity = Create Activity
+sequence_order_management.manage_sequences = Manage Sequences
+sequence_order_management.table.title = All Sequences Orders
+sequence_order_management.edit_sequence = Edit Sequence
+sequence_order_management.edit_sequence_order = Edit Sequence Order
+sequence_order_management.delete = Delete Sequence Order
+sequence_order_management.sequence_filter = Sequence Filter
+sequence_order_management.sub_topic_filter = Sub-Topic Filter
+
+/* ******** */
+
+activity_order.title = Activity Order Management
+activity_order.menu_item = Activity Order
+activity_order.table = All Activity Orders
+activity_order.view_sequence_orders = <
+activity_order.create_message = Create Message
+activity_order.view_message_orders = >
+
+activity_order.sequence_filter = Sequence Filter
+activity_order.activity_filter = Activity Filter
+
+activity_order.nav_manage_sequences = Manage Sequences
+activity_order.nav_manage_activities = Manage Activities
+activity_order.create_activity_order = Create Activity Order
+
+/* ******** */
+
+activity_management.title = Activity Management
+activity_management.table = All Activities
+activity_management.createActivity = Create Activity
+activity_management.table.delete.confirm.subject = Confirm removal of Activity
+activity_management.table.delete.confirm.body = Are you sure you want to remove this Activity
+
+/* ******** */
+
+activity_edit.title = Create / Edit Activity
+
+/* ******** */
+
+activity_type_edit.title = Activity SMS Type
+activity_type_edit.save = Save Activity
+activity_type_edit.save_activity_nav_activity_order = Save Activity & Create Activity Order
+
+/* ******** */
+
+activity_order_edit.title = Create / Edit Activity Order
+activity_order.nav_manage_messages = Manage Messages
+activity_order.table.delete.confirm.subject = Confirm removal of Activity Order
+activity_order.table.delete.confirm.body = Are you sure you want to remove this Activity Order
+activity_order.edit_activity = Edit Activity
+activity_order.edit_activity_order = Edit Activity Order
+
+/* ******** */
+
+message_order_management.title = Message Order Management
+message_order_management.create_message_order = Create Message Order
+message_order_management.table = All Message Orders
+message_order_management.activityID = Activity ID
+message_order_management.messageID = Message ID
+message_order_management.messageOrder = Message Order
+message_order_management.messageText = Message Text
+message_order_management.table.delete.confirm.subject = Confirm removal of Message Order
+message_order_management.table.delete.confirm.body = Are you sure you want to remove this Message Order
+message_order_management.view_activity_order = <
+message_order_management.edit_message = Edit Message
+message_order_management.edit_message_order = Edit Message Order
+message_order_management.delete = Delete Message Order
+
+message_order_edit.title = Create / Edit Message Order
+message_order_edit.save = Save Message
+message_order_edit.save_and_create_another = Save Message and Create Another Message
+
+/* ******** */
+
+message_management.title = Message Management
+message_management.table = All Messages
+message_management.messageID = Message ID
+message_management.messageText = Message Text
+message_management.maxMultipleChoice = Max Multiple Choice
+message_management.correctAnswer = Correct Answer
+message_management.informCorrectText = Inform Correct Text
+message_management.createMessage = Create Message
+message_management.table.delete.confirm.subject = Confirm removal of Message
+message_management.table.delete.confirm.body = Are you sure you want to remove this Message
+
+/* ******** */
+
+message_edit.title = Create / Edit Message
+message_edit.message_id = Message ID *
+message_edit.message_text = Message Text
+message_edit.maxMultipleChoice = Max Multiple Choice
+message_edit.correctAnswer = Correct Answer
+message_edit.informCorrectText = Inform Correct Answer
+message_edit.save_nav_message_order_edit = Save Message and Create Message Order
+
+/* ******** */
+
+activity_ivr_details.title = Activity IVR Details
+activity_ivr_details.save_activity_nav_activity_order = Save Activity & Create Activity Order
+
+/* ******** */
+
+content_catalogue.title = Content Catalogue
+content_catalogue.sub_topic_id = Sub-Topic ID
+content_catalogue.sub_topic_description = Sub-Topic Description
+content_catalogue.language = Language
+content_catalogue.sms_mt = SMS MT
+content_catalogue.sms_mo = SMS MO
+content_catalogue.weight = Weight
+content_catalogue.sms_total = Total SMS's
+content_catalogue.ivr_length_min = IVR Length (Minutes:Seconds)
+content_catalogue.allSubtopicContentCatalogues = All Sub-Topics
+content_catalogue.topicContentCataloguesEng = All English Topics
+content_catalogue.topicContentCataloguesSw = All Swahili Topics
+
+/* ******** */
+
+system_report.title = System Report
+system_report.nav_content_catalogue = View Content Catalogue
+system_report.nav_topic_activity_summary = View Topic Activity Summary
+
+system_report.user_activity_summary = User Activity Summary
+system_report.user_activity_summary.order = Order
+system_report.user_activity_summary.key = User Status
+system_report.user_activity_summary.value = Number of Users
+
+system_report.numActiveTopics = Number of Active Topics
+
+system_report.search_activity_summary = Search Activity Summary
+system_report.search_activity_summary.key = Search Type
+system_report.search_activity_summary.value = Search Count
+
+system_report.sms_activity_summary = SMS Activity Summary
+system_report.sms_activity_summary.key = SMS Type
+system_report.sms_activity_summary.value = SMS Count
+
+system_report.ivr_activity_summary = IVR Activity Summary
+system_report.ivr_activity_summary.key = IVR Type
+system_report.ivr_activity_summary.value = IVR Count
+
+system_report.active_ivr_sessions = Active IVR Sessions
+system_report.started_ivr_last_hour = Started IVR Sessions in Last Hour
+system_report.ended_ivr_last_hour = Ended IVR Sessions in Last Hour
+system_report.active_sms_sessions = Active SMS Sessions
+system_report.sent_sms_last_hour = Sent SMS's in Last Hour
+system_report.recieved_sms_last_hour = Recieved SMS's in Last Hour
+system_report.started_sms_last_hour = Started SMS Sessions in Last Hour
+system_report.ended_sms_last_hour = Ended SMS Sessions in Last Hour
+system_report.view_user_activity = View User Activity
+system_report.channel = Channel
+
+/* ******** */
+
+topic_activity_summary.title = Topic Activity Summary
+topic_activity_summary.topic_activity = All Topic Activity
+topic_activity_summary.grand_total = Grand Total
+topic_activity_summary.activeUsers = Active Users
+topic_activity_summary.completeUsers = Completed Users
+topic_activity_summary.expiredUsers = Expired Users
+topic_activity_summary.totalUsers = Total Users
+
+/* ******** */
+
+
+activeUsersTemp.userStatus = User Status
+ActiveUsersTemp.userCount = User Count
+
+/* ******** */
+
+Counties = Counties
+County = County
+ManageCounties.title = Manage Counties
+ManageCounties.createCounty = Create County
+ManageCounties.allCounties = All Counties
+ManageCounties.confirmDelete.subject = Confirm County Deletion
+ManageCounties.confirmDelete.body = Are you sure you want to Delete this County
+ManageCounties.viewSubCounties = View Sub-Counties
+ManageCounties.navManageSubCounties = Manage Sub-Counties
+
+/* ******** */
+
+AssignSubCounties.title = Assign Sub Counties
+#AssignSubCounties.navCreateSubCounty = Create Sub-County
+
+/* ******** */
+
+EditCounty.title = Create / Edit County
+
+/* ******** */
+
+EditSubCounty.title = Create / Edit Sub-County
+
+/* ******** */
+
+ManageSubCounties.title = Manage Sub-Counties
+ManageSubCounties.allSubCounties = All Sub-Counties
+ManageSubCounties.confirmDelete.subject = Confirm Sub-County Deletion
+ManageSubCounties.confirmDelete.body = Are you sure you want to Delete this Sub-County
+
+
+/* ******** */
+
+# Model Attributes
+topic = Topic
+topics = Topics
+topic.topicID = Topic ID
+topic.topicID_filter = Topic ID (For Filtering Only)
+topic.topicName = Topic Name
+topic.topicFlags = Topic Flags
+topic.topicMaxDuration = Topic Max Duration
+
+sub_topic = Sub-Topic
+sub_topic.subTopicID = Sub-Topic ID
+sub_topic.subTopicName = Sub-Topic Name 
+sub_topic.subTopicStartSMS = Start SMS
+sub_topic.subTopicReminderSMS = Reminder SMS
+sub_topic.subTopicReminderTime = Reminder Time
+sub_topic.subTopicReminderTime_required = Reminder Time *
+sub_topic.subTopicEndSMS = End SMS
+sub_topic.subTopicEscalationTime = Escalation Time
+sub_topic.subTopicEscalationTime_required = Escalation Time *
+sub_topic.subTopicMaxDuration = Max Duration
+sub_topic.subTopicMaxDuration_required = Max Duration *
+sub_topic.subTopicType = Sub-Topic Type
+sub_topic.subTopicFlags = Sub-Topic Flags
+sub_topic.subTopicLanguage = Language
+sub_topic.subTopicRunType = RunType
+sub_topic.subTopicLanguageWarning = Please select a language for the Sub-Topic.
+
+sub_topic_orders = Sub-Topic Orders
+sub_topic_order.subTopicOrderNum = Order Number
+sub_topic_order.fixeddate = Fixed Date
+sub_topic_order.previousdate = Previous Date
+sub_topic_order.relativestartnum = Relative Start Number
+sub_topic_order.dowstartnum = Dow Start Num
+
+sequence = Sequence
+sequence.sequenceID = Sequence ID
+
+activity = Activity
+activity.activityID = Activity ID
+activity.activityID_required = Activity ID *
+activity.activityStartSMS = Start SMS
+activity.activityEndSMS = End SMS
+activity.activityReminderSMS = Reminder SMS
+activity.activityReminderTime = Reminder Time
+activity.activityChannel = Channel
+activity.activityChannelID = Channel ID
+activity.activityChannelID_required = Channel ID *
+activity.activityIVRstring = IVR String Equivalent
+activity.activityIVRLength = IVR Length
+activity.activityIVRLength_seconds = IVR Length (Seconds)
+activity.activityType = Activity SMS Type
+activity.save = Save Activity
+
+activityOrder = Activity Order
+
+message = Message
+message.messageID = MessageID
+message.messageText = Message Text
+message.maxMultipleChoice = Max Multiple Choice
+message.correctAnswer = Correct Answer
+message.informCorrectText = Inform Correct Text
+
+messageOrder = Message Order
+
+group = Group
+groups = Groups
+group.id = Group ID
+group.name = Group Name
+
+user = User
+users = Users
+
+PerformanceSummaryTemp.percentComplete = Percent Complete
+PerformanceSummaryTemp.percentInProgress = Percent In Progress
+PerformanceSummaryTemp.percentLate = Percent Late
+PerformanceSummaryTemp.percentExpired = Percent Expired
+PerformanceSummaryTemp.averageDaysToComplete = Average Days To Complete
+PerformanceSummaryTemp.averageQuizPerformance = Average Quiz Performance
+PerformanceSummaryTemp.gamePerformance = Game Performance
+PerformanceSummaryTemp.groupChatParticipation = Group Chat Participation
+
+language = Language
+languages = Languages
+
+template = Template
+templates = Templates
+
+County.countyName = County Name
+#County.geography = Geography Type
+#County.gpsLat = GPS Latitude
+#County.gpsLong = GPS Longitude
+
+SubCounty = Sub-County
+SubCounty.subCountyName = Sub-County Name
+ManageCounties.navCreateSubCounty = Create Sub-County
+SubCounty.gpsLat = GPS Latitude
+SubCounty.gpsLong = GPS Longitude
+
+email.descriptionKey = {emailDescription}
+email.subjectKey = {emailSubject}
+email.bodyKey = {emailBody}
+
+GroupUmbrellaPPE.title = Group Topic Scheduling
+GroupUmbrellaPPE.status = Status
+GroupUmbrellaPPE.groupname = GroupID
+GroupUmbrellaPPE.topicid = TopicID
+GroupUmbrellaPPE.totalusers = Total Users
+GroupUmbrellaPPE.startdate = Start Date
+GroupUmbrellaPPE.escalatedate = Escalate Date
+GroupUmbrellaPPE.enddate = End Date
+GroupUmbrellaPPE.duration = Duration
+GroupUmbrellaPPE.flags = Flags
+GroupUmbrellaPPE.percomplete = Percent Complete
+GroupUmbrellaPPE.perinprogress = Percent InProgress
+GroupUmbrellaPPE.perlate = Percent Late
+GroupUmbrellaPPE.perexpired = Percent Expired
+GroupUmbrellaPPE.aveprogress = Average Progress
+GroupUmbrellaPPE.avequizscore = Average Quiz Score
+GroupUmbrellaPPE.avechatscore = Average Chat Score
+GroupUmbrellaPPE.avepracticumscore = Average Practicum Score
+GroupUmbrellaPPE.avetotalscore = Average Total Score
+GroupUmbrellaPPE.createconfirmation = Group Topic performance summary has been created.
+GroupUmbrellaPPE.editconfirmation = Group Topic performance summary has been edited.
+GroupUmbrellaPPE.deletedconfirmation = Group Topic performance summary has been deleted.
+GroupUmbrellaPPE.deleteconfirmationsubject = Delete Warning
+GroupUmbrellaPPE.deleteconfirmationbody = Are you sure you want to delete this Group Topic performance summary?
+
+/* ******** */
+
+admins					= Admins
+admins.menu 			= Manage Admins
+
+ProgramManagers			= Program Managers
+ProgramManagers.menu 	= Manage Program Managers
+
+LearningManagers		= Learning Managers
+LearningManagers.menu 	= Manage Learning Managers
+
+confirm.uninviteSA 		= Uninvite Administrator
+confirm.uninvitePM 		= Uninvite Program Manager
+confirm.uninviteLM 		= Uninvite learning Manager
+confirm.uninviteBody 	= Are you sure you want to uninvite this manager?
+
+edit.admin 				= Edit Administrator
+edit.programManager 	= Edit Program Manager
+edit.earningManager 	= Edit learning Manager
+
+select.manager 			= Select Manager
+
+invite.admin  			= Invite Administrator
+invite.programManager  	= Invite Program Manager
+invite.learningManager 	= Invite Learning Manager
+invite.inviteProgramManager = Also Invite As ProgramManager
+invite.inviteUser = Also Invite as User
+invite.userType = User Type
+
+/* ******** */
+
+/* SMART CHEW */
+
+broadcast_message.title = Broadcast Message
+
+broadcast_message.clientType = Broadcast Messages to
+
+broadcast_message.kit = Kit
+
+broadcast_message.templateMessage = Message Template
+broadcast_message.smsText = SMS Text
+
+broadcast_message.messages = Recent Messages
+
+/* ******** */
+
+broadcast_chv.title = Broadcast to Group CHV's
+
+broadcast_chv_kit.title = Broadcast Kit-Ready message to CHV's
+
+broadcast_chv_kit.title = Configure message to be sent
+
+/* ******** */
+
+broadcast_chew.title = Broadcast to CHEWs
+
+
+/* ******** */
+
+cu_perfomance.title = CU Performance
+cu_perfomance.table.reportNum = #
+cu_perfomance.table.reportName = Report
+

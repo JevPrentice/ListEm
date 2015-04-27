@@ -1,0 +1,276 @@
+unit ScheduledActions;
+
+Timer timer;
+string msg;
+    
+@Scheduled("15 * * * *")
+void ivrScheduleWatch(){
+
+    string msg;
+    ScheduleURL[] urls = ScheduleUrlController:getAllScheduleUrlsNotProcessed();
+
+    if (urls.length() <= 5){
+        return;
+    }
+
+    string isLive = ConfigTableController:getConfigValueForDesc("isLiveEnvironment");
+    string environment;
+    if (isLive == "1"){
+        environment = "Production";
+    } else {
+        environment = "PreProduction";
+    }
+
+    string applicationName = ConfigTableController:getConfigValueForDesc("ApplicationName");
+    if (applicationName == null){
+        applicationName = "Communicator (ApplicationName is not set)";
+    }
+
+    string messageBody = String:concat("Check the status IVR Integration for ", applicationName, " because there are ", urls.length(), " scheduled IVR calls queued on environment ", environment);
+
+    string emailDescription = "IVR Scheduler URL Notification";
+    string emailSubject = "IVR Scheduler URL Notification";
+    string emailBody = String:concat("<h1>", messageBody, "</h1>");
+
+    /* Send Jev Prentice */
+    string emailAddress = "jprentice@mezzanineware.com";
+    Client u = UserController:getJevPrenticeTestUser();
+
+    EmailService:sendEmail(emailAddress, emailDescription, emailSubject, emailBody);
+
+    msg = String:concat("IVR Scheduler {EMAIL} Notification sent to ", emailAddress , " - ", emailBody);
+    Alerter:alert(msg);
+    Logger:log(msg);
+
+    BLUnits:SendSMSToClient(u, messageBody);
+
+    msg = String:concat("IVR Scheduler {SMS} Notification sent to ", u.mobileNumber, " - ", messageBody);
+    Alerter:alert(msg);
+    Logger:log(msg);
+    u = null;
+    emailAddress = "";
+    /* Send Jev Prentice */
+
+    /* Send John Vorster */
+    emailAddress = "jvorster@mezzanineware.com";
+    u = UserController:getJohnVorsterTestUser();
+
+    EmailService:sendEmail(emailAddress, emailDescription, emailSubject, emailBody);
+
+    msg = String:concat("IVR Scheduler {EMAIL} Notification sent to ", emailAddress , " - ", emailBody);
+    Alerter:alert(msg);
+    Logger:log(msg);
+
+    BLUnits:SendSMSToClient(u, messageBody);
+
+    msg = String:concat("IVR Scheduler {SMS} Notification sent to ", u.mobileNumber, " - ", messageBody);
+    Alerter:alert(msg);
+    Logger:log(msg);
+    /* Send John Vorster */
+
+}
+
+
+/*
+*   =================================
+*   Server Downtime Recovery Notifier
+*   =================================
+*   AUTHOR: Beyers Nel 21/04/15
+*   Periodically checks if the server has experienced any downtime
+*   Uses and updates a Datetime object every 60 seconds
+*   Sends messages to users after a configrable threshold of downtime
+*/
+@Scheduled("* * * * *")
+void checkDowntime(){
+    
+    Mez:log("DOWNTIME: Executing");
+    Alerter:alert("starting");
+
+    if (checkTimer() == false){
+        return;
+    }
+
+    timer.time_threshold = getTimeThreshold();
+
+    datetime lastcheck = timer.lastcheck;
+
+    int downtime = Date:secondsBetween(lastcheck, Date:now());
+    int threshold = timer.time_threshold;
+
+    if (downtime >= threshold) {
+        Mez:log(Strings:concat("DOWNTIME: ", downtime, " seconds. Sending messages."));
+<<<<<<< .working
+        //SEND MESSAGES
+=======
+
+        Client[] users;
+        string message;
+
+        message = "Dear CHEW, please note that the system is now available.";
+        users = UserController:getCHEWUsers();
+        BLUnits:fSendDirect(users, message, "MT");
+
+        /* Not sending to CHVs at this point to avoid spamming */
+        /* TODO: Implement only sending messages to scheduled users? */
+        // message = "Dear CHV, please note that the system is now available.";
+        // users = UserController:getCHVUsers();
+        // BLUnits:fSendDirect(users, message, "MT");
+>>>>>>> .merge-right.r979
+    }
+    Mez:log(String:concat("DOWNTIME: completed check. Threshold is ", threshold));
+    timer.lastcheck = Date:now();
+}
+
+void createTimer(){
+    Mez:log("DOWNTIME: creating timer");
+    timer = Timer:new();
+    timer.lastcheck = Date:now();
+    timer.time_threshold = getTimeThreshold();
+    timer.save();
+}
+
+int getTimeThreshold(){
+    int threshold = ConfigTableController:getConfigIntForDesc("DowntimeMessageThreshold");
+    Mez:log(String:concat("DOWNTIME: Getting threshold of ", threshold));
+    if (threshold > 0) {
+        return threshold;
+    }
+    return 3600;
+}
+
+
+bool checkTimer(){
+    Timer[] timers = Timer:all();
+    // if (timers == null) {
+    //     createTimer();
+    //     return false;
+    // }
+
+    if (timers.length() <= 0) {
+        createTimer();
+        return false;
+    } /* else {
+        what now
+    } */
+
+    timer = timers.get(0);
+    // if (timer == null) {
+    //     createTimer();
+    //     return false;
+    // }
+
+    if (timer.lastcheck == null) {
+        timer.lastcheck = Date:now();
+        return false;
+    }
+
+    return true;
+}
+
+
+
+// @Scheduled("0 1 * * *")
+// void updateGroupPpePerformance(){
+    
+//  UmbrellaPPE[] ppeArr = UmbrellaPPEController:getAllUmbrellaPPE();
+
+//  int totalProgress = 0;
+        
+//  /* values to set per group
+    
+//  int avequizscore = 0;
+//  int avechatscore = 0;
+//     int avepracticumscore = 0;
+//     int avetotalscore = 0;
+
+//     int percomplete;
+//     int perinprogress;
+//     int perlate;
+//     int perexpired;
+
+//     */
+
+//  for(int i = 0; i < ppeArr.length(); i++){
+//      UmbrellaPPE ppe = ppeArr.get(i);
+
+//      totalProgress = totalProgress + ppe.progress;
+
+
+//      // int progress;
+//      // int quizscore;
+//      // int chatscore;
+//      // int practicumscore;
+//      // int totalscore;
+
+//  }
+
+//  GroupUmbrellaPPE groupPpe = GroupUmbrellaPPE:new();
+//  groupPpe.totalUsers = ppeArr.length();
+//  groupPpe.aveprogress = totalProgress / ppeArr.length();
+
+// }
+
+
+
+/*
+*   =================================
+*   CHEW Reminder Notification: Group users pre-send message for Topic
+*   =================================
+*   Send notification to the chew of each group whos 
+*   CHV's are starting on a topic in the next hour
+*/
+@Scheduled("* 1 * * *")
+void chewGroupTopicPreStartReminder(){
+
+    Logger:log("ScheduledFunction: chewGroupTopicPreStartReminder Start");
+
+    /* Get records of Groups Scheduled to start in next hour */
+    GroupUmbrellaPPE[] allUpcoming = uCalculatePPEGroupUmbrella:getAllGroupUmbrellaPpeStartingInNextHour();
+
+    for (int i = 0; i < allUpcoming.length(); i++){
+        GroupUmbrellaPPE upcoming = allUpcoming.get(i);
+
+        Umbrella topic = upcoming.umbrella_groupUmbrellaPPE;
+        ClientGroup group = upcoming.group_groupUmbrellaPPE;
+
+        Client groupChew = group.client_chews;
+
+        if (group != null && topic != null && groupChew != null){
+            
+            /* Prepare message */
+            string chewName = "";
+            string smsText = "";
+
+            if (String:length(groupChew.firstName) >= 0){
+                chewName = groupChew.firstName;
+            }
+
+            if (String:length(chewName) >= 0){
+                chewName = String:concat(chewName, " ", groupChew.surname);
+            } else {
+                chewName = groupChew.surname;
+            }
+
+            if (String:length(chewName) <= 0){
+                chewName = "CHEW";
+            }
+
+            smsText = String:concat("Dear ", chewName, ", The CHVs of Group: ", group.name, " will start on the Topic: ", topic.umbrellaID, " within the next hour");
+           
+            /* Send & Log */
+            BLUnits:SendSMSToClient(groupChew, smsText);
+
+            msg = String:concat("SMS sent to ", chewName, " with contents: ", smsText);
+            Logger:log(msg);
+
+            msg = String:concat("Notification sent to Client:", groupChew, " the CHEW of Group:", group.idd, " ", group.name);
+            Logger:log(msg);
+
+        }
+    }
+
+    Logger:log("ScheduledFunction: chewGroupTopicPreStartReminder End");
+}
+
+
+

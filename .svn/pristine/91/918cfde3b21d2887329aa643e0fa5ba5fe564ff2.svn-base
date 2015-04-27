@@ -1,0 +1,10 @@
+object SMS_IVR_Queue{
+	
+	string timestamp;
+	string username;
+	string mobileNumber;
+	string direction;
+	string message;
+	string status;
+
+}

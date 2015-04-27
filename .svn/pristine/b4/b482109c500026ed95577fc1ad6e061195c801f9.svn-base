@@ -1,0 +1,31 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all())
+persistent object GroupUmbrellaPPE {
+	
+	datetime groupUmbrellaStartDateTime;
+	datetime groupUmbrellaEscalateDateTime;
+	datetime groupUmbrellaEndDateTime;
+    int status;
+	int duration;
+    string flags;
+
+    int percomplete;
+    int perinprogress;
+    int perlate;
+    int perexpired;
+
+	int aveprogress;
+	int avequizscore;
+	int avechatscore;
+    int avepracticumscore;
+    int avetotalscore;
+
+    int totalUsers; /* JP #289 2015-03-10 */
+
+	@ManyToOne
+	ClientGroup group_groupUmbrellaPPE;
+    
+	@ManyToOne
+	Umbrella umbrella_groupUmbrellaPPE;
+
+}

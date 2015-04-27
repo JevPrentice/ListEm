@@ -1,0 +1,173 @@
+unit SequenceOrderManagement;
+
+SequenceOrder sequenceOrder;
+SequenceOrder[] sequenceOrders;
+
+Topic subTopicFilter;
+Sequence sequenceFilter;
+
+string message;
+string nav_return;
+
+
+void init() {
+
+	message = "";
+
+	if (nav_return == null){
+		nav_return = "nav_sequence_order_management";
+	}
+
+	resetViewCollections();
+
+	if (subTopicFilter != null && sequenceFilter != null){
+		/* This should not happen, display all records */
+		//sequenceOrders = null;
+		sequenceOrders = SequenceOrderController:getAllSequenceOrders();
+	} else if (subTopicFilter == null && sequenceFilter == null){
+		sequenceOrders = SequenceOrderController:getAllSequenceOrders();
+	} else if (subTopicFilter != null && sequenceFilter == null){
+		sequenceOrders = SequenceOrderController:getSequenceOrdersForSubTopic(subTopicFilter);
+	} else if (subTopicFilter == null && sequenceFilter != null){
+		sequenceOrders = SequenceOrderController:getSequenceOrdersForSequence(sequenceFilter);
+	}
+}
+
+void removeFiltersButton(){
+	removeFilters();
+	init();
+}
+
+string navigate(){
+	removeFilters();
+	resetViewCollections();
+	return nav_return;
+}
+
+void removeFilters(){
+	subTopicFilter = null;
+	sequenceFilter = null;
+}
+
+void resetViewCollections(){
+	sequenceOrder = null;
+	sequenceOrders = null;
+}
+
+string editSequence(){
+	SequenceEdit:sequence = sequenceOrder.sequence_sequenceOrder;
+	SequenceEdit:sequenceOrder = sequenceOrder;
+	SequenceEdit:nav_return = "nav_sequence_order_management";
+	nav_return = "nav_sequence_edit";
+	return navigate();
+}
+
+string editSequenceOrder(){
+	SequenceOrderEdit:sequenceOrder = sequenceOrder;
+	SequenceOrderEdit:nav_return = "nav_sequence_order_management";
+	nav_return = "nav_sequence_order_edit";
+	return navigate();
+}
+
+void deleteSequenceOrder(){
+	SequenceOrder:delete(sequenceOrder);
+	sequenceOrder = null;
+
+	message = "Sequence Order Deleted";
+	Alerter:alert(message);
+
+	return init();
+}
+
+string createSequenceOrder(){
+	nav_return = "nav_sequence_order_edit";
+	return navigate();
+}
+
+string manageSequences(){
+	SequenceEdit:resetVars();
+	SequenceEdit:nav_return = "nav_sequence_order_management";
+	nav_return = "nav_create_sequence";
+	return navigate();
+}
+
+string nav_manage_subtopics(){
+	SubTopicManagement:nav_return = "nav_sequence_order_management";
+	nav_return = "nav_manage_subtopics";
+	return navigate();
+}
+
+string viewSubTopicOrders(){
+	
+	if (sequenceOrder == null){
+		message = "No Sequence Order has been selected";
+   		Alerter:alert(message);
+		return null;
+	}
+
+	if (sequenceOrder.topic_sequenceOrder == null){
+		message = "This Sequence Order has no associated Sub-Topic";
+   		Alerter:alert(message);
+		return null;
+	}
+
+	UmbrellaTopicSetupTable[] subTopicOrders = SubTopicOrderController:getSubTopicOrdersForSubTopic(sequenceOrder.topic_sequenceOrder);
+	if (subTopicOrders == null){
+		message = "There are no Sub-Topic Orders associated to this Sequence Order";
+   		Alerter:alert(message);
+		return null;
+	}
+
+	if (subTopicOrders.length() < 1){
+		message = "There are no Sub-Topic Orders associated to this Sequence Order";
+   		Alerter:alert(message);
+		return null;
+	}
+
+	UmbrellaTopicSetupTable subTopicOrder = subTopicOrders.get(0);
+
+	SubTopicOrderManagement:topicFilter = null;
+	SubTopicOrderManagement:subTopicFilter = subTopicOrder.topic_UmbrellaUserSetup;
+	
+	nav_return = "nav_subtopic_order_management";
+	return navigate();
+}
+
+string viewActivityOrders(){
+
+	if (sequenceOrder == null){
+		message = "No Sequence Order has been selected";
+   		Alerter:alert(message);
+		return null;
+	}
+
+	if (sequenceOrder.sequence_sequenceOrder == null){
+		message = "This Sequence Order has no associated Sequence";
+   		Alerter:alert(message);
+		return null;
+	}
+
+	PatternOrder[] activityOrders = ActivityOrderController:getActivityOrdersForSequence(sequenceOrder.sequence_sequenceOrder);
+
+	if (activityOrders == null){
+		message = "This Sequence Order has no associated Activity Orders";
+   		Alerter:alert(message);
+		return null;
+	}
+
+	if (activityOrders.length() < 1){
+		message = "This Sequence Order has no associated Activity Orders";
+   		Alerter:alert(message);
+		return null;
+	}
+
+	ActivityOrderManagement:sequenceFilter = sequenceOrder.sequence_sequenceOrder;
+	nav_return = "nav_activity_orders";
+	return navigate();
+}
+
+string createActivity(){
+	ActivityEdit:sequence = sequenceOrder.sequence_sequenceOrder;
+	nav_return = "nav_activity_edit";
+	return navigate();
+}

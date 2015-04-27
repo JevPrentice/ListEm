@@ -1,0 +1,83 @@
+unit OverallCUPerformanceResults;
+
+Umbrella selectedTopic;
+datetime dStart;
+datetime dEnd;
+
+GenericDataset[] results;
+
+string msg;
+
+void init(){
+
+	SmartChew chew = SmartChew:user();
+	Client c = chew.client;
+
+	results = getOverallCUPerformance(c, selectedTopic, dStart, dEnd);
+
+}
+
+
+GenericDataset[] getOverallCUPerformance(Client chew, Umbrella topic, datetime startTime, datetime endTime){
+
+	GenericDataset[] arr;
+
+	ClientGroup[] groups = UserGroupController:getGroupsForWhichClientIsLinked(chew);
+	for (int i = 0; i < groups.length(); i++){
+		ClientGroup group = groups.get(i);
+
+		Client[] groupChvs = group.client_chws;
+
+		for (int j = 0; j < groupChvs.length(); j++){
+			Client chv = groupChvs.get(j);
+		
+			UmbrellaPPE[] ppeArr = uCalculatePPEDetail:fGetMatchingUmbrellaPPE(chv, topic);
+
+			if (startTime != null){
+				ppeArr = ppeArr.select(
+					greaterThan(umbrellaStartDateTime, startTime)
+				);
+			}
+
+			if (endTime != null){
+				ppeArr = ppeArr.select(
+					lessThan(umbrellaEndDateTime, endTime)
+				);
+			}
+
+			int totalScore;
+			int status;
+
+			if (ppeArr.length() > 0){
+				if (ppeArr.length() >= 2){
+					msg = String:concat("Warning Duplication UmbrellaPPE returned for Client:", chv, " and Umbrella:", topic); Logger:log(msg);
+				}
+				UmbrellaPPE ppe = ppeArr.get(0);
+				totalScore = ppe.totalscore;
+				status = ppe.status;
+
+				GenericDataset record = GenericDataset:new();
+				record.sCol1 = String:concat(chv.firstName, " ", chv.surname, " ", chv.mobileNumber);
+				record.iCol1 = status;
+				record.iCol2 = totalScore;
+
+				arr.append(record);
+			}
+
+			
+		}
+	}
+	return arr;
+}
+
+string update(){
+	init();
+}
+
+string navigate(string location){
+	return location;
+}
+
+string back(){
+	return navigate("navCUPerformance");
+}

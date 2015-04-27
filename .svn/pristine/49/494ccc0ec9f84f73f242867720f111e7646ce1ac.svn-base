@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="activity_management.title" unit="ActivityManagement" init="init">
+
+        <navigation outcome="nav_activity_order_managememnt" target="ActivityOrderManagement"/>
+        <navigation outcome="nav_activity_edit" target="ActivityEdit"/>
+        <navigation outcome="nav_message_order_management" target="MessageOrderManagement"/>
+
+        <action label="back" action="navigate"/>
+        <action label="activity_management.createActivity" action="createActivity"/>
+
+        <table title="activity_management.table">
+            <collectionSource function="getActivityTemp"/>
+            <column heading="activity.activityID">
+                <attributeName>activityID</attributeName>
+            </column>
+            <column heading="activity.activityStartSMS">
+                <attributeName>activityStartSMS</attributeName>
+            </column>
+            <column heading="activity.activityEndSMS">
+                <attributeName>activityEndSMS</attributeName>
+            </column>
+              <column heading="activity.activityReminderSMS">
+                <attributeName>activityReminderSMS</attributeName>
+            </column>
+            <column heading="activity.activityReminderTime">
+                <attributeName>activityReminderTime</attributeName>
+            </column>
+			<column heading="activity.activityChannel">
+                <attributeName>activityChannelID</attributeName>
+                <attributeName>activityChannelDescription</attributeName>
+            </column>
+            <column heading="activity.activityType">
+                <attributeName>activityType</attributeName>
+            </column>
+            <column heading="activity.activityIVRstring">
+                <attributeName>activityIVRstring</attributeName>
+            </column>
+            <column heading="activity.activityIVRLength_seconds">
+                <attributeName>ivr_length_sec</attributeName>
+            </column>
+            <rowAction label="edit" action="activityEdit">
+                <binding variable="activityTemp"/>
+            </rowAction>
+            <rowAction label="delete" action="activityDelete">
+                <binding variable="activityTemp"/>
+                <confirm subject="activity_management.table.delete.confirm.subject" body="activity_management.table.delete.confirm.body"/>
+            </rowAction>
+        </table>
+    </view>
+</ui>

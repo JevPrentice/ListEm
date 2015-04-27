@@ -1,0 +1,39 @@
+unit OverallCUPerformance;
+
+Umbrella selectedTopic;
+Umbrella[] topics;
+
+void init(){
+
+	SmartChew chew = SmartChew:user();
+	Client c = chew.client;
+
+	topics = TopicController:getTopicsWithActiveAndScheduledChvsForChew(c);
+}
+
+// GenericDataset[] getOverallCUPerformance(){
+
+// 	GenericDataset[] arr;
+
+
+
+// 	GenericDataset record = GenericDataset:new();
+// 	record.order = 1;
+// 	record.key = "View the overall CU performance";
+// 	arr.append(record);
+
+// 	return arr;
+
+// }
+
+string update(){
+	init();
+}
+
+string navigate(string location){
+	return location;
+}
+
+string back(){
+	return navigate("navCUPerformance");
+}

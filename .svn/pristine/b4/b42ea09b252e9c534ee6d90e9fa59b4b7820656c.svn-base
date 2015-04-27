@@ -1,0 +1,51 @@
+unit CurrentSMSPatternController;
+
+CurrentSMSPattern currentSMSPattern;
+CurrentSMSPattern deleteCurrentSMSPattern;
+
+Client client;
+Pattern pattern;
+Message message;
+OutgoingSMS outgoingSMS;
+
+void init() {
+	currentSMSPattern = CurrentSMSPattern:new();
+}
+CurrentSMSPattern[] getAllcurrentSMSPatterns() {
+	return CurrentSMSPattern:all();
+}
+
+string editCurrentSMSPattern() {
+	return null;
+}
+
+//Insert into Current_SMS_Pattern_Table : Active Message
+void updateCurrentSMSPatternTable(Client client, Pattern pattern, Message message) {
+	
+	string validFl;
+
+	CurrentSMSPattern currentSMSPattern =  client.currentSMSPattern_clientID;
+	
+	if(currentSMSPattern != null) {
+		if(currentSMSPattern.validFirstLetter != null) {
+			validFl = currentSMSPattern.validFirstLetter;
+		}
+	}
+    
+	PatternTypeTable patternTypeTable =  pattern.patternTypeTable_Pattern;
+    
+	currentSMSPattern.messageText = message._MT_text;
+	currentSMSPattern.currentSMSPattern_clientID = client;
+	currentSMSPattern.currentSMSPattern_PatternID = pattern;
+	currentSMSPattern.currentSMSPattern_MessageSetup = message;
+	currentSMSPattern.messageText = message._MT_text;
+	currentSMSPattern.validFirstLetter = validFl;
+
+    currentSMSPattern.maxMultipleChoice = message.maxMultipleChoice;
+
+    currentSMSPattern.correctAnswer = message.correctAnswer;
+	currentSMSPattern.informCorrectText = message.informCorrectText;
+	currentSMSPattern.messageUUID = "";
+	currentSMSPattern.active = 1;
+	currentSMSPattern.save();
+}

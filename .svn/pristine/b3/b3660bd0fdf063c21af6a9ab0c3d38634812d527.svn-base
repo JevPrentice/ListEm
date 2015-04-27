@@ -1,0 +1,179 @@
+unit UserGroupUmbrellaTimeCalculations;
+
+/* ************************************************************************************************ */
+/* ************************************************************************************************ */
+
+datetime fGetUmbrellaDates(Umbrella u, datetime startDate, datetime escalationDate, datetime endDate, string sReturntype){
+
+	// Get defaults to be usen in calculation
+	int maxduration = null; if(u!=null){ maxduration = u.umbrellaMaxDuration; }	
+	int iEnd = BLUnits:fGetConfigSettingInt("DefaultTopicExtension");
+	int iEscalate = BLUnits:fGetConfigSettingInt("DefaultTopicEscalation");
+
+	// Calculate - with sanity check - max duration dates
+	if (maxduration==null){ maxduration = iEnd; }
+	if(iEscalate>=maxduration){ iEscalate = 1; }
+	if(iEscalate<=maxduration){ iEscalate = -1*iEscalate; } else { iEscalate = 1; }
+
+	// Set variables for return
+	endDate = Date:addDays(Mez:now(), maxduration);
+	escalationDate = Date:addDays(endDate, iEscalate);
+
+	// Return variables as per returntype
+	if(sReturntype=="escalationdate"){
+		return escalationDate;
+	} else if(sReturntype=="enddate"){
+		return endDate;
+	} else{
+		return null;
+	}
+
+} 
+
+/* ************************************************************************************************ */
+/* ************************************************************************************************ */
+
+// Checks and extends (if necessary) the datetime of the relevant Umbrella escalation
+void fCheckOrExtendUmbrellaEscalation(Client c, Umbrella u, datetime dtStart){
+
+	if(dtStart==null){ dtStart = Mez:now(); }
+    datetime dtEscalate = fGetUmbrellaDates(u, dtStart, null, null, "escalationdate");
+    datetime dtEnd =  fGetUmbrellaDates(u, dtStart, null, null, "enddate");
+
+    UmbrellaPPE uP = UmbrellaPPEController:fCreateorUpdateClientUmbrellaPPE(c, u);
+
+    if(uP!=null){
+        uP.umbrellaStartDateTime = dtStart;
+        uP.umbrellaEscalateDateTime = dtEscalate;
+        uP.umbrellaEndDateTime = dtEnd;
+        uP.save();
+    }
+    
+    return null;
+
+}
+
+/* ************************************************************************************************ */
+/* ************************************************************************************************ */
+
+// Return the datetime of the relevant Umbrella escalation
+datetime fGetUmbrellaEscalation(Client c, Umbrella u){
+
+	datetime dtStart = Mez:now();
+    datetime dtEscalate = fGetUmbrellaDates(u, dtStart, null, null, "escalationdate");
+    datetime dtEnd = fGetUmbrellaDates(u, dtStart, null, null, "enddate");
+
+    UmbrellaPPE uP = UmbrellaPPEController:fCreateorUpdateClientUmbrellaPPE(c, u);
+    
+    if(uP!=null){
+        if(uP.umbrellaEscalateDateTime!=null){
+            dtEscalate = uP.umbrellaEscalateDateTime;
+        }
+    }
+    
+    return dtEscalate;
+
+}
+
+/* ************************************************************************************************ */
+/* ************************************************************************************************ */
+
+// Return the datetime of the relevant Umbrella expiry
+datetime fGetUmbrellaExpiry(Client c, Umbrella u){
+
+	datetime dtStart = Mez:now();
+    datetime dtEscalate = fGetUmbrellaDates(u, dtStart, null, null, "escalationdate");
+    datetime dtEnd = fGetUmbrellaDates(u, dtStart, null, null, "enddate");
+
+    UmbrellaPPE uP = UmbrellaPPEController:fCreateorUpdateClientUmbrellaPPE(c, u);
+    
+    if(uP!=null){
+        if(uP.umbrellaEndDateTime!=null){
+            dtEnd = uP.umbrellaEndDateTime;
+        }
+    }
+    
+    return dtEnd;
+
+}
+
+/* ************************************************************************************************ */
+/* ************************************************************************************************ */
+
+datetime fGetTopicEscalationDatePerUmbrella(Client c, Umbrella u, Topic t){
+	
+	int iTopicEscalate = t.topicEscalationTime; if(iTopicEscalate==null){ iTopicEscalate=0; }
+	
+	datetime dte1 = Date:addDays(Mez:now(), iTopicEscalate);
+	datetime dte2 = fGetUmbrellaEscalation(c, u);
+	if(dte1>dte2){
+		return dte2;
+	} else{
+		return dte1;
+	}
+
+}
+
+/* ************************************************************************************************ */
+/* ************************************************************************************************ */
+
+datetime fGetDateTimeExpiryTarget(Client c, Umbrella u, Topic t, int rt){
+
+	//defaults
+	int daysdefault = BLUnits:fGetConfigSettingInt("DefaultTopicExtension");
+	int searchdefault = (12*60*60);
+	int iTopicMaxDuration = t.topicMaxDuration; if(iTopicMaxDuration==null){ iTopicMaxDuration = daysdefault; }
+
+	//datetime variable declaration
+	datetime dtetarget = Date:addDays(Mez:now(), daysdefault); 
+	datetime dte2 = dtetarget;
+
+	//evaluation of runtype
+	if(rt==1){ 
+
+		// RunType == 1, Therefore normal runtype and use topic max duration
+		dtetarget = Date:addDays(Mez:now(), iTopicMaxDuration);
+		dte2 = fGetUmbrellaExpiry(c, u);
+		if(dtetarget>dte2){ dtetarget = dte2; }
+
+	} else if(rt==40) {
+
+		// RunType == 40, Therefore search and expire in 12 hours
+		dtetarget = Date:addSeconds( Mez:now(), searchdefault ); 
+
+	} else {
+
+		// RunType == Other, Therefore extra runtype and use topic max duration as first check
+		dtetarget = Date:addDays(Mez:now(), iTopicMaxDuration);
+		dte2 = fGetUmbrellaExpiry(c, u);
+		if(dtetarget>dte2){ dtetarget = dte2; }
+
+		// RunType == Other, Therefore extra runtype and add a further 6 days as second check if required
+		if(dtetarget<Mez:now()){ dtetarget = Date:addDays( Mez:now(), daysdefault ); }
+		
+	}
+
+	return dtetarget;
+
+}
+
+/* ************************************************************************************************ */
+/* ************************************************************************************************ */
+
+// Check to see if the maximum allowed time for the Umbrella has expired - in which case the umbrella cannot be started
+bool fCanRunUmbrella(TopicUserSetup sTUS){
+    bool r = true; datetime dte1;
+
+    Client c = sTUS.client_topicUserSetup;
+    Umbrella u = sTUS.umbrella_topicUserSetup;
+
+    if(c!=null&&u!=null){
+        datetime dte1 = fGetUmbrellaExpiry(c, u);
+        if(dte1<Mez:now()){
+            r = false;
+        }
+    }
+
+    return r;
+
+}

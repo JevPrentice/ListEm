@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
+    <view label="group_management.title" unit="GroupManagement" ><!--  init="init"  -->
+
+        <navigation outcome="add_edit_group" target="GroupEdit" />
+        <navigation outcome="manage_group_users" target="GroupUsers" />
+        <navigation outcome="nav_group_bulk_upload" target="GroupBulkUpload" />
+        <navigation outcome="nav_group_filter" target="GroupFilter" />
+
+        <menuitem label="group_management.menu_item.title" icon="GroupManagement" order="3">
+            <userRole>ProgramManager</userRole>
+        </menuitem>
+
+        <action label="group_management.nav_group_filter" outcome="nav_group_filter"/>
+        <action label="group_management.addGroup" action="add_group"/>
+        <!-- <action label="group_management.addMultipleGroups" action="add_multiple_groups"/> -->
+
+        <table title="group_management.table.groups">
+            <collectionSource function="ClientGroupList:getAllClientGroups"/>
+            <column heading="client_group._id">
+                <attributeName>idd</attributeName>
+            </column>
+            <column heading="client_group.name">
+                <attributeName>name</attributeName>
+            </column>
+            <column heading="group_management.geographyType">
+                <attributeName>geographyType</attributeName>
+            </column>
+            <column heading="SubCounty">
+                <attributeName>subCounty.subCountyName</attributeName>
+            </column>
+            <column heading="clientGroupList.chew">
+                <attributeName>client_chews.firstName</attributeName>
+                <attributeName>client_chews.surname</attributeName>
+                <attributeName>client_chews.mobileNumber</attributeName>
+            </column>
+           <rowAction label="edit" action="edit_group">
+                <binding variable="group"/>
+            </rowAction>
+            <rowAction label="group_management.table.manage_users" action="manage_group_users">
+                <binding variable="group"/>
+            </rowAction>
+            <!-- <rowAction label="delete" action="remove_group">
+                <binding variable="group"/>
+                <confirm subject="group_management.table.remove_group.confirm.subject" body="group_management.table.remove_group.confirm.body"/>
+            </rowAction> -->
+        </table>
+
+    </view>
+</ui>

@@ -1,0 +1,63 @@
+unit ManageCounties;
+
+County county;
+
+string msg;
+
+void init(){
+	resetVars();
+}
+
+void resetVars(){
+	county = null;
+}
+
+string navigate(string location){
+	resetVars();
+	return location;
+}
+
+string editCounty(){
+
+	EditCounty:county = county;
+	return navigate("navEditCounty");
+
+}
+
+string navManageSubCounties(){
+	return navigate("navManageSubCounties");
+}
+
+string navSubCountiesForCounty(){
+
+	if (county == null){
+		msg = "The selected County could not be found.";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	ManageSubCounties:county = county;
+
+	return navigate("navManageSubCounties");
+}
+
+void deleteCounty(){
+
+	if (county == null){
+		msg = "The selected County could not be found.";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	if (CountyController:doesCountyHaveSubCounties(county) == true){
+		msg = "This County cant be deleted, it currently has SubCounties assigned to it.";
+		Alerter:alertError(msg);
+		return null;
+	}
+
+	County:delete(county);
+
+	msg = "County Deleted";
+	Alerter:alert(msg);
+
+}

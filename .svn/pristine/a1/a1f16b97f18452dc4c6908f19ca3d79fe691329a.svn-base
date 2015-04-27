@@ -1,0 +1,8 @@
+@Restrict("SmartChew", all())
+@Restrict("FieldWorker", all())
+persistent object RoleKeyObject {
+	
+	int roleID;
+	string roleName;
+	 	
+}

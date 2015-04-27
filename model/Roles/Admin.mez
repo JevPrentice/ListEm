@@ -1,0 +1,10 @@
+@Restrict("Admin", all())
+@Role("Admin")
+persistent object Admin {
+
+	datetime dateRegistered;
+
+	@OneToOne
+	Person person via admin_person;
+
+}
