@@ -1,6 +1,0 @@
-{
-	"name":"Group Activity Report by Topic",
-	"description":"Group Activity Report by Topic",
-	"rolesAllowed":["ProgramManager"],
-	"hiddenFormats":["HTML", "PDF"]
-}

@@ -10,25 +10,37 @@ Doctor[] getDoctorsForDoctorID(string doctorID){
 	return Doctor:equals(doctorID, doctorID);
 }
 
-Doctor createOrEditDoctor(string doctorID, Person person){
-	Doctor doctor;
+Doctor createOrEditDoctor(Doctor doctor, Person p, string doctorID){
 
-  if (doctorID == null || String:length(doctorID) <= 0){
-    msg = "Please enter a Doctor ID"; Alert:alert(msg);
-    return null;
-  }
+	if (p == null){ 
+		msg = "Doctor not saved, No Person object present"; Alert:info(msg);
+		return null;
+	}
 
-  Doctor[] flag = getDoctorsForDoctorID(doctorID);
-  	if (flag.length() > 1) {
-  	 doctor = flag.get(0);
-  	} else {
-  		doctor = Doctor:new();
-  	}
+	if (doctorID == null || String:length(doctorID) <= 0){
+			msg = "Please enter a Doctor ID"; Alert:info(msg);
+			return null;
+	}
 
-    doctor.dateRegistered = Mez:now();
-  	doctor.doctorID = doctorID;
-  	doctor.person = person;
-  	doctor.save();
+	Doctor[] flag = getDoctorsForDoctorID(doctorID);
+	if (flag.length() > 0) {
+		doctor = flag.get(0);
+		doctor.person = p;
+		doctor.save();
 
-  	return doctor;
+		msg = String:concat("Doctor ID exists, update to link to ", p.firstNames, " ", p.surname); Alert:info(msg);
+
+		return doctor;
+	} 
+
+	doctor = Doctor:new();
+	doctor.dateRegistered = Mez:now();
+	doctor.doctorID = doctorID;
+
+	doctor.person = p;
+	doctor.save();
+
+	doctor.invite(p.mobileNumber);
+
+	return doctor;
 }

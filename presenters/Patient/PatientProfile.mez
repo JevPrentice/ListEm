@@ -1,0 +1,42 @@
+unit PatientProfile;
+
+Patient patient;
+Person person;
+
+string msg;
+
+void init(){
+	patient = Patient:user();
+	person = patient.person;
+}
+
+string navigate(string location){
+	return location;
+}
+
+string back(){
+	return navigate("navManageDoctors");
+}
+
+// string editPatient(){
+// 	EditPatient:patient = patient;
+// 	EditPatient:successDestination = "navPatientProfile";
+// 	return navigate("navEditPatient");
+// }
+
+string editPerson(){
+	
+	if (patient == null){
+		Alert:info("No Patient Found");
+		return null;
+	}
+
+	if (patient.person == null){
+		msg = String:concat("No Person found for Patient:", person); Alert:info(msg);
+		return null;
+	}
+
+	EditPerson:person = patient.person;
+	EditPerson:successDestination = "navPatientProfile";
+	return navigate("navEditPerson");
+}

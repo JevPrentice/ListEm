@@ -1,0 +1,18 @@
+@Restrict("Admin", all())
+@Restrict("Doctor", relationshipIn(doctor, Doctor:user()))
+@Restrict("Patient", relationshipIn(patient, Patient:user()))
+persistent object Payment {
+	
+	datetime dateRegistered;
+	
+	decimal amount;
+
+	MY_PAYMENT_STATUS status;
+	
+	@ManyToOne
+	Doctor doctor via payments_doctor;
+
+	@ManyToOne
+	Patient patient via patient_payments;
+
+}

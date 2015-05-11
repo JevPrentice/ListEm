@@ -1,9 +1,0 @@
-unit ScheduleUrlController;
-
-ScheduleURL[] getAllScheduleUrls(){
-    return ScheduleURL:all();
-}
-
-ScheduleURL[] getAllScheduleUrlsNotProcessed(){
-    return ScheduleURL:notEquals(status, 0);
-}

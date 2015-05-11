@@ -2,21 +2,21 @@ unit InviteUsers;
 
 @InviteUser
 Admin inviteAdmin(){
-
-    Person p = PersonController:createOrUpdatePerson("Jev", "Prentice", "27766432235", "9208145051080", GENDER.Male);
-    // p.save();
-
-    Admin a = AdminController:createOrEditAdmin(p);
+    Person person = PersonController:createOrUpdatePerson("Jev", "Prentice", "27766432235", "9208145051080", GENDER.Male);
+    Admin a = AdminController:createOrEditAdmin(null, person);
     return a;
 }
 
-// @InviteUser
-// Person invitePerson(){
-//     Person p = Person:new();
-//     p.firstNames = "Default";
-//     p.surname = "Default";
-//     p.mobileNumber = "27123456789";
-//     p.dateRegistered = Mez:now();
-//     p.idNumber = "1234567890123";
-//     return p;
-// }
+@InviteUser
+Doctor inviteDoctor(){
+    Person person = PersonController:createOrUpdatePerson("Jev", "Prentice", "27766432235", "9208145051080", GENDER.Male);
+    Doctor doctor = DoctorController:createOrEditDoctor(null, person, "123456");
+    return doctor;
+}
+
+@InviteUser
+Patient invitePatient(){
+    Person person = PersonController:createOrUpdatePerson("Jev", "Prentice", "27766432235", "9208145051080", GENDER.Male);
+    Patient patient = PatientController:createOrEditPatient(null, person);
+    return patient;
+}

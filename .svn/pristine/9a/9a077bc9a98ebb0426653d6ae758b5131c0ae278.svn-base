@@ -1,8 +1,0 @@
-@Restrict("SmartChew", all())
-@Restrict("FieldWorker", all()) /*NY: added 2014/08/11 */
-persistent object ClientSMSQueue{
-    datetime smsDateTime;
-    string smsText;
-	@ManyToOne
-	Client c_clientsmsqueue;
-}

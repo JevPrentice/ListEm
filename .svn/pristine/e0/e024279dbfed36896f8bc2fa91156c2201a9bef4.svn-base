@@ -1,4 +1,0 @@
-first_name,surname,nickname,mobile_number,language,gender,role_id,clients_escalation_user_id,chat_count
-test_fname,test_sname,test_nname,27000000000,English,Male,1,1,1
-test_fname2,test_sname2,test_nname2,27000000000,English,Female,1,1,1
-test_fname3,test_sname3,test_nname3,27000000000,English,Male,1,1,1

@@ -1,9 +1,0 @@
-object TopicActivitySummaryTemp{
-
-	string topic;
-	int activeUsers;
-	int completeUsers;
-	int expiredUsers;
-	int totalUsers;
-
-}

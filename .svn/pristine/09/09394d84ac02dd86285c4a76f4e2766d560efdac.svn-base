@@ -1,8 +1,0 @@
-object MessageOrderTemp{
-
-	string message_id;
-	string activity_id;
-	int message_order;
-	string message_text;	
-	
-}

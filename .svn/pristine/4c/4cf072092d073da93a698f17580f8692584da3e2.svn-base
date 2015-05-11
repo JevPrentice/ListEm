@@ -1,8 +1,0 @@
-@Restrict("SmartChew", all())
-persistent object ForceTopicEnd{
-	datetime forceEndDateTime;
-	@ManyToOne
-	Client client_fTopicEnd;
-	@ManyToOne
-	Topic topic_fTopicEnd;	
-}

@@ -2,108 +2,49 @@ unit EditAdmin;
 
 Admin admin;
 
-Person[] allPeople;
-Person person;
-
-string firstNames;
-string surname;
-string mobileNumber;
 string idNumber;
-GENDER gender;
 
-bool isEdit;
-string isEditDesc;
+string msg;
 
 void init(){
-
-	allPeople = PersonController:getAllPeople();
-
-	if (admin != null){
-		person = admin.person;
-	}
-
-	if (admin == null && person == null){
-		isEdit = false;
-		isEditDesc = "Invite New Admin";
-
-		admin = Admin:new();
-		person = Person:new();
-
-		resetVars();
-	} /*else if (admin != null && person == null){
-		
-	} else if (admin == null && person != null){
-		
-	} */else if (admin != null && person != null){
-		isEdit = true;
-		isEditDesc = "Edit Existing Admin";
-
-		mobileNumber = person.mobileNumber;
-		firstNames = person.firstNames;
-		surname = person.surname;
-		idNumber = person.idNumber;
-		gender = person.gender;
-
-	}
-
 }
 
 void resetVars(){
-	mobileNumber = null;
-	firstNames = null;
-	surname = null;
+	admin = null;
 	idNumber = null;
-	gender = null;
 }
 
 string navigate(string location){
 	resetVars();
 	return location;
 }
+
 string back(){
 	return navigate("navManageAdmins");
 }
 
 string saveAdmin(){
 
-	Person p = PersonController:createOrUpdatePerson(firstNames, surname, mobileNumber, idNumber, gender);
-    Admin a = AdminController:createOrEditAdmin(p);
+	Person person;
 
+	if (idNumber == null || String:length(idNumber) != 13 || Globals:isStringNumeric(idNumber) == false){
+		msg = "Please enter a numeric 13 digit ID Number"; Alert:info(msg); return null;
+	}
+
+	/* Check if person exists */
+	person = PersonController:getPersonForIdNumber(idNumber);
+
+	/* Create NEW Person and promote to Admin */
+	if (person == null){
+		EditPerson:person = null;
+		EditPerson:idNumber = idNumber;
+		EditPerson:isAdmin = true;
+		return navigate("navEditPerson");
+	}
+
+	/* Person exists, promote this Person to Admin */
+	admin = AdminController:createOrEditAdmin(admin, person);
+	msg = String:concat(person.firstNames, " ", person.surname, " has been enabled as an Admin"); Alert:info(msg);
+	
 	return navigate("navManageAdmins");
 }
-
-// string saveAdmin(){
-
-// 	Person person = PersonController:createOrUpdatePerson(firstNames, surname, mobileNumber, idNumber, gender);
-
-// 	/* New */
-// 	if (isEdit == false){ 
-		
-// 		// if (mobileNumber == null || String:length(mobileNumber) <= 0){
-// 		// 	Alert:alert("Please enter a Mobile Number");
-//   // 			return null;
-// 		// }
-
-// 		// Person[] flag = PersonController:getPeopleForMobileNumber(mobileNumber);
-// 	 //  	if (flag.length() > 0) {
-// 		// 	Alert:alert("There is already an Admin with that mobile number");
-// 	 //  		return null;
-// 	 //  	}
-
-// 	  	admin.dateRegistered = Mez:now();
-// 	  	admin.invite(mobileNumber);
-
-// 	}
-
-// 	/* Edit MobileNumber warning */
-// 	if (isEdit == true && ( mobileNumber != null || String:length(mobileNumber) > 0 )){
-// 		Alert:alert("Please note that the MobileNumber field cannot be updated");	
-// 	}
-	
-
-// 	/* save admin */
-// 	admin.person = person;
-// 	admin.save();
-
-// 	return navigate("navManageAdmins");
-// }

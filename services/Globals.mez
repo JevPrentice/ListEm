@@ -1,0 +1,78 @@
+unit Globals;
+
+string msg;
+
+/* Modulus function */
+int modulus(int dividend, int divisor) {
+	return (dividend - ((dividend / divisor) * divisor));
+}
+
+/* Check whether this first parameter is congruent modulus parameter second */
+bool isCongruentModulus(int dividend, int divisor) {
+	return (modulus(dividend, divisor) == 0);
+}
+
+int getRandomNumber(int randomizeto) {
+	return modulus(decimalToIntegerCasting(Math:random() * 1000), randomizeto);
+}
+
+/* Decimal to Integer casting */
+int decimalToIntegerCasting(decimal dec_number) {
+	
+	int int_number = 0;
+	string string_number = Strings:concat("", dec_number);
+	string [] parts = String:split(string_number, "\.");
+
+	if(parts.length() > 0) {
+		int_number = Integer:fromString(parts.get(0));
+	}
+	
+	return int_number;
+}
+
+string replaceFromString(string original_string, string string_to_replace, string replace_with) {
+	return String:join(Strings:split(original_string, string_to_replace), replace_with);
+}
+
+bool isEvenNumber(int num) {
+	int x = 0;
+	
+	x = num / 2;
+	x = x * 2;
+	
+	return (x == num);
+}
+
+bool isStringNumeric(string s){
+
+	int len = String:length(s);
+	
+	/* Its safe to cast to int; < 9 */
+	if (len < 9){
+		return isStringValidInt(s);
+	}
+
+	/* Iterate over the string, 9 'digits' at a time, return false for any char which isnt a num*/
+	for (int i = 0; len > 9; i++){
+
+		/* Get & Test first 9 digits of str */
+		bool isNumeric = isStringValidInt(String:substring(s, 0, 8));
+		if (isNumeric == false){
+			return false;
+		}
+		/* Move over the 9 digits */
+		s = String:substring(s, 8, (len - 1) );
+		/* update len */
+		len = String:length(s);
+	}
+
+	return isStringValidInt(s);
+}
+
+bool isStringValidInt(string s){
+	int i = Integer:fromString(s);
+	if (i == null){
+		return false;
+	}
+	return true;
+}

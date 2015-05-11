@@ -2,11 +2,12 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-    <view label="admin.manage" unit="ManageAdmin" init="init">
+    <view label="admins" unit="ManageAdmins" init="init">
 
         <navigation outcome="navEditAdmin" target="EditAdmin"/>
+        <navigation outcome="navEditPerson" target="EditPerson"/>
 
-        <menuitem label="admin.manage" icon="UserManagement" order="1">
+        <menuitem label="admins" icon="admin" order="3">
             <userRole>Admin</userRole>
         </menuitem>
 

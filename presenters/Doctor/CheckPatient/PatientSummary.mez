@@ -1,0 +1,43 @@
+unit PatientSummary;
+
+Person person;
+Patient patient;
+
+bool isRegisteredPatient;
+bool hasOutstandingPayments;
+
+string msg;
+
+void init(){
+
+	isRegisteredPatient = false;
+	hasOutstandingPayments = false;
+
+	if (person == null){
+		msg = "No Person found for which to display Summary."; Alert:error(msg);
+		return null;
+	}
+
+	patient = person.patient_person;
+
+	if (patient != null){
+
+		isRegisteredPatient = true;
+
+		Payment[] payments = patient.patient_payments;
+
+		if (payments.length() > 0){
+			hasOutstandingPayments = true;
+		}
+
+	}
+
+}
+
+string navigate(string location){
+	return location;
+}
+
+string back(){
+	return navigate("navCheckPatient");
+}

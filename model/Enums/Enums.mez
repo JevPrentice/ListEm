@@ -3,7 +3,7 @@ enum GENDER {
 	Female
 }
 
-enum LINKORNEW {
-	Link,
-	New
+enum MY_PAYMENT_STATUS{
+	Outstanding,
+	Settled
 }

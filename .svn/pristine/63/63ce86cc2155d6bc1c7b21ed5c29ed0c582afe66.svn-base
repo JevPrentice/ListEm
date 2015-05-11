@@ -1,6 +1,0 @@
-{
-	"name":"T ST S A M Report",
-	"description":"T ST S A M Report",
-	"rolesAllowed":["LearningManager","ProgramManager"],
-	"hiddenFormats":["HTML", "PDF"]
-} 

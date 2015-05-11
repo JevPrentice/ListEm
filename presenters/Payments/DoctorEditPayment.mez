@@ -1,0 +1,70 @@
+unit DoctorEditPayment;
+
+Payment payment;
+
+Doctor doctor;
+Patient patient;
+
+string patientToString;
+string doctorToString;
+
+decimal amount;
+
+MY_PAYMENT_STATUS status;
+
+string msg;
+
+void init (){
+
+	doctor = Doctor:user();
+	Person docPerson = doctor.person;
+	
+	if (payment == null){
+		return null;
+	}
+
+	doctorToString = String:concat(docPerson.firstNames, " ", docPerson.surname, " ", docPerson.idNumber);
+
+	patient = payment.patient;
+
+	Person patPerson = patient.person;
+	patientToString = String:concat(patPerson.firstNames, " ", patPerson.surname, " ", patPerson.idNumber);
+
+	amount = payment.amount;
+
+	status = payment.status;
+
+}
+
+void resetVars(){
+	payment = null;
+	doctor = null;
+	patient = null;
+	amount = null;
+}
+
+string navigate(string location){
+	resetVars();
+	return location;
+}
+
+string back(){
+	return navigate("navManagePayments");
+}
+
+string savePayment(){
+	
+	datetime dateRegistered = null;
+	if (payment != null && payment.dateRegistered != null){
+		dateRegistered = payment.dateRegistered;
+	}
+
+	payment = PaymentController:createOrUpdatePayment(patient, doctor, dateRegistered, amount, status);
+
+	if (payment == null){
+		return null;
+	}
+
+	Alert:info("Payment Saved");
+	return navigate("navManagePayments"); 
+}

@@ -1,4 +1,4 @@
-unit ManageAdmin;
+unit ManageAdmins;
 
 Admin[] allAdmins;
 Admin selectedAdmin;
@@ -14,22 +14,45 @@ string back(){
 	return navigate("navManageAdmins");
 }
 
-string inviteAdmin(){
-	EditAdmin:admin = null;
-	EditAdmin:person = null;
+string inviteAdmin(){ 
 	return navigate("navEditAdmin");
 }
 
 string editAdmin(){
+
 	EditAdmin:admin = selectedAdmin;
 	return navigate("navEditAdmin");
+	
+	// Person person = selectedAdmin.person;
+
+	// if (person == null){
+		/* 
+		 * If admin record exists without being assigned to a person, 
+		 *	1. nav EditAdmin with selectedAdmin 
+		 *	2. EditAdmin will nav to EditPerson with person=null & isAdmin = true
+		 *	3. EditPerson will create a Person and link to the Admin
+		 *  4. nav to ManageAdmins
+	     */
+		// EditAdmin:admin = selectedAdmin;
+		// return navigate("navEditAdmin");
+	// }
+
+	/* 
+	 * If admin record exists without being assigned to a person, 
+	 *	1. nav to EditPerson with linked person & isAdmin = true
+	 *	2. EditPerson will update Person details and ensure link to the Admin
+	 *  3. nav to ManageAdmins
+     */
+	// EditPerson:person = person;
+	// EditPerson:isAdmin = true;
+	// return navigate("navEditPerson");
 }
 
 void uninviteAdmin(){
 
 	Admin[] allAdmins = AdminController:getAllAdmins();
 	if (allAdmins.length() <= 1){
-		Alert:alert("You cannot remove the last Admin from the system");
+		Alert:info("You cannot remove the last Admin from the system");
 		return null;
 	}
 
