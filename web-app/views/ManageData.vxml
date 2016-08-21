@@ -3,11 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
 	<view label="form.title.Manage_Data" unit="ManageData" init="init">
-		<navigation outcome="navPatient" target="Patient_Form" />
-		<!-- <navigation outcome="navPayment" target="Payment_Form" /> -->
 		<navigation outcome="navPerson" target="Person_Form" />
-		<navigation outcome="navAdmin" target="Admin_Form" />
-		<navigation outcome="navDoctor" target="Doctor_Form" />
 
 		<menuitem label="form.title.Manage_Data" icon="settings" order="1" >
 			<userRole>Admin</userRole>

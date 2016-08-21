@@ -70,6 +70,9 @@
 			<rowAction label="personform.table.rowaction.Delete" action="deletePerson" >
 				<binding variable="selected_person_var"/>
 			</rowAction>
+			<rowAction label="personform.table.rowaction.Toggle_Admin" action="toggleAdmin" >
+				<binding variable="selected_person_var"/>
+			</rowAction>
 		</table>
 	</view>
 

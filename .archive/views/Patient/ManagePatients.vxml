@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+    <view label="patients" unit="ManagePatients" init="init">
+
+        <navigation outcome="navEditPerson" target="EditPerson"/>
+        <navigation outcome="navEditPatient" target="EditPatient"/>
+
+        <menuitem label="patients" icon="patient" order="5">
+            <userRole>Admin</userRole>
+            <userRole>Doctor</userRole>
+        </menuitem>
+
+        <!-- <action label="patient.invitePatient" action="invitePatient"/> -->
+
+        <table>
+            <collectionSource variable="allPatients"/>
+            <column heading="person">
+                <attributeName>person.firstNames</attributeName>
+                <attributeName>person.surname</attributeName>
+            </column>
+            <column heading="firstNames">
+                <attributeName>person.firstNames</attributeName>
+            </column> 
+            <column heading="surname">
+                <attributeName>person.surname</attributeName>
+            </column>
+             <column heading="idNumber">
+                <attributeName>person.idNumber</attributeName>
+            </column>
+            <column heading="mobileNumber">
+                <attributeName>person.mobileNumber</attributeName>
+            </column> 
+            <column heading="dateRegistered">
+                <attributeName>dateRegistered</attributeName>
+            </column>
+            <!-- <rowAction label="update" action="updatePatient">
+                <binding variable="patient"/>
+            </rowAction> -->
+            <rowAction label="edit" action="editPatient">
+                <binding variable="patient"/>
+            </rowAction>
+            <rowAction label="remove" action="uninvitePatient">
+                <binding variable="patient"/>
+                <confirm subject="patient.confirmRemove.subject" body="patient.confirmRemove.body"/>
+            </rowAction>
+        </table>
+    </view>
+</ui>

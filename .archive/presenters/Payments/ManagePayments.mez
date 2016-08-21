@@ -1,0 +1,38 @@
+unit ManagePayments;
+
+Payment[] allPayments;
+Payment payment;
+
+string msg;
+
+void init(){
+
+	allPayments = PaymentController:getAllPayments();
+
+}
+
+string navigate(string location){
+	return location;
+}
+
+string updatePayment(){
+
+	if (Admin:user() != null){
+		AdminEditPayment:payment = payment;
+		return navigate("navAdminEditPayment");
+	}
+
+	if (Doctor:user() != null){
+		DoctorEditPayment:payment = payment;
+		return navigate("navDoctorEditPayment");
+	}
+
+	if (Patient:user() != null){
+		msg = "NOT IMPLEMENTED YET, must allow patient to settle payment"; Alert:info(msg);
+		return null;
+	}
+
+	msg = "Invalid Selection"; Alert:error(msg);
+	return null;
+}
+

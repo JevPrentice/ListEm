@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+    <view label="doctor.regPatient.step2" unit="ConfirmPatient" init="init">
+
+        <navigation outcome="navEnterID" target="RegisterPatient"/>
+        <navigation outcome="navRegPayment" target="RegPayment"/>
+
+        <action label="back" action="back"/>
+
+        <info label="firstNames">
+            <binding variable="person">
+                <attribute name="firstNames"/>
+            </binding>
+        </info>
+
+        <info label="surname">
+            <binding variable="person">
+                <attribute name="surname"/>
+            </binding>
+        </info>
+
+        <info label="mobileNumber">
+            <binding variable="person">
+                <attribute name="mobileNumber"/>
+            </binding>
+        </info>
+
+        <info label="idNumber">
+            <binding variable="person">
+                <attribute name="idNumber"/>
+            </binding>
+        </info>
+
+        <info label="gender">
+            <binding variable="person">
+                <attribute name="gender"/>
+            </binding>
+        </info>
+
+        <submit label="next" action="savePatient"/>
+
+    </view>
+</ui>

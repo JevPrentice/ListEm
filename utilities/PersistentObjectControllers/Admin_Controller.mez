@@ -10,6 +10,14 @@ int getAllAdminCollectionLength(){
 	return adminCollection.length();
 }
 
+Admin getAdminForPerson(Person person){
+	Admin[] adminCollection = Admin:relationshipIn(admin_person, person);
+	if(adminCollection.length()<=0){
+		return null;
+	}
+	return adminCollection.first();
+}
+
 Admin createAdmin(Person person){
 	if (person == null){
 		msg = "No Person populated."; Alert:error(msg);

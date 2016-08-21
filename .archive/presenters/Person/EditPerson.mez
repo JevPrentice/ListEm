@@ -1,0 +1,102 @@
+unit EditPerson;
+
+/* Person = null -> create new person
+ * Person != null -> edit person
+ */
+
+Person person;
+Admin admin;
+
+string firstNames;
+string surname;
+string mobileNumber;
+string idNumber;
+GENDER gender;
+
+string doctorID;
+
+/* bools Used by admin views to call Controller to create Role after saving Person */
+bool isAdmin;
+bool isDoctor;
+bool isPatient; 
+
+bool isSuccess; /* Decide if nav to fail or success destination */
+string successDestination;
+string failDestination;
+
+string msg;
+
+void init(){
+
+	isSuccess = false;
+
+	if (person != null){
+		firstNames = person.firstNames;
+		surname = person.surname;
+		mobileNumber = person.mobileNumber;
+		idNumber = person.idNumber;
+		gender = person.gender;
+	}
+}
+
+void resetVars(){
+	firstNames = null;
+	surname = null;
+	mobileNumber = null;
+	idNumber = null;
+	gender = null;
+}
+
+string navigate(string location){
+	resetVars();
+
+	if (isSuccess == true && successDestination == "navDoctorProfile"){
+		return successDestination;
+	}
+
+	if (isSuccess == true && successDestination == "navConfirmPatient"){
+		ConfirmPatient:person = person; /* needed for EnterID to nav correctly */
+		return successDestination;
+	}
+	
+	if (isSuccess == false && failDestination == "navEnterID"){
+		return failDestination;
+	}
+
+	if (isSuccess == true && successDestination == "navPatientProfile"){
+		return successDestination;
+	}
+	
+	return location;
+}
+string back(){
+	isSuccess = true;
+	return navigate("navManagePeople");
+}
+
+string savePerson(){
+	person = PersonController:createOrUpdatePerson(firstNames, surname, mobileNumber, idNumber, gender);
+	if (person == null){
+		msg = "Unable to create Person"; Alert:error(msg); isSuccess = false;
+		return null;
+	} else {
+		isSuccess = true;
+	}
+
+	if (isAdmin == true){
+		AdminController:createOrEditAdmin(admin, person);
+		return navigate("navManageAdmins");
+	}
+
+	if (isDoctor == true && doctorID != null){
+		DoctorController:createOrEditDoctor(null, person, doctorID);
+		return navigate("navManageDoctors");
+	}
+
+	if (isPatient == true){
+		PatientController:createOrEditPatient(null, person);
+		return navigate("navManagePatients");
+	}
+
+	return navigate("navManagePeople");
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+    <view label="patient.edit" unit="EditPatient" init="init">
+
+        <navigation outcome="navManagePatients" target="ManagePatients"/>
+        <navigation outcome="navEditPerson" target="EditPerson"/>
+
+        <action label="back" action="back"/>
+
+        <textfield label="idNumber">
+            <binding variable="idNumber"/>
+        </textfield>
+
+        <submit label="save" action="savePatient"/>
+
+    </view>
+</ui>

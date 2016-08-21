@@ -1,0 +1,37 @@
+unit AdminController;
+
+string msg;
+
+Admin[] getAllAdmins(){
+	return Admin:all();
+}
+
+Admin[] getAdminsForPerson(Person person){
+	return Admin:relationshipIn(person, person);
+}
+
+Admin createOrEditAdmin(Admin a, Person p){
+	
+	if (p == null){ 
+		msg = "Admin not saved, No Person object present"; Alert:info(msg);
+		return null;
+	}
+
+	if (a != null){
+		msg = String:concat("Admin record exists, update it to link to  ", p.firstNames, " ", p.surname); Alert:info(msg);
+		a.person = p;
+		return a;
+	}
+
+	Admin[] admins = getAdminsForPerson(p);
+	if (admins.length() <= 0){
+		a = Admin:new();
+		a.dateRegistered = Mez:now();
+		a.person = p;
+		a.invite(p.mobileNumber);
+		a.save();
+	} else {
+		a = admins.get(0);
+	}
+    return a;
+}

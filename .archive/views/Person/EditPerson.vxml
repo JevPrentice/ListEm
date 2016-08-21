@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+    <view label="people.edit" unit="EditPerson" init="init">
+
+        <navigation outcome="navManagePeople" target="ManagePeople"/>
+        <navigation outcome="navManageAdmins" target="ManageAdmins"/>
+        <navigation outcome="navManageDoctors" target="ManageDoctors"/>
+        <navigation outcome="navManagePatients" target="ManagePatients"/>
+        
+        <navigation outcome="navDoctorProfile" target="DoctorProfile"/>
+
+        <navigation outcome="navEnterID" target="RegisterPatient"/>
+        <navigation outcome="navConfirmPatient" target="ConfirmPatient"/>
+        
+        <navigation outcome="navPatientProfile" target="PatientProfile"/>
+        
+        <action label="back" action="back"/>
+
+        <textfield label="firstNames">
+            <binding variable="firstNames">
+                <!-- <attribute name="firstNames"/> -->
+            </binding>
+        </textfield>
+
+        <textfield label="surname">
+            <binding variable="surname">
+                <!-- <attribute name="surname"/> -->
+            </binding>
+        </textfield>
+
+        <textfield label="mobileNumber_r">
+            <binding variable="mobileNumber">
+                <!-- <attribute name="mobileNumber"/> -->
+            </binding>
+        </textfield>
+
+		<textfield label="idNumber">
+			<binding variable="idNumber">
+                <!-- <attribute name="idNumber"/> -->
+            </binding>
+		</textfield>
+
+        <select label="gender">
+            <binding variable="gender">
+                <!-- <attribute name="gender"/> -->
+            </binding>
+            <enum>GENDER</enum>
+        </select>
+
+        <submit label="save" action="savePerson"/>
+
+    </view>
+</ui>
+

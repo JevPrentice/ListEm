@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+    <view label="admins" unit="ManageAdmins" init="init">
+
+        <navigation outcome="navEditAdmin" target="EditAdmin"/>
+        <navigation outcome="navEditPerson" target="EditPerson"/>
+
+        <menuitem label="admins" icon="admin" order="3">
+            <userRole>Admin</userRole>
+        </menuitem>
+
+        <action label="admin.inviteAdmin" action="inviteAdmin"/>
+
+        <table>
+            <collectionSource variable="allAdmins"/>
+            <column heading="person">
+                <attributeName>person.firstNames</attributeName>
+                <attributeName>person.surname</attributeName>
+            </column>
+            <column heading="firstNames">
+                <attributeName>person.firstNames</attributeName>
+            </column> 
+            <column heading="surname">
+                <attributeName>person.surname</attributeName>
+            </column> 
+            <column heading="mobileNumber">
+                <attributeName>person.mobileNumber</attributeName>
+            </column> 
+            <column heading="idNumber">
+                <attributeName>person.idNumber</attributeName>
+            </column>
+            <column heading="dateRegistered">
+                <attributeName>dateRegistered</attributeName>
+            </column>
+            <rowAction label="edit" action="editAdmin">
+                <binding variable="selectedAdmin"/>
+            </rowAction>
+            <rowAction label="remove" action="uninviteAdmin">
+                <binding variable="selectedAdmin"/>
+                <confirm subject="admin.confirmRemove.subject" body="admin.confirmRemove.body"/>
+            </rowAction>
+        </table>
+    </view>
+</ui>

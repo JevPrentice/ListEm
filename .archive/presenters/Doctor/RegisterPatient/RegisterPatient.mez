@@ -1,0 +1,37 @@
+unit RegisterPatient;
+
+string idNumber;
+
+void init (){
+
+}
+
+void resetVars(){
+	idNumber = null;
+}
+
+string navigate(string location){
+	resetVars();
+	return location;
+}
+
+string back(){
+	return navigate("navDoctorProfile");
+}
+
+string next(){
+
+	Person person = PersonController:getPersonForIdNumber(idNumber);
+	if (person == null) { 
+		EditPerson:idNumber = idNumber;
+		EditPerson:successDestination = "navConfirmPatient";
+		EditPerson:failDestination = "navEnterID";
+		return navigate("navEditPerson");
+
+	}
+
+	ConfirmPatient:person = person;
+	return navigate("navRegPatient");
+	// Alert:info("reg outstand payment, for existing user");
+
+}

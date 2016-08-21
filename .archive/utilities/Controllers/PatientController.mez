@@ -1,0 +1,51 @@
+unit PatientController;
+
+string msg;
+
+Patient[] getAllPatients(){
+	return Patient:all();
+}
+
+Patient[] getPatientForPerson(Person p){
+	return Patient:relationshipIn(person, p);
+}
+
+Patient createOrEditPatient(Patient patient, Person person){
+
+	if (person == null){
+		Alert:error("No Person found to associate to Patient");
+		return null;
+	}
+
+	Patient[] patients = getPatientForPerson(person);
+	if (patients.length() > 0) {
+		patient = patients.get(0);
+		patient.person = person;
+		patient.save();
+		msg = String:concat("Patient ID exists, update to link to ", person.firstNames, " ", person.surname); Alert:info(msg);
+		return patient;
+	} 
+
+	patient = Patient:new();
+	patient.dateRegistered = Mez:now();
+	patient.person = person;
+	patient.save();
+	patient.invite(person.mobileNumber);
+	return patient;
+
+}
+
+// bool isPatientLinkedToDoctor(Patient patient, Doctor doctor){
+	
+// 	Payment[] payments = patient.patient_payments;
+// 	if (payments.length() <= 0){
+// 		return false;
+// 	}
+
+// 	payments = payments.relationshipIn(doctor, doctor);
+// 	if (payments.length() <= 0){
+// 		return false;
+// 	}
+
+// 	return true;
+// }

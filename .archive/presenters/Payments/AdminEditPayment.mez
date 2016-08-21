@@ -1,0 +1,49 @@
+unit AdminEditPayment;
+
+Payment payment;
+
+Doctor doctor;
+Patient patient;
+
+MY_PAYMENT_STATUS status;
+decimal amount;
+
+string msg;
+
+void init(){
+	if (payment != null){
+		doctor = payment.doctor;
+		patient = payment.patient;
+		amount = payment.amount;
+		status = payment.status;
+	}
+}
+
+void resetVars(){
+	payment = null;
+	doctor = null;
+	patient = null;
+	amount = null;
+	status = null;
+}
+
+string navigate(string location){
+	resetVars();
+	return location;
+}
+
+string back(){
+	return navigate("navManagePayments");
+}
+
+string savePayment(){
+	PaymentController:createOrUpdatePayment(patient, doctor, null, amount, status);
+	Alert:info("Payment Saved");
+	return navigate("navManagePayments"); 
+}
+
+string removePayment(){
+	Payment:delete(payment);
+	msg = "Payment Deleted"; Alert:info(msg);
+	return navigate("navManagePayments");
+}

@@ -1,0 +1,48 @@
+unit Settings;
+
+TempMenu[] menu;
+TempMenu item;
+
+void init(){
+
+	menu = getSettingsMenu();
+
+}
+
+string navigate(string location){
+	return location;
+}
+
+
+TempMenu[] getSettingsMenu(){
+	TempMenu[] menu;
+
+	TempMenu record = TempMenu:new();
+	record.order = 1;
+	record.key = "Build Test Data";
+	menu.append(record);
+
+	record = TempMenu:new();
+	record.order = 2;
+	record.key = "Invite Patient as Admin";
+	menu.append(record);
+
+	record = TempMenu:new();
+	record.order = 3;
+	record.key = "Create Payment as Admin";
+	menu.append(record);
+
+	return menu;
+}
+
+string selectItem(){
+
+	if (item.order == 1){
+		PopulateData:populateData(); return null;
+	} else if (item.order == 2){
+		return navigate("navEditPatient");
+	} else if (item.order == 3){
+		return navigate("navAdminEditPayment");
+	}
+
+}
