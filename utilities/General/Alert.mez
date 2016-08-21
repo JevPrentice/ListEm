@@ -1,0 +1,11 @@
+unit Alert;
+
+void info(string alertMessage) {
+	string message = alertMessage;
+	Mez:alert("alerts.common.generic");
+}
+
+void error(string alertMessage) {
+	string message = alertMessage;
+	Mez:alertError("alerts.common.generic");
+}

@@ -1,0 +1,51 @@
+unit Patient_Controller;
+string msg;
+
+Patient[] getAllPatientCollection(){
+	return Patient:all();
+}
+
+int getAllPatientCollectionLength(){
+	Patient[] patientCollection = getAllPatientCollection();
+	return patientCollection.length();
+}
+
+bool isObjectValidState(datetime dateRegistered, Person person_Record){
+	if(person_Record == null){
+		msg = "No person_Record populated."; Alert:error(msg);
+		return false;
+	}
+	if(dateRegistered == null){
+		msg = "No dateRegistered populated."; Alert:error(msg);
+		return false;
+	}
+	return true;
+}
+
+Patient createPatient(datetime dateRegistered, Person person_Record){
+	Patient patient_var = Patient:new();
+	return updatePatient(patient_var, false, dateRegistered, person_Record);
+}
+
+Patient updatePatient(Patient patient_var, bool isEdit, datetime dateRegistered, Person person_Record){
+	if (patient_var == null || isObjectValidState(dateRegistered, person_Record) == false){
+		return;
+	}
+
+	patient_var.dateRegistered = dateRegistered;
+	patient_var.person = person_Record;
+	patient_var.save();
+
+	return patient_var;
+}
+
+void deletePatient(Patient patient_var){
+	if(patient_var == null) { return; }
+	patient_var.removeRole();
+	Patient:delete(patient_var);
+}
+
+void generatePatientData(){
+	createPatient(Mez:now(), null);
+}
+

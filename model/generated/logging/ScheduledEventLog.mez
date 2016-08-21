@@ -1,0 +1,8 @@
+persistent object ScheduledEventLog{
+	
+	string functionName;
+	string outcome;
+	datetime startDatetime;
+	datetime endDatetime;
+
+}

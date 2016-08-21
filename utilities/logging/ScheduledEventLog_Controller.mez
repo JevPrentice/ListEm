@@ -1,0 +1,33 @@
+unit ScheduledEventLog_Controller;
+
+ScheduledEventLog createScheduledEventLog(string functionName){
+	ScheduledEventLog log = ScheduledEventLog:new();
+	log.functionName = functionName;
+	log.startDatetime = Mez:now();
+	log.save();
+	return log;
+}
+
+ScheduledEventLog updateScheduledEventLog(ScheduledEventLog log, string outcome){
+	log.outcome = outcome;
+	log.endDatetime = Mez:now();
+	log.save();
+	return log;
+}
+
+ScheduledEventLog[] getAllScheduledEventLogs(){
+	return ScheduledEventLog:all();
+}
+
+ScheduledEventLog[] getScheduledEventLogsForFunctionName(string functionName){
+	return ScheduledEventLog:equals(functionName, functionName);
+}
+
+datetime getLastScheduledEventLogEndDatetimeForFunctionName(string functionName){
+	ScheduledEventLog[] scheduledEventLogCollection = getScheduledEventLogsForFunctionName(functionName);
+	if (scheduledEventLogCollection.length() > 0){
+		scheduledEventLogCollection.sortDesc("endDatetime");
+		ScheduledEventLog scheduledEventLogElement = scheduledEventLogCollection.first();
+		return scheduledEventLogElement.endDatetime;
+	}
+}

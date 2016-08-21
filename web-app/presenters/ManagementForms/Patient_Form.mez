@@ -1,0 +1,69 @@
+unit Patient_Form;
+
+Patient selected_patient_var;
+
+datetime dateRegistered;
+Person person_Record;
+Payment[] patient_payments_Collection;
+
+string msg;
+string nav_back;
+string nav_success;
+string page_mode;
+
+void init(){
+	if (selected_patient_var == null){
+		clearState();
+	} else {
+		editPatient();
+	}
+}
+
+void clearState(){
+	msg = "";
+	page_mode = "Create";
+	selected_patient_var = null;
+	dateRegistered = null;
+
+	person_Record = null;
+	patient_payments_Collection = null;
+}
+
+string navigate(string location){
+	clearState();
+	return location;
+}
+
+string backButton(){
+	return navigate(nav_back);
+}
+
+string submitButton(){
+	bool isEdit; if (page_mode == "Create"){ isEdit = false; } else { isEdit = true; }
+	if (selected_patient_var != null){
+		Patient_Controller:updatePatient(selected_patient_var, isEdit, dateRegistered, person_Record);
+	} else {
+		Patient_Controller:createPatient(dateRegistered, person_Record);
+	}
+	clearState();
+	return null;
+}
+
+void editPatient(){
+	page_mode = "Edit";
+	dateRegistered = selected_patient_var.dateRegistered;
+	person_Record = selected_patient_var.person;
+	patient_payments_Collection = selected_patient_var.patient_payments;
+}
+
+void deletePatient(){
+	Patient_Controller:deletePatient(selected_patient_var);
+}
+
+void cancelButton(){
+	clearState();
+}
+
+void generateData(){
+	Patient_Controller:generatePatientData();
+}

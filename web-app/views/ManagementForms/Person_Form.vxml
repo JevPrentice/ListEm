@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+	<view label="form.title.Person_Form" unit="Person_Form" init="init">
+
+		<navigation outcome="navManageData" target="ManageData" />
+
+		<info label="form.info.Person_Form">
+			<binding variable="page_mode"/>
+		</info>
+
+		<textfield label="form.textfield.firstNames">
+			<binding variable="firstNames"/>
+		</textfield >
+
+		<textfield label="form.textfield.surname">
+			<binding variable="surname"/>
+		</textfield >
+
+		<textfield label="form.textfield.mobileNumber">
+			<binding variable="mobileNumber"/>
+		</textfield >
+
+		<textfield label="form.textfield.idNumber">
+			<binding variable="idNumber"/>
+		</textfield >
+
+		<datefield label="form.timefield.dateRegistered">
+			<binding variable="dateRegistered"/>
+		</datefield>
+
+		<select label="form.enum.GENDER">
+			<binding variable="gender" />
+			<enum>GENDER</enum>
+		</select>
+
+		<select label="form.select.many_to_one.admin_person_Record">
+			<binding variable="admin_person_Record"/>
+            <collectionSource function="Admin_Controller:getAllAdminCollection">
+				<displayAttribute name="dateRegistered"/>
+			</collectionSource>
+		</select>
+
+		<select label="form.select.many_to_one.doctor_person_Record">
+			<binding variable="doctor_person_Record"/>
+            <collectionSource function="Doctor_Controller:getAllDoctorCollection">
+				<displayAttribute name="dateRegistered"/>
+			</collectionSource>
+		</select>
+
+		<select label="form.select.many_to_one.patient_person_Record">
+			<binding variable="patient_person_Record"/>
+            <collectionSource function="Patient_Controller:getAllPatientCollection">
+				<displayAttribute name="dateRegistered"/>
+			</collectionSource>
+		</select>
+
+		<submit label="form.submit.Submit" action="submitButton"/>
+
+		<submit label="form.submit.Cancel" action="cancelButton"/>
+
+		<submit label="form.submit.Generate" action="generateData"/>
+
+		<table title="form.table.person_var">
+			<collectionSource function="Person_Controller:getAllPersonCollection"/>
+
+			<column heading="form.table.column.Person.firstNames">
+				<attributeName>firstNames</attributeName>
+			</column>
+			<column heading="form.table.column.Person.surname">
+				<attributeName>surname</attributeName>
+			</column>
+			<column heading="form.table.column.Person.mobileNumber">
+				<attributeName>mobileNumber</attributeName>
+			</column>
+			<column heading="form.table.column.Person.idNumber">
+				<attributeName>idNumber</attributeName>
+			</column>
+			<column heading="form.table.column.Person.dateRegistered">
+				<attributeName>dateRegistered</attributeName>
+			</column>
+			<column heading="form.table.column.Person.gender">
+				<attributeName>gender</attributeName>
+			</column>
+			<column heading="form.table.column.Person">
+				<attributeName>admin_person.dateRegistered</attributeName>
+			</column>
+			<column heading="form.table.column.Person">
+				<attributeName>doctor_person.dateRegistered</attributeName>
+			</column>
+			<column heading="form.table.column.Person">
+				<attributeName>patient_person.dateRegistered</attributeName>
+			</column>
+			<rowAction label="form.table.rowaction.Edit" action="editPerson" >
+				<binding variable="selected_person_var"/>
+			</rowAction>
+			<rowAction label="form.table.rowaction.Delete" action="deletePerson" >
+				<binding variable="selected_person_var"/>
+			</rowAction>
+		</table>
+	</view>
+
+</ui>

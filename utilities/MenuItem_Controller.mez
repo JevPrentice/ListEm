@@ -1,0 +1,10 @@
+unit MenuItem_Controller;
+
+MenuItem getMenuItem(int sortnum, string description, string navigate, int val){
+	MenuItem menuItem = MenuItem:new();
+	menuItem.description = description;
+	menuItem.navigate = navigate;
+	menuItem.sortnum = sortnum;
+	menuItem.val = val;
+	return menuItem;
+}

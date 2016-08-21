@@ -1,0 +1,75 @@
+unit Payment_Form;
+
+Payment selected_payment_var;
+
+datetime dateRegistered;
+decimal amount;
+MY_PAYMENT_STATUS status;
+Doctor doctor_Record;
+Patient patient_Record;
+
+string msg;
+string nav_back;
+string nav_success;
+string page_mode;
+
+void init(){
+	if (selected_payment_var == null){
+		clearState();
+	} else {
+		editPayment();
+	}
+}
+
+void clearState(){
+	msg = "";
+	page_mode = "Create";
+	selected_payment_var = null;
+	dateRegistered = null;
+	amount = null;
+	status = null;
+
+	doctor_Record = null;
+	patient_Record = null;
+}
+
+string navigate(string location){
+	clearState();
+	return location;
+}
+
+string backButton(){
+	return navigate(nav_back);
+}
+
+string submitButton(){
+	bool isEdit; if (page_mode == "Create"){ isEdit = false; } else { isEdit = true; }
+	if (selected_payment_var != null){
+		Payment_Controller:updatePayment(selected_payment_var, isEdit, dateRegistered, amount, status, doctor_Record, patient_Record);
+	} else {
+		Payment_Controller:createPayment(dateRegistered, amount, status, doctor_Record, patient_Record);
+	}
+	clearState();
+	return null;
+}
+
+void editPayment(){
+	page_mode = "Edit";
+	dateRegistered = selected_payment_var.dateRegistered;
+	amount = selected_payment_var.amount;
+	status = selected_payment_var.status;
+	doctor_Record = selected_payment_var.doctor;
+	patient_Record = selected_payment_var.patient;
+}
+
+void deletePayment(){
+	Payment_Controller:deletePayment(selected_payment_var);
+}
+
+void cancelButton(){
+	clearState();
+}
+
+void generateData(){
+	Payment_Controller:generatePaymentData();
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+	<view label="form.title.Doctor_Form" unit="Doctor_Form" init="init">
+
+		<navigation outcome="navManageData" target="ManageData" />
+
+		<info label="form.info.Doctor_Form">
+			<binding variable="page_mode"/>
+		</info>
+
+		<datefield label="form.timefield.dateRegistered">
+			<binding variable="dateRegistered"/>
+		</datefield>
+
+		<textfield label="form.textfield.doctorID">
+			<binding variable="doctorID"/>
+		</textfield >
+
+		<select label="form.select.many_to_one.person_Record">
+			<binding variable="person_Record"/>
+            <collectionSource function="Person_Controller:getAllPersonCollection">
+				<displayAttribute name="firstNames"/>
+			</collectionSource>
+		</select>
+
+		<submit label="form.submit.Submit" action="submitButton"/>
+
+		<submit label="form.submit.Cancel" action="cancelButton"/>
+
+		<submit label="form.submit.Generate" action="generateData"/>
+
+		<table title="form.table.doctor_var">
+			<collectionSource function="Doctor_Controller:getAllDoctorCollection"/>
+
+			<column heading="form.table.column.Doctor.dateRegistered">
+				<attributeName>dateRegistered</attributeName>
+			</column>
+			<column heading="form.table.column.Doctor.doctorID">
+				<attributeName>doctorID</attributeName>
+			</column>
+			<column heading="form.table.column.Doctor">
+				<attributeName>person.firstNames</attributeName>
+			</column>
+			<rowAction label="form.table.rowaction.Edit" action="editDoctor" >
+				<binding variable="selected_doctor_var"/>
+			</rowAction>
+			<rowAction label="form.table.rowaction.Delete" action="deleteDoctor" >
+				<binding variable="selected_doctor_var"/>
+			</rowAction>
+		</table>
+	</view>
+
+</ui>

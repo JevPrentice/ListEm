@@ -1,0 +1,7 @@
+object MenuItem{
+	int sortnum;
+	string description;
+	int val;
+	datetime tstamp;
+	string navigate;
+}

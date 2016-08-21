@@ -1,0 +1,66 @@
+unit Admin_Form;
+
+Admin selected_admin_var;
+
+datetime dateRegistered;
+Person person_Record;
+
+string msg;
+string nav_back;
+string nav_success;
+string page_mode;
+
+void init(){
+	if (selected_admin_var == null){
+		clearState();
+	} else {
+		editAdmin();
+	}
+}
+
+void clearState(){
+	msg = "";
+	page_mode = "Create";
+	selected_admin_var = null;
+	dateRegistered = null;
+
+	person_Record = null;
+}
+
+string navigate(string location){
+	clearState();
+	return location;
+}
+
+string backButton(){
+	return navigate(nav_back);
+}
+
+string submitButton(){
+	bool isEdit; if (page_mode == "Create"){ isEdit = false; } else { isEdit = true; }
+	if (selected_admin_var != null){
+		Admin_Controller:updateAdmin(selected_admin_var, isEdit, dateRegistered, person_Record);
+	} else {
+		Admin_Controller:createAdmin(dateRegistered, person_Record);
+	}
+	clearState();
+	return null;
+}
+
+void editAdmin(){
+	page_mode = "Edit";
+	dateRegistered = selected_admin_var.dateRegistered;
+	person_Record = selected_admin_var.person;
+}
+
+void deleteAdmin(){
+	Admin_Controller:deleteAdmin(selected_admin_var);
+}
+
+void cancelButton(){
+	clearState();
+}
+
+void generateData(){
+	Admin_Controller:generateAdminData();
+}

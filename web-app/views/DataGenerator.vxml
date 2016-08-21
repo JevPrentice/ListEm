@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+	<view label="form.title.Data_Generator" unit="DataGenerator" init="init">
+
+		<menuitem label="form.title.Data_Generator" icon="settings" order="1" >
+			<userRole>Doctor</userRole>
+			<userRole>Admin</userRole>
+			<userRole>Patient</userRole>
+		</menuitem>
+
+		<table title="form.title.Data_Generator_Table">
+			<collectionSource function="getDataGeneratorMenu"/>
+			<column heading="form.table.column.Data_Generator_Index">
+				<attributeName>sortnum</attributeName>					
+			</column>
+			<column heading="form.table.column.Data_Generator_Description">
+				<attributeName>description</attributeName>					
+			</column>
+			<rowAction label="table.rowaction.Execute" action="tableRowAction" >
+				<binding variable="selected_menu_item"/>
+			</rowAction>
+		</table>
+	</view>
+</ui>

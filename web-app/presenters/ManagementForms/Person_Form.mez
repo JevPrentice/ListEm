@@ -1,0 +1,87 @@
+unit Person_Form;
+
+Person selected_person_var;
+
+string firstNames;
+string surname;
+string mobileNumber;
+string idNumber;
+datetime dateRegistered;
+GENDER gender;
+Admin admin_person_Record;
+Doctor doctor_person_Record;
+Patient patient_person_Record;
+
+string msg;
+string nav_back;
+string nav_success;
+string page_mode;
+
+void init(){
+	if (selected_person_var == null){
+		clearState();
+	} else {
+		editPerson();
+	}
+}
+
+void clearState(){
+	msg = "";
+	page_mode = "Create";
+	selected_person_var = null;
+	firstNames = null;
+	surname = null;
+	mobileNumber = null;
+	idNumber = null;
+	dateRegistered = null;
+	gender = null;
+
+	admin_person_Record = null;
+	doctor_person_Record = null;
+	patient_person_Record = null;
+}
+
+string navigate(string location){
+	clearState();
+	return location;
+}
+
+string backButton(){
+	return navigate(nav_back);
+}
+
+string submitButton(){
+	bool isEdit; if (page_mode == "Create"){ isEdit = false; } else { isEdit = true; }
+	if (selected_person_var != null){
+		Person_Controller:updatePerson(selected_person_var, isEdit, firstNames, surname, mobileNumber, idNumber, dateRegistered, gender, admin_person_Record, doctor_person_Record, patient_person_Record);
+	} else {
+		Person_Controller:createPerson(firstNames, surname, mobileNumber, idNumber, dateRegistered, gender, admin_person_Record, doctor_person_Record, patient_person_Record);
+	}
+	clearState();
+	return null;
+}
+
+void editPerson(){
+	page_mode = "Edit";
+	firstNames = selected_person_var.firstNames;
+	surname = selected_person_var.surname;
+	mobileNumber = selected_person_var.mobileNumber;
+	idNumber = selected_person_var.idNumber;
+	dateRegistered = selected_person_var.dateRegistered;
+	gender = selected_person_var.gender;
+	admin_person_Record = selected_person_var.admin_person;
+	doctor_person_Record = selected_person_var.doctor_person;
+	patient_person_Record = selected_person_var.patient_person;
+}
+
+void deletePerson(){
+	Person_Controller:deletePerson(selected_person_var);
+}
+
+void cancelButton(){
+	clearState();
+}
+
+void generateData(){
+	Person_Controller:generatePersonData();
+}

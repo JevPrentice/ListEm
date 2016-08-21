@@ -1,0 +1,73 @@
+unit Person_Controller;
+string msg;
+
+Person[] getAllPersonCollection(){
+	return Person:all();
+}
+
+int getAllPersonCollectionLength(){
+	Person[] personCollection = getAllPersonCollection();
+	return personCollection.length();
+}
+
+bool isObjectValidState(string firstNames, string surname, string mobileNumber, string idNumber, datetime dateRegistered, GENDER gender, Admin admin_person_Record, Doctor doctor_person_Record, Patient patient_person_Record){
+	if(gender == null){
+		msg = "No gender populated."; Alert:error(msg);
+		return false;
+	}
+	if(admin_person_Record == null){
+		msg = "No admin_person_Record populated."; Alert:error(msg);
+		return false;
+	}
+	if(PrimitiveValidation:isValidString(surname, true, "No surname populated") == false){ return false; }
+	if(PrimitiveValidation:isValidString(mobileNumber, true, "No mobileNumber populated") == false){ return false; }
+	if(PrimitiveValidation:isValidString(firstNames, true, "No firstNames populated") == false){ return false; }
+	if(patient_person_Record == null){
+		msg = "No patient_person_Record populated."; Alert:error(msg);
+		return false;
+	}
+	if(PrimitiveValidation:isValidString(idNumber, true, "No idNumber populated") == false){ return false; }
+	if(dateRegistered == null){
+		msg = "No dateRegistered populated."; Alert:error(msg);
+		return false;
+	}
+	if(doctor_person_Record == null){
+		msg = "No doctor_person_Record populated."; Alert:error(msg);
+		return false;
+	}
+	return true;
+}
+
+Person createPerson(string firstNames, string surname, string mobileNumber, string idNumber, datetime dateRegistered, GENDER gender, Admin admin_person_Record, Doctor doctor_person_Record, Patient patient_person_Record){
+	Person person_var = Person:new();
+	return updatePerson(person_var, false, firstNames, surname, mobileNumber, idNumber, dateRegistered, gender, admin_person_Record, doctor_person_Record, patient_person_Record);
+}
+
+Person updatePerson(Person person_var, bool isEdit, string firstNames, string surname, string mobileNumber, string idNumber, datetime dateRegistered, GENDER gender, Admin admin_person_Record, Doctor doctor_person_Record, Patient patient_person_Record){
+	if (person_var == null || isObjectValidState(firstNames, surname, mobileNumber, idNumber, dateRegistered, gender, admin_person_Record, doctor_person_Record, patient_person_Record) == false){
+		return;
+	}
+
+	person_var.firstNames = firstNames;
+	person_var.surname = surname;
+	person_var.mobileNumber = mobileNumber;
+	person_var.idNumber = idNumber;
+	person_var.dateRegistered = dateRegistered;
+	person_var.gender = gender;
+	person_var.admin_person = admin_person_Record;
+	person_var.doctor_person = doctor_person_Record;
+	person_var.patient_person = patient_person_Record;
+	person_var.save();
+
+	return person_var;
+}
+
+void deletePerson(Person person_var){
+	if(person_var == null) { return; }
+	Person:delete(person_var);
+}
+
+void generatePersonData(){
+	createPerson("firstNames", "surname", "27000000000", "idNumber", Mez:now(), null, null, null, null);
+}
+

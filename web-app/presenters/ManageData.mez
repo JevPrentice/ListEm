@@ -1,0 +1,39 @@
+unit ManageData;
+
+MenuItem selected_menu_item;
+string msg;
+string nav_back;
+string nav_success;
+
+void init(){
+	clearState();
+}
+
+void clearState(){
+	msg = "";
+	selected_menu_item = null;
+}
+
+string navigate(string location){
+	clearState();
+	return location;
+}
+
+string backButton(){
+	return navigate(nav_back);
+}
+
+MenuItem[] getManageDataMenu(){
+	MenuItem[] menu;
+	menu.append(MenuItem_Controller:getMenuItem(1, "Doctor", "navDoctor", null));
+	menu.append(MenuItem_Controller:getMenuItem(2, "Admin", "navAdmin", null));
+	menu.append(MenuItem_Controller:getMenuItem(3, "Person", "navPerson", null));
+	menu.append(MenuItem_Controller:getMenuItem(4, "Payment", "navPayment", null));
+	menu.append(MenuItem_Controller:getMenuItem(5, "Patient", "navPatient", null));
+	return menu;
+}
+
+string tableRowAction(){
+
+	return selected_menu_item.navigate;
+}

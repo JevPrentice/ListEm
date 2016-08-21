@@ -1,0 +1,14 @@
+unit PrimitiveValidation;
+
+string msg;
+
+bool isValidString(string value, bool alertInvalid, string alertValue){
+	if(value == null || String:length(value) <= 0){
+		
+		if (alertInvalid == true){
+			Alert:error(alertValue);
+		}
+		return false;
+	}
+	return true;
+}

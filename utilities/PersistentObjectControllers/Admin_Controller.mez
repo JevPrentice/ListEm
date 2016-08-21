@@ -1,0 +1,51 @@
+unit Admin_Controller;
+string msg;
+
+Admin[] getAllAdminCollection(){
+	return Admin:all();
+}
+
+int getAllAdminCollectionLength(){
+	Admin[] adminCollection = getAllAdminCollection();
+	return adminCollection.length();
+}
+
+bool isObjectValidState(datetime dateRegistered, Person person_Record){
+	if(person_Record == null){
+		msg = "No person_Record populated."; Alert:error(msg);
+		return false;
+	}
+	if(dateRegistered == null){
+		msg = "No dateRegistered populated."; Alert:error(msg);
+		return false;
+	}
+	return true;
+}
+
+Admin createAdmin(datetime dateRegistered, Person person_Record){
+	Admin admin_var = Admin:new();
+	return updateAdmin(admin_var, false, dateRegistered, person_Record);
+}
+
+Admin updateAdmin(Admin admin_var, bool isEdit, datetime dateRegistered, Person person_Record){
+	if (admin_var == null || isObjectValidState(dateRegistered, person_Record) == false){
+		return;
+	}
+
+	admin_var.dateRegistered = dateRegistered;
+	admin_var.person = person_Record;
+	admin_var.save();
+
+	return admin_var;
+}
+
+void deleteAdmin(Admin admin_var){
+	if(admin_var == null) { return; }
+	admin_var.removeRole();
+	Admin:delete(admin_var);
+}
+
+void generateAdminData(){
+	createAdmin(Mez:now(), null);
+}
+

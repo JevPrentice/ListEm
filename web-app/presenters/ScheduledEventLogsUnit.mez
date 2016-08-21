@@ -1,0 +1,18 @@
+unit ScheduledEventLogsUnit;
+
+MenuItem selectedMenuItem;
+string msg;
+
+//void init(){}
+
+MenuItem[] getScheduledEventLogsMenu(){
+    MenuItem[] menu;
+	string functionName;
+	string lastCalculated;
+
+	return menu;
+}
+
+void executeSelectedScheduledEvent(){
+	return null;
+}
