@@ -2,15 +2,15 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-    <view label="doctor.title.Check_Patient" unit="CheckPatient" init="init">
+    <view label="doctor.check_patient.title.Check_Patient" unit="CheckPatient" init="init">
 
         <navigation outcome="navPatientSummary" target="PatientSummary"/>
 
-        <menuitem label="doctor.title.Check_Patient" icon="check_patient" order="3">
+        <menuitem label="doctor.check_patient.title.Check_Patient" icon="check_patient" order="3">
             <userRole>Doctor</userRole>
         </menuitem>
 
-        <textfield label="idNumber">
+        <textfield label="id_number">
             <binding variable="idNumber"/>
         </textfield>
         

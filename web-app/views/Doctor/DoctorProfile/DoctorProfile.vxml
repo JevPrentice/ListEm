@@ -2,54 +2,54 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-    <view label="doctor.profile" unit="DoctorProfile" init="init">
+    <view label="doctor.doctor_profile.title.Doctor_Profile" unit="DoctorProfile" init="init">
 
-		<navigation outcome="navEditDoctor" target="EditDoctor"/>
-        <navigation outcome="navEditPerson" target="EditPerson"/>
+		<!-- <navigation outcome="navEditDoctor" target="EditDoctor"/> -->
+        <!-- <navigation outcome="navEditPerson" target="EditPerson"/> -->
 
-        <menuitem label="doctor.profile" icon="doctor" order="1">
+        <menuitem label="doctor.doctor_profile.title.Doctor_Profile" icon="doctor" order="1">
             <userRole>Doctor</userRole>
         </menuitem>
 
-        <info label="doctor.doctorID">
+        <info label="model.doctor.Doctor_ID">
             <binding variable="doctor">
                 <attribute name="doctorID"/>
             </binding>
         </info>
 
-        <submit label="doctor.profile.editDoctor" action="editDoctor"/>
+        <submit label="doctor.doctor_profile.submit.Edit_Doctor" action="editDoctor"/>
 
-        <info label="firstNames">
+        <info label="model.person.First_Names">
             <binding variable="person">
                 <attribute name="firstNames"/>
             </binding>
         </info>
 
-        <info label="surname">
+        <info label="model.person.Surname">
             <binding variable="person">
                 <attribute name="surname"/>
             </binding>
         </info>
 
-        <info label="mobileNumber">
+        <info label="model.person.Mobile_Number">
             <binding variable="person">
                 <attribute name="mobileNumber"/>
             </binding>
         </info>
 
-		<info label="idNumber">
+		<info label="model.person.ID_Number">
 			<binding variable="person">
                 <attribute name="idNumber"/>
             </binding>
 		</info>
 
-        <info label="gender">
+        <info label="model.person.Gender">
             <binding variable="person">
                 <attribute name="gender"/>
             </binding>
         </info>
 
-        <submit label="doctor.profile.editPerson" action="editPerson"/>
+        <submit label="doctor.doctor_profile.submit.Edit_Person" action="editPerson"/>
         
     </view>
 </ui>

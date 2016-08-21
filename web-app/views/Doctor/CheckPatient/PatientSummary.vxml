@@ -2,13 +2,13 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-    <view label="doctor.patientSummary" unit="PatientSummary" init="init">
+    <view label="doctor.patient_summary.tite.Patient_Summary" unit="PatientSummary" init="init">
 
         <navigation outcome="navCheckPatient" target="CheckPatient"/>
 
         <action label="back" action="back"/>
 
-        <info label="firstNames">
+        <info label="first_names">
             <binding variable="person">
                 <attribute name="firstNames"/>
             </binding>
@@ -20,13 +20,13 @@
             </binding>
         </info>
 
-        <info label="mobileNumber">
+        <info label="mobile_number">
             <binding variable="person">
                 <attribute name="mobileNumber"/>
             </binding>
         </info>
 
-        <info label="idNumber">
+        <info label="id_umber">
             <binding variable="person">
                 <attribute name="idNumber"/>
             </binding>
@@ -38,11 +38,11 @@
             </binding>
         </info>
 
-        <info label="doctor.isRegisteredPatient">
+        <info label="doctor.patient_summary.info.Is_Registered_Patient">
             <binding variable="isRegisteredPatient" />
         </info>
 
-        <info label="doctor.hasOutstandingPayments">
+        <info label="doctor.patient_summary.info.Has_Outstanding_Payments">
             <binding variable="hasOutstandingPayments" />
         </info>
 

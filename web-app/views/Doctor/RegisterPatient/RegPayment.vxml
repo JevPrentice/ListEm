@@ -2,23 +2,23 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-    <view label="doctor.regPatient.step3" unit="RegPayment" init="init">
+    <view label="doctor.register_patient.step3.Register_Payment" unit="RegPayment" init="init">
 
-        <navigation outcome="navEditPerson" target="EditPerson"/>
+        <!-- <navigation outcome="navEditPerson" target="EditPerson"/> -->
         <navigation outcome="navRegisterPatient" target="RegisterPatient"/>
         <navigation outcome="navManagePayments" target="ManagePayments"/>
 
         <action label="back" action="back"/>
 
-        <info label="doctor">
+        <info label="model.Doctor">
             <binding variable="doctorToString" />
         </info>
 
-        <info label="doctor">
+        <info label="model.Patient">
             <binding variable="patientToString" />
         </info>
 
-        <textfield label="amount">
+        <textfield label="model.Payment.amount">
             <binding variable="amount"/>
         </textfield>
 

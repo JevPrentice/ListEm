@@ -21,16 +21,16 @@ string back(){
 
 string next(){
 
-	Person person = PersonController:getPersonForIdNumber(idNumber);
-	if (person == null) { 
-		EditPerson:idNumber = idNumber;
-		EditPerson:successDestination = "navConfirmPatient";
-		EditPerson:failDestination = "navEnterID";
-		return navigate("navEditPerson");
+	// Person person = PersonController:getPersonForIdNumber(idNumber);
+	// if (person == null) { 
+	// 	EditPerson:idNumber = idNumber;
+	// 	EditPerson:successDestination = "navConfirmPatient";
+	// 	EditPerson:failDestination = "navEnterID";
+	// 	return navigate("navEditPerson");
 
-	}
+	// }
 
-	ConfirmPatient:person = person;
+	// ConfirmPatient:person = person;
 	return navigate("navRegPatient");
 	// Alert:info("reg outstand payment, for existing user");
 

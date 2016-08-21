@@ -14,13 +14,13 @@ string navigate(string location){
 
 string next(){
 
-	Person person = PersonController:getPersonForIdNumber(idNumber);
-	if (person == null) { 
-		msg = "This Person has not been registered in the system yet, there is no profile available"; Alert:info(msg);
-		return null;
-	}
+	// Person person = Person_Controller:getPersonForIdNumber(idNumber);
+	// if (person == null) { 
+	// 	msg = "This Person has not been registered in the system yet, there is no profile available"; Alert:info(msg);
+	// 	return null;
+	// }
 
-	PatientSummary:person = person;
-	return navigate("navPatientSummary");
-	
+	// PatientSummary:person = person;
+	// return navigate("navPatientSummary");
+	return "";
 }

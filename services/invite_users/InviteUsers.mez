@@ -1,6 +1,14 @@
 unit InviteUsers;
 
 @InviteUser
+Patient invitePatient(){
+	Patient patient_var = Patient:new();
+	patient_var.dateRegistered = Mez:now();
+	patient_var.save();
+	return patient_var;
+}
+
+@InviteUser
 Doctor inviteDoctor(){
 	Doctor doctor_var = Doctor:new();
 	doctor_var.dateRegistered = Mez:now();
@@ -15,12 +23,4 @@ Admin inviteAdmin(){
 	admin_var.dateRegistered = Mez:now();
 	admin_var.save();
 	return admin_var;
-}
-
-@InviteUser
-Patient invitePatient(){
-	Patient patient_var = Patient:new();
-	patient_var.dateRegistered = Mez:now();
-	patient_var.save();
-	return patient_var;
 }

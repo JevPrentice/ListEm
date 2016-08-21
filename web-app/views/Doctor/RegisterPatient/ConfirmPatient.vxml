@@ -2,7 +2,7 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-    <view label="doctor.regPatient.step2" unit="ConfirmPatient" init="init">
+    <view label="doctor.register_patient.step2.Confirm_Patient" unit="ConfirmPatient" init="init">
 
         <navigation outcome="navEnterID" target="RegisterPatient"/>
         <navigation outcome="navRegPayment" target="RegPayment"/>

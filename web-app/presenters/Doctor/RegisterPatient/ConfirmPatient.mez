@@ -18,10 +18,10 @@ string back(){
 
 string savePatient(){
 
-	Patient patient = PatientController:createOrEditPatient(null, person);
-	msg = String:concat(person.firstNames, " ", person.surname, " has been saved as a Patient"); Alert:info(msg);
+	// Patient patient = PatientController:createOrEditPatient(null, person);
+	// msg = String:concat(person.firstNames, " ", person.surname, " has been saved as a Patient"); Alert:info(msg);
 
-	RegPayment:patient = patient;
+	// RegPayment:patient = patient;
 	return "navRegPayment";
 
 }

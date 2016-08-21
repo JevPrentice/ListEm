@@ -41,9 +41,9 @@ string back(){
 }
 
 string savePayment(){
-	MY_PAYMENT_STATUS status = MY_PAYMENT_STATUS.Outstanding;
+	// MY_PAYMENT_STATUS status = MY_PAYMENT_STATUS.Outstanding;
 
-	Payment payment = PaymentController:createOrUpdatePayment(patient, doctor, null, amount, status);
+	// Payment payment = PaymentController:createOrUpdatePayment(patient, doctor, null, amount, status);
 
 	Alert:info("Payment Saved");
 	return navigate("navManagePayments"); 

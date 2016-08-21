@@ -17,8 +17,8 @@ string back(){
 }
 
 string editDoctor(){
-	EditDoctor:doctor = doctor;
-	EditDoctor:successDestination = "navDoctorProfile";
+	// EditDoctor:doctor = doctor;
+	// EditDoctor:successDestination = "navDoctorProfile";
 	return navigate("navEditDoctor");
 }
 
@@ -34,7 +34,7 @@ string editPerson(){
 		return null;
 	}
 
-	EditPerson:person = doctor.person;
-	EditPerson:successDestination = "navDoctorProfile";
+	// EditPerson:person = doctor.person;
+	// EditPerson:successDestination = "navDoctorProfile";
 	return navigate("navEditPerson");
 }

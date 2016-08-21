@@ -1,6 +1,14 @@
 unit Person_Controller;
 string msg;
 
+Person getPersonForIdNumber(string idNumber){
+	Person[] personCollection = Person:equals(idNumber, idNumber);
+	if (personCollection.length() == 0){
+		return null;
+	}
+	return personCollection.first();
+}
+
 Person[] getAllPersonCollection(){
 	return Person:all();
 }
