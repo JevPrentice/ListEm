@@ -1,10 +1,10 @@
 unit ManageDoctors;
 
-Doctor[] allDoctors;
+Doctor[] doctorCollection;
 Doctor selectedDoctor;
 
 void init(){
-	// allDoctors = DoctorController:getAllDoctors();
+	doctorCollection = Doctor_Controller:getAllDoctorCollection();
 }
 
 string navigate(string location){
@@ -20,7 +20,7 @@ string inviteDoctor(){
 
 string editDoctor(){
 
-	//EditDoctor:doctor = selectedDoctor;
+	EditDoctor:doctor = selectedDoctor;
 	return navigate("navEditDoctor");
 
 }

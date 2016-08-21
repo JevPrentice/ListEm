@@ -1,16 +1,10 @@
-// @Restrict("Admin", all())
-// @Restrict("Doctor",
-// 	relationshipIn(patient_payments, 
-// 		Payment:relationshipIn(doctor, Doctor:user())
-// 	)
-// )
 @Role("Patient")
 persistent object Patient {
 
 	datetime dateRegistered;
 	
 	@OneToOne
-	Person person via person_patient;
+	Person patient_person via person_patient;
 
 	// @OneToMany
 	// Payment payments via payment_patient;

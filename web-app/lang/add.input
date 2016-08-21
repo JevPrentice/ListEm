@@ -2,4 +2,5 @@ alerts.common.generic={message}
 next=Next
 back=Back
 save=Save
-model.person.Date_Registered=Date Registered
+edit=Edit
+remove=Remove

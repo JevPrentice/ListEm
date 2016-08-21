@@ -5,7 +5,7 @@ Person person;
 
 void init(){
 	doctor = Doctor:user();
-	person = doctor.person;
+	person = doctor.doctor_person;
 }
 
 string navigate(string location){
@@ -29,7 +29,7 @@ string editPerson(){
 		return null;
 	}
 
-	if (doctor.person == null){
+	if (doctor.doctor_person == null){
 		Alert:info("No Person For Doctor Found");
 		return null;
 	}

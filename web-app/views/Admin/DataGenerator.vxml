@@ -4,9 +4,9 @@
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
 	<view label="form.title.Data_Generator" unit="DataGenerator" init="init">
 
-		<menuitem label="form.title.Data_Generator" icon="settings" order="2" >
+		<!-- <menuitem label="form.title.Data_Generator" icon="settings" order="2" >
 			<userRole>Admin</userRole>
-		</menuitem>
+		</menuitem> -->
 
 		<table title="form.title.Data_Generator_Table">
 			<collectionSource function="getDataGeneratorMenu"/>

@@ -33,7 +33,7 @@ Patient updatePatient(Patient patient_var, bool isEdit, datetime dateRegistered,
 	}
 
 	patient_var.dateRegistered = dateRegistered;
-	patient_var.person = person_Record;
+	patient_var.patient_person = person_Record;
 	patient_var.save();
 
 	return patient_var;

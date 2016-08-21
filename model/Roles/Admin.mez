@@ -1,4 +1,3 @@
-@Restrict("Admin", all())
 @Role("Admin")
 persistent object Admin {
 

@@ -17,7 +17,7 @@ void init (){
 	Person docPerson = null;
 	doctorToString = String:concat(docPerson.firstNames, " ", docPerson.surname, " ", docPerson.idNumber);
 
-	Person patPerson = patient.person;
+	Person patPerson = patient.patient_person;
 	patientToString = String:concat(patPerson.firstNames, " ", patPerson.surname, " ", patPerson.idNumber);
 
 }
@@ -36,7 +36,7 @@ string navigate(string location){
 }
 
 string back(){
-	Person patPerson = patient.person;
+	Person patPerson = patient.patient_person;
 	RegisterPatient:idNumber = patPerson.idNumber;
 	return navigate("navRegisterPatient");
 }

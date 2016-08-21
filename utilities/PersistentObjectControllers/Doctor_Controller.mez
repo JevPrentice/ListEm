@@ -35,7 +35,7 @@ Doctor updateDoctor(Doctor doctor_var, bool isEdit, datetime dateRegistered, str
 
 	doctor_var.dateRegistered = dateRegistered;
 	doctor_var.doctorID = doctorID;
-	doctor_var.person = person_Record;
+	doctor_var.doctor_person = person_Record;
 	doctor_var.save();
 
 	return doctor_var;

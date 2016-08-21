@@ -4,31 +4,31 @@
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
     <view label="doctorform.title.Manage_Doctors" unit="ManageDoctors" init="init">
 
-        <!-- <navigation outcome="navEditDoctor" target="EditDoctor"/> -->
+        <navigation outcome="navEditDoctor" target="EditDoctor"/>
 
         <menuitem label="doctorform.title.Manage_Doctors" icon="doctor" order="4">
             <userRole>Admin</userRole>
         </menuitem>
 
-        <action label="doctorform.action.inviteDoctor" action="inviteDoctor"/>
+        <action label="doctorform.action.Invite_Doctor" action="inviteDoctor"/>
 
         <table>
-            <collectionSource variable="allDoctors"/>
+            <collectionSource variable="doctorCollection"/>
             <column heading="model.Person">
-                <attributeName>person.firstNames</attributeName>
-                <attributeName>person.surname</attributeName>
+                <attributeName>doctor_person.firstNames</attributeName>
+                <attributeName>doctor_person.surname</attributeName>
             </column>
             <column heading="model.person.First_Names">
-                <attributeName>person.firstNames</attributeName>
+                <attributeName>doctor_person.firstNames</attributeName>
             </column> 
             <column heading="model.person.Surname">
-                <attributeName>person.surname</attributeName>
+                <attributeName>doctor_person.surname</attributeName>
             </column>
             <column heading="model.person.Mobile_Number">
-                <attributeName>person.mobileNumber</attributeName>
+                <attributeName>doctor_person.mobileNumber</attributeName>
             </column>
             <column heading="model.person.ID_Number">
-                <attributeName>person.idNumber</attributeName>
+                <attributeName>doctor_person.idNumber</attributeName>
             </column>
             <column heading="model.doctor.Doctor_ID">
                 <attributeName>doctorID</attributeName>
@@ -36,13 +36,13 @@
             <column heading="model.person.Date_Registered">
                 <attributeName>dateRegistered</attributeName>
             </column>
-           <!--  <rowAction label="edit" action="editDoctor">
+            <rowAction label="edit" action="editDoctor">
                 <binding variable="selectedDoctor"/>
             </rowAction>
             <rowAction label="remove" action="uninviteDoctor">
                 <binding variable="selectedDoctor"/>
                 <confirm subject="doctor.confirmRemove.subject" body="doctor.confirmRemove.body"/>
-            </rowAction> -->
+            </rowAction>
         </table>
     </view>
 </ui>
