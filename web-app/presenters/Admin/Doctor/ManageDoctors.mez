@@ -20,17 +20,17 @@ string inviteDoctor(){
 
 string editDoctor(){
 
-	EditDoctor:doctor = selectedDoctor;
+	//EditDoctor:doctor = selectedDoctor;
 	return navigate("navEditDoctor");
 
 }
 
 void uninviteDoctor(){
-	if (selectedDoctor == null) {
-		string msg = "No Doctor found for selected record"; Alert:error(msg);
-		return null;
-	}
-	selectedDoctor.removeRole();
-	Doctor:delete(selectedDoctor);
-	init();
+	// if (selectedDoctor == null) {
+	// 	string msg = "No Doctor found for selected record"; Alert:error(msg);
+	// 	return null;
+	// }
+	// selectedDoctor.removeRole();
+	// Doctor:delete(selectedDoctor);
+	// init();
 }
