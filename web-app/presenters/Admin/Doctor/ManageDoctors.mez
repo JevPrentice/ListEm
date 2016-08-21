@@ -4,7 +4,7 @@ Doctor[] allDoctors;
 Doctor selectedDoctor;
 
 void init(){
-	allDoctors = DoctorController:getAllDoctors();
+	// allDoctors = DoctorController:getAllDoctors();
 }
 
 string navigate(string location){

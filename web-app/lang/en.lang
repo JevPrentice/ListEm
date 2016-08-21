@@ -62,3 +62,9 @@ personform.title.Person_Form=Person Form
 save=Save
 table.rowaction.Execute=Execute
 table.rowaction.View=View
+
+doctorform.action.inviteDoctor=
+model.person.Date_Registered=Date Registered
+model.Person=
+doctorform.title.Manage_Doctors=
+doctorform.title.Manage_Doctors=
