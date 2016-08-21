@@ -1,5 +1,4 @@
 @Restrict("Admin", all())
-@Restrict("Doctor", all())
 @Role("Doctor")
 persistent object Doctor {
 
@@ -9,6 +8,6 @@ persistent object Doctor {
 	string doctorID;
 	
 	@OneToOne
-	Person person via doctor_person;
+	Person person via person_doctor;
 
 }

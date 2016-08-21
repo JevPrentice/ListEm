@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../../xsd/View.xsd">
     <view label="ScheduledEventLogs.title.Scheduled_Event_Logs" unit="ScheduledEventLogsUnit">
 
-		<menuitem label="ScheduledEventLogs.title.Scheduled_Event_Logs" icon="settings" order="1" >
+		<menuitem label="ScheduledEventLogs.title.Scheduled_Event_Logs" icon="settings" order="3" >
 			<userRole>Admin</userRole>
 		</menuitem>
 

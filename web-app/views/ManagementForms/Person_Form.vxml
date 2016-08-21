@@ -2,100 +2,72 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-	<view label="form.title.Person_Form" unit="Person_Form" init="init">
+	<view label="personform.title.Person_Form" unit="Person_Form" init="init">
 
 		<navigation outcome="navManageData" target="ManageData" />
 
-		<info label="form.info.Person_Form">
+		<info label="personform.info.Person_Form">
 			<binding variable="page_mode"/>
 		</info>
 
-		<textfield label="form.textfield.firstNames">
+		<textfield label="model.person.First_Names">
 			<binding variable="firstNames"/>
 		</textfield >
 
-		<textfield label="form.textfield.surname">
+		<textfield label="model.person.Surname">
 			<binding variable="surname"/>
 		</textfield >
 
-		<textfield label="form.textfield.mobileNumber">
+		<textfield label="model.person.Mobile_Number">
 			<binding variable="mobileNumber"/>
 		</textfield >
 
-		<textfield label="form.textfield.idNumber">
+		<textfield label="model.person.ID_Number">
 			<binding variable="idNumber"/>
 		</textfield >
 
-		<datefield label="form.timefield.dateRegistered">
-			<binding variable="dateRegistered"/>
-		</datefield>
-
-		<select label="form.enum.GENDER">
+		<select label="model.person.Gender">
 			<binding variable="gender" />
 			<enum>GENDER</enum>
 		</select>
 
-		<select label="form.select.many_to_one.admin_person_Record">
-			<binding variable="admin_person_Record"/>
-            <collectionSource function="Admin_Controller:getAllAdminCollection">
-				<displayAttribute name="dateRegistered"/>
-			</collectionSource>
-		</select>
-
-		<select label="form.select.many_to_one.doctor_person_Record">
-			<binding variable="doctor_person_Record"/>
-            <collectionSource function="Doctor_Controller:getAllDoctorCollection">
-				<displayAttribute name="dateRegistered"/>
-			</collectionSource>
-		</select>
-
-		<select label="form.select.many_to_one.patient_person_Record">
-			<binding variable="patient_person_Record"/>
-            <collectionSource function="Patient_Controller:getAllPatientCollection">
-				<displayAttribute name="dateRegistered"/>
-			</collectionSource>
-		</select>
-
 		<submit label="form.submit.Submit" action="submitButton"/>
-
 		<submit label="form.submit.Cancel" action="cancelButton"/>
 
-		<submit label="form.submit.Generate" action="generateData"/>
-
-		<table title="form.table.person_var">
+		<table title="personform.table.People">
 			<collectionSource function="Person_Controller:getAllPersonCollection"/>
 
-			<column heading="form.table.column.Person.firstNames">
+			<column heading="personform.table.column.Person.First_Names">
 				<attributeName>firstNames</attributeName>
 			</column>
-			<column heading="form.table.column.Person.surname">
+			<column heading="personform.table.column.Person.Surname">
 				<attributeName>surname</attributeName>
 			</column>
-			<column heading="form.table.column.Person.mobileNumber">
+			<column heading="personform.table.column.Person.Mobile_Number">
 				<attributeName>mobileNumber</attributeName>
 			</column>
-			<column heading="form.table.column.Person.idNumber">
+			<column heading="personform.table.column.Person.ID_Number">
 				<attributeName>idNumber</attributeName>
 			</column>
-			<column heading="form.table.column.Person.dateRegistered">
+			<column heading="personform.table.column.Person.Date_Registered">
 				<attributeName>dateRegistered</attributeName>
 			</column>
-			<column heading="form.table.column.Person.gender">
+			<column heading="personform.table.column.Person.Gender">
 				<attributeName>gender</attributeName>
 			</column>
-			<column heading="form.table.column.Person">
-				<attributeName>admin_person.dateRegistered</attributeName>
+			<column heading="personform.table.column.Admin">
+				<attributeName>person_admin.dateRegistered</attributeName>
 			</column>
-			<column heading="form.table.column.Person">
-				<attributeName>doctor_person.dateRegistered</attributeName>
+			<column heading="personform.table.column.Doctor">
+				<attributeName>person_doctor.dateRegistered</attributeName>
 			</column>
-			<column heading="form.table.column.Person">
-				<attributeName>patient_person.dateRegistered</attributeName>
+			<column heading="personform.table.column.Patient">
+				<attributeName>person_patient.dateRegistered</attributeName>
 			</column>
-			<rowAction label="form.table.rowaction.Edit" action="editPerson" >
+			<rowAction label="personform.table.rowaction.Edit" action="editPerson" >
 				<binding variable="selected_person_var"/>
 			</rowAction>
-			<rowAction label="form.table.rowaction.Delete" action="deletePerson" >
+			<rowAction label="personform.table.rowaction.Delete" action="deletePerson" >
 				<binding variable="selected_person_var"/>
 			</rowAction>
 		</table>

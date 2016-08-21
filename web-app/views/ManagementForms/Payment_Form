@@ -55,12 +55,12 @@
 			<column heading="form.table.column.Payment.status">
 				<attributeName>status</attributeName>
 			</column>
-			<column heading="form.table.column.Payment">
+			<!-- <column heading="form.table.column.Doctor">
 				<attributeName>doctor.dateRegistered</attributeName>
 			</column>
 			<column heading="form.table.column.Payment">
 				<attributeName>patient.dateRegistered</attributeName>
-			</column>
+			</column> -->
 			<rowAction label="form.table.rowaction.Edit" action="editPayment" >
 				<binding variable="selected_payment_var"/>
 			</rowAction>

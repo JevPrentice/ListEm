@@ -13,7 +13,8 @@ string msg;
 void init (){
 
 	doctor = Doctor:user();
-	Person docPerson = doctor.person;
+	// Person docPerson = doctor.person;
+	Person docPerson = null;
 	doctorToString = String:concat(docPerson.firstNames, " ", docPerson.surname, " ", docPerson.idNumber);
 
 	Person patPerson = patient.person;

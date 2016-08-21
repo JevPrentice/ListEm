@@ -5,8 +5,8 @@
     <view label="doctor.register_patient.step3.Register_Payment" unit="RegPayment" init="init">
 
         <!-- <navigation outcome="navEditPerson" target="EditPerson"/> -->
-        <navigation outcome="navRegisterPatient" target="RegisterPatient"/>
-        <navigation outcome="navManagePayments" target="ManagePayments"/>
+        <!-- <navigation outcome="navRegisterPatient" target="RegisterPatient"/> -->
+        <!-- <navigation outcome="navManagePayments" target="ManagePayments"/> -->
 
         <action label="back" action="back"/>
 

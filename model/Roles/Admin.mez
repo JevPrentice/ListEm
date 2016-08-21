@@ -5,6 +5,6 @@ persistent object Admin {
 	datetime dateRegistered;
 
 	@OneToOne
-	Person person via admin_person;
+	Person admin_person via person_admin;
 
 }

@@ -7,6 +7,8 @@ string nav_success;
 
 void init(){
 	clearState();
+	Person person = Person_Controller:generateDefaultPerson();
+	
 }
 
 void clearState(){
@@ -24,27 +26,27 @@ string backButton(){
 }
 
 void quickInvite(){
-	Doctor doctor_role = InviteUsers:inviteDoctor();
-	Admin admin_role = InviteUsers:inviteAdmin();
-	Patient patient_role = InviteUsers:invitePatient();
+	// Doctor doctor_role = InviteUsers:inviteDoctor();
+	// Admin admin_role = InviteUsers:inviteAdmin();
+	// Patient patient_role = InviteUsers:invitePatient();
 }
 
 MenuItem[] getDataGeneratorMenu(){
 	MenuItem[] menu;
-	menu.append(MenuItem_Controller:getMenuItem(1, "Generate Data", null, null));
-	menu.append(MenuItem_Controller:getMenuItem(2, "Quick Invite", null, null));
+	// menu.append(MenuItem_Controller:getMenuItem(1, "Generate Data", null, null));
+	// menu.append(MenuItem_Controller:getMenuItem(2, "Quick Invite", null, null));
 	return menu;
 }
 
 void tableRowAction(){
 
-	if(selected_menu_item.sortnum == 1){
-		Patient_Controller:generatePatientData();
-		Payment_Controller:generatePaymentData();
-		Person_Controller:generatePersonData();
-		Admin_Controller:generateAdminData();
-		Doctor_Controller:generateDoctorData();
-	} else if (selected_menu_item.sortnum == 2) {
-		quickInvite();
-	}
+	// if(selected_menu_item.sortnum == 1){
+	// 	Patient_Controller:generatePatientData();
+	// 	Payment_Controller:generatePaymentData();
+	// 	Person_Controller:generatePersonData();
+	// 	Admin_Controller:generateAdminData();
+	// 	Doctor_Controller:generateDoctorData();
+	// } else if (selected_menu_item.sortnum == 2) {
+	// 	quickInvite();
+	// }
 }

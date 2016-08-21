@@ -10,42 +10,30 @@ int getAllAdminCollectionLength(){
 	return adminCollection.length();
 }
 
-bool isObjectValidState(datetime dateRegistered, Person person_Record){
-	if(person_Record == null){
-		msg = "No person_Record populated."; Alert:error(msg);
-		return false;
-	}
-	if(dateRegistered == null){
-		msg = "No dateRegistered populated."; Alert:error(msg);
-		return false;
-	}
-	return true;
-}
-
-Admin createAdmin(datetime dateRegistered, Person person_Record){
-	Admin admin_var = Admin:new();
-	return updateAdmin(admin_var, false, dateRegistered, person_Record);
-}
-
-Admin updateAdmin(Admin admin_var, bool isEdit, datetime dateRegistered, Person person_Record){
-	if (admin_var == null || isObjectValidState(dateRegistered, person_Record) == false){
-		return;
+Admin createAdmin(Person person){
+	if (person == null){
+		msg = "No Person populated."; Alert:error(msg);
+		return null;
 	}
 
-	admin_var.dateRegistered = dateRegistered;
-	admin_var.person = person_Record;
-	admin_var.save();
-
-	return admin_var;
+	Admin admin = Admin:new();
+	admin.dateRegistered = Mez:now();
+	return updateAdmin(admin, person);
 }
 
-void deleteAdmin(Admin admin_var){
-	if(admin_var == null) { return; }
-	admin_var.removeRole();
-	Admin:delete(admin_var);
+Admin updateAdmin(Admin admin, Person person){
+	if (admin == null || person == null){
+		return null;
+	}
+	
+	admin.admin_person = person;
+	admin.save();
+
+	return admin;
 }
 
-void generateAdminData(){
-	createAdmin(Mez:now(), null);
+void deleteAdmin(Admin admin){
+	if(admin == null) { return; }
+	admin.removeRole();
+	Admin:delete(admin);
 }
-

@@ -1,26 +1,14 @@
 unit InviteUsers;
 
 @InviteUser
-Patient invitePatient(){
-	Patient patient_var = Patient:new();
-	patient_var.dateRegistered = Mez:now();
-	patient_var.save();
-	return patient_var;
-}
-
-@InviteUser
-Doctor inviteDoctor(){
-	Doctor doctor_var = Doctor:new();
-	doctor_var.dateRegistered = Mez:now();
-	doctor_var.doctorID = "doctorID";
-	doctor_var.save();
-	return doctor_var;
-}
-
-@InviteUser
 Admin inviteAdmin(){
-	Admin admin_var = Admin:new();
-	admin_var.dateRegistered = Mez:now();
-	admin_var.save();
-	return admin_var;
+
+	Person person = Person_Controller:generateDefaultPerson();
+	
+	Admin admin = Admin:new();
+	admin.dateRegistered = Mez:now();
+	admin.admin_person = person;
+	admin.save();
+	return admin;
+	
 }

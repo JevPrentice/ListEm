@@ -18,13 +18,13 @@ void init(){
 		return null;
 	}
 
-	patient = person.patient_person;
+	patient = person.person_patient;
 
 	if (patient != null){
 
 		isRegisteredPatient = true;
 
-		Payment[] payments = patient.patient_payments;
+		Payment[] payments;// = patient.patient_payments;
 
 		if (payments.length() > 0){
 			hasOutstandingPayments = true;

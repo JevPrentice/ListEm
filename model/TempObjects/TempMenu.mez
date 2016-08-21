@@ -1,5 +1,0 @@
-object TempMenu{
-	int order;
-	string key;
-	string value;
-}

@@ -13,6 +13,6 @@ persistent object Payment {
 	Doctor doctor via payments_doctor;
 
 	@ManyToOne
-	Patient patient via patient_payments;
+	Patient payment_patient via payments;
 
 }

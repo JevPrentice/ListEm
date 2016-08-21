@@ -39,9 +39,9 @@ string backButton(){
 string submitButton(){
 	bool isEdit; if (page_mode == "Create"){ isEdit = false; } else { isEdit = true; }
 	if (selected_admin_var != null){
-		Admin_Controller:updateAdmin(selected_admin_var, isEdit, dateRegistered, person_Record);
+		Admin_Controller:updateAdmin(selected_admin_var, person_Record);
 	} else {
-		Admin_Controller:createAdmin(dateRegistered, person_Record);
+		Admin_Controller:createAdmin(person_Record);
 	}
 	clearState();
 	return null;
@@ -50,7 +50,7 @@ string submitButton(){
 void editAdmin(){
 	page_mode = "Edit";
 	dateRegistered = selected_admin_var.dateRegistered;
-	person_Record = selected_admin_var.person;
+	person_Record = selected_admin_var.admin_person;
 }
 
 void deleteAdmin(){
@@ -59,8 +59,4 @@ void deleteAdmin(){
 
 void cancelButton(){
 	clearState();
-}
-
-void generateData(){
-	Admin_Controller:generateAdminData();
 }

@@ -10,7 +10,7 @@
             <userRole>Doctor</userRole>
         </menuitem>
 
-        <textfield label="id_number">
+        <textfield label="model.person.ID_Number">
             <binding variable="idNumber"/>
         </textfield>
         

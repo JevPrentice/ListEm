@@ -10,7 +10,7 @@
 			<binding variable="page_mode"/>
 		</info>
 
-		<datefield label="form.timefield.dateRegistered">
+		<datefield label="form.timefield.Date_Registered">
 			<binding variable="dateRegistered"/>
 		</datefield>
 

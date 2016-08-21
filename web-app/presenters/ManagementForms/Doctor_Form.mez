@@ -5,7 +5,7 @@ Doctor selected_doctor_var;
 datetime dateRegistered;
 string doctorID;
 Person person_Record;
-Payment[] payments_doctor_Collection;
+// Payment[] payments_doctor_Collection;
 
 string msg;
 string nav_back;
@@ -28,7 +28,7 @@ void clearState(){
 	doctorID = null;
 
 	person_Record = null;
-	payments_doctor_Collection = null;
+	// payments_doctor_Collection = null;
 }
 
 string navigate(string location){
@@ -56,7 +56,7 @@ void editDoctor(){
 	dateRegistered = selected_doctor_var.dateRegistered;
 	doctorID = selected_doctor_var.doctorID;
 	person_Record = selected_doctor_var.person;
-	payments_doctor_Collection = selected_doctor_var.payments_doctor;
+	// payments_doctor_Collection = selected_doctor_var.payments_doctor;
 }
 
 void deleteDoctor(){

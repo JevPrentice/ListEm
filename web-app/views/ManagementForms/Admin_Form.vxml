@@ -10,10 +10,6 @@
 			<binding variable="page_mode"/>
 		</info>
 
-		<datefield label="form.timefield.dateRegistered">
-			<binding variable="dateRegistered"/>
-		</datefield>
-
 		<select label="form.select.many_to_one.person_Record">
 			<binding variable="person_Record"/>
             <collectionSource function="Person_Controller:getAllPersonCollection">
@@ -25,8 +21,6 @@
 
 		<submit label="form.submit.Cancel" action="cancelButton"/>
 
-		<submit label="form.submit.Generate" action="generateData"/>
-
 		<table title="form.table.admin_var">
 			<collectionSource function="Admin_Controller:getAllAdminCollection"/>
 
@@ -34,7 +28,7 @@
 				<attributeName>dateRegistered</attributeName>
 			</column>
 			<column heading="form.table.column.Admin">
-				<attributeName>person.firstNames</attributeName>
+				<attributeName>admin_person.firstNames</attributeName>
 			</column>
 			<rowAction label="form.table.rowaction.Edit" action="editAdmin" >
 				<binding variable="selected_admin_var"/>

@@ -5,33 +5,7 @@ void info(string alertMessage) {
 	Mez:alert("alerts.common.generic");
 }
 
-void infoArr(string[] sArr){
-	Alert:info(concatenateArray(sArr));
-}
-
 void error(string alertMessage) {
 	string message = alertMessage;
 	Mez:alertError("alerts.common.generic");
-}
-
-string concatenateArray(string[] sArr){
-	if (sArr == null || sArr.length() <= 0) {
-		return "";
-	}
-
-	string rs = "";
-	string sArrElement = "";
-
-	for (int i = 0; i < sArr.length(); i++){
-		sArrElement = sArr.get(i);
-		if (sArrElement != null && String:length(sArrElement) > 0){
-			rs = String:concat(rs, sArrElement);
-		}
-	}
-
-	if (rs == null){
-		return "";
-	}
-	
-	return rs;
 }

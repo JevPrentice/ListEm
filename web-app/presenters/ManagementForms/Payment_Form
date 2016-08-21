@@ -59,7 +59,7 @@ void editPayment(){
 	amount = selected_payment_var.amount;
 	status = selected_payment_var.status;
 	doctor_Record = selected_payment_var.doctor;
-	patient_Record = selected_payment_var.patient;
+	patient_Record = selected_payment_var.payment_patient;
 }
 
 void deletePayment(){

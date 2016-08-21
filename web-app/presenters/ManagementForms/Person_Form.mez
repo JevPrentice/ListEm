@@ -8,9 +8,6 @@ string mobileNumber;
 string idNumber;
 datetime dateRegistered;
 GENDER gender;
-Admin admin_person_Record;
-Doctor doctor_person_Record;
-Patient patient_person_Record;
 
 string msg;
 string nav_back;
@@ -33,12 +30,7 @@ void clearState(){
 	surname = null;
 	mobileNumber = null;
 	idNumber = null;
-	dateRegistered = null;
 	gender = null;
-
-	admin_person_Record = null;
-	doctor_person_Record = null;
-	patient_person_Record = null;
 }
 
 string navigate(string location){
@@ -53,9 +45,9 @@ string backButton(){
 string submitButton(){
 	bool isEdit; if (page_mode == "Create"){ isEdit = false; } else { isEdit = true; }
 	if (selected_person_var != null){
-		Person_Controller:updatePerson(selected_person_var, isEdit, firstNames, surname, mobileNumber, idNumber, dateRegistered, gender, admin_person_Record, doctor_person_Record, patient_person_Record);
+		Person_Controller:updatePerson(selected_person_var, isEdit, firstNames, surname, mobileNumber, idNumber, gender);
 	} else {
-		Person_Controller:createPerson(firstNames, surname, mobileNumber, idNumber, dateRegistered, gender, admin_person_Record, doctor_person_Record, patient_person_Record);
+		Person_Controller:createPerson(firstNames, surname, mobileNumber, idNumber, gender);
 	}
 	clearState();
 	return null;
@@ -67,11 +59,7 @@ void editPerson(){
 	surname = selected_person_var.surname;
 	mobileNumber = selected_person_var.mobileNumber;
 	idNumber = selected_person_var.idNumber;
-	dateRegistered = selected_person_var.dateRegistered;
 	gender = selected_person_var.gender;
-	admin_person_Record = selected_person_var.admin_person;
-	doctor_person_Record = selected_person_var.doctor_person;
-	patient_person_Record = selected_person_var.patient_person;
 }
 
 void deletePerson(){
@@ -80,8 +68,4 @@ void deletePerson(){
 
 void cancelButton(){
 	clearState();
-}
-
-void generateData(){
-	Person_Controller:generatePersonData();
 }

@@ -8,31 +8,31 @@
 
         <action label="back" action="back"/>
 
-        <info label="first_names">
+        <info label="model.person.First_Names">
             <binding variable="person">
                 <attribute name="firstNames"/>
             </binding>
         </info>
 
-        <info label="surname">
+        <info label="model.person.Surname">
             <binding variable="person">
                 <attribute name="surname"/>
             </binding>
         </info>
 
-        <info label="mobile_number">
+        <info label="model.person.Mobile_Number">
             <binding variable="person">
                 <attribute name="mobileNumber"/>
             </binding>
         </info>
 
-        <info label="id_umber">
+        <info label="model.person.ID_Number">
             <binding variable="person">
                 <attribute name="idNumber"/>
             </binding>
         </info>
 
-        <info label="gender">
+        <info label="model.person.Gender">
             <binding variable="person">
                 <attribute name="gender"/>
             </binding>

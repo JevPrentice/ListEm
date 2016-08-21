@@ -1,6 +1,7 @@
 enum GENDER {
 	Male,
-	Female
+	Female,
+	Other
 }
 
 enum MY_PAYMENT_STATUS{

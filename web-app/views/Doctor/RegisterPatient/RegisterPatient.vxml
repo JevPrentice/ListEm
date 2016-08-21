@@ -14,7 +14,7 @@
 
         <action label="back" action="back"/>
 
-        <textfield label="idNumber">
+        <textfield label="model.person.ID_Number">
             <binding variable="idNumber"/>
         </textfield>
         
