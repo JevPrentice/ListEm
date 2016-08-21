@@ -1,0 +1,36 @@
+unit ManageDoctors;
+
+Doctor[] allDoctors;
+Doctor selectedDoctor;
+
+void init(){
+	allDoctors = DoctorController:getAllDoctors();
+}
+
+string navigate(string location){
+	return location;
+}
+string back(){
+	return navigate("navManageAdmins");
+}
+
+string inviteDoctor(){
+	return navigate("navEditDoctor");
+}
+
+string editDoctor(){
+
+	EditDoctor:doctor = selectedDoctor;
+	return navigate("navEditDoctor");
+
+}
+
+void uninviteDoctor(){
+	if (selectedDoctor == null) {
+		string msg = "No Doctor found for selected record"; Alert:error(msg);
+		return null;
+	}
+	selectedDoctor.removeRole();
+	Doctor:delete(selectedDoctor);
+	init();
+}

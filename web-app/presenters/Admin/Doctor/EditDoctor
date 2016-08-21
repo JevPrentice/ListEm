@@ -1,0 +1,73 @@
+unit EditDoctor;
+
+Doctor doctor;
+Person person;
+
+string idNumber;
+string doctorID;
+
+string successDestination;
+
+string msg;
+
+void init(){
+
+	if (doctor != null){
+		doctorID = doctor.doctorID;
+
+		person = doctor.person;
+	}
+
+	if (person != null){
+		idNumber = person.idNumber;
+	}
+}
+
+void resetVars(){
+	idNumber = null;
+	doctor = null;
+}
+
+string navigate(string location){
+
+	resetVars();
+
+	if (successDestination == "navDoctorProfile"){
+		return "navDoctorProfile";
+	}
+
+	return location;
+}
+
+string back(){
+	return navigate("navManageDoctors");
+}
+
+string saveDoctor(){
+
+	if (idNumber == null || String:length(idNumber) != 13 || Globals:isStringNumeric(idNumber) == false){
+		msg = "Please enter a numeric ID Number"; Alert:info(msg); return null;
+	}
+
+	if (doctorID == null || String:length(doctorID) < 4){
+		msg = "Please enter a numeric ID Number"; Alert:info(msg); return null;
+	}
+
+	/* Check if person exists */
+	person = PersonController:getPersonForIdNumber(idNumber);
+
+	/* Create NEW Person and promote to Doctor */
+	if (person == null){
+		EditPerson:person = null;
+		EditPerson:idNumber = idNumber;
+		EditPerson:doctorID = doctorID;
+		EditPerson:isDoctor = true;
+		return navigate("navEditPerson");
+	}
+
+	/* Person exists, promote this Person to Doctor */
+	doctor = DoctorController:createOrEditDoctor(doctor, person, doctorID);
+	msg = String:concat(person.firstNames, " ", person.surname, " has been enabled as an Doctor"); Alert:info(msg);
+
+	return navigate("navManageDoctors");
+}

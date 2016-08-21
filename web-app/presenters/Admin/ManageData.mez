@@ -25,7 +25,7 @@ string backButton(){
 
 MenuItem[] getManageDataMenu(){
 	MenuItem[] menu;
-	menu.append(MenuItem_Controller:getMenuItem(1, "User Management", "navPerson", null));
+	menu.append(MenuItem_Controller:getMenuItem(1, "Manage People", "navPerson", null));
 	return menu;
 }
 
