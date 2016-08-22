@@ -1,0 +1,23 @@
+unit DoctorEditDoctorProfile;
+
+Doctor doctor;
+Person person;
+
+string doctorID;
+
+void init(){
+	doctor = Doctor:user();
+	person = doctor.doctor_person;
+}
+
+string navigate(string location){
+	return location;
+}
+
+string back(){
+	return navigate("navManageDoctors");
+}
+
+string saveDoctor(){
+	return navigate("navDoctorProfile");
+}

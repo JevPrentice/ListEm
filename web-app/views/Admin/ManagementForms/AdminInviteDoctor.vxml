@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+	<view label="admin_invite_doctor.title.Invite_Doctor" unit="AdminInviteDoctor" init="init">
+		
+		<navigation outcome="navPersonForm" target="Person_Form" />
+
+		<textfield label="model.doctor.Doctor_ID">
+			<binding variable="doctorID"/>
+		</textfield >
+
+		<submit label="form.submit.Submit" action="submitButton"/>
+	</view>
+</ui>

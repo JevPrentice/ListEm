@@ -78,3 +78,9 @@ void toggleAdmin(){
 		Admin_Controller:deleteAdmin(admin_tmp);
 	}
 }
+
+string selectActionDoctor(){
+
+	SelectActionDoctor:person = selected_person_var;
+	return navigate("navSelectActionDoctor");
+}

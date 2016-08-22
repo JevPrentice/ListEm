@@ -1,0 +1,24 @@
+unit AdminInviteDoctor;
+
+Person person;
+
+string doctorID;
+
+void init(){
+
+}
+
+string navigate(string location){
+	return location;
+}
+
+string submitButton(){
+	Doctor result = Doctor_Controller:createDoctor(person, doctorID);
+
+	if (result == null){
+		return null;
+	}
+		
+	return navigate("navPersonForm");	
+	
+}

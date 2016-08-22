@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+    <view label="doctor.doctor_edit_doctor_profile.title.Edit_Doctor_Profile" unit="DoctorEditDoctorProfile" init="init">
+
+		<navigation outcome="navDoctorProfile" target="DoctorProfile"/>
+
+        <menuitem label="doctor.doctor_edit_doctor_profile.title.Edit_Doctor_Profile" icon="doctor" order="1">
+            <userRole>Doctor</userRole>
+        </menuitem>
+
+        <submit label="back" outcome="navDoctorProfile"/>
+
+        <info label="model.person.ID_Number">
+			<binding variable="person">
+                <attribute name="idNumber"/>
+            </binding>
+		</info>
+
+        <textfield label="model.doctor.Doctor_ID">
+            <binding variable="doctor">
+                <attribute name="doctorID"/>
+            </binding>
+        </textfield>
+
+        <submit label="doctor.doctor_profile.Submit" action="saveDoctor"/>
+
+    </view>
+</ui>

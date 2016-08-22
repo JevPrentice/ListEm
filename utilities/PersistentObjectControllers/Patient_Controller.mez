@@ -10,42 +10,59 @@ int getAllPatientCollectionLength(){
 	return patientCollection.length();
 }
 
-bool isObjectValidState(datetime dateRegistered, Person person_Record){
-	if(person_Record == null){
-		msg = "No person_Record populated."; Alert:error(msg);
-		return false;
+Patient[] getPatientCollectonForPerson(Person person){
+	return Patient:relationshipIn(patient_person, person);
+}
+
+Patient getPatientForPerson(Person person){
+	Patient[] patientCollection = getPatientCollectonForPerson(person);
+	if(patientCollection.length()<=0){
+		return null;
 	}
-	if(dateRegistered == null){
-		msg = "No dateRegistered populated."; Alert:error(msg);
-		return false;
-	}
+	return patientCollection.first();
+}
+
+bool isObjectValidState(Person person){
+	if(person == null){ msg = "No Person populated."; Alert:error(msg); return false; }
 	return true;
 }
 
-Patient createPatient(datetime dateRegistered, Person person_Record){
-	Patient patient_var = Patient:new();
-	return updatePatient(patient_var, false, dateRegistered, person_Record);
+Patient createPatient(Person person){
+	if (person == null){
+		msg = "No Person populated."; Alert:error(msg);
+		return null;
+	}
+
+	Patient[] collection = getPatientCollectonForPerson(person);
+	if(collection.length() > 0){
+		msg = "Person is already a Patient."; Alert:error(msg);
+		return null;
+	}
+
+	Patient patient = Patient:new();
+	patient.dateRegistered = Mez:now();
+
+	return updatePatient(patient, false, person);
 }
 
-Patient updatePatient(Patient patient_var, bool isEdit, datetime dateRegistered, Person person_Record){
-	if (patient_var == null || isObjectValidState(dateRegistered, person_Record) == false){
+Patient updatePatient(Patient patient, bool isEdit, Person person){
+	if (patient == null || isObjectValidState(person) == false){
 		return;
 	}
 
-	patient_var.dateRegistered = dateRegistered;
-	patient_var.patient_person = person_Record;
-	patient_var.save();
+	patient.patient_person = person;
+	patient.save();
 
-	return patient_var;
+	return patient;
 }
 
-void deletePatient(Patient patient_var){
-	if(patient_var == null) { return; }
-	patient_var.removeRole();
-	Patient:delete(patient_var);
+void deletePatient(Patient patient){
+	if(patient == null) { return; }
+	patient.removeRole();
+	Patient:delete(patient);
 }
 
 void generatePatientData(){
-	createPatient(Mez:now(), null);
+	//createPatient(Mez:now(), null);
 }
 

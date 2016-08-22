@@ -1,14 +1,6 @@
 unit Person_Controller;
 string msg;
 
-Person getPersonForIdNumber(string idNumber){
-	Person[] personCollection = Person:equals(idNumber, idNumber);
-	if (personCollection.length() == 0){
-		return null;
-	}
-	return personCollection.first();
-}
-
 Person[] getAllPersonCollection(){
 	return Person:all();
 }
@@ -16,6 +8,18 @@ Person[] getAllPersonCollection(){
 int getAllPersonCollectionLength(){
 	Person[] personCollection = getAllPersonCollection();
 	return personCollection.length();
+}
+
+Person[] getPersonCollectionForIdNumber(string idNumber){
+	return Person:equals(idNumber, idNumber);
+}
+
+Person getPersonForIdNumber(string idNumber){
+	Person[] personCollection = getPersonCollectionForIdNumber(idNumber);
+	if (personCollection.length() == 0){
+		return null;
+	}
+	return personCollection.first();
 }
 
 bool isObjectValidState(string firstNames, string surname, string mobileNumber, string idNumber, GENDER gender){
@@ -28,6 +32,13 @@ bool isObjectValidState(string firstNames, string surname, string mobileNumber, 
 }
 
 Person createPerson(string firstNames, string surname, string mobileNumber, string idNumber, GENDER gender){
+	
+	Person[] collection = getPersonCollectionForIdNumber(person);
+	if(collection.length() > 0){
+		msg = "A Person already exists for this ID number."; Alert:error(msg);
+		return null;
+	}
+
 	Person person = Person:new();
 	person.dateRegistered = Mez:now();
 	return updatePerson(person, false, firstNames, surname, mobileNumber, idNumber, gender);

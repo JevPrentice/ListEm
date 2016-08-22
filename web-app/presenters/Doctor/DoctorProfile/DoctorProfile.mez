@@ -12,14 +12,11 @@ string navigate(string location){
 	return location;
 }
 
-string back(){
-	return navigate("navManageDoctors");
-}
-
 string editDoctor(){
+	return "navEditDoctor";
 	// EditDoctor:doctor = doctor;
 	// EditDoctor:successDestination = "navDoctorProfile";
-	return navigate("navEditDoctor");
+	//navigate("navEditDoctor");
 }
 
 string editPerson(){

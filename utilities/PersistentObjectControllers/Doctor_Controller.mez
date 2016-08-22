@@ -5,40 +5,78 @@ Doctor[] getAllDoctorCollection(){
 	return Doctor:all();
 }
 
+Doctor[] getDoctorCollectionForDoctorID(string doctorID){
+	return Doctor:equals(doctorID, doctorID);
+}
+
+Doctor getDoctorForDoctorID(string doctorID){
+	Doctor[] doctorCollection = getDoctorCollectionForDoctorID(doctorID);
+	if (doctorCollection.length() == 0){
+		return null;
+	}
+	return doctorCollection.first();
+}
+
+Doctor[] getDoctorCollectionForPerson(Person person){
+	return Doctor:relationshipIn(doctor_person, person);
+}
+
+// Doctor getDoctorForPerson(Person person){
+// 	Doctor doctorCollection = getDoctorCollectionForPerson(person);
+// 	if (doctorCollection.length()<=0){
+// 		return null;
+// 	}
+// 	return doctorCollection.first();
+// }
+
 int getAllDoctorCollectionLength(){
 	Doctor[] doctorCollection = getAllDoctorCollection();
 	return doctorCollection.length();
 }
 
-bool isObjectValidState(datetime dateRegistered, string doctorID, Person person_Record){
-	if(PrimitiveValidation:isValidString(doctorID, true, "No doctorID populated") == false){ return false; }
-	if(person_Record == null){
-		msg = "No person_Record populated."; Alert:error(msg);
-		return false;
-	}
-	if(dateRegistered == null){
-		msg = "No dateRegistered populated."; Alert:error(msg);
-		return false;
-	}
+bool isObjectValidState(Person person, string doctorID){
+	if(PrimitiveValidation:isValidString(doctorID, true, "No Doctor ID populated") == false){ return false; }
+	if(person == null){ msg = "No Person populated."; Alert:error(msg); return false; }
 	return true;
 }
 
-Doctor createDoctor(datetime dateRegistered, string doctorID, Person person_Record){
-	Doctor doctor_var = Doctor:new();
-	return updateDoctor(doctor_var, false, dateRegistered, doctorID, person_Record);
+Doctor createDoctor(Person person, string doctorID){
+	Doctor[] doctorCollection = getDoctorCollectionForDoctorID(doctorID);
+	if(doctorCollection.length() > 0){
+		msg = "Doctor ID already exists."; Alert:error(msg);
+		return null;
+	}
+	Doctor doctor = Doctor:new();
+	doctor.dateRegistered = Mez:now();
+	
+	return updateDoctor(doctor, false, person, doctorID);
 }
 
-Doctor updateDoctor(Doctor doctor_var, bool isEdit, datetime dateRegistered, string doctorID, Person person_Record){
-	if (doctor_var == null || isObjectValidState(dateRegistered, doctorID, person_Record) == false){
+Doctor updateDoctor(Doctor doctor, bool isEdit, Person person, string doctorID){
+	if (doctor == null || isObjectValidState(person, doctorID) == false){
 		return;
 	}
 
-	doctor_var.dateRegistered = dateRegistered;
-	doctor_var.doctorID = doctorID;
-	doctor_var.doctor_person = person_Record;
-	doctor_var.save();
+	Doctor[] collection = getDoctorCollectionForDoctorID(doctorID);
+	if (isEdit == false){
+		for (int i = 0; i < collection.length(); i++){
+            Doctor tmp = collection.get(i);
+            if (doctor != tmp){
+                msg = "Doctor cannot be saved, the Doctor ID is aready being used by another Doctor"; Alert:error(msg);
+                return null;
+            }
+        }
+	}
 
-	return doctor_var;
+	doctor.doctorID = doctorID;
+	doctor.doctor_person = person;
+	doctor.save();
+
+	doctor.invite(person.mobileNumber);
+
+	msg = "Doctor saved"; Alert:info(msg);
+
+	return doctor;
 }
 
 void deleteDoctor(Doctor doctor_var){
@@ -48,6 +86,5 @@ void deleteDoctor(Doctor doctor_var){
 }
 
 void generateDoctorData(){
-	createDoctor(Mez:now(), "doctorID", null);
 }
 

@@ -1,4 +1,3 @@
-@Restrict("Admin", all())
 persistent object Person {
 	
 	@RequiredAttribute("validator.firstNames")

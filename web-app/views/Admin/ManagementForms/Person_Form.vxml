@@ -5,6 +5,7 @@
 	<view label="personform.title.Person_Form" unit="Person_Form" init="init">
 
 		<navigation outcome="navManageData" target="ManageData" />
+		<navigation outcome="navSelectActionDoctor" target="SelectActionDoctor" />
 
 		<info label="personform.info.Person_Form">
 			<binding variable="page_mode"/>
@@ -71,6 +72,9 @@
 				<binding variable="selected_person_var"/>
 			</rowAction>
 			<rowAction label="personform.table.rowaction.Toggle_Admin" action="toggleAdmin" >
+				<binding variable="selected_person_var"/>
+			</rowAction>
+			<rowAction label="personform.table.rowaction.Doctor" action="selectActionDoctor" >
 				<binding variable="selected_person_var"/>
 			</rowAction>
 		</table>

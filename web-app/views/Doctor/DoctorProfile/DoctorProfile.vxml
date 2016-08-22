@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
     <view label="doctor.doctor_profile.title.Doctor_Profile" unit="DoctorProfile" init="init">
 
-		<!-- <navigation outcome="navEditDoctor" target="EditDoctor"/> -->
+		<navigation outcome="navEditDoctor" target="DoctorEditDoctorProfile"/>
         <!-- <navigation outcome="navEditPerson" target="EditPerson"/> -->
 
         <menuitem label="doctor.doctor_profile.title.Doctor_Profile" icon="doctor" order="1">
@@ -49,7 +49,7 @@
             </binding>
         </info>
 
-        <submit label="doctor.doctor_profile.submit.Edit_Person" action="editPerson"/>
+        <!-- <submit label="doctor.doctor_profile.submit.Edit_Person" action="editPerson"/> -->
         
     </view>
 </ui>

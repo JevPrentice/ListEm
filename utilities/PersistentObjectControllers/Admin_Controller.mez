@@ -10,8 +10,12 @@ int getAllAdminCollectionLength(){
 	return adminCollection.length();
 }
 
+Admin[] getAdminCollectonForPerson(Person person){
+	return Admin:relationshipIn(admin_person, person);
+}
+
 Admin getAdminForPerson(Person person){
-	Admin[] adminCollection = Admin:relationshipIn(admin_person, person);
+	Admin[] adminCollection = getAdminCollectonForPerson(person);
 	if(adminCollection.length()<=0){
 		return null;
 	}
@@ -21,6 +25,12 @@ Admin getAdminForPerson(Person person){
 Admin createAdmin(Person person){
 	if (person == null){
 		msg = "No Person populated."; Alert:error(msg);
+		return null;
+	}
+
+	Admin[] collection = getAdminCollectonForPerson(person);
+	if(collection.length() > 0){
+		msg = "Person is already an Admin."; Alert:error(msg);
 		return null;
 	}
 

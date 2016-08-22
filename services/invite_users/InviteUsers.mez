@@ -12,3 +12,14 @@ Admin inviteAdmin(){
 	return admin;
 	
 }
+
+@InviteUser
+Doctor inviteDoc(){
+
+	Doctor d = Doctor:new();
+	d.dateRegistered = Mez:now();
+	d.doctorID="123";
+	d.save();
+	return d;
+	
+}

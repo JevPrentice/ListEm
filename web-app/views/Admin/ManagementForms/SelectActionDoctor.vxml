@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+	<view label="select_action_doctor.title.Select_Action_Doctor" unit="SelectActionDoctor" init="init">
+		
+		<navigation outcome="Invite" target="AdminInviteDoctor" />
+
+		<select label="select_action_doctor.select.Select_Action">
+		 	<binding variable="action"/>
+		 	<collectionSource variable="actionCollection">
+		 	</collectionSource>
+		 </select>
+		<submit label="form.submit.Submit" action="submitButton"/>
+	</view>
+</ui>
