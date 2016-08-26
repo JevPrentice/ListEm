@@ -3,15 +3,20 @@ unit DoctorEditDoctorProfile;
 Doctor doctor;
 Person person;
 
-string doctorID;
-
 void init(){
+	clearState();
 	doctor = Doctor:user();
 	person = doctor.doctor_person;
 }
 
 string navigate(string location){
+	clearState();
 	return location;
+}
+
+void clearState(){
+	person = null;
+	doctor = null;
 }
 
 string back(){

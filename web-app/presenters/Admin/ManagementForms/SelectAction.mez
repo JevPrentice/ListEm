@@ -1,0 +1,70 @@
+unit SelectAction;
+
+Person person;
+string userType;
+
+Doctor[] doctorCollection;
+Patient[] patientCollection;
+
+string[] actionCollection;
+string action;
+
+void init(){
+
+
+	if (userType == "Doctor"){
+		doctorCollection = Doctor_Controller:getDoctorCollectionForPerson(person);
+		if (doctorCollection.length() <= 0){
+			action = "Invite";
+			actionCollection.append(action);
+		} else {
+			action = "Uninvite";
+			actionCollection.append(action);
+		}
+	} else if (userType == "Patient") {
+		patientCollection = Patient_Controller:getPatientCollectonForPerson(person);
+		if (patientCollection.length() <= 0){
+			action = "Invite";
+			actionCollection.append(action);
+		} else {
+			action = "Uninvite";
+			actionCollection.append(action);
+		}
+	}
+
+}
+
+void clearState(){
+	person = null;
+	userType = null;
+	doctorCollection = null;
+	patientCollection = null;
+	actionCollection = null;
+	action = null;
+}
+
+string navigate(string location){
+	clearState();
+	return location;
+}
+
+string submitButton(){
+
+
+	if (userType == "Doctor"){
+		
+		if (action == "Invite"){
+			AdminInviteDoctor:person = person;
+			return navigate("navInviteAdmin");
+		} else if (action == "Uninvite"){
+			Doctor_Controller:deleteDoctor(doctorCollection.first());
+			return navigate("navPersonForm");
+		}
+
+	} return navigate("navInvitePatient");/*else if (userType == "Patient") {
+		
+	}*/
+
+	
+	
+}

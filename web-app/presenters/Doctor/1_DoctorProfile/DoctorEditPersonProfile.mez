@@ -1,0 +1,51 @@
+unit DoctorEditPersonProfile;
+
+Doctor doctor;
+Person person;
+
+string firstNames;
+string surname;
+string mobileNumber;
+string idNumber;
+datetime dateRegistered;
+GENDER gender;
+
+string msg;
+
+void init(){
+	doctor = Doctor:user();
+	person = doctor.doctor_person;
+
+	firstNames = person.firstNames;
+	surname = person.surname;
+	mobileNumber = person.mobileNumber;
+	idNumber = person.idNumber;
+	gender = person.gender;
+}
+
+void clearState(){
+	doctor = null;
+	person = null;
+	msg = "";
+	firstNames = null;
+	surname = null;
+	mobileNumber = null;
+	idNumber = null;
+	gender = null;
+}
+
+string navigate(string location){
+	clearState();
+	return location;
+}
+
+string backButton(){
+	return navigate("navDoctorProfile");
+}
+
+string submitButton(){
+
+	Person_Controller:updatePerson(person, true, firstNames, surname, mobileNumber, idNumber, gender);
+
+	return navigate("navDoctorProfile");
+}

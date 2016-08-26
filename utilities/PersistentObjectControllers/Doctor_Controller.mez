@@ -79,10 +79,10 @@ Doctor updateDoctor(Doctor doctor, bool isEdit, Person person, string doctorID){
 	return doctor;
 }
 
-void deleteDoctor(Doctor doctor_var){
-	if(doctor_var == null) { return; }
-	doctor_var.removeRole();
-	Doctor:delete(doctor_var);
+void deleteDoctor(Doctor doctor){
+	if(doctor == null) { return; }
+	doctor.removeRole();
+	Doctor:delete(doctor);
 }
 
 void generateDoctorData(){

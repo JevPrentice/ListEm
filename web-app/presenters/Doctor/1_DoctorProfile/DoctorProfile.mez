@@ -12,6 +12,11 @@ string navigate(string location){
 	return location;
 }
 
+void clearState(){
+	doctor = null;
+	person = null;
+}
+
 string editDoctor(){
 	return "navEditDoctor";
 	// EditDoctor:doctor = doctor;

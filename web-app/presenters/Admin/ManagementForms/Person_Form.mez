@@ -71,16 +71,35 @@ void cancelButton(){
 }
 
 void toggleAdmin(){
+
+	Admin currentAdmin = null;
+	if (Mez:userRole() == "Admin"){
+		currentAdmin = Admin:user();
+	}
+
 	Admin admin_tmp = Admin_Controller:getAdminForPerson(selected_person_var);
+
+	if (currentAdmin == admin_tmp){
+		msg = "You cannot uninvite yourself."; Alert:info(msg);
+		return null;
+	}
+
 	if(admin_tmp == null){
 		Admin_Controller:createAdmin(selected_person_var);
-	} else {
-		Admin_Controller:deleteAdmin(admin_tmp);
+		return null;
 	}
+
+	Admin_Controller:deleteAdmin(admin_tmp);
 }
 
 string selectActionDoctor(){
+	SelectAction:person = selected_person_var;
+	SelectAction:userType = "Doctor";
+	return navigate("navSelectActionDoctor");
+}
 
-	SelectActionDoctor:person = selected_person_var;
+string selectActionPatient(){
+	SelectAction:person = selected_person_var;
+	SelectAction:userType = "Patient";
 	return navigate("navSelectActionDoctor");
 }

@@ -5,10 +5,11 @@
     <view label="doctor.register_patient.step1.Query_Patient" unit="RegisterPatient" init="init">
 
         <navigation outcome="navDoctorProfile" target="DoctorProfile"/>
-        <!-- <navigation outcome="navEditPerson" target="EditPerson"/> -->
-        <navigation outcome="navRegPatient" target="ConfirmPatient"/>
-
-        <menuitem label="doctor.regPatient" icon="add_patient" order="4">
+        <navigation outcome="navRegisterPerson" target="DoctorRegisterPatientPerson"/>
+        <navigation outcome="navConfirmPerson" target="ConfirmPatient"/>
+        <!-- <navigation outcome="navRegPatient" target="ConfirmPatient"/> -->
+        
+        <menuitem label="doctor.register_patient.step1.menu.Register_Patient" icon="add_patient" order="4">
             <userRole>Doctor</userRole>
         </menuitem>
 

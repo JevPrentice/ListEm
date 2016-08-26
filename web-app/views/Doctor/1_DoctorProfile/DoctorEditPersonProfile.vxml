@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+	<view label="doctor.doctor_edit_person_profile.title.Edit_Person_Profile" unit="DoctorEditPersonProfile" init="init">
+
+		<navigation outcome="navDoctorProfile" target="DoctorProfile"/>
+		
+		<action label="back" action="backButton"/>
+
+		<textfield label="model.person.First_Names">
+			<binding variable="firstNames"/>
+		</textfield >
+
+		<textfield label="model.person.Surname">
+			<binding variable="surname"/>
+		</textfield >
+
+		<textfield label="model.person.Mobile_Number">
+			<binding variable="mobileNumber"/>
+		</textfield >
+
+		<textfield label="model.person.ID_Number">
+			<binding variable="idNumber"/>
+		</textfield >
+
+		<select label="model.person.Gender">
+			<binding variable="gender" />
+			<enum>GENDER</enum>
+		</select>
+
+		<submit label="form.submit.Submit" action="submitButton"/>
+
+	</view>
+</ui>

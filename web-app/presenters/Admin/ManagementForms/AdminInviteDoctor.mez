@@ -1,14 +1,20 @@
 unit AdminInviteDoctor;
 
 Person person;
-
 string doctorID;
+string msg;
 
 void init(){
+	msg = "";
+}
 
+void clearState(){
+	person = null;
+	doctorID = null;
 }
 
 string navigate(string location){
+	clearState();
 	return location;
 }
 

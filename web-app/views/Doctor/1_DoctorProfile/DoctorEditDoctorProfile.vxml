@@ -6,11 +6,7 @@
 
 		<navigation outcome="navDoctorProfile" target="DoctorProfile"/>
 
-        <menuitem label="doctor.doctor_edit_doctor_profile.title.Edit_Doctor_Profile" icon="doctor" order="1">
-            <userRole>Doctor</userRole>
-        </menuitem>
-
-        <submit label="back" outcome="navDoctorProfile"/>
+        <action label="back" outcome="navDoctorProfile"/>
 
         <info label="model.person.ID_Number">
 			<binding variable="person">

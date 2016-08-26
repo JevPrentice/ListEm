@@ -1,0 +1,37 @@
+unit DoctorRegisterPatientPerson;
+
+Person person;
+
+string firstNames;
+string surname;
+string mobileNumber;
+string idNumber;
+datetime dateRegistered;
+GENDER gender;
+
+
+void init(){
+
+}
+
+string navigate(string location){
+	clearState();
+	return location;
+}
+
+void clearState(){
+	person = null;
+	firstNames = null;
+	surname = null;
+	mobileNumber = null;
+	idNumber = null;
+	gender = null;
+}
+
+string backButton(){
+	return navigate("navRegisterPatient");
+}
+
+string submitButton(){
+
+}

@@ -1,9 +1,10 @@
 unit RegisterPatient;
 
 string idNumber;
+string msg;
 
-void init (){
-
+void init(){
+	resetVars();
 }
 
 void resetVars(){
@@ -21,17 +22,16 @@ string back(){
 
 string next(){
 
-	// Person person = PersonController:getPersonForIdNumber(idNumber);
-	// if (person == null) { 
-	// 	EditPerson:idNumber = idNumber;
-	// 	EditPerson:successDestination = "navConfirmPatient";
-	// 	EditPerson:failDestination = "navEnterID";
-	// 	return navigate("navEditPerson");
+	if(String:length(idNumber) != 13){
+		msg = "ID Number must be 13 digits"; Alert:error(msg);
+		return null;
+	}
 
-	// }
+	Person person = Person_Controller:getPersonForIdNumber(idNumber);
+	if (person == null) {
+		return navigate("navRegisterPerson");
+	}
 
-	// ConfirmPatient:person = person;
-	return navigate("navRegPatient");
-	// Alert:info("reg outstand payment, for existing user");
-
+	ConfirmPatient:person = person;
+	return navigate("navConfirmPerson");
 }

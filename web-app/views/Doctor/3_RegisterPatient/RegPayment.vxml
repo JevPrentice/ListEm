@@ -25,4 +25,4 @@
         <submit label="save" action="savePayment"/>
 
     </view>
-</ui>
+</ui>   

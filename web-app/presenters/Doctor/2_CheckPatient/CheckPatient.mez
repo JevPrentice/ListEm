@@ -1,0 +1,30 @@
+unit CheckPatient;
+
+string idNumber;
+
+string msg;
+
+void init(){
+
+}
+
+void clearState(){
+	idNumber = null;
+}
+
+string navigate(string location){
+	clearState();
+	return location;
+}
+
+string next(){
+
+	Person person = Person_Controller:getPersonForIdNumber(idNumber);
+	if (person == null) { 
+		msg = "This Person has not been registered in the system yet, there is no profile available"; Alert:info(msg);
+		return null;
+	}
+
+	PatientSummary:person = person;
+	return navigate("navPatientSummary");
+}
