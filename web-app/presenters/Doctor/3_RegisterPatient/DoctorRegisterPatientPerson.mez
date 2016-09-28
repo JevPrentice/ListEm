@@ -9,10 +9,7 @@ string idNumber;
 datetime dateRegistered;
 GENDER gender;
 
-
-void init(){
-
-}
+// void init(){}
 
 string navigate(string location){
 	clearState();
@@ -33,5 +30,7 @@ string backButton(){
 }
 
 string submitButton(){
-
+	person = Person_Controller:createPerson(firstNames, surname, mobileNumber, idNumber, gender);
+	RegPayment:person = person;
+	return navigate("navRegPayment");
 }

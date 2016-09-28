@@ -5,7 +5,7 @@
     <view label="doctor.register_patient.step2.Confirm_Patient" unit="ConfirmPatient" init="init">
 
         <!-- <navigation outcome="navEnterID" target="RegisterPatient"/> -->
-        <!-- <navigation outcome="navRegPayment" target="RegPayment"/> -->
+        <navigation outcome="navRegPayment" target="RegPayment"/>
 
         <action label="back" action="back"/>
 

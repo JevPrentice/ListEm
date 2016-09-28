@@ -1,5 +1,7 @@
 unit RegPayment;
 
+Person person;
+
 Doctor doctor;
 Patient patient;
 
@@ -11,15 +13,10 @@ decimal amount;
 string msg;
 
 void init (){
-
 	doctor = Doctor:user();
-	// Person docPerson = doctor.person;
-	Person docPerson = null;
-	doctorToString = String:concat(docPerson.firstNames, " ", docPerson.surname, " ", docPerson.idNumber);
-
-	Person patPerson = patient.patient_person;
-	patientToString = String:concat(patPerson.firstNames, " ", patPerson.surname, " ", patPerson.idNumber);
-
+	Person docPerson = doctor.doctor_person;
+	doctorToString = String:concat(docPerson.firstNames, " ", docPerson.surname, " ", docPerson.idNumber, " ", doctor.doctorID);
+	patientToString = String:concat(person.firstNames, " ", person.surname, " ", person.idNumber);
 }
 
 void resetVars(){
@@ -36,9 +33,9 @@ string navigate(string location){
 }
 
 string back(){
-	Person patPerson = patient.patient_person;
-	RegisterPatient:idNumber = patPerson.idNumber;
-	return navigate("navRegisterPatient");
+	// Person patPerson = patient.patient_person;
+	// RegisterPatient:idNumber = patPerson.idNumber;
+	// return navigate("navRegisterPatient");
 }
 
 string savePayment(){

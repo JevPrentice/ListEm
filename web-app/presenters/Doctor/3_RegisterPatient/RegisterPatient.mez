@@ -29,6 +29,8 @@ string next(){
 
 	Person person = Person_Controller:getPersonForIdNumber(idNumber);
 	if (person == null) {
+		msg = "This Person has not been registered in the system please register their details"; Alert:info(msg);
+		DoctorRegisterPatientPerson:idNumber = idNumber;
 		return navigate("navRegisterPerson");
 	}
 
