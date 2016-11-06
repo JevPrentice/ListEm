@@ -2,7 +2,7 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-    <view label="doctor.register_patient.step1.Query_Patient" unit="RegisterPatient" init="init">
+    <view label="doctor.register_patient.step1.Query_Patient" unit="QueryPatient" init="init">
 
         <navigation outcome="navDoctorProfile" target="DoctorProfile"/>
         <navigation outcome="navRegisterPerson" target="DoctorRegisterPatientPerson"/>
@@ -13,7 +13,7 @@
             <userRole>Doctor</userRole>
         </menuitem>
 
-        <action label="back" action="back"/>
+        <!-- <action label="back" action="back"/> -->
 
         <textfield label="model.person.ID_Number">
             <binding variable="idNumber"/>

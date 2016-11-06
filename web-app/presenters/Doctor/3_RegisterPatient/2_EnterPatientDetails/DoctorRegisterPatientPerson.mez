@@ -26,11 +26,11 @@ void clearState(){
 }
 
 string backButton(){
-	return navigate("navRegisterPatient");
+	return navigate("navQueryPatient");
 }
 
 string submitButton(){
 	person = Person_Controller:createPerson(firstNames, surname, mobileNumber, idNumber, gender);
-	RegPayment:person = person;
+	RegisterPayment:person = person;
 	return navigate("navRegPayment");
 }

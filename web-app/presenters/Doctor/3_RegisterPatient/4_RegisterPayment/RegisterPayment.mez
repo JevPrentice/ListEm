@@ -1,13 +1,15 @@
-unit RegPayment;
+unit RegisterPayment;
 
 Person person;
 
 Doctor doctor;
-Patient patient;
 
 string doctorToString;
 string patientToString;
 
+MY_PAYMENT_STATUS paymentStatus;
+
+datetime dateRegistered;
 decimal amount;
 
 string msg;
@@ -17,11 +19,12 @@ void init (){
 	Person docPerson = doctor.doctor_person;
 	doctorToString = String:concat(docPerson.firstNames, " ", docPerson.surname, " ", docPerson.idNumber, " ", doctor.doctorID);
 	patientToString = String:concat(person.firstNames, " ", person.surname, " ", person.idNumber);
+	paymentStatus = MY_PAYMENT_STATUS.Outstanding;
+	dateRegistered = Mez:now();
 }
 
 void resetVars(){
 	doctor = null;
-	patient = null;
 	amount = null;
 	doctorToString = null;
 	patientToString = null;
@@ -33,15 +36,16 @@ string navigate(string location){
 }
 
 string back(){
-	// Person patPerson = patient.patient_person;
-	// RegisterPatient:idNumber = patPerson.idNumber;
-	// return navigate("navRegisterPatient");
+	ConfirmPatient:person = person;
+	return navigate("navConfirmPatient");
 }
 
 string savePayment(){
-	// MY_PAYMENT_STATUS status = MY_PAYMENT_STATUS.Outstanding;
 
-	// Payment payment = PaymentController:createOrUpdatePayment(patient, doctor, null, amount, status);
+	Patient patient = Patient_Controller:getPatientForPerson(person);
+	//Patient patient = person.person_patient;
+
+	Payment payment = PaymentController:createOrUpdatePayment(patient, doctor, dateRegistered, amount, paymentStatus);
 
 	Alert:info("Payment Saved");
 	return navigate("navManagePayments"); 

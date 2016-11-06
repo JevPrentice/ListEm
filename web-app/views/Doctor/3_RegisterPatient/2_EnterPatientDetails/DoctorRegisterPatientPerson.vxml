@@ -4,8 +4,8 @@
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
 	<view label="doctor.doctor_register_patient_person.title.Register_Patient" unit="DoctorRegisterPatientPerson">
 
-		<!-- <navigation outcome="navRegisterPatient" target="RegisterPatient"/>\ -->
-		<navigation outcome="navRegPayment" target="RegPayment"/>
+		<!-- <navigation outcome="navQueryPatient" target="QueryPatient"/>\ -->
+		<navigation outcome="navRegPayment" target="RegisterPayment"/>
 		
 		<action label="back" action="backButton"/>
 

@@ -1,0 +1,61 @@
+unit PaymentController;
+
+Payment[] getAllPayments(){
+	return Payment:all();
+}
+
+Payment createOrUpdatePayment(Patient patient, Doctor doctor, datetime dateRegistered, decimal amount, MY_PAYMENT_STATUS status){
+
+	if (patient == null){
+		Alert:error("Unable to save Payment, no Patient.");
+		return null;
+	}
+
+	if (doctor == null){
+		Alert:error("Unable to save Payment, no Doctor.");
+		return null;
+	}
+
+	if (amount == null){
+		Alert:error("Unable to save Payment, no Amount.");
+		return null;
+	}
+
+	if (status == null){
+		Alert:error("Unable to save Payment, no Payment Status.");
+		return null;
+	}
+
+	Payment payment = getPayment(patient, doctor, dateRegistered);
+
+	if (payment == null){
+		payment = Payment:new();
+		payment.dateRegistered = Mez:now();
+	}
+
+	payment.amount = amount;
+	payment.status = status;
+	payment.doctor = doctor;
+	payment.patient = patient;
+	payment.save();
+
+	return payment;
+
+}
+
+Payment getPayment(Patient patient, Doctor doctor, datetime dateRegistered){
+	
+	Payment[] payments = Payment:and(
+		relationshipIn(doctor, doctor),
+		relationshipIn(patient, patient),
+		equals(dateRegistered, dateRegistered)
+	);
+
+	if (payments.length() >= 1){
+		return payments.first();
+	}
+
+	return null;
+}
+
+

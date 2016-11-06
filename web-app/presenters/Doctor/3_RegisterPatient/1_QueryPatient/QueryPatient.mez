@@ -1,4 +1,4 @@
-unit RegisterPatient;
+unit QueryPatient;
 
 string idNumber;
 string msg;

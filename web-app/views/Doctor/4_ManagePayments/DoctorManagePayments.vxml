@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+    <view label="doctor.manage_payments.Manage_Payments" unit="DoctorManagePayments" init="init">
+
+        <!-- <navigation outcome="navAdminEditPayment" target="AdminEditPayment"/> -->
+        <!-- <navigation outcome="navDoctorEditPayment" target="DoctorEditPayment"/> -->
+        <!-- <navigation outcome="navEnterID" target="RegisterPatient"/> -->
+
+        <menuitem label="doctor.manage_payments.Manage_Payments" icon="payment" order="4">
+            <userRole>Doctor</userRole>
+        </menuitem>
+
+        <table>
+            <collectionSource function="PaymentController:getAllPayments"/>
+             <column heading="model.Doctor">
+                <attributeName>doctor.doctor_person.firstNames</attributeName>
+                <attributeName>doctor.doctor_person.surname</attributeName>
+                <attributeName>doctor.doctor_person.idNumber</attributeName>
+                <attributeName>doctor.doctorID</attributeName>
+            </column>
+             <column heading="model.Patient">
+                <attributeName>patient.patient_person.firstNames</attributeName>
+                <attributeName>patient.patient_person.surname</attributeName>
+                <attributeName>patient.patient_person.idNumber</attributeName>
+            </column>
+            <column heading="model.paymeny.Amount">
+                <attributeName>amount</attributeName>
+            </column>
+            <column heading="model.payment.Date_Registered">
+                <attributeName>dateRegistered</attributeName>
+            </column>
+            <column heading="model.payment.Payment_Status">
+                <attributeName>status</attributeName>
+            </column>
+            <!-- <rowAction label="update" action="updatePayment"> -->
+                <!-- <binding variable="payment"/> -->
+            <!-- </rowAction> -->
+             <!-- <rowAction label="edit" action="editPayment">
+                <binding variable="selectedPayment"/>
+            </rowAction>
+            <rowAction label="remove" action="removePayment">
+                <binding variable="selectedPayment"/>
+                <confirm subject="payments.confirmRemove.subject" body="payments.confirmRemove.body"/>
+            </rowAction> -->
+        </table>
+    </view>
+</ui>

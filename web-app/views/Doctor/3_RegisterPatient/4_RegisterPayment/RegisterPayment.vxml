@@ -2,11 +2,12 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-    <view label="doctor.register_patient.step3.Register_Payment" unit="RegPayment" init="init">
+    <view label="doctor.register_patient.step3.Register_Payment" unit="RegisterPayment" init="init">
 
         <!-- <navigation outcome="navEditPerson" target="EditPerson"/> -->
-        <!-- <navigation outcome="navRegisterPatient" target="RegisterPatient"/> -->
-        <!-- <navigation outcome="navManagePayments" target="ManagePayments"/> -->
+        <!-- <navigation outcome="navQueryPatient" target="QueryPatient"/> -->
+        <navigation outcome="navConfirmPatient" target="ConfirmPatient"/>
+        <navigation outcome="navManagePayments" target="DoctorManagePayments"/>
 
         <action label="back" action="back"/>
 
@@ -18,7 +19,15 @@
             <binding variable="patientToString" />
         </info>
 
-        <textfield label="model.Payment.amount">
+        <info label="model.payment.Payment_Status">
+            <binding variable="paymentStatus" />
+        </info>
+
+        <datefield label="model.payment.Date_Registered">
+            <binding variable="dateRegistered" />
+        </datefield>
+
+        <textfield label="model.Payment.Amount">
             <binding variable="amount"/>
         </textfield>
 
