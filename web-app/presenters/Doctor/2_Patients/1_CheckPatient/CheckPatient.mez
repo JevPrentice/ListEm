@@ -1,12 +1,7 @@
 unit CheckPatient;
 
 string idNumber;
-
 string msg;
-
-void init(){
-
-}
 
 void clearState(){
 	idNumber = null;
@@ -21,8 +16,9 @@ string next(){
 
 	Person person = Person_Controller:getPersonForIdNumber(idNumber);
 	if (person == null) { 
-		msg = "This Person has not been registered in the system yet, there is no profile available"; Alert:info(msg);
-		return null;
+		msg = "This Person has not been registered in the system yet, you can register this person now."; Alert:info(msg);
+		RegisterPatient:idNumber = idNumber;
+		return navigate("navRegisterPatient");
 	}
 
 	PatientSummary:person = person;

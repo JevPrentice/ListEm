@@ -1,4 +1,4 @@
-unit DoctorRegisterPatientPerson;
+unit RegisterPatient;
 
 Person person;
 
@@ -31,6 +31,7 @@ string backButton(){
 
 string submitButton(){
 	person = Person_Controller:createPerson(firstNames, surname, mobileNumber, idNumber, gender);
-	RegisterPayment:person = person;
-	return navigate("navRegPayment");
+	// RegisterPayment:person = person;
+	// return navigate("navRegPayment");
+	return navigate("navPatientSummary");
 }

@@ -37,8 +37,8 @@ string navigate(string location){
 }
 
 string back(){
-	ConfirmPatient:person = person;
-	return navigate("navConfirmPatient");
+	PatientSummary:person = person;
+	return navigate("navPatientSummary");
 }
 
 string savePayment(){

@@ -2,10 +2,11 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-	<view label="doctor.doctor_register_patient_person.title.Register_Patient" unit="DoctorRegisterPatientPerson">
+	<view label="doctor.doctor_register_patient_person.title.Register_Patient" unit="RegisterPatient">
 
 		<!-- <navigation outcome="navQueryPatient" target="QueryPatient"/>\ -->
-		<navigation outcome="navRegPayment" target="RegisterPayment"/>
+		<!-- <navigation outcome="navRegPayment" target="RegisterPayment"/> -->
+		<navigation outcome="navPatientSummary" target="PatientSummary"/>
 		
 		<action label="back" action="backButton"/>
 

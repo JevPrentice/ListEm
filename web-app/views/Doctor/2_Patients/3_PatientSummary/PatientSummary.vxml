@@ -2,22 +2,13 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-    <view label="doctor.doctor_profile.title.Doctor_Profile" unit="DoctorProfile" init="init">
+    <view label="doctor.patient_summary.tite.Patient_Summary" unit="PatientSummary" init="init">
 
-		<navigation outcome="navEditDoctor" target="DoctorEditDoctorProfile"/>
-        <navigation outcome="navEditPerson" target="DoctorEditPersonProfile"/>
+        <navigation outcome="navCheckPatient" target="CheckPatient"/>
+        <navigation outcome="navRegisterPayment" target="RegisterPayment"/>
 
-        <menuitem label="doctor.doctor_profile.title.Doctor_Profile" icon="doctor" order="1">
-            <userRole>Doctor</userRole>
-        </menuitem>
-
-        <info label="model.doctor.Doctor_ID">
-            <binding variable="doctor">
-                <attribute name="doctorID"/>
-            </binding>
-        </info>
-
-        <submit label="doctor.doctor_profile.submit.Edit_Doctor" action="editDoctor"/>
+        <action label="back" action="back"/>
+        <action label="doctor.patient_summary.Register_Payment" action="registerPayment"/>
 
         <info label="model.person.First_Names">
             <binding variable="person">
@@ -37,11 +28,11 @@
             </binding>
         </info>
 
-		<info label="model.person.ID_Number">
-			<binding variable="person">
+        <info label="model.person.ID_Number">
+            <binding variable="person">
                 <attribute name="idNumber"/>
             </binding>
-		</info>
+        </info>
 
         <info label="model.person.Gender">
             <binding variable="person">
@@ -49,7 +40,15 @@
             </binding>
         </info>
 
-        <submit label="doctor.doctor_profile.submit.Edit_Person" action="editPerson"/>
-        
+        <info label="model.person.Date_Registered">
+            <binding variable="patient">
+                <attribute name="dateRegistered"/>
+            </binding>
+        </info>
+
+        <info label="doctor.patient_summary.info.Num_Outstanding_Payments">
+            <binding variable="numOutstandingPayments" />
+        </info>
+
     </view>
 </ui>

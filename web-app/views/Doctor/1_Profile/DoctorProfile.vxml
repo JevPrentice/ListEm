@@ -2,11 +2,22 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-    <view label="doctor.patient_summary.tite.Patient_Summary" unit="PatientSummary" init="init">
+    <view label="doctor.doctor_profile.title.Profile" unit="DoctorProfile" init="init">
 
-        <navigation outcome="navCheckPatient" target="CheckPatient"/>
+		<navigation outcome="navEditDoctor" target="DoctorEditDoctorProfile"/>
+        <navigation outcome="navEditPerson" target="DoctorEditPersonProfile"/>
 
-        <action label="back" action="back"/>
+        <menuitem label="doctor.doctor_profile.title.Profile" icon="doctor" order="1">
+            <userRole>Doctor</userRole>
+        </menuitem>
+
+        <info label="model.doctor.Doctor_ID">
+            <binding variable="doctor">
+                <attribute name="doctorID"/>
+            </binding>
+        </info>
+
+        <submit label="doctor.doctor_profile.submit.Edit_Doctor" action="editDoctor"/>
 
         <info label="model.person.First_Names">
             <binding variable="person">
@@ -26,11 +37,11 @@
             </binding>
         </info>
 
-        <info label="model.person.ID_Number">
-            <binding variable="person">
+		<info label="model.person.ID_Number">
+			<binding variable="person">
                 <attribute name="idNumber"/>
             </binding>
-        </info>
+		</info>
 
         <info label="model.person.Gender">
             <binding variable="person">
@@ -38,13 +49,7 @@
             </binding>
         </info>
 
-        <info label="doctor.patient_summary.info.Is_Registered_Patient">
-            <binding variable="isRegisteredPatient" />
-        </info>
-
-        <info label="doctor.patient_summary.info.Has_Outstanding_Payments">
-            <binding variable="hasOutstandingPayments" />
-        </info>
-
+        <submit label="doctor.doctor_profile.submit.Edit_Person" action="editPerson"/>
+        
     </view>
 </ui>

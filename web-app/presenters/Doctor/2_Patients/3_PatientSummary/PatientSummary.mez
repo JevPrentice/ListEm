@@ -3,15 +3,13 @@ unit PatientSummary;
 Person person;
 Patient patient;
 
-bool isRegisteredPatient;
-bool hasOutstandingPayments;
+int numOutstandingPayments;
 
 string msg;
 
 void init(){
 
-	isRegisteredPatient = false;
-	hasOutstandingPayments = false;
+	numOutstandingPayments = 0;
 
 	if (person == null){
 		msg = "No Person found for which to display Summary."; Alert:error(msg);
@@ -22,12 +20,9 @@ void init(){
 
 	if (patient != null){
 
-		isRegisteredPatient = true;
-
-		Payment[] payments;// = patient.patient_payments;
-
-		if (payments.length() > 0){
-			hasOutstandingPayments = true;
+		Payment[] payments = patient.patient_payment;
+		if (payments != null){
+			numOutstandingPayments = payments.length();
 		}
 
 	}
@@ -40,4 +35,10 @@ string navigate(string location){
 
 string back(){
 	return navigate("navCheckPatient");
+}
+
+string registerPayment(){
+	RegisterPayment:person = person;
+	RegisterPayment:patient = patient;
+	return navigate("navRegisterPayment");
 }

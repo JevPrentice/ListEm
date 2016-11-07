@@ -2,11 +2,12 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-    <view label="doctor.check_patient.title.Check_Patient" unit="CheckPatient" init="init">
+    <view label="doctor.check_patient.title.Patients" unit="CheckPatient">
 
         <navigation outcome="navPatientSummary" target="PatientSummary"/>
+        <navigation outcome="navRegisterPatient" target="RegisterPatient"/>
 
-        <menuitem label="doctor.check_patient.title.Check_Patient" icon="check_patient" order="3">
+        <menuitem label="doctor.check_patient.title.Patients" icon="check_patient" order="3">
             <userRole>Doctor</userRole>
         </menuitem>
 
