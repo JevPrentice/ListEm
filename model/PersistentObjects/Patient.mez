@@ -1,12 +1,7 @@
-@Role("Patient")
 persistent object Patient {
 
 	datetime dateRegistered;
 	
 	@OneToOne
 	Person patient_person via person_patient;
-
-	// @OneToMany
-	// Payment payments via payment_patient;
-
 }

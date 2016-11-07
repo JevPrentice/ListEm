@@ -2,11 +2,12 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-    <view label="doctor.manage_payments.Payments" unit="DoctorManagePayments" init="init">
+    <view label="doctor.manage_payments.Payments" unit="ManagePayments">
 
-        <navigation outcome="navDoctorUpdatePayment" target="DoctorUpdatePayment"/>
+        <navigation outcome="navDoctorUpdatePayment" target="UpdatePayment"/>
 
         <menuitem label="doctor.manage_payments.Payments" icon="payment" order="4">
+            <userRole>Admin</userRole>
             <userRole>Doctor</userRole>
         </menuitem>
 

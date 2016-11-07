@@ -36,6 +36,8 @@ Admin createAdmin(Person person){
 
 	Admin admin = Admin:new();
 	admin.dateRegistered = Mez:now();
+	admin.invite(person.mobileNumber);
+	
 	return updateAdmin(admin, person);
 }
 

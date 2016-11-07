@@ -61,13 +61,14 @@ Patient updatePatient(Patient patient, bool isEdit, Person person){
 }
 
 void deletePatient(Patient patient){
-	if(patient == null) { return; }
-	patient.removeRole();
-	Patient:delete(patient);
-	msg = "Patient deleted."; Alert:info(msg);
+	// if(patient == null) { return; }
+	// patient.removeRole();
+	//Patient:delete(patient);
+	msg = "Patients cannot be removed."; Alert:info(msg);
 }
 
 void generatePatientData(){
 	//createPatient(Mez:now(), null);
+	return;
 }
 

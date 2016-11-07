@@ -2,9 +2,9 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-	<view label="doctor.manage_payments.Update_Payment" unit="DoctorUpdatePayment" init="init">
+	<view label="doctor.manage_payments.Update_Payment" unit="UpdatePayment" init="init">
 		
-		<navigation outcome="navDoctorManagePayments" target="DoctorManagePayments" />
+		<navigation outcome="navDoctorManagePayments" target="ManagePayments" />
 
 		<info label="model.Doctor">
             <binding variable="doctorToString" />

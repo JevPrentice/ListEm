@@ -1,6 +1,5 @@
 @Restrict("Admin", all())
 @Restrict("Doctor", relationshipIn(payment_doctor, Doctor:user()))
-@Restrict("Patient", relationshipIn(payment_patient, Patient:user()))
 persistent object Payment {
 	
 	datetime dateRegistered;

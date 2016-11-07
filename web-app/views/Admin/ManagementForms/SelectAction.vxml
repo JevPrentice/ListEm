@@ -7,6 +7,8 @@
 		<navigation outcome="navInviteAdmin" target="AdminInviteDoctor" />
 		<navigation outcome="navPersonForm" target="Person_Form" />
 
+		<action label="back" outcome="navPersonForm"/>
+
 		<info label="select_action_doctor.info.User_Type">
 			<binding variable="userType"/>
 		</info>

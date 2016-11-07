@@ -99,7 +99,9 @@ string selectActionDoctor(){
 }
 
 string selectActionPatient(){
-	SelectAction:person = selected_person_var;
-	SelectAction:userType = "Patient";
-	return navigate("navSelectActionDoctor");
+	//SelectAction:person = selected_person_var;
+	//SelectAction:userType = "Patient";
+	//return navigate("navSelectActionDoctor");
+	Patient_Controller:createPatient(selected_person_var);
+	return null;
 }

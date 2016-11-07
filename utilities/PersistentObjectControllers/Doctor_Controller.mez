@@ -86,5 +86,6 @@ void deleteDoctor(Doctor doctor){
 }
 
 void generateDoctorData(){
+	return;
 }
 

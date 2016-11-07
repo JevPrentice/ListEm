@@ -1,4 +1,4 @@
-unit DoctorUpdatePayment;
+unit UpdatePayment;
 
 Payment payment;
 

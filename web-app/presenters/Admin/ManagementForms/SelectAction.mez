@@ -49,26 +49,22 @@ string navigate(string location){
 }
 
 string submitButton(){
-
-
-	if (userType == "Doctor"){
-		
-		if (action == "Invite"){
-			AdminInviteDoctor:person = person;
-			return navigate("navInviteAdmin");
-		} else if (action == "Uninvite"){
-			Doctor_Controller:deleteDoctor(doctorCollection.first());
-			return navigate("navPersonForm");
-		}
-
-	} else if (userType == "Patient") {
 	
+	if (action == "Invite"){
+		AdminInviteDoctor:person = person;
+		return navigate("navInviteAdmin");
+	} else if (action == "Uninvite"){
+		Doctor_Controller:deleteDoctor(doctorCollection.first());
+		return navigate("navPersonForm");
+	}
+
+	/*if (userType == "Doctor"){
+	} else if (userType == "Patient") {
 		if (action == "Invite"){
 			Patient_Controller:createPatient(person);
 		} else if (action == "Uninvite"){
 			Patient_Controller:deletePatient(patientCollection.first());
 		}
-
 		return navigate("navPersonForm");
-	}
+	}*/
 }
