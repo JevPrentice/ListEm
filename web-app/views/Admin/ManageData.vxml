@@ -5,9 +5,9 @@
 	<view label="form.title.Manage_Data" unit="ManageData" init="init">
 		<navigation outcome="navPerson" target="Person_Form" />
 
-		<menuitem label="form.title.Manage_Data" icon="settings" order="1" >
+		<!-- <menuitem label="form.title.Manage_Data" icon="settings" order="1" >
 			<userRole>Admin</userRole>
-		</menuitem>
+		</menuitem> -->
 
 		<table title="form.title.Manage_Data_Table">
 			<collectionSource function="getManageDataMenu"/>

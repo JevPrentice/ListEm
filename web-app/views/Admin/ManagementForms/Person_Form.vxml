@@ -2,10 +2,14 @@
 <ui xmlns="http://uiprogram.mezzanine.com/View" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
-	<view label="personform.title.Person_Form" unit="Person_Form" init="init">
+	<view label="personform.title.Manage_People" unit="Person_Form" init="init">
 
 		<navigation outcome="navManageData" target="ManageData" />
 		<navigation outcome="navSelectActionDoctor" target="SelectAction" />
+
+		<menuitem label="form.title.Manage_People" icon="person" order="1" >
+			<userRole>Admin</userRole>
+		</menuitem>
 
 		<info label="personform.info.Person_Form">
 			<binding variable="page_mode"/>
