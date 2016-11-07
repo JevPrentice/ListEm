@@ -1,4 +1,4 @@
-unit PaymentController;
+unit Payment_Controller;
 
 Payment[] getAllPayments(){
 	return Payment:all();
@@ -35,8 +35,8 @@ Payment createOrUpdatePayment(Patient patient, Doctor doctor, datetime dateRegis
 
 	payment.amount = amount;
 	payment.status = status;
-	payment.doctor = doctor;
-	payment.patient = patient;
+	payment.payment_doctor = doctor;
+	payment.payment_patient = patient;
 	payment.save();
 
 	return payment;
@@ -46,8 +46,8 @@ Payment createOrUpdatePayment(Patient patient, Doctor doctor, datetime dateRegis
 Payment getPayment(Patient patient, Doctor doctor, datetime dateRegistered){
 	
 	Payment[] payments = Payment:and(
-		relationshipIn(doctor, doctor),
-		relationshipIn(patient, patient),
+		relationshipIn(payment_doctor, doctor),
+		relationshipIn(payment_patient, patient),
 		equals(dateRegistered, dateRegistered)
 	);
 

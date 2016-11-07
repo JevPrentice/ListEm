@@ -1,4 +1,20 @@
 unit DoctorManagePayments;
 
+Payment payment;
+
 void init (){
+}
+
+void resetVars(){
+	payment = null;
+}
+
+string navigate(string location){
+	resetVars();
+	return location;
+}
+
+string updatePayment(){
+	DoctorUpdatePayment:payment = payment;
+	return navigate("navDoctorUpdatePayment");
 }

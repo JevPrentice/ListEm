@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui xmlns="http://uiprogram.mezzanine.com/View" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://uiprogram.mezzanine.com/View ../views/xsd/View.xsd">
+	<view label="doctor.manage_payments.Update_Payment" unit="DoctorUpdatePayment" init="init">
+		
+		<navigation outcome="navDoctorManagePayments" target="DoctorManagePayments" />
+
+		<info label="model.Doctor">
+            <binding variable="doctorToString" />
+        </info>
+
+        <info label="model.Patient">
+            <binding variable="patientToString" />
+        </info>
+
+        <datefield label="model.payment.Date_Registered">
+            <binding variable="dateRegistered" />
+        </datefield>
+
+        <textfield label="model.Payment.Amount">
+            <binding variable="amount"/>
+        </textfield>
+
+		<select label="model.payment.Payment_Status">
+			<binding variable="paymentStatus" />
+			<enum>MY_PAYMENT_STATUS</enum>
+		</select>
+
+		<submit label="save" action="updatePayment"/>
+	</view>
+</ui>

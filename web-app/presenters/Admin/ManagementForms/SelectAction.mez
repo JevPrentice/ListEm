@@ -61,10 +61,14 @@ string submitButton(){
 			return navigate("navPersonForm");
 		}
 
-	} return navigate("navInvitePatient");/*else if (userType == "Patient") {
-		
-	}*/
+	} else if (userType == "Patient") {
+	
+		if (action == "Invite"){
+			Patient_Controller:createPatient(person);
+		} else if (action == "Uninvite"){
+			Patient_Controller:deletePatient(patientCollection.first());
+		}
 
-	
-	
+		return navigate("navPersonForm");
+	}
 }

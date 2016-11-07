@@ -1,6 +1,6 @@
 @Restrict("Admin", all())
-@Restrict("Doctor", relationshipIn(doctor, Doctor:user()))
-@Restrict("Patient", relationshipIn(patient, Patient:user()))
+@Restrict("Doctor", relationshipIn(payment_doctor, Doctor:user()))
+@Restrict("Patient", relationshipIn(payment_patient, Patient:user()))
 persistent object Payment {
 	
 	datetime dateRegistered;
@@ -10,9 +10,9 @@ persistent object Payment {
 	MY_PAYMENT_STATUS status;
 	
 	@ManyToOne
-	Doctor doctor via payments_doctor;
+	Doctor payment_doctor via doctor_payment;
 
 	@ManyToOne
-	Patient patient via patient_payments;
+	Patient payment_patient via patient_payment;
 
 }

@@ -8,7 +8,7 @@ void init (){
 }
 
 void resetVars(){
-	// person = null;
+	person = null;
 }
 
 string navigate(string location){
@@ -22,8 +22,15 @@ string back(){
 }
 
 string savePatient(){
-	// Patient patient = PatientController:createOrEditPatient(null, person);
-	// msg = String:concat(person.firstNames, " ", person.surname, " has been saved as a Patient"); Alert:info(msg);
+
+	Patient patient = Patient_Controller:getPatientForPerson(person);
+	if(patient == null){
+		patient = Patient_Controller:createPatient(person);
+	}
+
+	msg = String:concat(person.firstNames, " ", person.surname, " has been saved as a Patient"); Alert:info(msg);
+	
 	RegisterPayment:person = person;
+	RegisterPayment:patient = patient;
 	return navigate("navRegisterPayment");
 }
