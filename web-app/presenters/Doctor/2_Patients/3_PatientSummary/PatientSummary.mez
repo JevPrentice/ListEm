@@ -9,24 +9,23 @@ string msg;
 
 void init(){
 
-	numOutstandingPayments = 0;
-
 	if (person == null){
 		msg = "No Person found for which to display Summary."; Alert:error(msg);
 		return null;
 	}
 
-	patient = person.person_patient;
-
-	if (patient != null){
-
-		Payment[] payments = patient.patient_payment;
-		if (payments != null){
-			numOutstandingPayments = payments.length();
-		}
-
+	//patient = person.person_patient;
+	if (patient == null){
+		msg = "No Patient found for which to display Summary."; Alert:error(msg);
+		return null;
 	}
 
+	Payment[] payments = patient.patient_payment;
+	if (payments != null){
+		numOutstandingPayments = payments.length();
+	} else {
+		numOutstandingPayments = 0;
+	}
 }
 
 string navigate(string location){

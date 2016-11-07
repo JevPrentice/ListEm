@@ -42,6 +42,8 @@ Patient createPatient(Person person){
 	Patient patient = Patient:new();
 	patient.dateRegistered = Mez:now();
 
+	msg = "Patient created."; Alert:info(msg);
+
 	return updatePatient(patient, false, person);
 }
 
@@ -53,6 +55,8 @@ Patient updatePatient(Patient patient, bool isEdit, Person person){
 	patient.patient_person = person;
 	patient.save();
 
+	msg = "Patient saved."; Alert:info(msg);
+
 	return patient;
 }
 
@@ -60,6 +64,7 @@ void deletePatient(Patient patient){
 	if(patient == null) { return; }
 	patient.removeRole();
 	Patient:delete(patient);
+	msg = "Patient deleted."; Alert:info(msg);
 }
 
 void generatePatientData(){

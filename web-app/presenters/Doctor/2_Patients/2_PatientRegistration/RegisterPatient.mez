@@ -9,7 +9,7 @@ string idNumber;
 datetime dateRegistered;
 GENDER gender;
 
-// void init(){}
+string msg;
 
 string navigate(string location){
 	clearState();
@@ -31,7 +31,19 @@ string backButton(){
 
 string submitButton(){
 	person = Person_Controller:createPerson(firstNames, surname, mobileNumber, idNumber, gender);
-	// RegisterPayment:person = person;
-	// return navigate("navRegPayment");
+
+	if(person == null){
+		msg = "No Person created, unable to associated Patient"; Alert:error(msg);
+		return null;
+	}
+
+	Patient patient = Patient_Controller:createPatient(person);
+	if(patient == null){
+		msg = "Unable to create Patient"; Alert:error(msg);
+		return null;
+	}
+
+	PatientSummary:person = person;
+	PatientSummary:patient = patient;
 	return navigate("navPatientSummary");
 }

@@ -10,8 +10,11 @@
             <userRole>Doctor</userRole>
         </menuitem>
 
-        <table>
+        <table defaultSortColumn="0" defaultSortDirection="descending">
             <collectionSource function="Payment_Controller:getAllPayments"/>
+            <column heading="model.payment.Date_Registered">
+                <attributeName>dateRegistered</attributeName>
+            </column>
              <column heading="model.Doctor">
                 <attributeName>payment_doctor.doctor_person.firstNames</attributeName>
                 <attributeName>payment_doctor.doctor_person.surname</attributeName>
@@ -25,9 +28,6 @@
             </column>
             <column heading="model.paymeny.Amount">
                 <attributeName>amount</attributeName>
-            </column>
-            <column heading="model.payment.Date_Registered">
-                <attributeName>dateRegistered</attributeName>
             </column>
             <column heading="model.payment.Payment_Status">
                 <attributeName>status</attributeName>
